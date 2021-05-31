@@ -1,4 +1,4 @@
-#include "..\include\MenuState.h"
+#include "MenuState.h"
 #include "Pictures.h"
 
 MenuState::MenuState(MarioKart::GameDataRef data) :m_data(data)

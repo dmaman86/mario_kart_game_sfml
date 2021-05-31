@@ -1,6 +1,5 @@
 #include "StateStack.h"
 
-
 StateStack::StateStack():
      m_states(),
      m_newState(),
@@ -57,3 +56,5 @@ StateStack::StateRef& StateStack::GetActiveState()
     if(m_states.empty())throw std::range_error("Stack is emptey");
     return m_states.top();
 }
+
+
