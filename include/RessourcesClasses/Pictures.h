@@ -11,6 +11,7 @@ public:
     static  const std::string MarioDriver;
     static  const std::string mario_circuit_2;
     static  const std::string misc;
+    static  const std::string menuBackground;
 
     const sf::Texture& getTexture(std::string);
     const sf::Image& getMapTex(std::string);
