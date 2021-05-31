@@ -28,18 +28,18 @@ void TestState::HandleEvent(const sf::Event & event)
 }
 
 void TestState::Update(float dt)
-{
-    std::thread reception_thred(&TestState::ReceivePackets, this, &socket);
+            {
+                std::thread reception_thred(&TestState::ReceivePackets, this, &socket);
 
-    while(true)
-    {
-        if(isConnected)
-        {
-            std::string user_input;
-            std::getline(std::cin, user_input);
+                while(true)
+                {
+                    if(isConnected)
+                    {
+                        std::string user_input;
+                        std::getline(std::cin, user_input);
 
-            sf::Packet reply_packet;
-            reply_packet << user_input;
+                        sf::Packet reply_packet;
+                        reply_packet << user_input;
 
             SendPacket(reply_packet);
         }

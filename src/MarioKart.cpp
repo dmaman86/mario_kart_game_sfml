@@ -1,6 +1,7 @@
 #include "MarioKart.h"
-
+#include "RaceState.h"
 #include "TestState.h"
+#include "Macros.h"
 
 MarioKart::DataGame::DataGame(sf::RenderWindow & window)
     : window(&window)
@@ -9,10 +10,11 @@ MarioKart::DataGame::DataGame(sf::RenderWindow & window)
 }
 
 MarioKart::MarioKart()
-    : m_window(sf::VideoMode( 1920, 1080 ), "Mario Kart"),
+    : m_window(sf::VideoMode( WITDH, HIGHT ), "Mario Kart"),
       m_dataGame( new DataGame( m_window ) )
 {
-    m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)), true);
+  //  m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)), true);
+    m_dataGame->stateStack.AddState( StateStack::StateRef( new RaceState(m_dataGame)), true);
 }
 
 void MarioKart::run()
