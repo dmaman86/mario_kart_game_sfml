@@ -13,6 +13,7 @@ MarioKart::MarioKart()
     : m_window(sf::VideoMode( WITDH, HIGHT ), "Mario Kart"),
       m_dataGame( new DataGame( m_window ) )
 {
+    m_window.setFramerateLimit(60);
     //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
     m_dataGame->stateStack.AddState( StateStack::StateRef( new RaceState(m_dataGame)), true);
 }
@@ -52,7 +53,14 @@ void MarioKart::processInput()
     sf::Event event;
     while( m_window.pollEvent( event ) )
     {
-        m_dataGame->stateStack.GetActiveState()->HandleEvent( event );
+        try{
+              m_dataGame->stateStack.GetActiveState()->HandleEvent( event );
+            }
+
+        catch (std::exception& e)
+        {
+            std::cout<<e.what();
+        }
 
         if( event.type == sf::Event::Closed )
             m_window.close();
