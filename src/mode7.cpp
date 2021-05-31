@@ -85,6 +85,5 @@ sf::Sprite Mode7::getSprite()
 {
     m_texture.update(m_imageTransformed);
     m_sprite.setTexture(m_texture);
-
     return m_sprite;
 }
