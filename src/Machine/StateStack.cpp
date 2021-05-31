@@ -1,5 +1,16 @@
 #include "StateStack.h"
 
+
+StateStack::StateStack():
+     m_states(),
+     m_newState(),
+     m_isAdding(false),
+     m_isReplacing(false),
+     m_isRemoving(false)
+{
+
+}
+
 void StateStack::AddState(StateRef newState, bool isReplacing)
 {
     m_isAdding = true;

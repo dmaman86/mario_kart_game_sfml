@@ -11,8 +11,8 @@ class StateStack
 public:
     typedef std::shared_ptr<State> StateRef;
 public:
-    StateStack(){ }
-    ~StateStack(){ }
+    StateStack();
+    ~StateStack() = default;
 
     void AddState( StateRef, bool = true );
     void RemoveState();

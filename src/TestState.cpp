@@ -8,7 +8,8 @@ TestState::TestState(MarioKart::GameDataRef data)
 
 void TestState::Init()
 {
-    if(socket.connect("localhost", 2525) != sf::Socket::Done)
+    sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+    if(socket.connect(ip.toString(), 2525) != sf::Socket::Done)
     {
         logl("Could not connect to the server\n");
     }
@@ -28,22 +29,23 @@ void TestState::HandleEvent(const sf::Event & event)
 }
 
 void TestState::Update(float dt)
-            {
-                std::thread reception_thred(&TestState::ReceivePackets, this, &socket);
+{
+    std::thread reception_thred(&TestState::ReceivePackets, this, &socket);
 
-                while(true)
-                {
-                    if(isConnected)
-                    {
-                        std::string user_input;
-                        std::getline(std::cin, user_input);
+    while(true)
+    {
+        if(isConnected)
+        {
+            std::string user_input;
+            std::getline(std::cin, user_input);
 
-                        sf::Packet reply_packet;
-                        reply_packet << user_input;
+            sf::Packet reply_packet;
+            reply_packet << user_input;
 
             SendPacket(reply_packet);
         }
     }
+    socket.disconnect();
 }
 
 void TestState::Draw()
