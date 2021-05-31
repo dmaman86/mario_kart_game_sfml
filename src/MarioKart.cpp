@@ -22,6 +22,7 @@ void MarioKart::run()
 {
     float newTime, frameTime;
 
+
     float currentTime = m_clock.getElapsedTime().asSeconds();
     float accumulator = 0.0f;
 

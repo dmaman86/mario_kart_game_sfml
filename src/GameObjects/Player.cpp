@@ -77,9 +77,9 @@ float Player::getAngle() {
 void Player::speedUp() {
     if(m_speed < CAR_SPEED)
 
-        if(m_speed == 0)m_speed =1;
+        if(m_speed <= 0)m_speed = 1;
         else
-        m_speed += sqrt(sqrt(sqrt(std::abs(m_speed))));
+            m_speed += sqrt(sqrt(sqrt(std::abs(m_speed))));
 
 }
 
