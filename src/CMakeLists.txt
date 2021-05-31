@@ -7,6 +7,7 @@ target_sources (test_mario_kart PRIVATE
         "RessourcesClasses/Fonts.cpp"
         "RessourcesClasses/Pictures.cpp"
         "RessourcesClasses/Sounds.cpp"
-        "mode7.cpp")
+        "mode7.cpp"
+        "MenuState.cpp")
 
 add_subdirectory(Machine)
