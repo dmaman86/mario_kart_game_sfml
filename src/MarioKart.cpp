@@ -14,8 +14,8 @@ MarioKart::MarioKart()
     : m_window(sf::VideoMode( WITDH, HIGHT ), "Mario Kart"),
       m_dataGame( new DataGame( m_window ) )
 {
-    m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
-    // m_dataGame->stateStack.AddState( StateStack::StateRef( new RaceState(m_dataGame)), true);
+    //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
+     m_dataGame->stateStack.AddState( StateStack::StateRef( new RaceState(m_dataGame)), true);
 }
 
 void MarioKart::run()
