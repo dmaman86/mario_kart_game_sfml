@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "MarioKart.h"
 #include "State.h"
+#include "MapFileCollision.h"
 class RaceState: public State
 {
 
@@ -27,8 +28,9 @@ private:
 	sf::Sprite m_sky;
     Mode7 m_map;
     float m_cameraX, m_cameraY, m_cameraZ, m_theta;
-    Player m_player;
     sf::Clock m_clock;
     MarioKart::GameDataRef m_data;
+    Player m_player;
+    MapFileCollision m_int_map;
 
 };

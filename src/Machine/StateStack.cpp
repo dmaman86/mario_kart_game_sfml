@@ -54,5 +54,6 @@ void StateStack::ProcessStateChanges()
 
 StateStack::StateRef& StateStack::GetActiveState()
 {
+    if(m_states.empty())throw std::range_error("Stack is emptey");
     return m_states.top();
 }
