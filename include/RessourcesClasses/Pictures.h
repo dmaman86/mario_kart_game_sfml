@@ -12,6 +12,15 @@ public:
     static  const std::string mario_circuit_2;
     static  const std::string misc;
     static  const std::string menuBackground;
+    static  const std::string marioLogo;
+    static  const std::string letsPlay;
+    static  const std::string help;
+    static  const std::string about;
+    static  const std::string online;
+    static  const std::string settings;
+    static  const std::string career;
+    static  const std::string back;
+
 
     const sf::Texture& getTexture(std::string);
     const sf::Image& getMapTex(std::string);
