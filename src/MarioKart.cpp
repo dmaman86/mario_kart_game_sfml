@@ -1,9 +1,9 @@
-
+#include "MenuState.h"
 #include "MarioKart.h"
 #include "RaceState.h"
 #include "TestState.h"
 #include "Macros.h"
-
+#include "user.h"
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window)
 {
@@ -12,12 +12,19 @@ MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 
 MarioKart::MarioKart()
 	: m_window(sf::VideoMode(WITDH, HIGHT), "Mario Kart"),
-	m_dataGame(new DataGame(m_window))
-{
-	m_window.setFramerateLimit(60);
-	//m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
-	//m_dataGame->stateStack.AddState(StateStack::StateRef(new MenuState(m_dataGame)), true);
+	m_dataGame(new DataGame(m_window)) {
+    m_window.setFramerateLimit(60);
+
+    //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
+    if (User == users::Liran)
+    {
+        m_dataGame->stateStack.AddState(StateStack::StateRef(new MenuState(m_dataGame)), true);
+    }
+
+    if (User == users::Liron)
+    {
 	m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)), true);
+    }
 }
 
 void MarioKart::run()
