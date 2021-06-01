@@ -66,7 +66,6 @@ void Player::setAngle(float agl) {
     m_angle = agl;
     if (m_angle >= 360) m_angle = 0;
 
-
 }
 
 float Player::getAngle() {
@@ -75,9 +74,9 @@ float Player::getAngle() {
 }
 
 void Player::speedUp() {
-    if(m_speed < CAR_SPEED)
 
-        if(m_speed <= 0)m_speed = 1;
+    if(m_speed < CAR_SPEED)
+        if(m_speed <= 0)m_speed = 0.0025;
         else
             m_speed += sqrt(sqrt(sqrt(std::abs(m_speed))));
 
@@ -85,9 +84,11 @@ void Player::speedUp() {
 
 void Player::speedDown() {
 
-    if(m_speed > 0)
-         m_speed -= 0.25;
-
+	if (m_speed > 0) {
+		//m_speed -= sqrt(sqrt(sqrt(std::abs(m_speed))));
+		(m_speed <= 0.05)? m_speed = 0:
+			m_speed -= 0.05;
+	}
 }
 
 float Player::getSpeed() const {

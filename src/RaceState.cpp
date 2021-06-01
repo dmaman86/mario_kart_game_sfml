@@ -63,7 +63,7 @@ void RaceState::Draw() {
 void RaceState::Update(float deltatime) {
 
     //if(m_int_map(m_player.getIntLocation().x,m_player.getIntLocation().y) == 0)
-    std::cout << " player loc x : " << m_player.getIntLocation().x << " y: " << m_player.getIntLocation().y;
+    std::cout << " player loc x : " << m_player.getIntLocation().x << " y: " << m_player.getIntLocation().y << " player speed : " << m_player.m_speed;
     m_player.setIntLocation(deltatime,m_int_map(m_player.getIntLocation().y,m_player.getIntLocation().x));
 
     m_cameraX = m_player.getIntLocation().x*8 - 50*sin(m_player.getAngle()*3.1415/180);
