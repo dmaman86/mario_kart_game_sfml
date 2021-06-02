@@ -4,6 +4,7 @@
 #include "TestState.h"
 #include "Macros.h"
 #include "user.h"
+#include "WelcomeState.h"
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window)
 {
@@ -18,7 +19,7 @@ MarioKart::MarioKart()
     //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
     if (User == users::Liran)
     {
-        m_dataGame->stateStack.AddState(StateStack::StateRef(new MenuState(m_dataGame)), true);
+        m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)), true);
     }
 
     if (User == users::Liron)
