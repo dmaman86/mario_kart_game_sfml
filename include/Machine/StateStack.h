@@ -18,6 +18,7 @@ public:
     void RemoveState();
 
     void ProcessStateChanges();
+    bool isEmpty();
 
     StateRef& GetActiveState();
 

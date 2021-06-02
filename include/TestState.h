@@ -3,15 +3,21 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "State.h"
 #include "MarioKart.h"
+#include "UserNetwork.h"
 
 #include <thread>
 #include <chrono>
 #include <SFML/Network.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>
+#include <vector>
 
-#define logl(x) std::cout << x << std::endl
-#define log(x) std::cout << x
+namespace pt = boost::property_tree;
 
 
 /* Test state to test server */
@@ -26,14 +32,16 @@ public:
     void Update( float ) override;
     void Draw() override;
 
-    void Connect(const char *, unsigned short);
-    void ReceivePackets(sf::TcpSocket *);
-    void SendPacket(sf::Packet &);
 
 private:
     MarioKart::GameDataRef m_data;
     sf::TcpSocket socket;
     sf::Packet last_packet;
+    std::vector<UserNetwork> m_users;
+    sf::Sprite m_BackgroundSprite;
+    sf::Text m_title;
+    bool m_validConnection;
 
-    bool isConnected = false;
+    void centerOrigin(sf::Text&);
+    void buildVecUsers(boost::property_tree::ptree const&);
 };

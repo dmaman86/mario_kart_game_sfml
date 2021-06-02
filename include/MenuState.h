@@ -10,10 +10,10 @@ public:
     ~MenuState() = default;
 
 
-    virtual void Init()override;
-    virtual void HandleEvent(const sf::Event&);
-    virtual void Update(float)override;
-    virtual void Draw()override;
+    void Init() override;
+    void HandleEvent(const sf::Event&) override;
+    void Update(float) override;
+    void Draw() override;
 private:
     void setposition();
     std::vector<sf::Sprite>m_spriteVector;

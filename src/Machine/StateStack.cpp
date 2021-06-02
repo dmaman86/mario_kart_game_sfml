@@ -57,4 +57,9 @@ StateStack::StateRef& StateStack::GetActiveState()
     return m_states.top();
 }
 
+bool StateStack::isEmpty()
+{
+    return m_states.empty();
+}
+
 

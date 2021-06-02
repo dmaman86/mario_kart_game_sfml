@@ -38,8 +38,8 @@ Pictures::Pictures() {
 
 }
 
-const sf::Texture &Pictures::getTexture(std::string name) {
-    return m_pics[name];
+const sf::Texture &Pictures::getTexture(std::string name) const {
+    return m_pics.at(name);
 }
 
 const sf::Image &Pictures::getMapTex(std::string string) {

@@ -1,23 +1,61 @@
 #include "TestState.h"
+#include "Fonts.h"
+#include "Pictures.h"
+#include <sstream>
+#include <iostream>
 
 TestState::TestState(MarioKart::GameDataRef data)
-    : m_data( data )
+        : m_data( data ),
+          m_users(),
+          m_BackgroundSprite(),
+          m_title(),
+          m_validConnection(true)
 {
 
 }
 
 void TestState::Init()
 {
-    sf::IpAddress ip = sf::IpAddress::getLocalAddress();
-    if(socket.connect(ip.toString(), 2525) != sf::Socket::Done)
+    sf::Vector2u textureSize, windowSize;
+    sf::Texture backTexture = Pictures::instance().getTexture(Pictures::menuBackground);
+    windowSize = m_data->window->getSize();
+    textureSize = backTexture.getSize();
+
+    m_BackgroundSprite.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
+    m_BackgroundSprite.setScale((float)windowSize.x / textureSize.x,
+                                (float)windowSize.y / textureSize.y);
+    std::stringstream stream;
+
+    sf::Http::Request request(HttpNetwork::get_users, sf::Http::Request::Get );
+
+    sf::Http::Response response = m_data->http.sendRequest(request);
+
+    if( response.getStatus() == sf::Http::Response::Ok )
     {
-        logl("Could not connect to the server\n");
+        stream << response.getBody();
+        boost::property_tree::ptree pt;
+        boost::property_tree::read_json(stream, pt);
+
+        BOOST_FOREACH(boost::property_tree::ptree::value_type &v, pt.get_child("users"))
+                    {
+                        assert(v.first.empty()); // array elements have no names
+                        buildVecUsers(v.second);
+                    }
     }
     else
+        m_validConnection = false;
+}
+
+void TestState::buildVecUsers(boost::property_tree::ptree const& pt)
+{
+    using boost::property_tree::ptree;
+    std::vector< std::string > values;
+    for (ptree::const_iterator it = pt.begin(); it != pt.end(); ++it)
     {
-        isConnected = true;
-        logl("Connected to the server\n");
+        values.emplace_back( it->second.get_value<std::string>() );
     }
+    UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
+    m_users.emplace_back( user );
 }
 
 void TestState::HandleEvent(const sf::Event & event)
@@ -30,50 +68,40 @@ void TestState::HandleEvent(const sf::Event & event)
 
 void TestState::Update(float dt)
 {
-    std::thread reception_thred(&TestState::ReceivePackets, this, &socket);
-
-    while(true)
-    {
-        if(isConnected)
-        {
-            std::string user_input;
-            std::getline(std::cin, user_input);
-
-            sf::Packet reply_packet;
-            reply_packet << user_input;
-
-            SendPacket(reply_packet);
-        }
-    }
-    socket.disconnect();
+    if(!m_validConnection)
+        m_data->stateStack.RemoveState();
 }
 
 void TestState::Draw()
 {
     sf::RenderWindow& window = *m_data->window;
+    window.draw(m_BackgroundSprite);
+    int i = 1;
+    for( auto& user : m_users )
+    {
+        sf::Text m_userName( user.getName(), Fonts::instance().getFont(), 30);
+        sf::Text m_userLevel( user.getLevel(), Fonts::instance().getFont(), 30);
+        sf::Text m_userSprite( user.getSprite(), Fonts::instance().getFont(), 30 );
+
+        m_userName.setPosition(sf::Vector2f(window.getSize().x / 2.5 - 250,
+                                            (window.getSize().y / 2) + (i * 100) - 200 ));
+
+        m_userLevel.setPosition(sf::Vector2f(window.getSize().x / 2.5 + 600,
+                                             (window.getSize().y / 2) + (i * 100) - 200 ));
+
+        m_userSprite.setPosition(sf::Vector2f(window.getSize().x / 2.5 + 600,
+                                              (window.getSize().y / 2) + (i * 100) - 200 ));
+
+        window.draw(m_userName);
+        window.draw(m_userLevel);
+        i++;
+    }
+    i = 1;
 }
 
-void TestState::ReceivePackets(sf::TcpSocket * socket)
+void TestState::centerOrigin(sf::Text& text)
 {
-    while(true)
-    {
-        if(socket->receive(last_packet) == sf::Socket::Done)
-        {
-            std::string received_string;
-            std::string sender_address;
-            unsigned short sender_port;
-            last_packet >> received_string >> sender_address >> sender_port;
-            logl("From (" << sender_address << ":" << sender_port << "): " << received_string);
-        }
-
-        std::this_thread::sleep_for((std::chrono::milliseconds)100);
-    }
-}
-
-void TestState::SendPacket(sf::Packet & packet)
-{
-    if(packet.getDataSize() > 0 && socket.send(packet) != sf::Socket::Done)
-    {
-        logl("Could not send packet");
-    }
+    sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin(std::floor(bounds.left + bounds.width / 2.f),
+                   std::floor(bounds.top + bounds.height / 2.f));
 }

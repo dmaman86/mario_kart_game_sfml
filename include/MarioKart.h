@@ -3,9 +3,15 @@
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 
 #include "StateStack.h"
 
+
+namespace sf
+{
+    class RenderWindow;
+}
 
 class MarioKart
 {
@@ -17,6 +23,7 @@ public:
 
         sf::RenderWindow* window;
         StateStack stateStack;
+        sf::Http http;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;
 

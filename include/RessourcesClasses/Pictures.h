@@ -21,8 +21,7 @@ public:
     static  const std::string career;
     static  const std::string back;
 
-
-    const sf::Texture& getTexture(std::string);
+    const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);
 
 

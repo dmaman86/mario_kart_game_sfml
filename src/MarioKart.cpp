@@ -5,26 +5,28 @@
 #include "Macros.h"
 #include "user.h"
 #include "WelcomeState.h"
+
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
-	: window(&window)
+	: window(&window), http(HttpNetwork::url)
 {
 
 }
 
 MarioKart::MarioKart()
-	: m_window(sf::VideoMode(WITDH, HIGHT), "Mario Kart"),
+	: m_window(sf::VideoMode(WITDH, HIGHT), "Mario Kart", sf::Style::Close),
 	m_dataGame(new DataGame(m_window)) {
     m_window.setFramerateLimit(60);
 
-    //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
     if (User == users::Liran)
     {
-        m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)), true);
+        m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
     }
 
+    if(User == users::David )
+        m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
     if (User == users::Liron)
     {
-	m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)), true);
+	    m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));
     }
 }
 
@@ -72,7 +74,7 @@ void MarioKart::processInput()
 
 		catch (std::exception & e)
 		{
-			std::cout << e.what();
+			std::cout << "line 76 " << e.what();
 		}
 
 		if (event.type == sf::Event::Closed)

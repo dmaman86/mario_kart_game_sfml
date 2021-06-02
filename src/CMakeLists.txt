@@ -13,3 +13,4 @@ target_sources (test_mario_kart PRIVATE
 add_subdirectory(Machine)
 add_subdirectory(GameObjects)
 add_subdirectory(RessourcesClasses)
+add_subdirectory(Models)
