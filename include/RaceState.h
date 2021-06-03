@@ -7,6 +7,7 @@
 #include "MarioKart.h"
 #include "State.h"
 #include "MapFileCollision.h"
+#include "Pipe.h"
 class RaceState: public State
 {
 
@@ -32,5 +33,10 @@ private:
     MarioKart::GameDataRef m_data;
     Player m_player;
     MapFileCollision m_int_map;
+    Pipe pipe;
 
+
+    //private functions
+    void BuildVecObj();
+    void drawStaticObjects();
 };

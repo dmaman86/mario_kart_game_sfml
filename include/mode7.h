@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-
+#include <vector>
+#include "GameObj.h"
 class Mode7 final
 {
 
@@ -29,7 +30,11 @@ public:
     void setCamera(float x, float y, float z);
     void setFOVangle(float angle);
     void setTheta(float theta);
-    void calc();
+    void calc( std::map<std::pair<unsigned int, unsigned int> , std::unique_ptr<GameObj>>&,const sf::Vector2f);
     sf::Sprite getSprite();
+
+    float calcLength(sf::Vector2f a, sf::Vector2f b) {
+        return sqrt(pow(a.x-b.x,2) + pow(a.y-b.y,2 ));
+    }
 
 };

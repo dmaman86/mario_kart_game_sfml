@@ -64,19 +64,69 @@ void Mode7::setTheta(float theta)
     m_sinus = std::sin(theta * 3.1415 / 180.0);
 }
 
-void Mode7::calc()
+//void Mode7::calc()
+//{
+//    for(unsigned int ys{m_T + 1}; ys < m_screenHeight; ys++)
+//        for(unsigned int xs{}; xs < m_screenWidth; xs++)
+//        {
+//            float const xw = m_cameraX - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_cosinus - m_D*m_cameraY / ((float)m_T - (float)ys) * m_sinus;
+//            float const zw = m_cameraZ - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_sinus + m_D*m_cameraY / ((float)m_T - (float)ys) * m_cosinus;
+//
+//            if(xw < 0 || zw < 0 || xw >= m_imageWidth || zw >= m_imageHeight)
+//                m_imageTransformed.setPixel(xs, ys, sf::Color::Black);
+//            else
+//                m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int )zw));
+//        }
+//}
+void Mode7::calc( std::map<std::pair<unsigned int,unsigned int> , std::unique_ptr<GameObj>>& vec,const sf::Vector2f p_pos)
 {
+
+
+    for(auto &x:vec)
+            x.second->setInAngle(false);
+
+        unsigned int maxx,minx,maxy,miny;
+        maxy = miny = {0};
+        minx = maxx = 0;
     for(unsigned int ys{m_T + 1}; ys < m_screenHeight; ys++)
         for(unsigned int xs{}; xs < m_screenWidth; xs++)
         {
+
             float const xw = m_cameraX - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_cosinus - m_D*m_cameraY / ((float)m_T - (float)ys) * m_sinus;
             float const zw = m_cameraZ - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_sinus + m_D*m_cameraY / ((float)m_T - (float)ys) * m_cosinus;
+
+
 
             if(xw < 0 || zw < 0 || xw >= m_imageWidth || zw >= m_imageHeight)
                 m_imageTransformed.setPixel(xs, ys, sf::Color::Black);
             else
+            {
+                if(maxy < xw)
+                    maxy = xw;
+                if(miny > xw)
+                    miny = xw;
+                if(maxx < zw )
+                    maxx = zw;
+                if(minx > zw)
+                    minx = zw;
                 m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int )zw));
+                  // std::cout << xw << "  " << zw << " \n";
+                if(vec.find(std::pair( (unsigned int)xw,(unsigned int )zw)) != vec.cend())
+                {
+                    auto obj = vec[std::pair((unsigned int)xw,(unsigned int )zw)].get();
+                    {
+                        auto l = calcLength(sf::Vector2f (obj->getIntLocation().x/8,obj->getIntLocation().y/8), p_pos);
+                    //    std::cout << " distance : " << l << '\n';
+                        obj->setPosition(sf::Vector2f(xs, ys));
+                        obj->setScale(50 / l, 50 / l);
+                        obj->setInAngle(true);
+                    }
+                }
+
+
+            }
         }
+
 }
 
 

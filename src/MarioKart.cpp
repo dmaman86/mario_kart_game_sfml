@@ -17,12 +17,12 @@ MarioKart::MarioKart()
     m_window.setFramerateLimit(60);
 
     //m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
-    if (User == users::Liran)
+    if (User == users::Liron)
     {
         m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)), true);
     }
 
-    if (User == users::Liron)
+    if (User == users::Liran)
     {
 	m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)), true);
     }

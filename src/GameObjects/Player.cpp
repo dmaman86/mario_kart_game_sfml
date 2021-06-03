@@ -1,10 +1,11 @@
 #include "Macros.h"
 #include "Player.h"
 #include "Pictures.h"
-Player::Player(const sf::Vector2f & loc, const sf::Vector2f &pos)
-        : GameObj::GameObj(Pictures::instance().getTexture(Pictures::MarioDriver), loc), m_location(pos),m_angle(0.0),m_speed(0) {
+Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
+        : GameObj::GameObj(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),m_angle(0.0),m_speed(0) {
 
     m_sprite.setTextureRect(sf::Rect(0,0,33,33));
+    m_sprite.setOrigin(m_sprite.getTextureRect().width/2,m_sprite.getTextureRect().height/2);
     m_sprite.scale(3,3);
 }
 
@@ -12,9 +13,6 @@ Player::Player() {
 
 }
 
-sf::Vector2f Player::getIntLocation() {
-    return m_location;
-}
 
 void Player::setIntLocation(const sf::Vector2f &loc) {
         m_location = loc;
@@ -64,7 +62,8 @@ void Player::updateDir()
 
 void Player::setAngle(float agl) {
     m_angle = agl;
-    if (m_angle >= 360) m_angle = 0;
+    if (m_angle >= 360 ) m_angle = 0;
+    else if(m_angle < 0) m_angle +=360;
 
 }
 
