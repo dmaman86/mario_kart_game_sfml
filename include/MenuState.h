@@ -16,15 +16,18 @@ public:
     void Draw() override;
 private:
     void setposition();
-    std::vector<sf::Sprite>m_spriteVector;
+    std::vector<std::pair<char,sf::Sprite>>m_spriteVector;
     sf::Sprite m_background;
     sf::Sprite m_letsPlay;
     sf::Sprite m_help;
     sf::Sprite m_about;
-    sf::Sprite m_online;
+    //sf::Sprite m_online;
     sf::Sprite m_settings;
-    sf::Sprite m_career;
+    //sf::Sprite m_career;
 
+    std::pair<sf::Sprite, bool> m_career;
+
+    std::pair<sf::Sprite, bool> m_online;
     MarioKart::GameDataRef m_data;
 
     bool m_helpState;

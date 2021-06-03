@@ -27,8 +27,7 @@ void helpState::HandleEvent(const sf::Event& event)
 void helpState::Update(float)
 {
     if (m_backMenu)
-        m_data->stateStack.AddState(StateStack::StateRef(new MenuState(m_data)), true);
-
+        m_data->stateStack.RemoveState();
 }
 
 void helpState::Draw()

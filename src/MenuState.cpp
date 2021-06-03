@@ -14,6 +14,9 @@ void MenuState::Init()
     m_help.setTexture(Pictures::instance().getTexture(Pictures::help));
     m_letsPlay.setTexture(Pictures::instance().getTexture(Pictures::letsPlay));
     m_settings.setTexture(Pictures::instance().getTexture(Pictures::settings));
+    m_online.first.setTexture(Pictures::instance().getTexture(Pictures::online));
+    m_career.first.setTexture(Pictures::instance().getTexture(Pictures::career));
+
     setposition();
 }
 
@@ -23,8 +26,8 @@ void MenuState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
         if (m_letsPlay.getGlobalBounds().contains(location)) {
-            m_online.setTexture(Pictures::instance().getTexture(Pictures::online));
-            m_career.setTexture(Pictures::instance().getTexture(Pictures::career));
+            m_online.second = true;
+            m_career.second = true;
         }
         else if(m_help.getGlobalBounds().contains(location)) {
             m_helpState = true;
@@ -82,10 +85,12 @@ void MenuState::Draw()
     m_data->window->draw(m_about);
     m_data->window->draw(m_help);
     m_data->window->draw(m_letsPlay);
-    m_data->window->draw(m_online);
-    m_data->window->draw(m_career);
     m_data->window->draw(m_settings);
 
+    if(m_career.second)
+        m_data->window->draw(m_career.first);
+    if (m_online.second)
+        m_data->window->draw(m_online.first);
 }
 
 void MenuState::setposition()
@@ -94,7 +99,7 @@ void MenuState::setposition()
     m_help.setPosition(100, 300);
     m_settings.setPosition(100, 370);
     m_about.setPosition(100, 440);
-    m_online.setPosition(800, 220);
-    m_career.setPosition(1100, 220);
+    m_online.first.setPosition(800, 220);
+    m_career.first.setPosition(1100, 220);
 }
 

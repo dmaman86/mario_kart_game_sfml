@@ -30,7 +30,7 @@ void WelcomeState::HandleEvent(const sf::Event& event)
 void WelcomeState::Update(float)
 {
     if(m_nextState)
-        m_data->stateStack.AddState(StateStack::StateRef(new MenuState(m_data)), true);
+        m_data->stateStack.AddState(StateStack::StateRef(new MenuState(m_data)), false);
 
 }
 
