@@ -20,6 +20,13 @@ public:
     static  const std::string settings;
     static  const std::string career;
     static  const std::string back;
+    static const std::string BowserDriver;
+    static const std::string DKDriver;
+    static const std::string KoopaDriver;
+    static const std::string LuigiDriver;
+    static const std::string PeachDriver;
+    static const std::string ToadDriver;
+    static const std::string YoshiDriver;
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);

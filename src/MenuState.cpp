@@ -23,8 +23,6 @@ void MenuState::Init()
     m_background.setScale((float)windowSize.x / textureSize.x,
                           (float)windowSize.y / textureSize.y);
 
-
-
     m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::about), false);
     m_buttons.back().first.setPosition(100, 440);
     m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::help), false);
@@ -101,7 +99,7 @@ void MenuState::Update(float dt)
                 break;
             case 1:
                 if(m_buttons[1].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)));
+                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
             case 2:
                 break;
@@ -109,16 +107,11 @@ void MenuState::Update(float dt)
                 break;
             case 4:
                 if(m_online.second)
-                {
-                    if(!m_data->user)
-                        m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)));
-                    else
-                        m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)));
-                }
+                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
                 break;
             case 5:
                 if(m_career.second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)));
+                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
         }
     }
@@ -136,6 +129,17 @@ void MenuState::Draw()
         m_data->window->draw(m_career.first);
         m_data->window->draw(m_online.first);
     }
+}
+
+void MenuState::Resume()
+{
+    for( size_t i{ 0 }; i < 4; i++ )
+    {
+        m_buttons[ i ].second = false;
+    }
+    m_show_extra = false;
+    m_online.second = false;
+    m_career.second = false;
 }
 
 void MenuState::setposition()

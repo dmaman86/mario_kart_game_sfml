@@ -16,6 +16,7 @@ public:
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    void Resume() override;
 private:
     using Pair = std::pair< sf::Sprite, bool >;
     void setposition();
