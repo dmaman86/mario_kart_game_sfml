@@ -38,10 +38,17 @@ private:
     sf::TcpSocket socket;
     sf::Packet last_packet;
     std::vector<UserNetwork> m_users;
+    std::vector< sf::Text > m_list;
     sf::Sprite m_BackgroundSprite;
     sf::Text m_title;
+    sf::Http::Request m_request_get;
+    sf::Http::Request m_request_post;
     bool m_validConnection;
+    UserNetwork m_user;
 
     void centerOrigin(sf::Text&);
     void buildVecUsers(boost::property_tree::ptree const&);
+    void saveUser();
+    void getUsers();
+    void buildList( const sf::Vector2u& );
 };

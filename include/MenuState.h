@@ -1,5 +1,7 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
+#include <map>
 #include "State.h"
 #include "MarioKart.h"
 
@@ -15,8 +17,11 @@ public:
     void Update(float) override;
     void Draw() override;
 private:
+    using Pair = std::pair< sf::Sprite, bool >;
     void setposition();
+    void updateColors(size_t);
     std::vector<std::pair<char,sf::Sprite>>m_spriteVector;
+    std::vector< Pair > m_buttons;
     sf::Sprite m_background;
     sf::Sprite m_letsPlay;
     sf::Sprite m_help;
@@ -33,5 +38,6 @@ private:
     bool m_helpState;
     bool m_aboutState;
     bool m_settingsState;
+    bool m_show_extra;
 
 };

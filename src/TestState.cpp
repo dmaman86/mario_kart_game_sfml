@@ -9,7 +9,10 @@ TestState::TestState(MarioKart::GameDataRef data)
           m_users(),
           m_BackgroundSprite(),
           m_title(),
-          m_validConnection(true)
+          m_validConnection(true),
+          m_request_get( HttpNetwork::path, sf::Http::Request::Get ),
+          m_request_post( HttpNetwork::path, sf::Http::Request::Post ),
+          m_user("", "david", "mario_kart.png")
 {
 
 }
@@ -21,14 +24,41 @@ void TestState::Init()
     windowSize = m_data->window->getSize();
     textureSize = backTexture.getSize();
 
-    m_BackgroundSprite.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
+    m_BackgroundSprite.setTexture(backTexture);
     m_BackgroundSprite.setScale((float)windowSize.x / textureSize.x,
                                 (float)windowSize.y / textureSize.y);
+
+    saveUser();
+    getUsers();
+    buildList(windowSize);
+}
+
+void TestState::buildList( const sf::Vector2u& windowSize )
+{
+    size_t i = 0;
+    for( auto itr = m_users.begin(); itr != m_users.end(); i++, itr++ )
+    {
+        sf::Text text;
+        text.setFont(Fonts::instance().getFont());
+        text.setCharacterSize(70);
+        text.setStyle(sf::Text::Bold);
+        text.setString( (*itr).getName() );
+        m_list.push_back(text);
+        m_list[i].setFillColor(sf::Color::White);
+
+        m_list[i].setOrigin(m_list[i].getLocalBounds().width / 2,
+                               m_list[i].getLocalBounds().height / 2);
+        m_list[i].setPosition(sf::Vector2f(windowSize.x / 2.5,
+                                              (windowSize.y / 2u) + (i * 100)));
+        m_list[i].setOutlineColor(sf::Color(76, 0, 153));
+        m_list[i].setOutlineThickness(5.f);
+    }
+}
+
+void TestState::getUsers()
+{
     std::stringstream stream;
-
-    sf::Http::Request request(HttpNetwork::get_users, sf::Http::Request::Get );
-
-    sf::Http::Response response = m_data->http.sendRequest(request);
+    sf::Http::Response response = m_data->http.sendRequest(m_request_get);
 
     if( response.getStatus() == sf::Http::Response::Ok )
     {
@@ -46,6 +76,27 @@ void TestState::Init()
         m_validConnection = false;
 }
 
+void TestState::saveUser()
+{
+    std::ostringstream stream;
+    std::stringstream ss;
+    stream << "name=" << m_user.getName() << "&sprite=" << m_user.getSprite();
+    m_request_post.setBody( stream.str() );
+
+    sf::Http::Response response = m_data->http.sendRequest( m_request_post );
+
+    if( response.getStatus() != sf::Http::Response::Created )
+        m_validConnection = false;
+    else
+    {
+        ss << response.getBody();
+        boost::property_tree::ptree pt;
+        boost::property_tree::read_json(ss, pt);
+        m_user.setId( pt.get<std::string>("id") );
+    }
+
+}
+
 void TestState::buildVecUsers(boost::property_tree::ptree const& pt)
 {
     using boost::property_tree::ptree;
@@ -54,8 +105,11 @@ void TestState::buildVecUsers(boost::property_tree::ptree const& pt)
     {
         values.emplace_back( it->second.get_value<std::string>() );
     }
-    UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
-    m_users.emplace_back( user );
+    if( values[0] != m_user.getId() )
+    {
+        UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ] );
+        m_users.emplace_back( user );
+    }
 }
 
 void TestState::HandleEvent(const sf::Event & event)
@@ -76,27 +130,10 @@ void TestState::Draw()
 {
     sf::RenderWindow& window = *m_data->window;
     window.draw(m_BackgroundSprite);
-    int i = 1;
-    for( auto& user : m_users )
-    {
-        sf::Text m_userName( user.getName(), Fonts::instance().getFont(), 30);
-        sf::Text m_userLevel( user.getLevel(), Fonts::instance().getFont(), 30);
-        sf::Text m_userSprite( user.getSprite(), Fonts::instance().getFont(), 30 );
 
-        m_userName.setPosition(sf::Vector2f(window.getSize().x / 2.5 - 250,
-                                            (window.getSize().y / 2) + (i * 100) - 200 ));
+    for( auto item : m_list )
+        window.draw(item);
 
-        m_userLevel.setPosition(sf::Vector2f(window.getSize().x / 2.5 + 600,
-                                             (window.getSize().y / 2) + (i * 100) - 200 ));
-
-        m_userSprite.setPosition(sf::Vector2f(window.getSize().x / 2.5 + 600,
-                                              (window.getSize().y / 2) + (i * 100) - 200 ));
-
-        window.draw(m_userName);
-        window.draw(m_userLevel);
-        i++;
-    }
-    i = 1;
 }
 
 void TestState::centerOrigin(sf::Text& text)

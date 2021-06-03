@@ -8,7 +8,8 @@ target_sources (test_mario_kart PRIVATE
         "MapFileCollision.cpp"
         "WelcomeState.cpp"
         "MenuState.cpp"
-        "helpState.cpp")
+        "helpState.cpp"
+        "GetDataState.cpp")
 
 add_subdirectory(Machine)
 add_subdirectory(GameObjects)

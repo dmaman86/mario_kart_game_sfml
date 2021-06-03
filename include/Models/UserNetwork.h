@@ -1,27 +1,29 @@
 #pragma once
 
 #include <string>
+#include "SFML/Graphics.hpp"
 
 class UserNetwork
 {
 public:
-    UserNetwork(std::string, std::string, std::string, std::string);
+    UserNetwork(std::string id, std::string name, std::string sprite);
     ~UserNetwork() = default;
 
-    void setId( std::string& );
+    void setId( std::string );
     const std::string& getId();
     const std::string& getName(){ return m_name; }
     void setName( std::string& );
-    void updatePosition(float, float);
+    void updatePosition();
+    const sf::Vector2f& getPosition();
     void setSprite( std::string& );
     const std::string& getSprite(){ return m_sprite; }
-    const std::string& getLevel(){ return m_level; }
 
 private:
-    std::string m_name;
     std::string m_id;
-    float m_positionX;
-    float m_positionY;
+    std::string m_name;
     std::string m_sprite;
-    std::string m_level;
+    sf::Vector2f m_position;
+    float m_angle;
+    float m_speed;
+    bool m_inGame = false;
 };

@@ -7,7 +7,7 @@
 #include "WelcomeState.h"
 
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
-	: window(&window), http(HttpNetwork::url)
+	: window(&window), http(HttpNetwork::url), user(nullptr)
 {
 
 }
@@ -23,7 +23,7 @@ MarioKart::MarioKart()
     }
 
     if(User == users::David )
-        m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)));
+        m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)), true);
     if (User == users::Liron)
     {
 	    m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));

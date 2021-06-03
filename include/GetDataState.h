@@ -4,11 +4,11 @@
 #include "State.h"
 #include "MarioKart.h"
 
-class WelcomeState : public State
+class GetDataState : public State
 {
 public:
-    WelcomeState(MarioKart::GameDataRef);
-    ~WelcomeState() = default;
+    GetDataState(MarioKart::GameDataRef);
+    ~GetDataState() = default;
 
 
     void Init() override;
@@ -16,14 +16,7 @@ public:
     void Update(float) override;
     void Draw() override;
 private:
-    void setposition();
-
     sf::Sprite m_background;
-    sf::Sprite m_logoSuper;
-    sf::Sprite m_logoMario;
     MarioKart::GameDataRef m_data;
-    sf::Text m_text;
-    bool m_nextState;
-    bool m_showText;
-    float mTextEffectTime;
+
 };

@@ -77,9 +77,8 @@ void RaceState::Update(float deltatime) {
 
 }
 
-void RaceState::HandleEvent(const sf::Event &) {
-
- m_player.updateDir();
-
+void RaceState::HandleEvent(const sf::Event &)
+{
+    m_player.updateDir();
 }
 

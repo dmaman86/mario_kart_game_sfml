@@ -14,5 +14,5 @@ namespace HttpNetwork
     const std::string url = "http://us-central1-fb-api-server-mario.cloudfunctions.net";
     const std::string url_local = "http://localhost:5000/fb-api-server-mario/us-central1/app";
 
-    const std::string get_users = "/app/api/users";
+    const std::string path = "/app/api/users";
 }
