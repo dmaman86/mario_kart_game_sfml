@@ -7,7 +7,7 @@
 #include "WelcomeState.h"
 
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
-	: window(&window), http(HttpNetwork::url), user(nullptr)
+	: window(&window), http(HttpNetwork::url)
 {
 
 }

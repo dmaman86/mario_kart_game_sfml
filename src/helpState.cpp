@@ -38,7 +38,6 @@ void helpState::Update(float)
     if (m_backMenu)
     {
         m_data->stateStack.RemoveState();
-        m_data->stateStack.AddState(StateStack::StateRef( new MenuState(m_data)));
     }
 }
 

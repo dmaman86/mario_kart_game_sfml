@@ -18,7 +18,6 @@ class MarioKart
 {
 public:
     //TODO: add data user and another data to send to all states
-    typedef std::shared_ptr<UserNetwork> UserNetwork;
     struct DataGame
     {
         DataGame( sf::RenderWindow& );
@@ -26,7 +25,6 @@ public:
         sf::RenderWindow* window;
         StateStack stateStack;
         sf::Http http;
-        UserNetwork user;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;
 

@@ -16,3 +16,11 @@ namespace HttpNetwork
 
     const std::string path = "/app/api/users";
 }
+
+namespace SpecialKeyboard
+{
+    const int DELETE_KEY = 8;
+    const int ENTER_KEY = 13;
+    const int ESCAPE_KEY = 27;
+    const int MAX = 128;
+}
