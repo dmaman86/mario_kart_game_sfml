@@ -21,7 +21,6 @@ private:
     using Pair = std::pair< sf::Sprite, bool >;
     void setposition();
     void updateColors(size_t);
-    std::vector<std::pair<char,sf::Sprite>>m_spriteVector;
     std::vector< Pair > m_buttons;
     sf::Sprite m_background;
     sf::Sprite m_letsPlay;
