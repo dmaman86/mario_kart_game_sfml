@@ -17,6 +17,8 @@ public:
     const sf::Vector2f& getPosition();
     void setSprite( std::string& );
     const std::string& getSprite(){ return m_sprite; }
+    void updateInGame(unsigned int game){ m_inGame = game; }
+    unsigned int getInGame(){ return m_inGame; }
 
 private:
     std::string m_id;
@@ -25,5 +27,5 @@ private:
     sf::Vector2f m_position;
     float m_angle;
     float m_speed;
-    bool m_inGame = false;
+    unsigned int m_inGame;
 };

@@ -1,7 +1,6 @@
 #include "MenuState.h"
 #include "MarioKart.h"
 #include "RaceState.h"
-#include "TestState.h"
 #include "Macros.h"
 #include "user.h"
 #include "WelcomeState.h"
@@ -21,9 +20,6 @@ MarioKart::MarioKart()
     {
         m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
     }
-
-    if(User == users::David )
-        m_dataGame->stateStack.AddState( StateStack::StateRef( new TestState(m_dataGame)), true);
     if (User == users::Liron)
     {
 	    m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));

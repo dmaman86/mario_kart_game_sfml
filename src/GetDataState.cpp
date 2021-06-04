@@ -1,13 +1,17 @@
 #include "GetDataState.h"
 #include "Pictures.h"
 #include "Fonts.h"
+#include "ShowUsersDataBase.h"
 #include <iostream>
 
 GetDataState::GetDataState(MarioKart::GameDataRef data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
                                                          m_backMenu(false),
-                                                         m_back()
+                                                         m_back(),
+                                                         m_request_post( HttpNetwork::path, sf::Http::Request::Post ),
+                                                         m_playerText(),
+                                                         m_save_data(false)
 {
 
 }
@@ -22,14 +26,14 @@ void GetDataState::Init()
     m_background.setScale((float)windowSize.x / textureSize.x,
                           (float)windowSize.y / textureSize.y);
 
-    m_message.setFont(Fonts::instance().getFont());
-    m_message.setString("Please enter your name");
-    m_message.setFillColor(sf::Color::White);
-    m_message.setCharacterSize(50);
-    m_message.setOrigin(m_message.getLocalBounds().width / 2,
-                        m_message.getLocalBounds().height / 2);
-    m_message.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
-                                       (windowSize.y / 2u) + (unsigned)100));
+    m_title_get_name.setFont(Fonts::instance().getFont());
+    m_title_get_name.setString("Please enter your name");
+    m_title_get_name.setFillColor(sf::Color::White);
+    m_title_get_name.setCharacterSize(50);
+    m_title_get_name.setOrigin(m_title_get_name.getLocalBounds().width / 2,
+                               m_title_get_name.getLocalBounds().height / 2);
+    m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
+                                       (windowSize.y / 2u) + (unsigned)20));
 
     m_save.setFont(Fonts::instance().getFont());
     m_save.setString("Save Data");
@@ -50,6 +54,7 @@ void GetDataState::Init()
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
     initVectorSprites(windowSize);
+    m_playerText.setString("_");
 }
 
 void GetDataState::initVectorSprites( const sf::Vector2u& windowSize )
@@ -66,9 +71,9 @@ void GetDataState::initVectorSprites( const sf::Vector2u& windowSize )
     size_t i = 0;
     for( auto it = m_drivers.begin(); it != m_drivers.end(); it++, i+=5 )
     {
-        it->second.setTextureRect(sf::Rect(99, 0, 30,30 ));
+        it->second.setTextureRect(sf::Rect(62, 0, 33, 30));
         it->second.scale(6, 6);
-        it->second.setPosition( 200 + ( i * 40 ), (it->second.getGlobalBounds().height / 2) + 100);
+        it->second.setPosition( 150 + ( i * 40 ), (it->second.getGlobalBounds().height / 2) + 100);
     }
 }
 
@@ -89,20 +94,24 @@ void GetDataState::HandleEvent(const sf::Event & event)
                 { event.mouseButton.x, event.mouseButton.y });
 
         if(m_save.getGlobalBounds().contains(location))
+        {
             m_save_data = !m_save_data;
+        }
         else if (m_back.getGlobalBounds().contains(location))
+        {
             m_backMenu = !m_backMenu;
+        }
         else
         {
             for(auto& driver: m_drivers )
             {
                 if(driver.second.getGlobalBounds().contains(location))
                 {
-                    std::cout << driver.first << std::endl;
-                    driver.second.setTextureRect(sf::Rect(66, 265, 30,30 ));
+                    m_user_sprite = driver.first;
+                    driver.second.setTextureRect(sf::Rect(95, 0, 33,30 ));
                 }
                 else
-                    driver.second.setTextureRect(sf::Rect(99, 0, 30,30 ));
+                    driver.second.setTextureRect(sf::Rect(62, 0, 33, 30));
             }
         }
     }
@@ -112,8 +121,19 @@ void GetDataState::Update(float dt)
 {
     if( m_save_data )
     {
-        std::cout << "Save!" << std::endl;
-        std::cout << m_playerInput.toAnsiString() << std::endl;
+        m_user_name = m_playerInput.toAnsiString();
+        if( !m_user_name.empty() && !m_user_sprite.empty() )
+        {
+            UserNetwork m_user("", m_user_name, m_user_sprite );
+            if(saveUser(m_user))
+            {
+                m_data->stateStack.RemoveState();
+                m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data, m_user)), false);
+                m_save_data = false;
+            }
+        }
+        else
+            m_save_data = false;
     }
     else if (m_backMenu)
         m_data->stateStack.RemoveState();
@@ -124,7 +144,7 @@ void GetDataState::Draw()
     sf::RenderWindow& window = *m_data->window;
 
     window.draw(m_background);
-    window.draw(m_message);
+    window.draw(m_title_get_name);
     window.draw(m_playerText);
     window.draw(m_save);
     window.draw(m_back);
@@ -172,7 +192,20 @@ void GetDataState::deleteLastChar()
 
 }
 
-void GetDataState::saveUser()
+bool GetDataState::saveUser( UserNetwork& m_user)
 {
+    std::ostringstream stream;
+    std::stringstream ss;
+    stream << "name=" << m_user.getName() << "&sprite=" << m_user.getSprite();
+    m_request_post.setBody( stream.str() );
 
+    sf::Http::Response response = m_data->http.sendRequest( m_request_post );
+
+    if( response.getStatus() != sf::Http::Response::Created )
+        return false;
+    ss << response.getBody();
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_json(ss, pt);
+    m_user.setId( pt.get<std::string>("id") );
+    return true;
 }
