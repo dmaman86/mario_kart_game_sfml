@@ -1,7 +1,6 @@
-const std::string User = "liran";
+const std::string User = "Daniel";
 
 namespace users  {
-
 
       const std::string Liran = "liran";
       const std::string David = "David";

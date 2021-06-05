@@ -34,8 +34,8 @@ Pictures::Pictures()
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
     if(!(m_maps[Pictures::mario_circuit_2] = sf::Image()).loadFromFile(Pictures::mario_circuit_2))
         throw std::runtime_error("Cant Open " + Pictures::mario_circuit_2);
-    if(!(m_maps[Pictures::misc] = sf::Image()).loadFromFile(Pictures::misc))
-        throw std::runtime_error("Cant Open " + Pictures::misc);
+	if (!(m_pics[Pictures::misc] = sf::Texture()).loadFromFile(Pictures::misc))
+		throw std::runtime_error("Cant Open " + Pictures::misc);
     if(!(m_pics[Pictures::menuBackground] = sf::Texture()).loadFromFile(Pictures::menuBackground))
         throw std::runtime_error("Cant Open " + Pictures::menuBackground);
     if(!(m_pics[Pictures::marioLogo] = sf::Texture()).loadFromFile(Pictures::marioLogo))

@@ -23,7 +23,11 @@ MarioKart::MarioKart()
     if (User == users::Liron)
     {
 	    m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));
-    }
+    }    
+	if (User == users::Daniel)
+	{
+		m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));
+	}
 }
 
 void MarioKart::run()
