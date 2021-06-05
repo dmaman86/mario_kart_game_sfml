@@ -1,9 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <map>
 #include "State.h"
 #include "MarioKart.h"
+#include "Sounds.h"
 
 class MenuState : public State
 {
@@ -19,6 +21,7 @@ public:
     void Resume() override;
 private:
     using Pair = std::pair< sf::Sprite, bool >;
+    void setVolume();
     void setposition();
     void updateColors(size_t);
     std::vector< Pair > m_buttons;
@@ -34,6 +37,10 @@ private:
 
     std::pair<sf::Sprite, bool> m_online;
     MarioKart::GameDataRef m_data;
+    sf::Sound m_click;
+
+
+
 
     bool m_helpState;
     bool m_aboutState;

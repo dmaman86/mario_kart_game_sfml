@@ -6,6 +6,8 @@
 class UserNetwork
 {
 public:
+    UserNetwork(): m_id(""), m_name(""), m_sprite(""), m_sound(true)
+    {}
     UserNetwork(std::string id, std::string name, std::string sprite);
     ~UserNetwork() = default;
 
@@ -19,6 +21,8 @@ public:
     const std::string& getSprite(){ return m_sprite; }
     void updateInGame(unsigned int game){ m_inGame = game; }
     unsigned int getInGame(){ return m_inGame; }
+    bool getIfSound() { return m_sound; }
+    void setIfSound() { m_sound = !m_sound; }
 
 private:
     std::string m_id;
@@ -28,4 +32,5 @@ private:
     float m_angle;
     float m_speed;
     unsigned int m_inGame;
+    bool m_sound;
 };

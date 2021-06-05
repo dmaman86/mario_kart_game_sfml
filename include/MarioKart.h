@@ -25,6 +25,7 @@ public:
         sf::RenderWindow* window;
         StateStack stateStack;
         sf::Http http;
+        UserNetwork user;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;
 

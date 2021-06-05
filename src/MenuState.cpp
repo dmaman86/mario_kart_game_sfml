@@ -2,6 +2,7 @@
 #include "Pictures.h"
 #include "helpState.h"
 #include "GetDataState.h"
+#include "SettingsState.h"
 #include <iostream>
 
 MenuState::MenuState(MarioKart::GameDataRef data) :m_data(data),
@@ -34,14 +35,19 @@ void MenuState::Init()
 
     m_online.first.setTexture(Pictures::instance().getTexture(Pictures::online));
     m_career.first.setTexture(Pictures::instance().getTexture(Pictures::career));
+    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
+
+    
 
     setposition();
+
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
 {
-    if (sf::Event::MouseMoved)
+    if (sf::Event::MouseButtonPressed == event.type)
     {
+        m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
         for( size_t i{ 0 }; i < 4; i++ )
@@ -91,6 +97,7 @@ void MenuState::updateColors(size_t cur_button)
 
 void MenuState::Update(float dt)
 {
+
     for( size_t i{ 0 }; i < 6; i++ )
     {
         switch( i )
@@ -104,6 +111,8 @@ void MenuState::Update(float dt)
             case 2:
                 break;
             case 3:
+                if (m_buttons[3].second)
+                    m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
                 break;
             case 4:
                 if(m_online.second)
@@ -140,6 +149,16 @@ void MenuState::Resume()
     m_show_extra = false;
     m_online.second = false;
     m_career.second = false;
+    setVolume();
+}
+
+void MenuState::setVolume()
+{
+    if (m_data->user.getIfSound())
+        m_click.setVolume(100);
+    else
+        m_click.setVolume(0);
+
 }
 
 void MenuState::setposition()

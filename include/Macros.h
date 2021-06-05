@@ -2,8 +2,8 @@
 
 #include <string>
 
-const int WITDH = 1024;
-const int HIGHT = 512;
+const int WITDH = 1920;
+const int HIGHT = 1080;
 
 const int ROADW = 2000;
 const int SEGMENT_LENGTH = 200; 
