@@ -1,6 +1,8 @@
 #include "mode7.h"
 #include "Pictures.h"
 #include <cmath>
+#include "Utilities.h"
+
 /*Mode7::Mode7() : m_screenWidth{}, m_screenHeight{}, m_T{}, m_L{},
 			m_imageWidth{}, m_imageHeight{}, m_FOV{}, m_D{}, m_cameraX{},
 			m_cameraY{}, m_cameraZ{}, m_cosinus{1}, m_sinus{} {}
@@ -114,21 +116,23 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 						{
 							obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
 								sf::Vector2f(p_pos.x, p_pos.y));
-
-							d.second->setPosition(sf::Vector2f(xs, ys));
-
-							(obj_length < 5) ? d.second->setScale(3, 3) :
-								d.second->setScale(15 / obj_length, 15 / obj_length);
-
-							if (obj_length > 40)
-								d.second->setScale(15 / 40, 15 / 40);
-
+							
 							camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
 								sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
 
+							d.second->setPosition(sf::Vector2f(xs, ys));
+
+							//(camera_length < 5) ? d.second->setScale(3,3) :
+								d.second->setScale(20 / camera_length, 20 / camera_length);
+
+							if (camera_length > 40)
+								d.second->setScale(20 / 40, 20 / 40);
+
+						
+
 							d.second->setInAngle(true);
 
-							if (camera_length < 5.0 || obj_length > 50)
+							if (camera_length < 5.0 || camera_length > 50)
 								d.second->setInAngle(false);
 
 						}

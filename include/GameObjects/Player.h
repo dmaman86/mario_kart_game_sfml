@@ -19,6 +19,8 @@ public:
 	void updateAcceleration();
 	float getSpeed()const;
 	float m_force, m_mass, m_acceleration;
-	bool m_is_force_up;
+	bool m_is_lock;
+	void handleLock(float);
+	sf::Vector2f m_last_pos;
 };
 

@@ -33,8 +33,6 @@ public:
 	void calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>&, const sf::Vector2f);
 	sf::Sprite getSprite();
 
-	float calcLength(sf::Vector2f a, sf::Vector2f b) {
-		return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-	}
+
 
 };

@@ -41,7 +41,7 @@ void RaceState::Init() {
 	m_map = Mode7("mario_circuit_2.png", WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
 	m_int_map.fillMap("mario_circuit_2.txt");
 	m_int_map.fillObjectMap("mario_circuit_2.txt");
-	std::cout << m_int_map(6, 20);
+	//std::cout << m_int_map(6, 20);
 }
 void RaceState::Draw() {
 
@@ -76,7 +76,7 @@ void RaceState::Update(float deltatime) {
 	//if(m_int_map(m_player.getIntLocation().x,m_player.getIntLocation().y) == 0)
   //  std::cout << " player loc x : " << m_player.getIntLocation().x << " y: " << m_player.getIntLocation().y << " player speed : " << m_player.m_speed;
 	m_player.setIntLocation(deltatime, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
-
+	
 	m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * cos(m_player.getAngle() * 3.1415 / 180);
 

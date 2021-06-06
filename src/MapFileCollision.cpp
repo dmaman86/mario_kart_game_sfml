@@ -35,10 +35,10 @@ int MapFileCollision::operator()(unsigned int i, unsigned int j) {
 	throw std::range_error("m_map cannot get i or j");
 	return -1;
 }
-
-float MapFileCollision::calcLength(sf::Vector2f a, sf::Vector2f b) {
-	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-}
+//
+//float MapFileCollision::calcLength(sf::Vector2f a, sf::Vector2f b) {
+//	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+//}
 
 sf::Vector2f MapFileCollision::transferPixelToCords(sf::Vector2f loc) {
 
@@ -54,18 +54,18 @@ void MapFileCollision::fillObjectMap(std::string) {
 
 
 	// works
-	m_vec_obj[std::pair(615.0, 675.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(615.0 / 7.5, 675.0 / 7.5));
-	m_vec_obj[std::pair(595.0, 475.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(595.0 / 7.5, 475.0 / 7.5));
-	m_vec_obj[std::pair(215.0, 437.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(215.0 / 7.5, 437.0 / 7.5));
+	m_vec_obj[std::pair(615.0, 675.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(615.0 / 8, 675.0 / 8));
+	m_vec_obj[std::pair(595.0, 475.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(595.0 / 8, 475.0 / 8));
+	m_vec_obj[std::pair(215.0, 437.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(215.0 / 8, 437.0 / 8));
 
-	m_vec_obj[std::pair(575.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(575.0 / 7.5, 500.0 / 7.5));
-	m_vec_obj[std::pair(600.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(600.0 / 7.5, 500.0 / 7.5));
-	m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 7.5, 500.0 / 7.5));
+	m_vec_obj[std::pair(575.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(575.0 / 8, 500.0 / 8));
+	m_vec_obj[std::pair(600.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(600.0 / 8, 500.0 / 8));
+	m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 8, 500.0 / 8));
 
 
-	m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 7.5, 500.0 / 7.5));
-	m_vec_obj[std::pair(250.0, 525.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 7.5, 525.0 / 7.5));
-	m_vec_obj[std::pair(250.0, 575.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 7.5, 575.0 / 7.5));
+	m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 500.0 / 8));
+	m_vec_obj[std::pair(250.0, 525.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 525.0 / 8));
+	m_vec_obj[std::pair(250.0, 575.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 575.0 / 8));
 
 
 }
