@@ -2,13 +2,18 @@
 
 #include <string>
 
-const int WITDH = 1920;
-const int HIGHT = 1080;
+
+const int WITDH = 1444;
+const int HIGHT = 812;
+
+const int WITDH_G = 1024;
+const int HIGHT_G = 512;
 
 const int ROADW = 2000;
 const int SEGMENT_LENGTH = 200; 
 const float CAMERA_DEPTH = 0.84;
-const float CAR_SPEED = 10;
+const float MAX_SPEED = 15 ;
+const float EPSILON_SPEED = 1.5;
 
 const int MAPSIZE = 1024;
 const int PIPE = 7;

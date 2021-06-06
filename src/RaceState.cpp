@@ -31,14 +31,14 @@ void RaceState::run() {
 
 void RaceState::Init() {
 	m_window.setFramerateLimit(60);
-	m_player = Player(sf::Vector2f(WITDH / 2, HIGHT - 50), sf::Vector2f(63, 124));
+	m_player = Player(sf::Vector2f(WITDH_G / 2, HIGHT_G - 50), sf::Vector2f(63, 124));
 
 	m_cameraX = m_player.getIntLocation().x * 8;
 	m_cameraY = -17;
 	m_cameraZ = m_player.getIntLocation().y * 8;;
 
 	//m_tempsMoyen =0;
-	m_map = Mode7("mario_circuit_2.png", WITDH, HIGHT, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
+	m_map = Mode7("mario_circuit_2.png", WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
 	m_int_map.fillMap("mario_circuit_2.txt");
 	m_int_map.fillObjectMap("mario_circuit_2.txt");
 	std::cout << m_int_map(6, 20);

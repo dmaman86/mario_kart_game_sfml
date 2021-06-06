@@ -1,4 +1,5 @@
-const std::string User = "liran";
+#pragma once
+const std::string User = "Daniel";
 
 namespace users  {
 
