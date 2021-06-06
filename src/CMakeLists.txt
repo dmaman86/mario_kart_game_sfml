@@ -11,7 +11,8 @@ target_sources (test_mario_kart PRIVATE
         "GetDataState.cpp"
 		"ShowUsersDataBase.cpp"
         "SettingsState.cpp"
-        "StateOfMenu.cpp")
+        "StateOfMenu.cpp"
+		"Utilities.cpp")
 
 add_subdirectory(Machine)
 add_subdirectory(GameObjects)

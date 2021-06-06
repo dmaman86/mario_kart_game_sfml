@@ -1,4 +1,5 @@
 #pragma once
+
 #define MODE7_H_INCLUDED
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -6,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "GameObj.h"
+
 class Mode7 final
 {
 

@@ -4,6 +4,7 @@
 #include<iostream>
 #include "Utilities.h"
 
+
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
 	: GameObj::GameObj(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos), 
 	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0){
@@ -151,20 +152,15 @@ float Player::getSpeed() const {
 void Player::handleLock(float dt)
 {
 	
-	if (m_location.x <= m_last_pos.x + 25 * std::cos(m_angle * 3.141592 / 180) &&
-		m_location.y <= m_last_pos.y + 25 * std::sin(m_angle * 3.141592 / 180))
+	if (calcLength(m_location, m_last_pos) >= 4.5)
 		//setAngle(m_angle + 360);
 	{
 		m_is_lock = false;
+		m_force = 0;
 	}
 	else
 	{
-		std::cout << m_location.x  << " " <<  m_last_pos.x << ' ';
-		std::cout << m_location.y << " " << m_last_pos.y << " " << calcLength(m_location, m_last_pos) << m_is_lock<< '\n';
-		
-
-
-		m_location.x += std::sin(m_angle * 3.141592 / 180) * dt * -m_force / 4;
-		m_location.y -= std::cos(m_angle * 3.141592 / 180) * dt * -m_force / 4;
+		m_location.x += std::sin(m_angle * 3.141592 / 180) * dt * -m_force / 1.5;
+		m_location.y -= std::cos(m_angle * 3.141592 / 180) * dt * -m_force / 1.5;
 	}
 }
