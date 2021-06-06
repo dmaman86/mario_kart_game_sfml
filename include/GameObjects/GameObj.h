@@ -12,6 +12,7 @@ public:
 	void setPosition(sf::Vector2f);
 	void setInAngle(bool b) { m_is_in_angle = b; }
 	const bool getIsInAngle() { return m_is_in_angle; }
+	const bool collisionWith(const GameObj& b)const;
 protected:
 	sf::Sprite m_sprite;
 	sf::Vector2f m_location;
