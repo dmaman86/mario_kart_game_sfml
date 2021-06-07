@@ -72,12 +72,12 @@ void SettingsState::HandleEvent(const sf::Event& event)
 		{
 			if (m_shapeSound.getFillColor() == sf::Color::Green)
 			{
-				m_data->user.setIfSound();
+				m_data->user.setIfSound(false);
 				m_shapeSound.setFillColor(sf::Color::Red);
 			}
 			else
 			{
-				m_data->user.setIfSound();
+				m_data->user.setIfSound(true);
 				m_shapeSound.setFillColor(sf::Color::Green);
 			}
 
@@ -97,6 +97,10 @@ void SettingsState::Update(float)
 	{
 		m_data->stateStack.RemoveState();
 	}
+    if (m_data->user.getIfSound())
+        m_click.setVolume(100);
+    else
+        m_click.setVolume(0);
 }
 
 void SettingsState::Draw()

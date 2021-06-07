@@ -68,14 +68,7 @@ void MarioKart::processInput()
 
 	while (m_window.pollEvent(event))
 	{
-		try {
-			m_dataGame->stateStack.GetActiveState()->HandleEvent(event);
-		}
-
-		catch (std::exception & e)
-		{
-			std::cout << "line 76 " << e.what();
-		}
+	    m_dataGame->stateStack.GetActiveState()->HandleEvent(event);
 
 		if (event.type == sf::Event::Closed)
 			m_window.close();

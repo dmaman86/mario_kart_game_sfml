@@ -5,11 +5,10 @@
 #include "SettingsState.h"
 #include <iostream>
 
-MenuState::MenuState(MarioKart::GameDataRef data) :m_data(data),
+MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_helpState(false),
                                                     m_aboutState(false),
                                                     m_settingsState(false),
-                                                    m_show_extra(false),
                                                     m_buttons()
 {
 }
@@ -33,14 +32,7 @@ void MenuState::Init()
     m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::settings), false);
     m_buttons.back().first.setPosition(100, 370);
 
-    m_online.first.setTexture(Pictures::instance().getTexture(Pictures::online));
-    m_career.first.setTexture(Pictures::instance().getTexture(Pictures::career));
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
-
-    
-
-    setposition();
-
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
@@ -53,20 +45,10 @@ void MenuState::HandleEvent(const sf::Event& event)
         for( size_t i{ 0 }; i < 4; i++ )
         {
             if(m_buttons[ i ].first.getGlobalBounds().contains(location))
-            {
                 m_buttons[ i ].second = true;
-                if( i == 2 )
-                    m_show_extra = true;
-            }
             else
                 m_buttons[ i ].second = false;
         }
-
-        if(m_online.first.getGlobalBounds().contains(location))
-            m_online.second = true;
-        if(m_career.first.getGlobalBounds().contains(location))
-            m_career.second = true;
-
     }
     if (sf::Event::MouseMoved)
     {
@@ -98,29 +80,24 @@ void MenuState::updateColors(size_t cur_button)
 void MenuState::Update(float dt)
 {
 
-    for( size_t i{ 0 }; i < 6; i++ )
+    for( size_t i{ 0 }; i < 4; i++ )
     {
         switch( i )
         {
             case 0:
+                // state about
                 break;
             case 1:
                 if(m_buttons[1].second)
                     m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
             case 2:
+                if(m_buttons[2].second)
+                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
                 break;
             case 3:
                 if (m_buttons[3].second)
                     m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
-                break;
-            case 4:
-                if(m_online.second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
-                break;
-            case 5:
-                if(m_career.second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
         }
     }
@@ -132,12 +109,6 @@ void MenuState::Draw()
 
     for( auto button : m_buttons )
         m_data->window->draw( button.first );
-
-    if(m_show_extra)
-    {
-        m_data->window->draw(m_career.first);
-        m_data->window->draw(m_online.first);
-    }
 }
 
 void MenuState::Resume()
@@ -146,9 +117,6 @@ void MenuState::Resume()
     {
         m_buttons[ i ].second = false;
     }
-    m_show_extra = false;
-    m_online.second = false;
-    m_career.second = false;
     setVolume();
 }
 
@@ -159,11 +127,5 @@ void MenuState::setVolume()
     else
         m_click.setVolume(0);
 
-}
-
-void MenuState::setposition()
-{
-    m_online.first.setPosition(800, 220);
-    m_career.first.setPosition(1100, 220);
 }
 

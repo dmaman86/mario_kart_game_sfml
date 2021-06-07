@@ -2,16 +2,25 @@
 #include "Pictures.h"
 #include "Fonts.h"
 #include "ShowUsersDataBase.h"
+#include "Sounds.h"
 #include <iostream>
+#include <sstream>
+#include <thread>
+#include <chrono>
 
-GetDataState::GetDataState(MarioKart::GameDataRef data): m_data( data ),
+GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
                                                          m_backMenu(false),
                                                          m_back(),
-                                                         m_request_post( HttpNetwork::path, sf::Http::Request::Post ),
+                                                         m_request_post( HttpNetwork::path_user, sf::Http::Request::Post ),
+                                                         m_request_put(),
+                                                         m_request_del(),
                                                          m_playerText(),
-                                                         m_save_data(false)
+                                                         m_save_data(false),
+                                                         m_send_data(false),
+                                                         m_effectTime(0.0f),
+                                                         m_nextState(false)
 {
 
 }
@@ -36,7 +45,7 @@ void GetDataState::Init()
                                        (windowSize.y / 2u) + (unsigned)20));
 
     m_save.setFont(Fonts::instance().getFont());
-    m_save.setString("Save Data");
+    m_save.setString("Press Enter to Save");
     m_save.setFillColor(sf::Color(76, 0, 153));
     m_save.setCharacterSize(60);
     m_save.setOrigin(m_save.getLocalBounds().width / 2,
@@ -55,6 +64,9 @@ void GetDataState::Init()
     m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
     initVectorSprites(windowSize);
     m_playerText.setString("_");
+
+    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
+    setVolume();
 }
 
 void GetDataState::initVectorSprites( const sf::Vector2u& windowSize )
@@ -90,14 +102,11 @@ void GetDataState::HandleEvent(const sf::Event & event)
 
     if(sf::Event::MouseButtonPressed == event.type)
     {
+        m_click.play();
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
 
-        if(m_save.getGlobalBounds().contains(location))
-        {
-            m_save_data = !m_save_data;
-        }
-        else if (m_back.getGlobalBounds().contains(location))
+        if (m_back.getGlobalBounds().contains(location))
         {
             m_backMenu = !m_backMenu;
         }
@@ -115,28 +124,60 @@ void GetDataState::HandleEvent(const sf::Event & event)
             }
         }
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    {
+        m_click.play();
+        if(m_save_data)
+        {
+            std::string name = std::string(m_playerInput.toAnsiString());
+            name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
+            std::string sprite = m_user_sprite;
+            sprite.erase(std::remove(sprite.begin(), sprite.end(), '\n'), sprite.end());
+            m_data->user.setName(name );
+            m_data->user.setSprite(sprite);
+            m_send_data = true;
+        }
+    }
 }
 
 void GetDataState::Update(float dt)
 {
-    if( m_save_data )
+    if(!m_playerInput.toAnsiString().empty() && !m_user_sprite.empty())
+        m_save_data = true;
+
+    if(m_save_data)
     {
-        m_user_name = m_playerInput.toAnsiString();
-        if( !m_user_name.empty() && !m_user_sprite.empty() )
+        m_effectTime += (float)dt;
+        if(m_effectTime >= 0.5f)
         {
-            UserNetwork m_user("", m_user_name, m_user_sprite );
-            if(saveUser(m_user))
-            {
-                m_data->stateStack.RemoveState();
-                m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data, m_user)), false);
-                m_save_data = false;
-            }
+            m_save_data = !m_save_data;
+            m_effectTime = 0.0f;
+        }
+    }
+    if( m_send_data )
+    {
+        if(m_data->user.getId().size() > 0)
+        {
+            m_nextState = updateUser();
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
         else
-            m_save_data = false;
+        {
+            // new user
+            m_data->user.setId("");
+            m_nextState = saveUser();
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+        if(m_nextState)
+            m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
     }
-    else if (m_backMenu)
+    if (m_backMenu)
+    {
+        if(m_data->user.getId().size() > 0)
+            deleteUser();
+
         m_data->stateStack.RemoveState();
+    }
 }
 
 void GetDataState::Draw()
@@ -146,11 +187,20 @@ void GetDataState::Draw()
     window.draw(m_background);
     window.draw(m_title_get_name);
     window.draw(m_playerText);
-    window.draw(m_save);
     window.draw(m_back);
 
     for( auto driver : m_drivers )
         window.draw( driver.second );
+
+    if(m_save_data)
+        window.draw(m_save);
+}
+
+void GetDataState::Resume()
+{
+    m_send_data = false;
+    m_nextState = false;
+    setVolume();
 }
 
 // private functions
@@ -192,11 +242,11 @@ void GetDataState::deleteLastChar()
 
 }
 
-bool GetDataState::saveUser( UserNetwork& m_user)
+bool GetDataState::saveUser()
 {
     std::ostringstream stream;
     std::stringstream ss;
-    stream << "name=" << m_user.getName() << "&sprite=" << m_user.getSprite();
+    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
     m_request_post.setBody( stream.str() );
 
     sf::Http::Response response = m_data->http.sendRequest( m_request_post );
@@ -206,6 +256,43 @@ bool GetDataState::saveUser( UserNetwork& m_user)
     ss << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(ss, pt);
-    m_user.setId( pt.get<std::string>("id") );
+    m_data->user.setId( pt.get<std::string>("id") );
     return true;
+}
+
+bool GetDataState::updateUser()
+{
+    m_request_put.setMethod( sf::Http::Request::Put );
+    m_request_put.setUri( HttpNetwork::path_user + "/" + m_data->user.getId() );
+    std::ostringstream stream;
+    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
+    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+    m_request_put.setBody(stream.str());
+
+    sf::Http::Response response = m_data->http.sendRequest( m_request_put );
+
+    if( response.getStatus() != sf::Http::Response::Ok )
+        return false;
+    return true;
+}
+
+bool GetDataState::deleteUser()
+{
+    m_request_del.setMethod(sf::Http::Request::Delete);
+    m_request_del.setUri(HttpNetwork::path_user + "/" + m_data->user.getId() );
+
+    sf::Http::Response response = m_data->http.sendRequest( m_request_del );
+
+    if( response.getStatus() != sf::Http::Response::Ok )
+        return false;
+    return true;
+}
+
+void GetDataState::setVolume()
+{
+    if (m_data->user.getIfSound())
+        m_click.setVolume(100);
+    else
+        m_click.setVolume(0);
+
 }

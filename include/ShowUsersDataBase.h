@@ -18,7 +18,7 @@ namespace pt = boost::property_tree;
 class ShowUsersDataBase : public State
 {
 public:
-    ShowUsersDataBase(MarioKart::GameDataRef, UserNetwork&);
+    ShowUsersDataBase(MarioKart::GameDataRef&);
     ~ShowUsersDataBase() = default;
 
     void Init() override;
@@ -28,9 +28,9 @@ public:
 private:
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
-    UserNetwork m_user;
     sf::Sprite m_back;
     sf::Text m_title;
+    sf::Vector2u m_windowSize;
 
     sf::Http::Request m_request_get;
     sf::Http::Request m_request_delete;
