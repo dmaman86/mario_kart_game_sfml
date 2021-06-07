@@ -36,12 +36,16 @@ private:
     sf::Text m_playerText;
     sf::Text m_title_get_name;
     sf::Text m_save;
+    sf::Text m_hostGame;
+    sf::Text m_joinGame;
     std::vector< Pair > m_drivers;
     sf::Sound m_click;
 
     const int m_limit = 15;
     bool m_save_data;
     bool m_send_data;
+    bool m_hostPressed;
+    bool m_joinPressed;
     bool m_nextState;
     float m_effectTime;
     sf::Http::Request m_request_post;

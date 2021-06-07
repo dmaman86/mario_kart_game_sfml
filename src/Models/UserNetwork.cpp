@@ -1,13 +1,23 @@
 #include "UserNetwork.h"
 #include <iostream>
 
-UserNetwork::UserNetwork( std::string id, std::string name, std::string sprite ):
+UserNetwork::UserNetwork():
+                    m_id(""),
+                    m_name(""),
+                    m_sprite(""),
+                    m_sound(true),
+                    m_host(false),
+                    m_inGame(false),
+                    m_map_game("")
+{
+
+}
+
+UserNetwork::UserNetwork( std::string id, std::string name, std::string sprite, std::string map ):
         m_id( id ),
         m_name( name ),
         m_sprite( sprite ),
-        m_angle(0),
-        m_speed(0),
-        m_position()
+        m_map_game(map)
 {
 
 }
@@ -25,11 +35,6 @@ const std::string& UserNetwork::getId()
 void UserNetwork::setName( std::string& name )
 {
     m_name = name;
-}
-
-void UserNetwork::updatePosition()
-{
-
 }
 
 void UserNetwork::setSprite( std::string& sprite )

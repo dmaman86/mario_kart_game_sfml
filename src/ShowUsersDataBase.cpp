@@ -65,12 +65,6 @@ void ShowUsersDataBase::Update(float dt)
 {
     if (m_backMenu)
     {
-        /*sf::Http::Response response = m_data->http.sendRequest(m_request_delete);
-        if( response.getStatus() == sf::Http::Response::Ok )
-        {
-            m_data->stateStack.RemoveState();
-            m_backMenu = false;
-        }*/
         m_data->stateStack.RemoveState();
         m_backMenu = false;
     }
@@ -136,9 +130,9 @@ void ShowUsersDataBase::buildVecUsers(boost::property_tree::ptree const& pt)
     }
     if( values[0] != m_data->user.getId() )
     {
-        UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ] );
-        std::stringstream ss(values[3]);
-        unsigned int game = 0;
+        UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
+        std::stringstream ss(values[4]);
+        bool game = false;
         ss >> game;
         user.updateInGame(game);
         m_users.emplace_back( user );
@@ -178,7 +172,7 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
         rectangle.setPosition(sf::Vector2f((windowSize.x / 3) - 150,
                                            (windowSize.y / 3) + (i * 100)));
 
-        if( itr->getInGame() == 1 )
+        if( itr->getInGame() )
         {
             rectangle.setOutlineColor(sf::Color::Red);
             rectangle.setOutlineThickness(5);

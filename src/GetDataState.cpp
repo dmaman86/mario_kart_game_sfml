@@ -2,6 +2,7 @@
 #include "Pictures.h"
 #include "Fonts.h"
 #include "ShowUsersDataBase.h"
+#include "HostState.h"
 #include "Sounds.h"
 #include <iostream>
 #include <sstream>
@@ -20,7 +21,9 @@ GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_save_data(false),
                                                          m_send_data(false),
                                                          m_effectTime(0.0f),
-                                                         m_nextState(false)
+                                                         m_nextState(false),
+                                                         m_hostPressed(false),
+                                                         m_joinPressed(false)
 {
 
 }
@@ -43,6 +46,24 @@ void GetDataState::Init()
                                m_title_get_name.getLocalBounds().height / 2);
     m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
                                        (windowSize.y / 2u) + (unsigned)20));
+
+    m_hostGame.setFont(Fonts::instance().getFont());
+    m_hostGame.setString("Create Game");
+    m_hostGame.setFillColor(sf::Color::Green);
+    m_hostGame.setCharacterSize(70);
+    m_hostGame.setOrigin(m_hostGame.getLocalBounds().width / 2,
+                         m_hostGame.getLocalBounds().height / 2);
+    m_hostGame.setPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
+                                  (windowSize.y / 3) + 100));
+
+    m_joinGame.setFont(Fonts::instance().getFont());
+    m_joinGame.setString("Join to Game");
+    m_joinGame.setFillColor(sf::Color::Red);
+    m_joinGame.setCharacterSize(70);
+    m_joinGame.setOrigin(m_joinGame.getLocalBounds().width / 2,
+                         m_joinGame.getLocalBounds().height / 2);
+    m_joinGame.setPosition(sf::Vector2f((windowSize.x / m_hostGame.getPosition().x) + 1200,
+                                        (windowSize.y / 3 ) + 200));
 
     m_save.setFont(Fonts::instance().getFont());
     m_save.setString("Press Enter to Save");
@@ -110,6 +131,10 @@ void GetDataState::HandleEvent(const sf::Event & event)
         {
             m_backMenu = !m_backMenu;
         }
+        else if(m_hostGame.getGlobalBounds().contains(location))
+            m_hostPressed = true;
+        else if(m_joinGame.getGlobalBounds().contains(location))
+            m_joinPressed = true;
         else
         {
             for(auto& driver: m_drivers )
@@ -156,20 +181,29 @@ void GetDataState::Update(float dt)
     }
     if( m_send_data )
     {
-        if(m_data->user.getId().size() > 0)
+        if(m_hostPressed)
         {
-            m_nextState = updateUser();
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            m_data->user.setHost(true);
+            m_data->stateStack.AddState(StateStack::StateRef( new HostState(m_data)), false);
         }
-        else
+        else if(m_joinPressed)
         {
-            // new user
-            m_data->user.setId("");
-            m_nextState = saveUser();
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            m_data->user.setHost(false);
+            if(m_data->user.getId().size() > 0)
+            {
+                m_nextState = updateUser();
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
+            else
+            {
+                // new user
+                m_data->user.setId("");
+                m_nextState = saveUser();
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
+            if(m_nextState)
+                m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
         }
-        if(m_nextState)
-            m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
     }
     if (m_backMenu)
     {
@@ -185,21 +219,33 @@ void GetDataState::Draw()
     sf::RenderWindow& window = *m_data->window;
 
     window.draw(m_background);
-    window.draw(m_title_get_name);
-    window.draw(m_playerText);
-    window.draw(m_back);
 
-    for( auto driver : m_drivers )
-        window.draw( driver.second );
+    if(!m_send_data)
+    {
+        window.draw(m_title_get_name);
+        window.draw(m_playerText);
+        window.draw(m_back);
 
-    if(m_save_data)
-        window.draw(m_save);
+        for( auto driver : m_drivers )
+            window.draw( driver.second );
+
+        if(m_save_data)
+            window.draw(m_save);
+    }
+    else
+    {
+        window.draw(m_hostGame);
+        window.draw(m_joinGame);
+    }
+
 }
 
 void GetDataState::Resume()
 {
     m_send_data = false;
     m_nextState = false;
+    m_joinPressed = false;
+    m_hostPressed = false;
     setVolume();
 }
 
@@ -246,13 +292,18 @@ bool GetDataState::saveUser()
 {
     std::ostringstream stream;
     std::stringstream ss;
-    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
+    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite()
+            << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
     m_request_post.setBody( stream.str() );
+    std::cout << "line 294 " << stream.str() << std::endl;
 
     sf::Http::Response response = m_data->http.sendRequest( m_request_post );
 
     if( response.getStatus() != sf::Http::Response::Created )
+    {
+        std::cout << "line 299 " << response.getBody() << std::endl;
         return false;
+    }
     ss << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(ss, pt);
@@ -266,13 +317,17 @@ bool GetDataState::updateUser()
     m_request_put.setUri( HttpNetwork::path_user + "/" + m_data->user.getId() );
     std::ostringstream stream;
     stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
+    stream << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
     m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
     m_request_put.setBody(stream.str());
 
     sf::Http::Response response = m_data->http.sendRequest( m_request_put );
 
     if( response.getStatus() != sf::Http::Response::Ok )
+    {
+        std::cout << "line 299 " << response.getBody() << std::endl;
         return false;
+    }
     return true;
 }
 
