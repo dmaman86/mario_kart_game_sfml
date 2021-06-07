@@ -19,10 +19,12 @@ public:
     void Draw() override;
 
 private:
+    void setColorShape(sf::CircleShape&);
     //void setVolume();
     sf::Text createFont(std::string, sf::Color, int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
+    sf::Sprite m_rectangle;
     sf::CircleShape m_shapeSound;
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;

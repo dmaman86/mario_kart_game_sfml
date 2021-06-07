@@ -27,6 +27,7 @@ public:
     static const std::string PeachDriver;
     static const std::string ToadDriver;
     static const std::string YoshiDriver;
+    static const std::string rectangle;
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);

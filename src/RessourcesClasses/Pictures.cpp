@@ -21,6 +21,7 @@ const std::string Pictures::LuigiDriver = "luigi.png";
 const std::string Pictures::PeachDriver = "peach.png";
 const std::string Pictures::ToadDriver = "toad.png";
 const std::string Pictures::YoshiDriver = "yoshi.png";
+const std::string Pictures::rectangle = "rectangle.jpg";
 
 
 Pictures &Pictures::instance() {
@@ -68,6 +69,8 @@ Pictures::Pictures()
         throw std::runtime_error("Cant Open " + Pictures::ToadDriver); 
     if(!(m_pics[Pictures::YoshiDriver] = sf::Texture()).loadFromFile(Pictures::YoshiDriver))
         throw std::runtime_error("Cant Open " + Pictures::YoshiDriver); 
+    if (!(m_pics[Pictures::rectangle] = sf::Texture()).loadFromFile(Pictures::rectangle))
+        throw std::runtime_error("Cant Open " + Pictures::rectangle);
 }
 
 const sf::Texture &Pictures::getTexture(std::string name) const {
