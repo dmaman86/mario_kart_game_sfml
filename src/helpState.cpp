@@ -19,12 +19,13 @@ void helpState::Init()
                           (float)windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
-
+    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 }
 
 void helpState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseMoved) {
+        m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
         if (m_back.getGlobalBounds().contains(location)) {
@@ -35,6 +36,7 @@ void helpState::HandleEvent(const sf::Event& event)
 
 void helpState::Update(float)
 {
+    setVolume();
     if (m_backMenu)
     {
         m_data->stateStack.RemoveState();
@@ -45,5 +47,13 @@ void helpState::Draw()
 {
 	m_data->window->draw(m_background);
 	m_data->window->draw(m_back);
+}
+
+void helpState::setVolume()
+{
+    if(m_data->user.getIfSound())
+        m_click.setVolume(100);
+    else
+        m_click.setVolume(0);
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "State.h"
 #include "MarioKart.h"
 
@@ -15,14 +16,14 @@ public:
     void Update(float) override ;
     void Draw() override;
 private:
-    void setposition() {};
+    void setVolume();
     sf::Sprite m_background;
     sf::Sprite m_back;
 
     MarioKart::GameDataRef m_data;
 
     bool m_backMenu;
-
+    sf::Sound m_click;
 
 };
 
