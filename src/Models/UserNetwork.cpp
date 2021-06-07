@@ -1,4 +1,5 @@
 #include "UserNetwork.h"
+#include <iostream>
 
 UserNetwork::UserNetwork( std::string id, std::string name, std::string sprite ):
         m_id( id ),

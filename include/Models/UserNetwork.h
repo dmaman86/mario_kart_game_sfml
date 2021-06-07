@@ -22,7 +22,7 @@ public:
     void updateInGame(unsigned int game){ m_inGame = game; }
     unsigned int getInGame(){ return m_inGame; }
     bool getIfSound() { return m_sound; }
-    void setIfSound() { m_sound = !m_sound; }
+    void setIfSound(bool sound) { m_sound = sound; }
 
 private:
     std::string m_id;

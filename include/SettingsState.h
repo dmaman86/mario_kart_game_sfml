@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "State.h"
@@ -12,12 +13,14 @@ public:
     ~SettingsState() = default;
 
 
-    virtual void Init()override;
-    virtual void HandleEvent(const sf::Event&);
-    virtual void Update(float)override;
-    virtual void Draw()override;
+    void Init() override;
+    void HandleEvent(const sf::Event&) override;
+    void Update(float) override;
+    void Draw() override;
 
 private:
+    void setVolume();
+    sf::Text createFont(std::string, sf::Color, int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
     sf::CircleShape m_shapeSound;

@@ -3,16 +3,15 @@
 #include "Fonts.h"
 #include <iostream>
 
-ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef data, UserNetwork & user):
+ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef& data):
                                                          m_data( data ),
                                                          m_background(),
                                                          m_backMenu(false),
                                                          m_back(),
                                                          m_users(),
-                                                         m_user( user ),
-                                                         m_request_get( HttpNetwork::path,
+                                                         m_request_get( HttpNetwork::path_user,
                                                                         sf::Http::Request::Get ),
-                                                         m_request_delete( HttpNetwork::path + "/" + m_user.getId(),
+                                                         m_request_delete( HttpNetwork::path_user + "/" + data->user.getId(),
                                                                            sf::Http::Request::Delete)
 {
 
@@ -20,13 +19,13 @@ ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef data, UserNetwork & 
 
 void ShowUsersDataBase::Init()
 {
-    sf::Vector2u textureSize, windowSize;
-    windowSize = m_data->window->getSize();
+    sf::Vector2u textureSize;
+    m_windowSize = m_data->window->getSize();
     textureSize = Pictures::instance().getTexture(Pictures::menuBackground).getSize();
 
     m_background.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
-    m_background.setScale((float)windowSize.x / textureSize.x,
-                          (float)windowSize.y / textureSize.y);
+    m_background.setScale((float)m_windowSize.x / textureSize.x,
+                          (float)m_windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
 
@@ -34,10 +33,10 @@ void ShowUsersDataBase::Init()
     m_title.setString("Online Drivers");
     m_title.setFillColor(sf::Color(76, 0, 153));
     m_title.setCharacterSize(100);
-    m_title.setPosition((windowSize.x / 2) - 500, 100);
+    m_title.setPosition((m_windowSize.x / 2) - 500, 100);
 
     getUsers();
-    buildList( windowSize );
+    buildList( m_windowSize );
 }
 
 void ShowUsersDataBase::HandleEvent(const sf::Event & event)
@@ -66,13 +65,17 @@ void ShowUsersDataBase::Update(float dt)
 {
     if (m_backMenu)
     {
-        sf::Http::Response response = m_data->http.sendRequest(m_request_delete);
+        /*sf::Http::Response response = m_data->http.sendRequest(m_request_delete);
         if( response.getStatus() == sf::Http::Response::Ok )
         {
             m_data->stateStack.RemoveState();
             m_backMenu = false;
-        }
+        }*/
+        m_data->stateStack.RemoveState();
+        m_backMenu = false;
     }
+    getUsers();
+    buildList( m_windowSize );
 }
 
 void ShowUsersDataBase::Draw()
@@ -105,6 +108,7 @@ void ShowUsersDataBase::getUsers()
 {
     std::stringstream stream;
     sf::Http::Response response = m_data->http.sendRequest(m_request_get);
+    m_users.clear();
 
     if( response.getStatus() == sf::Http::Response::Ok )
     {
@@ -130,7 +134,7 @@ void ShowUsersDataBase::buildVecUsers(boost::property_tree::ptree const& pt)
     {
         values.emplace_back( it->second.get_value<std::string>() );
     }
-    if( values[0] != m_user.getId() )
+    if( values[0] != m_data->user.getId() )
     {
         UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ] );
         std::stringstream ss(values[3]);
@@ -144,6 +148,9 @@ void ShowUsersDataBase::buildVecUsers(boost::property_tree::ptree const& pt)
 void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
 {
     size_t i = 0;
+    m_list_text.clear();
+    m_list_sprites.clear();
+    m_users_rectangle.clear();
 
     for( auto itr = m_users.begin(); itr != m_users.end(); itr++, i++ )
     {
