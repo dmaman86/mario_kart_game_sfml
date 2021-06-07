@@ -19,7 +19,7 @@ public:
     void Draw() override;
 
 private:
-    void setVolume();
+    //void setVolume();
     sf::Text createFont(std::string, sf::Color, int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
@@ -27,7 +27,7 @@ private:
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;
     sf::Text m_messageSound;
-    sf::Sound m_click;
+    //sf::Sound m_click;
 
     bool onSound = true;
 };

@@ -17,7 +17,6 @@ void SettingsState::Init()
     m_title.setOrigin(m_title.getLocalBounds().width / 2,
                       m_title.getLocalBounds().height / 2);
 
-
     //shapeSound
     if(m_data->user.getIfSound())
         m_shapeSound.setFillColor(sf::Color::Green);
@@ -49,8 +48,6 @@ void SettingsState::Init()
     m_messageSound.setPosition(sf::Vector2f(m_windowSize.x / (unsigned)2.5,
                                             (m_windowSize.y / 2u) - 200));
 
-
-    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
 }
 
@@ -88,7 +85,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
 
 void SettingsState::Update(float)
 {
-    setVolume();
+    setVolume(m_data->user.getIfSound());
 
     if (m_backMenu)
     {
@@ -107,15 +104,6 @@ void SettingsState::Draw()
     m_data->window->draw(m_messageSound);
 
 }
-
-void SettingsState::setVolume()
-{
-    if (m_data->user.getIfSound())
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
-}
-
 
 sf::Text SettingsState::createFont(std::string str, sf::Color color, int size)
 {
