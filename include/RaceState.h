@@ -14,7 +14,6 @@ class RaceState : public State
 public:
 	RaceState(MarioKart::GameDataRef);
 	~RaceState() = default;
-	void run();
 
 	//private function
 	virtual void Init() override;
@@ -39,4 +38,6 @@ private:
 	//private functions
 	void BuildVecObj();
 	void drawStaticObjects();
+	void HandleCollision(float deltatime);
+
 };

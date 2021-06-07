@@ -97,14 +97,7 @@ void Player::setIntLocation(float delta, int floor) {
 	}
 	else if (floor == 1)
 	{
-		if (!m_is_lock) {
-			m_last_pos = m_location;
-			handleLock(delta);
-
-		}
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		m_is_lock = true;
-
+		driveBack();
 	}
 	else if (floor == 2)
 	{
@@ -151,9 +144,7 @@ float Player::getSpeed() const {
 
 void Player::handleLock(float dt)
 {
-	
 	if (calcLength(m_location, m_last_pos) >= 4.5)
-		//setAngle(m_angle + 360);
 	{
 		m_is_lock = false;
 		m_force = 0;
@@ -163,4 +154,14 @@ void Player::handleLock(float dt)
 		m_location.x += std::sin(m_angle * 3.141592 / 180) * dt * -m_force / 1.5;
 		m_location.y -= std::cos(m_angle * 3.141592 / 180) * dt * -m_force / 1.5;
 	}
+}
+
+void Player::driveBack()
+{
+	if (!m_is_lock) {
+		m_last_pos = m_location;
+
+	}
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+	m_is_lock = true;
 }

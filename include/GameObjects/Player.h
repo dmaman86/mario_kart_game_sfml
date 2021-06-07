@@ -22,5 +22,7 @@ public:
 	bool m_is_lock;
 	void handleLock(float);
 	sf::Vector2f m_last_pos;
+	void driveBack();
+
 };
 
