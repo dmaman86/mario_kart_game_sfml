@@ -24,7 +24,7 @@ void helpState::Init()
 
 void helpState::HandleEvent(const sf::Event& event)
 {
-    if (sf::Event::MouseMoved) {
+    if (sf::Event::MouseButtonPressed == event.type) {
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });

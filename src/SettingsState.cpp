@@ -18,6 +18,14 @@ void SettingsState::Init()
                       m_title.getLocalBounds().height / 2);
 
 
+
+    m_rectangle.setTexture(Pictures::instance().getTexture(Pictures::rectangle));
+    m_rectangle.setPosition(m_windowSize.x / (unsigned)2.5, 500);
+    m_rectangle.setOrigin(m_rectangle.getLocalBounds().width / 2,
+        m_rectangle.getLocalBounds().height / 2);
+    m_rectangle.setColor(sf::Color(255, 255, 255, 120));
+    
+
     //shapeSound
     if(m_data->user.getIfSound())
         m_shapeSound.setFillColor(sf::Color::Green);
@@ -50,7 +58,8 @@ void SettingsState::Init()
                                             (m_windowSize.y / 2u) - 200));
 
 
-    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
+
+
 
 }
 
@@ -66,7 +75,8 @@ void SettingsState::HandleEvent(const sf::Event& event)
         }
         else if (m_shapeSound.getGlobalBounds().contains(location))
         {
-            if (m_shapeSound.getFillColor() == sf::Color::Green)
+            setColorShape(m_shapeSound);
+            /*if (m_shapeSound.getFillColor() == sf::Color::Green)
             {
                 m_data->user.setIfSound(false);
                 m_shapeSound.setFillColor(sf::Color::Red);
@@ -75,20 +85,23 @@ void SettingsState::HandleEvent(const sf::Event& event)
             {
                 m_data->user.setIfSound(true);
                 m_shapeSound.setFillColor(sf::Color::Green);
-            }
+            }*/
 
         }
         else if (m_shapeMusic.getGlobalBounds().contains(location))
         {
-            m_shapeMusic.setFillColor(sf::Color::Red);
-
+            /*if (m_shapeMusic.getFillColor() == sf::Color::Green)
+                m_shapeMusic.setFillColor(sf::Color::Red);
+            else
+                m_shapeMusic.setFillColor(sf::Color::Green);*/
+            setColorShape(m_shapeMusic);
         }
     }
 }
 
 void SettingsState::Update(float)
 {
-    setVolume();
+    setVolume(m_data->user.getIfSound());
 
     if (m_backMenu)
     {
@@ -99,6 +112,7 @@ void SettingsState::Update(float)
 void SettingsState::Draw()
 {
     m_data->window->draw(m_background);
+    m_data->window->draw(m_rectangle);
     m_data->window->draw(m_title);
     m_data->window->draw(m_back);
     m_data->window->draw(m_shapeSound);
@@ -108,14 +122,24 @@ void SettingsState::Draw()
 
 }
 
-void SettingsState::setVolume()
+void SettingsState::setColorShape(sf::CircleShape &circle)
 {
-    if (m_data->user.getIfSound())
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
-}
+    if (circle.getFillColor() == sf::Color::Green)
+    {
 
+        if(circle.getGlobalBounds() == m_shapeSound.getGlobalBounds())
+        m_data->user.setIfSound(false);
+
+        circle.setFillColor(sf::Color::Red);
+    }
+    else
+    {
+        if (circle.getGlobalBounds() == m_shapeSound.getGlobalBounds())
+        m_data->user.setIfSound(true);
+
+        circle.setFillColor(sf::Color::Green);
+    }
+}
 
 sf::Text SettingsState::createFont(std::string str, sf::Color color, int size)
 {

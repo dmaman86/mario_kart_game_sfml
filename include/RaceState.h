@@ -4,26 +4,33 @@
 #include <vector>
 #include "Macros.h"
 #include "Player.h"
+#include "PlayerOnline.h"
 #include "MarioKart.h"
 #include "State.h"
 #include "MapFileCollision.h"
 #include "Pipe.h"
+
 class RaceState : public State
 {
-
 public:
+	//================ Constructor / Distructor =================
 	RaceState(MarioKart::GameDataRef);
 	~RaceState() = default;
 
-	//private function
+	//================ Virtual public functions =================
 	virtual void Init() override;
 	virtual void HandleEvent(const sf::Event&)override;
 	virtual void Update(float)override;
 	virtual void Draw() override;
 
-
 private:
-	//private members
+	//================ Private functions =========================
+	void BuildVecObj();
+	void drawStaticObjects();
+	void HandleCollision(float deltatime);
+	void updateObjLocation();
+
+	//================ Private members ==========================
 	sf::RenderWindow m_window;
 	sf::Sprite m_sky;
 	Mode7 m_map;
@@ -31,13 +38,8 @@ private:
 	sf::Clock m_clock;
 	MarioKart::GameDataRef m_data;
 	Player m_player;
+	//PlayerOnline m_player2;
 	MapFileCollision m_int_map;
 	Pipe pipe;
 
-
-	//private functions
-	void BuildVecObj();
-	void drawStaticObjects();
-	void HandleCollision(float deltatime);
-
-};
+}; // end RaceState

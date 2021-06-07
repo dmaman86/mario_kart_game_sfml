@@ -1,13 +1,19 @@
 #include "RaceState.h"
 #include "Pictures.h"
 #include <cmath>
+#include "CollisionHandling.h"
+#include "Utilities.h"
+
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data), pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)) {
 
 }
 
 void RaceState::Init() {
 	m_window.setFramerateLimit(60);
+	
 	m_player = Player(sf::Vector2f(WITDH_G / 2, HIGHT_G - 50), sf::Vector2f(63, 124));
+//	m_player2 = PlayerOnline(Pictures::instance().getTexture(Pictures::LuigiDriver),
+//		sf::Vector2f(WITDH_G / 2 + 100, HIGHT_G - 50), sf::Vector2f(63, 124));
 
 	m_cameraX = m_player.getIntLocation().x * 8;
 	m_cameraY = -17;
@@ -20,7 +26,6 @@ void RaceState::Init() {
 	//std::cout << m_int_map(6, 20);
 }
 void RaceState::Draw() {
-
 
 	int xx = m_player.getIntLocation().x;
 	int zz = m_player.getIntLocation().y;
@@ -43,6 +48,7 @@ void RaceState::Draw() {
 	//        }
 
 	m_player.draw(*m_data->window);
+	//m_player2.draw(*m_data->window);
 	// pipe.draw(*m_data->window);
 
 }
@@ -55,13 +61,14 @@ void RaceState::Update(float deltatime) {
 	
 	m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * cos(m_player.getAngle() * 3.1415 / 180);
-
+	
 
 	m_theta = m_player.getAngle();
 	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
 	m_map.setTheta(m_player.getAngle());
 	m_map.calc(m_int_map.m_vec_obj, m_player.getIntLocation());
-
+	//updateObjLocation();
+	HandleCollision(deltatime);
 }
 
 void RaceState::HandleEvent(const sf::Event&)
@@ -77,7 +84,8 @@ void RaceState::BuildVecObj()
 void RaceState::drawStaticObjects() {
 
 	for (auto& x : m_int_map.m_vec_obj)
-		if (x.second->getIsInAngle()) {
+		if (x.second->getIsInAngle())
+		{
 			x.second->draw(*m_data->window);
 			//if (x.first.second >= m_player.getIntLocation().y*8) 
 			x.second->setInAngle(false);
@@ -123,3 +131,62 @@ void RaceState::drawStaticObjects() {
 //        }
 //    }
 }
+
+void RaceState::HandleCollision(float deltatime)
+{
+	for (auto& obj : m_int_map.m_vec_obj)
+		if(obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
+			processCollision(m_player, *obj.second);
+}
+
+void RaceState::updateObjLocation()
+{
+	float obj_length, camera_length;
+	unsigned int xs, ys;
+	for (auto& d : m_int_map.m_vec_obj)
+	{
+		if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
+		{
+				obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
+					sf::Vector2f(m_player.getIntLocation().x, m_player.getIntLocation().y));
+
+				camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
+					sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
+
+				d.second->setPosition(sf::Vector2f(xs, ys));
+
+				if (camera_length < 10) // x < 10
+				{
+					d.second->setScale(3, 3);
+					d.second->setPosition(sf::Vector2f(xs, ys - 20));
+				}
+				else if (camera_length < 15)// 10 < x < 15
+				{
+					d.second->setScale(2, 2);
+					d.second->setPosition(sf::Vector2f(xs, ys - 15));
+				}
+				else if (camera_length < 20)// 15 < x < 20
+				{
+					d.second->setScale(1.5, 1.5);
+					d.second->setPosition(sf::Vector2f(xs, ys - 10));
+				}
+				else if (camera_length < 25)// 20 < x < 25
+				{
+					d.second->setScale(1, 1);
+					d.second->setPosition(sf::Vector2f(xs, ys - 5));
+				}
+				else if (camera_length < 30)// 25 < x < 30
+				{
+					d.second->setScale(0.5, 0.5);
+				}
+
+				d.second->setInAngle(true);
+
+				if (camera_length < 5.0 || camera_length > 30)
+					d.second->setInAngle(false);
+			}
+
+		}
+	}
+
+

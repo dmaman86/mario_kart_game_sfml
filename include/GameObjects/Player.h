@@ -1,6 +1,8 @@
 #pragma once
-#include "GameObj.h"
-class Player : public GameObj {
+
+#include "PlayerBase.h"
+
+class Player : public PlayerBase {
 
 public:
 	Player();
@@ -12,17 +14,17 @@ public:
 	void setAngle(float);
 	float getAngle();
 	//sf::Vector2f m_location;
-	float m_angle;
-	float m_speed;
+	void driveBack();
 	void speedUp(float);
 	void speedDown(float);
 	void updateAcceleration();
 	float getSpeed()const;
+	void handleLock(float);
+	
 	float m_force, m_mass, m_acceleration;
 	bool m_is_lock;
-	void handleLock(float);
 	sf::Vector2f m_last_pos;
-	void driveBack();
-
+	float m_angle;
+	float m_speed;
 };
 
