@@ -10,6 +10,7 @@ MapFileCollision::MapFileCollision() {
 }
 
 void MapFileCollision::fillMap(const std::string str) {
+	std::vector<std::vector <int>> map_int;
 	std::ifstream m_file(str);
 	int input;
 	if (!m_file.is_open())
@@ -20,22 +21,21 @@ void MapFileCollision::fillMap(const std::string str) {
 		for (int j = 0; j < 128; ++j)
 		{
 			input = m_file.get() - 48;
-			if (input == PIPE) {
-				// m_vec_obj[std::pair(i*8,j*4)] = std::make_unique<Pipe>(sf::Vector2f(0.0,0.0),sf::Vector2f(i,j));
-			}
+
 			row.push_back(input);
 		}
 		m_file.get();
-		m_map.push_back(row);
+		map_int.push_back(row);
 	}
 	m_file.close();
+	this->fillMap(map_int);
 }
 
-int MapFileCollision::operator()(unsigned int i, unsigned int j) {
+Floor& MapFileCollision::operator()(unsigned int i, unsigned int j) {
 	if (i < m_map.size() && j < m_map[0].size())
-		return m_map[i][j];
+		return *m_map[i][j].get();
 	throw std::range_error("m_map cannot get i or j");
-	return -1;
+	//return {};
 }
 //
 //float MapFileCollision::calcLength(sf::Vector2f a, sf::Vector2f b) {
@@ -45,6 +45,33 @@ int MapFileCollision::operator()(unsigned int i, unsigned int j) {
 sf::Vector2f MapFileCollision::transferPixelToCords(sf::Vector2f loc) {
 
 	return sf::Vector2f(loc / 8.f);
+}
+
+void MapFileCollision::fillMap(const std::vector<std::vector<int>>& map_int)
+{
+	m_map.resize(map_int.size());
+
+	for (size_t i = 0;i < map_int.size();i++)
+	{
+		//m_map[i].resize(map_int[i].size());
+		for (size_t j = 0;j < map_int[i].size();j++)
+		{
+			switch (map_int[i][j])
+			{
+			case 0:
+				m_map[i].push_back(std::make_unique<FloorAsphalt>());
+				break;
+			case 1:
+				m_map[i].push_back(std::make_unique<FloorBrick>());
+				break;
+			case 2:
+				m_map[i].push_back(std::make_unique<FloorSand>());
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
 
 void MapFileCollision::fillObjectMap(std::string) {
@@ -67,6 +94,6 @@ void MapFileCollision::fillObjectMap(std::string) {
 	//m_vec_obj[std::pair(250.0, 525.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 525.0 / 8));
 	//m_vec_obj[std::pair(250.0, 575.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 575.0 / 8));
 
-	m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::KoopaDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 500.0 / 8));
-	m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::LuigiDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 8, 500.0 / 8));
+	//m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::KoopaDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 500.0 / 8));
+	//m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::LuigiDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 8, 500.0 / 8));
 }

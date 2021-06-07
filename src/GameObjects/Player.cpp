@@ -7,6 +7,7 @@
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
 	: PlayerBase::PlayerBase(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),
 	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0)
+	, m_coefficient_of_friction(1)
 {
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
@@ -42,13 +43,12 @@ void Player::speedUp(float delta) {
 void Player::speedDown(float delta) {
 
 	if (m_force > 0) {
-		//m_speed -= sqrt(sqrt(sqrt(std::abs(m_speed))));
 		(m_force <= 0.05) ? m_force = 0 :
 			m_force -= sqrt(sqrt(sqrt(std::abs(m_force))));
 	}
 }
 
-void Player::setIntLocation(float delta, int floor) {
+void Player::updateSpeed(float delta) {
 
 	if (m_is_lock) {
 		handleLock(delta);
@@ -66,7 +66,6 @@ void Player::setIntLocation(float delta, int floor) {
 			m_acceleration = (0.05 * MAX_SPEED) / 4.0;
 		s += m_acceleration * delta;
 		m_force = s;
-		//this->speedUp(delta);
 	}
 	else
 	{
@@ -85,25 +84,6 @@ void Player::setIntLocation(float delta, int floor) {
 		else
 			m_force = s;
 	}
-	//	this->speedDown(delta);
-
-
-	//std::cout << m_force << '\n';
-
-	if (!floor) {
-		m_location.x += std::sin(m_angle * 3.141592 / 180) * delta * m_force;
-		m_location.y -= std::cos(m_angle * 3.141592 / 180) * delta * m_force;
-	}
-	else if (floor == 1)
-	{
-		driveBack();
-	}
-	else if (floor == 2)
-	{
-		m_location.x += std::sin(m_angle * 3.141592 / 180)* delta * (m_force / 2);
-		m_location.y -= std::cos(m_angle * 3.141592 / 180)* delta * (m_force / 2);
-	}
-
 }
 void Player::updateDir()
 {
@@ -125,6 +105,19 @@ void Player::updateDir()
 	}
 }
 
+void Player::updateLocation(float delta)
+{
+	if (!m_is_lock) {
+		m_location.x += std::sin(m_angle * 3.141592 / 180) * delta * m_force / m_coefficient_of_friction;
+		m_location.y -= std::cos(m_angle * 3.141592 / 180) * delta * m_force / m_coefficient_of_friction;
+	}
+}
+
+void Player::setCoefficientOfFriction(const float cof)
+{
+	m_coefficient_of_friction = cof;
+}
+
 void Player::setAngle(float agl) {
 	m_angle = agl;
 	if (m_angle >= 360) m_angle = 0;
@@ -134,8 +127,6 @@ void Player::setAngle(float agl) {
 float Player::getAngle() {
 	return m_angle;
 }
-
-
 
 float Player::getSpeed() const {
 	return m_force;
@@ -159,8 +150,6 @@ void Player::driveBack()
 {
 	if (!m_is_lock) {
 		m_last_pos = m_location;
-
 	}
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 	m_is_lock = true;
 }

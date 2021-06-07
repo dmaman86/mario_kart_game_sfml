@@ -2,6 +2,10 @@
 
 #include "PlayerBase.h"
 
+class FloorAsphalt;
+class FloorBrick;
+class FloorSand;
+
 class Player : public PlayerBase {
 
 public:
@@ -9,8 +13,11 @@ public:
 	Player(const sf::Vector2f, const sf::Vector2f loc);
 
 	void setIntLocation(const sf::Vector2f& loc);
-	void setIntLocation(float, int);
+	void updateSpeed(float);
 	void updateDir();
+	void updateLocation(float);
+	void setCoefficientOfFriction(const float cof);
+
 	void setAngle(float);
 	float getAngle();
 	//sf::Vector2f m_location;
@@ -20,7 +27,7 @@ public:
 	void updateAcceleration();
 	float getSpeed()const;
 	void handleLock(float);
-	
+	float m_coefficient_of_friction;
 	float m_force, m_mass, m_acceleration;
 	bool m_is_lock;
 	sf::Vector2f m_last_pos;

@@ -5,7 +5,7 @@
 #include <string>
 #include <typeinfo>
 #include <typeindex>
-
+#include "Floor.h"
 #include "Pipe.h"
 #include "Player.h"
 
@@ -13,8 +13,8 @@ namespace // anonymous namespace — the standard way to make function "static"
 {
 
 // primary collision-processing functions
-void PlayerPipe(GameObj& player,
-	GameObj& pipe)
+void PlayerPipe(Object& player,
+	Object& pipe)
 {
     // To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
@@ -28,14 +28,35 @@ void PlayerPipe(GameObj& player,
 // secondary collision-processing functions that just
 // implement symmetry: swap the parameters and call a
 // primary function
-void PipePlayer(GameObj& Pipe,
-	GameObj& Player)
+void PipePlayer(Object& Pipe,
+	Object& Player)
 {
 	PlayerPipe(Player,Pipe);
 }
 //...
+void PlayerFloorAsphalt(Object& player,
+	Object& floor_asphalt)
+{
+	// To get the actual types and use them:
+	Player& Pl = dynamic_cast<Player&>(player);
+	Pl.setCoefficientOfFriction(1);
+}
+void PlayerFloorBrick(Object& player,
+	Object& floorbrick)
+{
+	// To get the actual types and use them:
+	Player& Pl = dynamic_cast<Player&>(player);
+	Pl.driveBack();
+}
+void PlayerFloorSand(Object& player,
+	Object& floorsand)
+{
+	// To get the actual types and use them:
+	Player& Pl = dynamic_cast<Player&>(player);
+	Pl.setCoefficientOfFriction(2);
+}
 
-using HitFunctionPtr = void (*)(GameObj&, GameObj&);
+using HitFunctionPtr = void (*)(Object&, Object&);
 // typedef void (*HitFunctionPtr)(GameObject&, GameObject&);
 using Key = std::pair<std::type_index, std::type_index>;
 using HitMap = std::map<Key, HitFunctionPtr>;
@@ -45,6 +66,10 @@ HitMap initializeCollisionMap()
     HitMap phm;
     phm[Key(typeid(Player   ), typeid(Pipe    ))] = &PlayerPipe;
     phm[Key(typeid(Pipe), typeid(Player))] = &PipePlayer;
+
+	phm[Key(typeid(Player), typeid(FloorAsphalt))] = &PlayerFloorAsphalt;
+	phm[Key(typeid(Player), typeid(FloorBrick))] = &PlayerFloorBrick;
+	phm[Key(typeid(Player), typeid(FloorSand))] = &PlayerFloorSand;
     //...
     return phm;
 }
@@ -62,7 +87,7 @@ HitFunctionPtr lookup(const std::type_index& class1, const std::type_index& clas
 
 } // end namespace
 
-void processCollision(GameObj& object1, GameObj& object2)
+void processCollision(Object& object1, Object& object2)
 {
     auto phf = lookup(typeid(object1), typeid(object2));
     if (!phf)

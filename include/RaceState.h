@@ -29,6 +29,8 @@ private:
 	void drawStaticObjects();
 	void HandleCollision(float deltatime);
 	void updateObjLocation();
+	void updateDynamic();
+
 
 	//================ Private members ==========================
 	sf::RenderWindow m_window;
@@ -38,7 +40,7 @@ private:
 	sf::Clock m_clock;
 	MarioKart::GameDataRef m_data;
 	Player m_player;
-	//PlayerOnline m_player2;
+	PlayerOnline m_player2;
 	MapFileCollision m_int_map;
 	Pipe pipe;
 

@@ -1,7 +1,9 @@
 #pragma once
-#include "SFML/Graphics.hpp"
 
-class GameObj {
+#include "SFML/Graphics.hpp"
+#include "Object.h"
+
+class GameObj : public Object {
 
 public:
 	GameObj();

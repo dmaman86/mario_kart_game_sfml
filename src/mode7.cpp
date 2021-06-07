@@ -107,7 +107,8 @@ bool Mode7::calcInAngle( unsigned int& ys, unsigned int& xs,const float xw, cons
 //                m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int )zw));
 //        }
 //}
-void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& vec, const sf::Vector2f p_pos)
+void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& vec,
+	PlayerOnline* p2,const sf::Vector2f p_pos)
 {
 	//for (auto& x : vec)
 	//	x.second->setInAngle(false);
@@ -123,7 +124,6 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 			else
 			{
 				m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int)zw));
-
 				for (auto& d : vec)
 				{
 					if (abs(d.first.second - zw) <= 4 && abs(d.first.first - xw) <= 2)
