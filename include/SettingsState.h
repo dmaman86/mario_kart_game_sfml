@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "State.h"
@@ -18,6 +19,8 @@ public:
     void Draw() override;
 
 private:
+    void setVolume();
+    sf::Text createFont(std::string, sf::Color, int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
     sf::CircleShape m_shapeSound;
