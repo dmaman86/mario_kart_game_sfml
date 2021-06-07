@@ -2,11 +2,27 @@
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "AnimationData.h"
+
+
+const int DRIVER_VECTOR_LEN = 8;
+const int NUMBER_OF_DRIVERS = 8;
+enum  Drivers{
+    Mario,
+    Dk,
+    Boewser,
+    Koopa,
+    Luigi,
+    Peach,
+    Toad,
+    Yoshi
+};
 class Pictures{
 
 public:
 
     static Pictures& instance();
+    static  const std::string drivers;
 
     static  const std::string MarioDriver;
     static  const std::string mario_circuit_2;
@@ -32,13 +48,12 @@ public:
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);
 
+    std::vector<AnimationData> m_drivers;
 
 private:
     Pictures();
     Pictures(const Pictures &) = default;
     std::unordered_map<std::string,sf::Texture> m_pics;
     std::unordered_map<std::string,sf::Image> m_maps;
-
-
-
+    AnimationData setDriverData(int i);
 };

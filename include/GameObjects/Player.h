@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Animation.h"
 #include "PlayerBase.h"
 
 class FloorAsphalt;
@@ -33,5 +33,7 @@ public:
 	sf::Vector2f m_last_pos;
 	float m_angle;
 	float m_speed;
+	Animation m_animation;
+
 };
 

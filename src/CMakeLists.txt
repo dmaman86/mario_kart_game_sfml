@@ -14,7 +14,8 @@ target_sources (test_mario_kart PRIVATE
         "StateOfMenu.cpp"
 		"Utilities.cpp"
 		"CollisionHandling.cpp"
-		"HostState.cpp")
+		"HostState.cpp"
+		"Animation.cpp")
 
 add_subdirectory(Machine)
 add_subdirectory(GameObjects)

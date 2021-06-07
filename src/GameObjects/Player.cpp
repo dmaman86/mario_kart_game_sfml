@@ -4,8 +4,8 @@
 #include<iostream>
 #include "Utilities.h"
 
-Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
-	: PlayerBase::PlayerBase(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),
+Player::Player(const sf::Vector2f loc, const sf::Vector2f pos): m_animation(Pictures::instance().m_drivers[3],Direction::Left,m_sprite)
+,PlayerBase::PlayerBase(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),
 	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0)
 	, m_coefficient_of_friction(1)
 {
@@ -14,7 +14,7 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
 	m_sprite.scale(3, 3);
 }
 
-Player::Player() {
+Player::Player(): m_animation (Pictures::instance().m_drivers[0],Direction::Left,m_sprite) {
 
 }
 
@@ -50,6 +50,7 @@ void Player::speedDown(float delta) {
 
 void Player::updateSpeed(float delta) {
 
+  //  m_animation.update(delta);
 	if (m_is_lock) {
 		handleLock(delta);
 		return;

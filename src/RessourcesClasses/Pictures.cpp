@@ -22,14 +22,14 @@ const std::string Pictures::PeachDriver = "peach.png";
 const std::string Pictures::ToadDriver = "toad.png";
 const std::string Pictures::YoshiDriver = "yoshi.png";
 const std::string Pictures::rectangle = "rectangle.jpg";
-
+const std::string Pictures::drivers = "drivers.png";
 
 Pictures &Pictures::instance() {
     static Pictures inst;
     return inst;
 }
 
-Pictures::Pictures()
+Pictures::Pictures():m_drivers(8)
 {
     if(!(m_pics[Pictures::MarioDriver] = sf::Texture()).loadFromFile(Pictures::MarioDriver))
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
@@ -71,6 +71,14 @@ Pictures::Pictures()
         throw std::runtime_error("Cant Open " + Pictures::YoshiDriver); 
     if (!(m_pics[Pictures::rectangle] = sf::Texture()).loadFromFile(Pictures::rectangle))
         throw std::runtime_error("Cant Open " + Pictures::rectangle);
+    if (!(m_pics[Pictures::drivers] = sf::Texture()).loadFromFile(Pictures::drivers))
+        throw std::runtime_error("Cant Open " + Pictures::drivers);
+
+    for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
+        m_drivers[i] = (setDriverData(i));
+    }
+
+
 }
 
 const sf::Texture &Pictures::getTexture(std::string name) const {
@@ -80,3 +88,24 @@ const sf::Texture &Pictures::getTexture(std::string name) const {
 const sf::Image &Pictures::getMapTex(std::string string) {
     return m_maps[string];
 }
+
+AnimationData Pictures::setDriverData(int i) {
+
+    const auto size = sf::Vector2i(34, 34);
+    auto location = sf::Vector2i(6,8+ i * 35);
+    const auto middleSpace = sf::Vector2i(0, 10);
+    auto driver = AnimationData{};
+
+
+    for (int j = 0; j < DRIVER_VECTOR_LEN; ++j) {
+
+        driver.m_data.emplace_back( location,size);
+        location.x += 32;
+    }
+
+    return driver;
+}
+
+
+
+
