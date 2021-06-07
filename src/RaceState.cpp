@@ -1,8 +1,6 @@
 #include "RaceState.h"
 #include "Pictures.h"
 #include <cmath>
-#include "CollisionHandling.h"
-
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data), pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)) {
 
 }
@@ -57,13 +55,13 @@ void RaceState::Update(float deltatime) {
 	
 	m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * cos(m_player.getAngle() * 3.1415 / 180);
-	
+
 
 	m_theta = m_player.getAngle();
 	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
 	m_map.setTheta(m_player.getAngle());
 	m_map.calc(m_int_map.m_vec_obj, m_player.getIntLocation());
-	HandleCollision(deltatime);
+
 }
 
 void RaceState::HandleEvent(const sf::Event&)
@@ -124,11 +122,4 @@ void RaceState::drawStaticObjects() {
 //            }
 //        }
 //    }
-}
-
-void RaceState::HandleCollision(float deltatime)
-{
-	for (auto& obj : m_int_map.m_vec_obj)
-		if(obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
-			processCollision(m_player, *obj.second);
 }

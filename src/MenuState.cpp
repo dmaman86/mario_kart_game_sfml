@@ -6,10 +6,10 @@
 #include <iostream>
 
 MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
-                                                    m_helpState(false),
-                                                    m_aboutState(false),
-                                                    m_settingsState(false),
-                                                    m_buttons()
+                                                    m_buttons(),
+                                                    m_showExtra(false),
+                                                    m_online(Pictures::instance().getTexture(Pictures::online), false),
+                                                    m_carrer(Pictures::instance().getTexture(Pictures::career), false)
 {
 }
 
@@ -33,6 +33,7 @@ void MenuState::Init()
     m_buttons.back().first.setPosition(100, 370);
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
+    setposition();
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
@@ -45,10 +46,19 @@ void MenuState::HandleEvent(const sf::Event& event)
         for( size_t i{ 0 }; i < 4; i++ )
         {
             if(m_buttons[ i ].first.getGlobalBounds().contains(location))
+            {
                 m_buttons[ i ].second = true;
+                if( i == 2 )
+                    m_showExtra = true;
+            }
             else
                 m_buttons[ i ].second = false;
         }
+
+        if(m_online.first.getGlobalBounds().contains(location))
+            m_online.second = true;
+        if(m_carrer.first.getGlobalBounds().contains(location))
+            m_carrer.second = true;
     }
     if (sf::Event::MouseMoved)
     {
@@ -62,7 +72,6 @@ void MenuState::HandleEvent(const sf::Event& event)
                 updateColors(i);
             }
         }
-
     }
 }
 
@@ -80,7 +89,7 @@ void MenuState::updateColors(size_t cur_button)
 void MenuState::Update(float dt)
 {
 
-    for( size_t i{ 0 }; i < 4; i++ )
+    for( size_t i{ 0 }; i < 6; i++ )
     {
         switch( i )
         {
@@ -92,12 +101,20 @@ void MenuState::Update(float dt)
                     m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
             case 2:
-                if(m_buttons[2].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
+                /*if(m_buttons[2].second)
+                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);*/
                 break;
             case 3:
                 if (m_buttons[3].second)
                     m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
+                break;
+            case 4:
+                if(m_online.second)
+                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
+                break;
+            case 5:
+                if(m_carrer.second)
+                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
         }
     }
@@ -109,6 +126,12 @@ void MenuState::Draw()
 
     for( auto button : m_buttons )
         m_data->window->draw( button.first );
+
+    if(m_showExtra)
+    {
+        m_data->window->draw(m_carrer.first);
+        m_data->window->draw(m_online.first);
+    }
 }
 
 void MenuState::Resume()
@@ -118,6 +141,9 @@ void MenuState::Resume()
         m_buttons[ i ].second = false;
     }
     setVolume();
+    m_showExtra = false;
+    m_online.second = false;
+    m_carrer.second = false;
 }
 
 void MenuState::setVolume()
@@ -127,5 +153,12 @@ void MenuState::setVolume()
     else
         m_click.setVolume(0);
 
+}
+
+
+void MenuState::setposition()
+{
+    m_online.first.setPosition(800, 220);
+    m_carrer.first.setPosition(1100, 220);
 }
 

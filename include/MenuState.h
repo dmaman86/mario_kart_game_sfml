@@ -20,19 +20,16 @@ public:
     void Resume() override;
 private:
     using Pair = std::pair< sf::Sprite, bool >;
+    using Extra = std::pair< sf::Sprite, bool >;
     void setVolume();
+    void setposition();
     void updateColors(size_t);
     std::vector< Pair > m_buttons;
     sf::Sprite m_background;
-    sf::Sprite m_letsPlay;
-    sf::Sprite m_help;
-    sf::Sprite m_about;
-    sf::Sprite m_settings;
+    Extra m_carrer;
+    Extra m_online;
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
-
-    bool m_helpState;
-    bool m_aboutState;
-    bool m_settingsState;
+    bool m_showExtra;
 };
