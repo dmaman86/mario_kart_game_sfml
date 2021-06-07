@@ -24,7 +24,7 @@ private:
     using Extra = std::pair< sf::Sprite, bool >;
     void setVolume();
     void setposition();
-    void updateColors(size_t);
+    void updateColors(const sf::Vector2f);
     std::vector< Pair > m_buttons;
     sf::Sprite m_background;
     Extra m_carrer;

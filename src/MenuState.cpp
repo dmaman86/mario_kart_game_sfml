@@ -35,11 +35,13 @@ void MenuState::Init()
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
-    
     m_startMusic.openFromFile(Sounds::menu);
     m_startMusic.setLoop(true);
     m_startMusic.play();
     setposition();
+	
+	m_buttons.push_back(m_online);
+	m_buttons.push_back(m_carrer);
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
@@ -49,52 +51,38 @@ void MenuState::HandleEvent(const sf::Event& event)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
-        for( size_t i{ 0 }; i < 4; i++ )
+
+        for( auto & button:m_buttons)
         {
-            if(m_buttons[ i ].first.getGlobalBounds().contains(location))
-            {
-                m_buttons[ i ].second = true;
-                if( i == 2 )
-                    m_showExtra = true;
-            }
+            if(button.first.getGlobalBounds().contains(location))
+				button.second = true;
             else
-                m_buttons[ i ].second = false;
+				button.second = false;
         }
 
-        if(m_online.first.getGlobalBounds().contains(location))
-            m_online.second = true;
-        if(m_carrer.first.getGlobalBounds().contains(location))
-            m_carrer.second = true;
+       // if(m_online.first.getGlobalBounds().contains(location))
+        //    m_online.second = true;
+        //if(m_carrer.first.getGlobalBounds().contains(location))
+         //   m_carrer.second = true;
     }
     if (sf::Event::MouseMoved == event.type)
     {
-        bool OnTheMenua = true;
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseMove.x, event.mouseMove.y });
 
-        for( size_t i{ 0 }; i < 4; i++ )
-        {
-            if( m_buttons[ i ].first.getGlobalBounds().contains(location))
-            {
-                updateColors(i);
-                OnTheMenua = false;
-            }
-        }
-        if(OnTheMenua)
-            updateColors(-1);
-
+		updateColors(location);
     }
 }
 
-void MenuState::updateColors(size_t cur_button)
+void MenuState::updateColors(const sf::Vector2f loc)
 {
-    for( size_t i{ 0 }; i < 4; i++ )
-    {
-        if( i == cur_button )
-            m_buttons[ i ].first.setColor(sf::Color(255, 255, 255, 130));
-        else
-            m_buttons[ i ].first.setColor(sf::Color(255, 255, 255, 250));
-    }
+	for (auto & button : m_buttons)
+	{
+		button.first.setColor(sf::Color(255, 255, 255, 250));
+
+		if (button.first.getGlobalBounds().contains(loc))
+			button.first.setColor(sf::Color(255, 255, 255, 130));
+	}
 }
 
 void MenuState::Update(float dt)
@@ -112,6 +100,8 @@ void MenuState::Update(float dt)
                     m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
             case 2:
+				if (m_buttons[2].second)
+				m_showExtra = true;
                 /*if(m_buttons[2].second)
                     m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);*/
                 break;
@@ -120,11 +110,11 @@ void MenuState::Update(float dt)
                     m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
                 break;
             case 4:
-                if(m_online.second)
+                if(m_buttons[4].second)
                     m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
                 break;
             case 5:
-                if(m_carrer.second)
+				if (m_buttons[5].second)
                     m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
                 break;
         }
@@ -133,28 +123,20 @@ void MenuState::Update(float dt)
 
 void MenuState::Draw()
 {
-    m_data->window->draw(m_background);
+	m_data->window->draw(m_background);
 
-    for( auto button : m_buttons )
-        m_data->window->draw( button.first );
-
-    if(m_showExtra)
-    {
-        m_data->window->draw(m_carrer.first);
-        m_data->window->draw(m_online.first);
-    }
+	for (auto it = m_buttons.begin();
+		 (m_showExtra) ? it != m_buttons.cend() : it != m_buttons.cend() - 2 ; it++)
+		m_data->window->draw(it->first);
+	
 }
 
 void MenuState::Resume()
 {
-    for( size_t i{ 0 }; i < 4; i++ )
-    {
-        m_buttons[ i ].second = false;
-    }
+	for (auto& button : m_buttons)
+        button.second = false;
     setVolume();
     m_showExtra = false;
-    m_online.second = false;
-    m_carrer.second = false;
 }
 
 void MenuState::stopMusic()

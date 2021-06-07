@@ -185,10 +185,9 @@ void RaceState::updateObjLocation()
 
 				if (camera_length < 5.0 || camera_length > 30)
 					d.second->setInAngle(false);
-			}
-
 		}
 	}
+}
 
 void RaceState::updateDynamic()
 {
