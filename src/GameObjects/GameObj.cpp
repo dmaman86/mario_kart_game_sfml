@@ -21,7 +21,7 @@ const bool GameObj::collisionWith(const GameObj& obj) const
 {
 //std::cout << calcLength(obj.m_sprite.getPosition(), this->m_sprite.getPosition()) << '\n';
 	return obj.m_sprite.getGlobalBounds().intersects(this->m_sprite.getGlobalBounds())
-		&& (calcLength(obj.m_sprite.getPosition(), this->m_sprite.getPosition()) < 55);
+		&& (calcLength(obj.m_sprite.getPosition(), this->m_sprite.getPosition()) < 70);
 }
 
 sf::Vector2f GameObj::getIntLocation() {

@@ -4,11 +4,10 @@
 #include<iostream>
 #include "Utilities.h"
 
-
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos)
-	: GameObj::GameObj(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos), 
-	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0){
-
+	: PlayerBase::PlayerBase(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),
+	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0)
+{
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
