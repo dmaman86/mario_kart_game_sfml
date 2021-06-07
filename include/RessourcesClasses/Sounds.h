@@ -9,6 +9,8 @@ public:
     static Sounds& instance();
 
     static  const std::string click;
+    static  const std::string menu;
+
 
     const sf::SoundBuffer &getSoundBuffer(std::string) const;
 

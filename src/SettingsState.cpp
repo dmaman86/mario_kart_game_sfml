@@ -3,8 +3,9 @@
 #include "MenuState.h"
 #include "Fonts.h"
 
-SettingsState::SettingsState(MarioKart::GameDataRef& data): m_data(data), m_shapeSound(30), m_shapeMusic(30)
+SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic): m_data(data), m_shapeSound(30), m_shapeMusic(30), m_menuMusic(menuMusic)
 {
+      
     InitOfMenu(m_data);
 }
 
@@ -36,7 +37,10 @@ void SettingsState::Init()
                            m_shapeSound.getLocalBounds().height / 2);
 
     //shape Meusic
-    m_shapeMusic.setFillColor(sf::Color::Green);
+    if (m_data->user.getIfMusic())
+        m_shapeMusic.setFillColor(sf::Color::Green);
+    else
+        m_shapeMusic.setFillColor(sf::Color::Red);
     m_shapeMusic.setPosition(m_windowSize.x / 1.7, ((m_windowSize.y / 2u) - 75));
     m_shapeMusic.setOrigin(m_shapeMusic.getLocalBounds().width / 2,
                            m_shapeMusic.getLocalBounds().height / 2);
@@ -69,31 +73,15 @@ void SettingsState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
         m_click.play();
-
         if (m_back.getGlobalBounds().contains(location)) {
             m_backMenu = true;
         }
         else if (m_shapeSound.getGlobalBounds().contains(location))
         {
             setColorShape(m_shapeSound);
-            /*if (m_shapeSound.getFillColor() == sf::Color::Green)
-            {
-                m_data->user.setIfSound(false);
-                m_shapeSound.setFillColor(sf::Color::Red);
-            }
-            else
-            {
-                m_data->user.setIfSound(true);
-                m_shapeSound.setFillColor(sf::Color::Green);
-            }*/
-
         }
         else if (m_shapeMusic.getGlobalBounds().contains(location))
         {
-            /*if (m_shapeMusic.getFillColor() == sf::Color::Green)
-                m_shapeMusic.setFillColor(sf::Color::Red);
-            else
-                m_shapeMusic.setFillColor(sf::Color::Green);*/
             setColorShape(m_shapeMusic);
         }
     }
@@ -102,6 +90,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
 void SettingsState::Update(float)
 {
     setVolume(m_data->user.getIfSound());
+
 
     if (m_backMenu)
     {
@@ -127,15 +116,25 @@ void SettingsState::setColorShape(sf::CircleShape &circle)
     if (circle.getFillColor() == sf::Color::Green)
     {
 
-        if(circle.getGlobalBounds() == m_shapeSound.getGlobalBounds())
-        m_data->user.setIfSound(false);
+        if (circle.getGlobalBounds() == m_shapeSound.getGlobalBounds())
+            m_data->user.setIfSound(false);
+        else
+        {
+            m_menuMusic.stop();
+            m_data->user.setIfMusic(false);
+        }
 
         circle.setFillColor(sf::Color::Red);
     }
     else
     {
         if (circle.getGlobalBounds() == m_shapeSound.getGlobalBounds())
-        m_data->user.setIfSound(true);
+            m_data->user.setIfSound(true);
+        else
+        {
+            m_data->user.setIfMusic(true);
+            m_menuMusic.play();
+        }
 
         circle.setFillColor(sf::Color::Green);
     }

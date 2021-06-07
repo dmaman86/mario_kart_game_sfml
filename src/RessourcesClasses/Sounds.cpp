@@ -3,6 +3,8 @@
 #include <exception>
 
 const std::string Sounds::click = "click.wav";
+const std::string Sounds::menu = "menu.ogg";
+
 
 Sounds &Sounds::instance() {
     static Sounds  inst;
@@ -18,4 +20,7 @@ Sounds::Sounds() {
 
     if (!(m_sound[Sounds::click] = sf::SoundBuffer()).loadFromFile(Sounds::click))
         throw std::runtime_error("Cant Open " + Sounds::click);
+
+    if (!(m_sound[Sounds::menu] = sf::SoundBuffer()).loadFromFile(Sounds::menu))
+        throw std::runtime_error("Cant Open " + Sounds::menu);
 }

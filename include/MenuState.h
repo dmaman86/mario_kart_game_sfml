@@ -18,6 +18,7 @@ public:
     void Update(float) override;
     void Draw() override;
     void Resume() override;
+    void stopMusic();
 private:
     using Pair = std::pair< sf::Sprite, bool >;
     using Extra = std::pair< sf::Sprite, bool >;
@@ -31,5 +32,6 @@ private:
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
+    sf::Music m_startMusic;
     bool m_showExtra;
 };

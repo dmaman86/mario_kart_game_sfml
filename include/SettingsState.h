@@ -9,7 +9,7 @@
 class SettingsState : public StateOfMenu
 {
 public:
-    SettingsState(MarioKart::GameDataRef&);
+    SettingsState(MarioKart::GameDataRef&, sf::Music&);
     ~SettingsState() = default;
 
 
@@ -20,7 +20,6 @@ public:
 
 private:
     void setColorShape(sf::CircleShape&);
-    //void setVolume();
     sf::Text createFont(std::string, sf::Color, int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
@@ -29,8 +28,7 @@ private:
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;
     sf::Text m_messageSound;
-    //sf::Sound m_click;
-
+    sf::Music &m_menuMusic;
     bool onSound = true;
 };
 

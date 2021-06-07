@@ -5,6 +5,7 @@
 #include "SettingsState.h"
 #include <iostream>
 
+
 MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_buttons(),
                                                     m_showExtra(false),
@@ -33,6 +34,11 @@ void MenuState::Init()
     m_buttons.back().first.setPosition(100, 370);
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
+
+    
+    m_startMusic.openFromFile(Sounds::menu);
+    m_startMusic.setLoop(true);
+    m_startMusic.play();
     setposition();
 }
 
@@ -60,8 +66,9 @@ void MenuState::HandleEvent(const sf::Event& event)
         if(m_carrer.first.getGlobalBounds().contains(location))
             m_carrer.second = true;
     }
-    if (sf::Event::MouseMoved)
+    if (sf::Event::MouseMoved == event.type)
     {
+        bool OnTheMenua = true;
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseMove.x, event.mouseMove.y });
 
@@ -70,8 +77,12 @@ void MenuState::HandleEvent(const sf::Event& event)
             if( m_buttons[ i ].first.getGlobalBounds().contains(location))
             {
                 updateColors(i);
+                OnTheMenua = false;
             }
         }
+        if(OnTheMenua)
+            updateColors(-1);
+
     }
 }
 
@@ -106,7 +117,7 @@ void MenuState::Update(float dt)
                 break;
             case 3:
                 if (m_buttons[3].second)
-                    m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
+                    m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
                 break;
             case 4:
                 if(m_online.second)
@@ -144,6 +155,15 @@ void MenuState::Resume()
     m_showExtra = false;
     m_online.second = false;
     m_carrer.second = false;
+}
+
+void MenuState::stopMusic()
+{
+    if(m_data->user.getIfMusic())
+        m_startMusic.play();
+    else
+        m_startMusic.stop();
+    
 }
 
 void MenuState::setVolume()
