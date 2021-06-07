@@ -2,6 +2,8 @@
 #include "Pictures.h"
 #include "Fonts.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 
 HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
@@ -14,7 +16,8 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_nextState(false),
                                                      m_request_put(),
                                                      m_request_post(),
-                                                     m_effectTime(0.0f)
+                                                     m_effectTime(0.0f),
+                                                     m_createRoom(false)
 {
 
 }
@@ -91,12 +94,7 @@ void HostState::HandleEvent(const sf::Event & event)
     }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-    {
-        if(m_createPressed && m_data->user.getId().size() > 0 )
-            m_nextState = updateUser();
-        else if(m_createPressed && m_data->user.getId().size() == 0)
-            m_nextState = createUser();
-    }
+        m_createRoom = true;
 }
 
 void HostState::Update(float dt)
@@ -118,6 +116,19 @@ void HostState::Update(float dt)
         {
             m_createPressed = !m_createPressed;
             m_effectTime = 0.0f;
+        }
+    }
+    if(m_createRoom)
+    {
+        if(m_data->user.getId().size() > 0 )
+        {
+            m_nextState = updateUser();
+            // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+        else
+        {
+            m_nextState = createUser();
+            // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
     }
     if(m_nextState)
@@ -157,7 +168,10 @@ bool HostState::createUser()
     sf::Http::Response response = m_data->http.sendRequest( m_request_post );
 
     if( response.getStatus() != sf::Http::Response::Created )
+    {
+        std::cout << "create user: " << response.getBody() << std::endl;
         return false;
+    }
     ss << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(ss, pt);
@@ -178,6 +192,9 @@ bool HostState::updateUser()
     sf::Http::Response response = m_data->http.sendRequest( m_request_put );
 
     if( response.getStatus() != sf::Http::Response::Ok )
+    {
+        std::cout << "update user: " << response.getBody() << std::endl;
         return false;
+    }
     return true;
 }

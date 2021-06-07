@@ -11,3 +11,6 @@ configure_file ("back.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("rectangle.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
+configure_file ("rectangle.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+
+

@@ -45,6 +45,7 @@ private:
     bool m_backMenu;
     bool m_createPressed;
     bool m_nextState;
+    bool m_createRoom;
     float m_effectTime;
 
     void centerOrigin(sf::Text&);
