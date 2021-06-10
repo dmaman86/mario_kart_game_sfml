@@ -71,7 +71,11 @@ void MarioKart::processInput()
 	    m_dataGame->stateStack.GetActiveState()->HandleEvent(event);
 
 		if (event.type == sf::Event::Closed)
-			m_window.close();
+        {
+		    if(m_dataGame->user.getId().size() > 1)
+		        m_dataGame->services.deleteUser(&m_dataGame->user);
+            m_window.close();
+        }
 	}
 }
 

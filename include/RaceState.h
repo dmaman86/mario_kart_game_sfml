@@ -46,7 +46,7 @@ private:
 	Pipe pipe;
 	UserNetwork *m_userJoin;
 	float m_time_update;
-
+    std::string m_map_race;
 	sf::Time m_last_update_server;
 
 }; // end RaceState

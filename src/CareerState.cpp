@@ -3,7 +3,7 @@
 #include "MenuState.h"
 #include "GetDataState.h"
 
-CareerState::CareerState(MarioKart::GameDataRef data): m_data(data),
+CareerState::CareerState(MarioKart::GameDataRef& data): m_data(data),
                                                     m_backMenu(false),
                                                     m_background()
 {
@@ -40,7 +40,7 @@ void CareerState::HandleEvent(const sf::Event& event)
         }
 		if (m_new_game.getGlobalBounds().contains(location)) {
 
-			m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), true);
+			m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)));
 		}
 		if (m_load_game.getGlobalBounds().contains(location)) {
 		}

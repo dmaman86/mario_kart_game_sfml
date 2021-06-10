@@ -7,7 +7,7 @@
 class CareerState : public State
 {
 public:
-	CareerState(MarioKart::GameDataRef);
+	CareerState(MarioKart::GameDataRef&);
 	~CareerState() = default;
 
 	void Init()override;

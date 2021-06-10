@@ -159,11 +159,6 @@ void GetDataState::HandleEvent(const sf::Event & event)
             m_data->user.setName(name );
             m_data->user.setSprite(sprite);
             m_send_data = true;
-
-			if (!m_data->user.getOnline())
-			{
-				m_data->stateStack.AddState(StateStack::StateRef(new RaceState(m_data)), true);
-			}
         }
     }
 }
@@ -203,6 +198,10 @@ void GetDataState::Update(float dt)
             if(m_nextState)
                 m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
         }
+        else if (!m_data->user.getOnline())
+        {
+            m_data->stateStack.AddState(StateStack::StateRef(new RaceState(m_data)));
+        }
     }
     if (m_backMenu)
     {
@@ -231,7 +230,7 @@ void GetDataState::Draw()
         if(m_save_data)
             window.draw(m_save);
     }
-    else
+    else if( m_send_data && m_data->user.getOnline())
     {
         window.draw(m_hostGame);
         window.draw(m_joinGame);

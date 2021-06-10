@@ -6,14 +6,15 @@
 
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
                         pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)),
-                        m_userJoin( new UserNetwork() ),
+                        m_userJoin( data->user.getOnline()? new UserNetwork() : nullptr ),
                         m_player(sf::Vector2f(WITDH_G / 2, HIGHT_G - 50),
                                  sf::Vector2f(63, 124),
                                  m_data->user.getId(),
                                  m_data->user.getSprite()),
-                        m_time_update(0.0f)
+                        m_time_update(0.0f),
+                        m_map_race( data->user.getOnline() ? data->user.getMapGame() : "mario_circuit_2.png")
 {
-	if(m_data->user.getOnline())
+	if(m_userJoin)
 		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
 }
 
@@ -26,7 +27,7 @@ void RaceState::Init()
 {
 	m_window.setFramerateLimit(60);
 	
-	if (m_data->user.getOnline())
+	if (m_userJoin)
 	{
 		m_player2 = PlayerOnline(m_userJoin->getSprite(),
 			sf::Vector2f(WITDH_G / 2 + 100, HIGHT_G - 50), sf::Vector2f(63, 110));
@@ -38,7 +39,7 @@ void RaceState::Init()
 	m_cameraZ = m_player.getIntLocation().y * 8;;
 
 	//m_tempsMoyen =0;
-	m_map = Mode7(m_data->user.getMapGame(), WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
+	m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
 	m_int_map.fillMap("mario_circuit_2.txt");
 	m_int_map.fillObjectMap("mario_circuit_2.txt");
 	//std::cout << m_int_map(6, 20);

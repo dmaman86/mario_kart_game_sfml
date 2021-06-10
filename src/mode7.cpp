@@ -43,7 +43,7 @@ void Mode7::setScreen(unsigned int width, unsigned int height)
 void Mode7::loadImage(std::string const& file)
 {
 	sf::Vector2u vec;
-	m_image = Pictures::instance().getMapTex(Pictures::mario_circuit_2);
+	m_image = Pictures::instance().getMapTex(file);
 
 	vec = m_image.getSize();
 	m_imageWidth = vec.x;
