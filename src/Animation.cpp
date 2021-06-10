@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../../../CLionProjects/mario_kart_game_sfml/include/Animation.h"
+#include "Animation.h"
 
 #include "Pictures.h"
 

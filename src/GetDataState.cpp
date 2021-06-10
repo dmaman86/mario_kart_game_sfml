@@ -14,9 +14,6 @@ GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_drivers(),
                                                          m_backMenu(false),
                                                          m_back(),
-                                                         m_request_post( HttpNetwork::path_user, sf::Http::Request::Post ),
-                                                         m_request_put(),
-                                                         m_request_del(),
                                                          m_playerText(),
                                                          m_save_data(false),
                                                          m_send_data(false),
@@ -190,16 +187,12 @@ void GetDataState::Update(float dt)
         {
             m_data->user.setHost(false);
             if(m_data->user.getId().size() > 0)
-            {
-                m_nextState = updateUser();
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            }
+                m_nextState = m_data->services.updateUser(&m_data->user);
             else
             {
                 // new user
                 m_data->user.setId("");
-                m_nextState = saveUser();
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                m_nextState = m_data->services.createUser(&m_data->user);
             }
             if(m_nextState)
                 m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
@@ -208,7 +201,7 @@ void GetDataState::Update(float dt)
     if (m_backMenu)
     {
         if(m_data->user.getId().size() > 0)
-            deleteUser();
+            m_data->services.deleteUser(&m_data->user);
 
         m_data->stateStack.RemoveState();
     }
@@ -286,61 +279,6 @@ void GetDataState::deleteLastChar()
     m_playerInput = tempString;
     m_playerText.setString(m_playerInput);
 
-}
-
-bool GetDataState::saveUser()
-{
-    std::ostringstream stream;
-    std::stringstream ss;
-    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite()
-            << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
-    m_request_post.setBody( stream.str() );
-    std::cout << "line 294 " << stream.str() << std::endl;
-
-    sf::Http::Response response = m_data->http.sendRequest( m_request_post );
-
-    if( response.getStatus() != sf::Http::Response::Created )
-    {
-        std::cout << "line 299 " << response.getBody() << std::endl;
-        return false;
-    }
-    ss << response.getBody();
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_json(ss, pt);
-    m_data->user.setId( pt.get<std::string>("id") );
-    return true;
-}
-
-bool GetDataState::updateUser()
-{
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( HttpNetwork::path_user + "/" + m_data->user.getId() );
-    std::ostringstream stream;
-    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
-    stream << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
-    m_request_put.setBody(stream.str());
-
-    sf::Http::Response response = m_data->http.sendRequest( m_request_put );
-
-    if( response.getStatus() != sf::Http::Response::Ok )
-    {
-        std::cout << "line 299 " << response.getBody() << std::endl;
-        return false;
-    }
-    return true;
-}
-
-bool GetDataState::deleteUser()
-{
-    m_request_del.setMethod(sf::Http::Request::Delete);
-    m_request_del.setUri(HttpNetwork::path_user + "/" + m_data->user.getId() );
-
-    sf::Http::Response response = m_data->http.sendRequest( m_request_del );
-
-    if( response.getStatus() != sf::Http::Response::Ok )
-        return false;
-    return true;
 }
 
 void GetDataState::setVolume()

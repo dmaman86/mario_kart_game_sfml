@@ -4,10 +4,18 @@
 #include<iostream>
 #include "Utilities.h"
 
-Player::Player(const sf::Vector2f loc, const sf::Vector2f pos): m_animation(Pictures::instance().m_drivers[3],Direction::Left,m_sprite)
-,PlayerBase::PlayerBase(Pictures::instance().getTexture(Pictures::MarioDriver), loc, pos),
-	m_angle(0.0), m_speed(0), m_force(0), m_mass(20), m_acceleration(0), m_is_lock(0), m_last_pos(0,0)
-	, m_coefficient_of_friction(1)
+Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string id, std::string sprite):
+    m_animation(Pictures::instance().m_drivers[3],Direction::Left,m_sprite),
+    PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
+	m_angle(0.0),
+	m_speed(0),
+	m_force(0),
+	m_mass(20),
+	m_acceleration(0),
+	m_is_lock(0),
+	m_last_pos(0,0),
+	m_coefficient_of_friction(1),
+    m_idHost( id )
 {
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);

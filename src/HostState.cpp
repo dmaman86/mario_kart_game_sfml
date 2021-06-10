@@ -1,6 +1,7 @@
 #include "HostState.h"
 #include "Pictures.h"
 #include "Fonts.h"
+#include "RaceState.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -14,10 +15,9 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_maps(),
                                                      m_textures(),
                                                      m_nextState(false),
-                                                     m_request_put(),
-                                                     m_request_post(),
                                                      m_effectTime(0.0f),
-                                                     m_createRoom(false)
+                                                     m_createRoom(false),
+                                                     m_pressEnter(false)
 {
 
 }
@@ -121,18 +121,25 @@ void HostState::Update(float dt)
     if(m_createRoom)
     {
         if(m_data->user.getId().size() > 0 )
-        {
-            m_nextState = updateUser();
-            // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
+            m_pressEnter = m_data->services.updateUser(&m_data->user);
         else
+            m_pressEnter = m_data->services.createUser(&m_data->user);
+    }
+    if(m_pressEnter)
+    {
+        while(m_data->user.getOtherId().size() < 1 )
         {
-            m_nextState = createUser();
-            // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            if(!m_data->services.getIdOtherUser(&m_data->user))
+                std::cout << "something wrong in host state" << std::endl;
+            else if( m_data->user.getOtherId().size() > 1 )
+            {
+                std::cout << "go to race" << std::endl;
+                std::cout << "other id: " << m_data->user.getOtherId() << std::endl;
+                m_data->stateStack.AddState(StateStack::StateRef( new RaceState(m_data)));
+                break;
+            }
         }
     }
-    if(m_nextState)
-        std::cout << "got to wait to user\n";
 }
 
 void HostState::Draw()
@@ -153,48 +160,4 @@ void HostState::Draw()
 void HostState::centerOrigin(sf::Text & text)
 {
 
-}
-
-bool HostState::createUser()
-{
-    m_request_post.setMethod( sf::Http::Request::Post );
-    m_request_post.setUri( HttpNetwork::path_user );
-    std::ostringstream stream;
-    std::stringstream ss;
-    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite()
-           << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
-    m_request_post.setBody( stream.str() );
-
-    sf::Http::Response response = m_data->http.sendRequest( m_request_post );
-
-    if( response.getStatus() != sf::Http::Response::Created )
-    {
-        std::cout << "create user: " << response.getBody() << std::endl;
-        return false;
-    }
-    ss << response.getBody();
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_json(ss, pt);
-    m_data->user.setId( pt.get<std::string>("id") );
-    return true;
-}
-
-bool HostState::updateUser()
-{
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( HttpNetwork::path_user + "/" + m_data->user.getId() );
-    std::ostringstream stream;
-    stream << "name=" << m_data->user.getName() << "&sprite=" << m_data->user.getSprite();
-    stream << "&host=" << m_data->user.getIfHost() << "&map=" << m_data->user.getMapGame();
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
-    m_request_put.setBody(stream.str());
-
-    sf::Http::Response response = m_data->http.sendRequest( m_request_put );
-
-    if( response.getStatus() != sf::Http::Response::Ok )
-    {
-        std::cout << "update user: " << response.getBody() << std::endl;
-        return false;
-    }
-    return true;
 }

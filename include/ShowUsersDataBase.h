@@ -32,10 +32,9 @@ private:
     sf::Text m_title;
     sf::Vector2u m_windowSize;
 
-    sf::Http::Request m_request_get;
-    sf::Http::Request m_request_delete;
     bool m_validConnection;
     bool m_backMenu;
+    bool m_selectedUser;
     std::vector<UserNetwork> m_users;
 
     typedef std::pair< sf::RectangleShape, bool > pair;
@@ -45,7 +44,5 @@ private:
     std::vector< sf::Sprite > m_list_sprites;
 
     void centerOrigin(sf::Text&);
-    void buildVecUsers(boost::property_tree::ptree const&);
-    void getUsers();
     void buildList( const sf::Vector2u& );
 };

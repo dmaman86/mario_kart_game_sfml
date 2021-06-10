@@ -6,7 +6,7 @@ class PlayerOnline : public PlayerBase {
 public:
 
 	PlayerOnline() {};
-	PlayerOnline(const sf::Texture& ,const sf::Vector2f, const sf::Vector2f);
+	PlayerOnline(const std::string ,const sf::Vector2f, const sf::Vector2f);
 	
 	void updateLastLocation() { 
 		m_last_location = m_location;

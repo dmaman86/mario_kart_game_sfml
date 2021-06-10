@@ -1,10 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
 #include <cmath>
 #include <vector>
 
@@ -13,7 +10,6 @@
 #include "Macros.h"
 #include "UserNetwork.h"
 
-namespace pt = boost::property_tree;
 
 class GetDataState : public State
 {
@@ -48,9 +44,6 @@ private:
     bool m_joinPressed;
     bool m_nextState;
     float m_effectTime;
-    sf::Http::Request m_request_post;
-    sf::Http::Request m_request_put;
-    sf::Http::Request m_request_del;
     bool m_backMenu;
     std::string m_user_name;
     std::string m_user_sprite;
@@ -58,9 +51,6 @@ private:
     void centerOrigin(sf::Text&);
     void inputLogic(int charTyped);
     void deleteLastChar();
-    bool saveUser();
-    bool updateUser();
-    bool deleteUser();
     void initVectorSprites(const sf::Vector2u&);
     void setVolume();
 };

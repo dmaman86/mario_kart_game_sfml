@@ -1,6 +1,7 @@
 #include "ShowUsersDataBase.h"
 #include "Pictures.h"
 #include "Fonts.h"
+#include "RaceState.h"
 #include <iostream>
 
 ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef& data):
@@ -9,10 +10,7 @@ ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef& data):
                                                          m_backMenu(false),
                                                          m_back(),
                                                          m_users(),
-                                                         m_request_get( HttpNetwork::path_user,
-                                                                        sf::Http::Request::Get ),
-                                                         m_request_delete( HttpNetwork::path_user + "/" + data->user.getId(),
-                                                                           sf::Http::Request::Delete)
+                                                         m_selectedUser(false)
 {
 
 }
@@ -35,7 +33,7 @@ void ShowUsersDataBase::Init()
     m_title.setCharacterSize(100);
     m_title.setPosition((m_windowSize.x / 2) - 500, 100);
 
-    getUsers();
+    m_data->services.getUsers( m_users, m_data->user.getId() );
     buildList( m_windowSize );
 }
 
@@ -55,7 +53,11 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
             {
                 auto rec = m_users_rectangle[ i ];
                 if( rec.first.getGlobalBounds().contains(location))
+                {
                     std::cout << m_users.at( i ).getId() << " " << m_users.at( i ).getName() << std::endl;
+                    m_data->user.setIdOther(m_users.at( i ).getId());
+                    m_selectedUser = true;
+                }
             }
         }
     }
@@ -68,7 +70,13 @@ void ShowUsersDataBase::Update(float dt)
         m_data->stateStack.RemoveState();
         m_backMenu = false;
     }
-    getUsers();
+    if(m_selectedUser)
+    {
+        std::cout << "go to race state\n";
+        if(m_data->services.createRace(&m_data->user))
+            m_data->stateStack.AddState(StateStack::StateRef( new RaceState(m_data)));
+    }
+    m_data->services.getUsers( m_users, m_data->user.getId() );
     buildList( m_windowSize );
 }
 
@@ -96,47 +104,6 @@ void ShowUsersDataBase::centerOrigin(sf::Text& text)
     sf::FloatRect bounds = text.getLocalBounds();
     text.setOrigin(std::floor(bounds.left + bounds.width / 2.f),
                    std::floor(bounds.top + bounds.height / 2.f));
-}
-
-void ShowUsersDataBase::getUsers()
-{
-    std::stringstream stream;
-    sf::Http::Response response = m_data->http.sendRequest(m_request_get);
-    m_users.clear();
-
-    if( response.getStatus() == sf::Http::Response::Ok )
-    {
-        stream << response.getBody();
-        boost::property_tree::ptree pt;
-        boost::property_tree::read_json(stream, pt);
-
-        BOOST_FOREACH(boost::property_tree::ptree::value_type &v, pt.get_child("users"))
-        {
-            assert(v.first.empty()); // array elements have no names
-            buildVecUsers(v.second);
-        }
-    }
-    else
-        m_validConnection = false;
-}
-
-void ShowUsersDataBase::buildVecUsers(boost::property_tree::ptree const& pt)
-{
-    using boost::property_tree::ptree;
-    std::vector< std::string > values;
-    for (ptree::const_iterator it = pt.begin(); it != pt.end(); ++it)
-    {
-        values.emplace_back( it->second.get_value<std::string>() );
-    }
-    if( values[0] != m_data->user.getId() )
-    {
-        UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
-        std::stringstream ss(values[4]);
-        bool game = false;
-        ss >> game;
-        user.updateInGame(game);
-        m_users.emplace_back( user );
-    }
 }
 
 void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )

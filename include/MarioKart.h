@@ -7,6 +7,7 @@
 
 #include "StateStack.h"
 #include "UserNetwork.h"
+#include "Services.h"
 
 
 namespace sf
@@ -24,7 +25,7 @@ public:
 
         sf::RenderWindow* window;
         StateStack stateStack;
-        sf::Http http;
+        Services services;
         UserNetwork user;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;

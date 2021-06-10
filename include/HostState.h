@@ -1,10 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/foreach.hpp>
 #include <cmath>
 #include <vector>
 
@@ -13,7 +9,6 @@
 #include "Macros.h"
 #include "UserNetwork.h"
 
-namespace pt = boost::property_tree;
 
 class HostState : public State
 {
@@ -39,17 +34,14 @@ private:
     VectorMaps m_maps;
     VectorTextures m_textures;
 
-    sf::Http::Request m_request_post;
-    sf::Http::Request m_request_put;
     bool m_validConnection;
     bool m_backMenu;
     bool m_createPressed;
     bool m_nextState;
     bool m_createRoom;
+    bool m_pressEnter;
     float m_effectTime;
 
     void centerOrigin(sf::Text&);
     void initVectorMaps();
-    bool createUser();
-    bool updateUser();
 };

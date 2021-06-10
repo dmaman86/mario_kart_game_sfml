@@ -11,10 +11,12 @@ public:
     ~UserNetwork() = default;
 
     void setId( std::string );
+    void setIdOther( std::string );
     const std::string& getId();
     const std::string& getName(){ return m_name; }
-    void setName( std::string& );
-    void setSprite( std::string& );
+    const std::string& getOtherId(){ return m_idOther; }
+    void setName( std::string );
+    void setSprite( std::string );
     const std::string& getSprite(){ return m_sprite; }
     void updateInGame(bool game){ m_inGame = game; }
     bool getInGame(){ return m_inGame; }
@@ -28,6 +30,7 @@ public:
     void setIfMusic(bool music) { m_music = music; }
 private:
     std::string m_id;
+    std::string m_idOther;
     std::string m_name;
     std::string m_sprite;
     std::string m_map_game;

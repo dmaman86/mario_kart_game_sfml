@@ -1,6 +1,7 @@
 #pragma once
 #include "Animation.h"
 #include "PlayerBase.h"
+#include <string>
 
 class FloorAsphalt;
 class FloorBrick;
@@ -10,7 +11,7 @@ class Player : public PlayerBase {
 
 public:
 	Player();
-	Player(const sf::Vector2f, const sf::Vector2f loc);
+	Player(const sf::Vector2f, const sf::Vector2f loc, std::string id, std::string sprite);
 
 	void setIntLocation(const sf::Vector2f& loc);
 	void updateSpeed(float);
@@ -34,6 +35,6 @@ public:
 	float m_angle;
 	float m_speed;
 	Animation m_animation;
-
+    std::string m_idHost;
 };
 

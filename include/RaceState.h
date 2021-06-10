@@ -9,6 +9,7 @@
 #include "State.h"
 #include "MapFileCollision.h"
 #include "Pipe.h"
+#include "UserNetwork.h"
 
 class RaceState : public State
 {
@@ -43,5 +44,6 @@ private:
 	PlayerOnline m_player2;
 	MapFileCollision m_int_map;
 	Pipe pipe;
+	UserNetwork *m_userJoin;
 
 }; // end RaceState
