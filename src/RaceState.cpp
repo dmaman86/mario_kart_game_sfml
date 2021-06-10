@@ -87,7 +87,7 @@ void RaceState::Update(float deltatime) {
 	if (m_data->user.getOnline())
 	{
 		m_time_update += deltatime;
-		if (m_time_update > 0.5f)
+		if (m_time_update > 0.1f)
 		{
 			m_data->services.updatePosition(m_data->user.getId(), m_player.getLocation().x, m_player.getLocation().y);
 			m_data->services.getPosition(m_data->user.getOtherId(), m_player2.getLocation().x, m_player2.getLocation().y);
