@@ -14,6 +14,8 @@ const std::string Pictures::online = "online.png";
 const std::string Pictures::settings = "settings.png";
 const std::string Pictures::career = "career.png";
 const std::string Pictures::back = "back.png";
+const std::string Pictures::new_game = "new_game.png";
+const std::string Pictures::load_game = "load_game.png";
 const std::string Pictures::BowserDriver = "bowser.png";
 const std::string Pictures::DKDriver = "dk.png";
 const std::string Pictures::KoopaDriver = "koopa.png";
@@ -53,8 +55,12 @@ Pictures::Pictures():m_drivers(8)
         throw std::runtime_error("Cant Open " + Pictures::settings);
     if(!(m_pics[Pictures::career] = sf::Texture()).loadFromFile(Pictures::career))
         throw std::runtime_error("Cant Open " + Pictures::career);
-    if(!(m_pics[Pictures::back] = sf::Texture()).loadFromFile(Pictures::back))
-        throw std::runtime_error("Cant Open " + Pictures::back);
+	if (!(m_pics[Pictures::back] = sf::Texture()).loadFromFile(Pictures::back))
+		throw std::runtime_error("Cant Open " + Pictures::back);
+	if(!(m_pics[Pictures::new_game] = sf::Texture()).loadFromFile(Pictures::new_game))
+        throw std::runtime_error("Cant Open " + Pictures::new_game);
+	if (!(m_pics[Pictures::load_game] = sf::Texture()).loadFromFile(Pictures::load_game))
+		throw std::runtime_error("Cant Open " + Pictures::load_game);
     if(!(m_pics[Pictures::BowserDriver] = sf::Texture()).loadFromFile(Pictures::BowserDriver))
         throw std::runtime_error("Cant Open " + Pictures::BowserDriver);
     if(!(m_pics[Pictures::DKDriver] = sf::Texture()).loadFromFile(Pictures::DKDriver))

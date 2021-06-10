@@ -46,4 +46,6 @@ private:
 	Pipe pipe;
 	UserNetwork *m_userJoin;
 
+	sf::Time m_last_update_server;
+
 }; // end RaceState

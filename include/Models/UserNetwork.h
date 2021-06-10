@@ -28,6 +28,9 @@ public:
     const std::string& getMapGame(){ return m_map_game; }
     bool getIfMusic() { return m_music; }
     void setIfMusic(bool music) { m_music = music; }
+	void setOnline(const bool b) { m_online = b; }
+	const bool getOnline() { return m_online; }
+
 private:
     std::string m_id;
     std::string m_idOther;
@@ -38,4 +41,5 @@ private:
     bool m_sound;
     bool m_music;
     bool m_host;
+	bool m_online;
 };

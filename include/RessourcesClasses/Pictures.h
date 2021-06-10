@@ -36,6 +36,8 @@ public:
     static  const std::string settings;
     static  const std::string career;
     static  const std::string back;
+	static  const std::string new_game;
+	static  const std::string load_game;
     static const std::string BowserDriver;
     static const std::string DKDriver;
     static const std::string KoopaDriver;

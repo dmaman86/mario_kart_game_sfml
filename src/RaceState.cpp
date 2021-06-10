@@ -10,19 +10,23 @@ RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
                         m_player(sf::Vector2f(WITDH_G / 2, HIGHT_G - 50),
                                  sf::Vector2f(63, 124),
                                  m_data->user.getId(),
-                                 m_data->user.getSprite())
+                                 m_data->user.getSprite()),
+								 m_last_update_server(sf::seconds(0))
 {
-    m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
+	if(m_data->user.getOnline())
+		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
 }
 
 void RaceState::Init() {
 	m_window.setFramerateLimit(60);
 	
-	m_player2 = PlayerOnline(m_userJoin->getSprite(),
-		sf::Vector2f(WITDH_G / 2 + 100, HIGHT_G - 50), sf::Vector2f(63, 110));
+	if (m_data->user.getOnline())
+	{
+		m_player2 = PlayerOnline(m_userJoin->getSprite(),
+			sf::Vector2f(WITDH_G / 2 + 100, HIGHT_G - 50), sf::Vector2f(63, 110));
 
-	m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
-
+		m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
+	}
 	m_cameraX = m_player.getIntLocation().x * 8;
 	m_cameraY = -17;
 	m_cameraZ = m_player.getIntLocation().y * 8;;
@@ -65,9 +69,19 @@ void RaceState::Update(float deltatime) {
 	m_player.updateSpeed(deltatime);
 	processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
 	m_player.updateLocation(deltatime);
-    m_data->services.updatePosition( m_data->user.getId(), m_player.getLocation().x, m_player.getLocation().y );
 
-    m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
+	if (m_data->user.getOnline())
+	if (m_last_update_server.asSeconds() == 0)
+	{
+		m_data->services.updatePosition(m_data->user.getId(), m_player.getLocation().x, m_player.getLocation().y);
+		m_last_update_server += sf::milliseconds(deltatime);
+	}
+	else if (m_last_update_server.asSeconds() >= 1)
+	{
+		m_last_update_server.Zero;
+	}
+
+	m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * cos(m_player.getAngle() * 3.1415 / 180);
 
 	m_theta = m_player.getAngle();
@@ -198,8 +212,8 @@ void RaceState::updateObjLocation()
 
 void RaceState::updateDynamic()
 {
-	// m_player2.updateLastLocation();
-	// m_int_map.updateObjects(m_player2.getLastLocation().x*8, m_player2.getLastLocation().y*8,(m_player2.getIntLocation().x * 8), (m_player2.getIntLocation().y * 8));
+	 m_player2.updateLastLocation();
+	 m_int_map.updateObjects(m_player2.getLastLocation().x*8, m_player2.getLastLocation().y*8,(m_player2.getIntLocation().x * 8), (m_player2.getIntLocation().y * 8));
 }
 
 

@@ -3,6 +3,8 @@
 #include "helpState.h"
 #include "GetDataState.h"
 #include "SettingsState.h"
+#include "CareerState.h"
+
 #include <iostream>
 
 
@@ -90,32 +92,37 @@ void MenuState::Update(float dt)
 
     for( size_t i{ 0 }; i < 6; i++ )
     {
-        switch( i )
-        {
-            case 0:
-                // state about
-                break;
-            case 1:
-                if(m_buttons[1].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
-                break;
-            case 2:
-				if (m_buttons[2].second)
+		switch (i)
+		{
+		case 0:
+			// state about
+			break;
+		case 1:
+			if (m_buttons[1].second)
+				m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
+			break;
+		case 2:
+			if (m_buttons[2].second)
 				m_showExtra = true;
-                /*if(m_buttons[2].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);*/
-                break;
-            case 3:
-                if (m_buttons[3].second)
-                    m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
-                break;
-            case 4:
-                if(m_buttons[4].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);
-                break;
+			/*if(m_buttons[2].second)
+				m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);*/
+			break;
+		case 3:
+			if (m_buttons[3].second)
+				m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
+			break;
+		case 4:
+			if (m_buttons[4].second)
+			{
+				m_data->user.setOnline(true);
+				m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
+			}
+			break;
             case 5:
 				if (m_buttons[5].second)
-                    m_data->stateStack.AddState(StateStack::StateRef( new helpState(m_data)), false);
+				{
+					m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
+				}
                 break;
         }
     }

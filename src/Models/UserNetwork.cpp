@@ -9,7 +9,8 @@ UserNetwork::UserNetwork():
         m_host(false),
         m_inGame(false),
         m_map_game(""),
-        m_idOther("")
+        m_idOther(""),
+		m_online(false)
 {
 
 }
@@ -18,7 +19,8 @@ UserNetwork::UserNetwork( std::string id, std::string name, std::string sprite, 
         m_id( id ),
         m_name( name ),
         m_sprite( sprite ),
-        m_map_game(map)
+        m_map_game(map),
+		m_online(false)
 {
 
 }

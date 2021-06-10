@@ -8,6 +8,7 @@
 #include <sstream>
 #include <thread>
 #include <chrono>
+#include "RaceState.h"
 
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
@@ -158,6 +159,11 @@ void GetDataState::HandleEvent(const sf::Event & event)
             m_data->user.setName(name );
             m_data->user.setSprite(sprite);
             m_send_data = true;
+
+			if (!m_data->user.getOnline())
+			{
+				m_data->stateStack.AddState(StateStack::StateRef(new RaceState(m_data)), true);
+			}
         }
     }
 }
