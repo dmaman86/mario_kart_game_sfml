@@ -85,11 +85,12 @@ void RaceState::Update(float deltatime) {
 	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
 	m_map.setTheta(m_player.getAngle());
 	m_map.calc(m_int_map.m_vec_obj,&m_player2, m_player.getIntLocation());
+	m_time_update += deltatime;
 
 	if (m_data->user.getOnline())
 	{
 		m_time_update += deltatime;
-		if (m_time_update < 0.1f)
+		if (m_time_update > 0.1f)
 		{
 			m_data->services.updatePosition(m_data->user.getId(), m_player.getLocation().x, m_player.getLocation().y);
 			m_data->services.getPosition(m_data->user.getOtherId(), m_player2.getLocation().x, m_player2.getLocation().y);

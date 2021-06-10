@@ -17,7 +17,8 @@ target_sources (test_mario_kart PRIVATE
 		"HostState.cpp"
 		"Animation.cpp"
 		"Services.cpp"
-		"CareerState.cpp")
+		"CareerState.cpp"
+        "GameStatusBar.cpp")
 
 add_subdirectory(Machine)
 add_subdirectory(GameObjects)

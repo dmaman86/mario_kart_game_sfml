@@ -39,7 +39,7 @@ void MenuState::Init()
 
     m_startMusic.openFromFile(Sounds::menu);
     m_startMusic.setLoop(true);
-    m_startMusic.play();
+   // m_startMusic.play();
     setposition();
 	
 	m_buttons.push_back(m_online);

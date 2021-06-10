@@ -79,7 +79,7 @@ bool Services::updateUser(UserNetwork* user)
 
     if( m_response.getStatus() != sf::Http::Response::Ok )
     {
-        std::cout << m_response.getBody() << std::endl;
+        //std::cout << m_response.getBody() << std::endl;
         return false;
     }
     return true;
@@ -109,7 +109,7 @@ bool Services::createRace(UserNetwork * user)
     m_response = m_http.sendRequest( m_request_put );
     if( m_response.getStatus() != sf::Http::Response::Ok )
     {
-        std::cout << m_response.getBody() << std::endl;
+        //std::cout << m_response.getBody() << std::endl;
         return false;
     }
     return true;
@@ -193,7 +193,7 @@ bool Services::updatePosition( std::string id, float positionX, float positionY 
 
     if( m_response.getStatus() != sf::Http::Response::Ok )
     {
-        std::cout << m_response.getBody() << std::endl;
+       // std::cout << m_response.getBody() << std::endl;
         return false;
     }
     return true;

@@ -54,7 +54,7 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
                 auto rec = m_users_rectangle[ i ];
                 if( rec.first.getGlobalBounds().contains(location))
                 {
-                    std::cout << m_users.at( i ).getId() << " " << m_users.at( i ).getName() << std::endl;
+                    //std::cout << m_users.at( i ).getId() << " " << m_users.at( i ).getName() << std::endl;
                     m_data->user.setIdOther(m_users.at( i ).getId());
                     m_selectedUser = true;
                 }

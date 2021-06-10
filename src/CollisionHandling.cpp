@@ -7,21 +7,34 @@
 #include <typeindex>
 #include "Floor.h"
 #include "Pipe.h"
+#include "Banana.h"
 #include "Player.h"
 
 namespace // anonymous namespace — the standard way to make function "static"
 {
 
-// primary collision-processing functions
-void PlayerPipe(Object& player,
-	Object& pipe)
-{
-    // To get the actual types and use them:
-	Player& Pl = dynamic_cast<Player&>(player);
-	Pipe&  pi  = dynamic_cast<Pipe&>(pipe);
 
-	Pl.driveBack();
-}
+	void PlayerBanana(Object& player, Object& banana)
+	{
+		Player& Pl = dynamic_cast<Player&>(player);
+
+		Pl.driveBack();
+	}
+
+	void BananaPlayer(Object& Banana,
+		Object& Player)
+	{
+		PlayerBanana(Player, Banana);
+	}
+
+	// primary collision-processing functions
+	void PlayerPipe(Object& player,Object& pipe)
+	{
+		// To get the actual types and use them:
+		Player& Pl = dynamic_cast<Player&>(player);
+
+		Pl.driveBack();
+	}
 
 //...
 
@@ -64,8 +77,11 @@ using HitMap = std::map<Key, HitFunctionPtr>;
 HitMap initializeCollisionMap()
 {
     HitMap phm;
-    phm[Key(typeid(Player   ), typeid(Pipe    ))] = &PlayerPipe;
+    phm[Key(typeid(Player), typeid(Pipe))] = &PlayerPipe;
     phm[Key(typeid(Pipe), typeid(Player))] = &PipePlayer;
+
+	phm[Key(typeid(Player), typeid(Banana))] = &PlayerBanana;
+	phm[Key(typeid(Banana), typeid(Player))] = &BananaPlayer;
 
 	phm[Key(typeid(Player), typeid(FloorAsphalt))] = &PlayerFloorAsphalt;
 	phm[Key(typeid(Player), typeid(FloorBrick))] = &PlayerFloorBrick;
