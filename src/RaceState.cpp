@@ -12,7 +12,7 @@ RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
                                  m_data->user.getId(),
                                  m_data->user.getSprite()),
                         m_time_update(0.0f),
-                        m_map_race( data->user.getOnline() ? data->user.getMapGame() : "mario_circuit_2.png")
+                        m_map_race( data->user.getIfHost() ? data->user.getMapGame() : "mario_circuit_2.png")
 {
 	if(m_userJoin)
 		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
