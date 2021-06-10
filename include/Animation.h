@@ -6,9 +6,9 @@
 class Animation
 {
 public:
-    Animation(const AnimationData& data, Direction dir, sf::Sprite& sprite);
+    Animation(const AnimationData&, Direction dir, sf::Sprite& sprite);
     void direction(Direction dir);
-    void update(float);
+    void update(sf::Time i);
 
 private:
     void update();
@@ -18,4 +18,5 @@ private:
     Direction m_dir = Direction::Up;
     int m_index = 0;
     sf::Sprite& m_sprite;
+
 };

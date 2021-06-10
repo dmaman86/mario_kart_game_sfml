@@ -5,12 +5,12 @@
 #include "AnimationData.h"
 
 
-const int DRIVER_VECTOR_LEN = 8;
-const int NUMBER_OF_DRIVERS = 8;
+const int DRIVER_VECTOR_LEN = 7;
+const int NUMBER_OF_DRIVERS = 7;
 enum  Drivers{
-    Mario,
-    Dk,
     Boewser,
+    Dk,
+    Mario,
     Koopa,
     Luigi,
     Peach,
@@ -49,6 +49,7 @@ public:
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);
+    const AnimationData& getDriveAnimationData(std::string);
 
     std::vector<AnimationData> m_drivers;
 

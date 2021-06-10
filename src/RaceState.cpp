@@ -45,6 +45,7 @@ void RaceState::Init()
 }
 void RaceState::Draw() {
 
+    m_player.m_animation.update(m_player.m_playerClock.getElapsedTime());
 	int xx = m_player.getIntLocation().x;
 	int zz = m_player.getIntLocation().y;
 

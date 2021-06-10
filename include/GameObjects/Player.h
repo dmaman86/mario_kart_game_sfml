@@ -36,5 +36,7 @@ public:
 	float m_speed;
 	Animation m_animation;
     std::string m_idHost;
+    sf::Clock m_playerClock;
+    bool m_is_pressed;
 };
 

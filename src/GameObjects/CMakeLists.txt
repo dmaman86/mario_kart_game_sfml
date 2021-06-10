@@ -4,4 +4,5 @@ target_sources(test_mario_kart PRIVATE
 		"Pipe.cpp"
 		"StaticObject.cpp"
 		"PlayerOnline.cpp"
-		"PlayerBase.cpp")
+		"PlayerBase.cpp"
+		"SkyLine.cpp")

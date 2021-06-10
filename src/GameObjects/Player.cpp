@@ -5,7 +5,7 @@
 #include "Utilities.h"
 
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string id, std::string sprite):
-    m_animation(Pictures::instance().m_drivers[3],Direction::Left,m_sprite),
+    m_animation(Pictures::instance().getDriveAnimationData(sprite),Direction::Left,m_sprite),
     PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
 	m_angle(0.0),
 	m_speed(0),
@@ -38,7 +38,7 @@ void Player::updateAcceleration()
 }
 
 void Player::speedUp(float delta) {
-	std::cout << m_force << " " << m_mass << " " << m_acceleration << '\n';
+	//std::cout << m_force << " " << m_mass << " " << m_acceleration << '\n';
 	if (m_force < MAX_SPEED)
 		if (m_force <= 0) {
 			m_force = 0.05;
@@ -58,7 +58,8 @@ void Player::speedDown(float delta) {
 
 void Player::updateSpeed(float delta) {
 
-  //  m_animation.update(delta);
+
+
 	if (m_is_lock) {
 		handleLock(delta);
 		return;
@@ -99,15 +100,32 @@ void Player::updateDir()
 	if (m_is_lock) {
 		return;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		if (this->getSpeed() > 0)
-			this->setAngle(this->getAngle() + 3);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        if (this->getSpeed() > 0){
+            this->setAngle(this->getAngle() + 3);
+            if(!m_is_pressed) {
+                m_is_pressed = true;
+                m_playerClock.restart();
+            }
+        }
+    }
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		if (this->getSpeed() > 0)
+		if (this->getSpeed() > 0){
 			this->setAngle(this->getAngle() - 3);
+            if(!m_is_pressed) {
+                m_is_pressed = true;
+               m_playerClock.restart();
+            }
+        }
 	}
+	else {
+        this->m_is_pressed = false;
+
+    }
+	if(m_is_pressed)
+	    std::cout << m_playerClock.getElapsedTime().asMilliseconds()<<"\n";
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		this->m_force -= 0.25;

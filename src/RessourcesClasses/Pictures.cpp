@@ -112,6 +112,49 @@ AnimationData Pictures::setDriverData(int i) {
     return driver;
 }
 
+const AnimationData& Pictures::getDriveAnimationData(std::string driver) {
+
+    if(driver == MarioDriver)
+    {
+        return m_drivers[Mario];
+    }
+
+    if(driver == BowserDriver)
+    {
+        return m_drivers[Boewser];
+    }
+    if(driver == DKDriver)
+    {
+        return m_drivers[Dk];
+    }
+
+    if(driver == KoopaDriver)
+    {
+        return m_drivers[Koopa];
+    }
+
+    if(driver == LuigiDriver)
+    {
+        return m_drivers[Luigi];
+    }
+
+    if(driver == PeachDriver)
+    {
+        return m_drivers[Peach];
+    }
+
+    if(driver == ToadDriver)
+    {
+        return m_drivers[Toad];
+    }
+
+    if(driver == YoshiDriver)
+    {
+        return m_drivers[Yoshi];
+    }
+    else return m_drivers[Mario];
+}
+
 
 
 
