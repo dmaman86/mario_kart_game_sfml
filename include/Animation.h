@@ -8,7 +8,7 @@ class Animation
 public:
     Animation(const AnimationData&, Direction dir, sf::Sprite& sprite);
     void direction(Direction dir);
-    void update(sf::Time i);
+    void update(sf::Time i, bool is_pressed);
 
 private:
     void update();

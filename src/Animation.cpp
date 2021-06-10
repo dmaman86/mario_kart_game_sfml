@@ -1,9 +1,8 @@
 #include <iostream>
 #include "Animation.h"
-
 #include "Pictures.h"
 
-const auto AnimationTime = sf::seconds(2.0f);
+const auto AnimationTime = sf::seconds(3.f);
 
 Animation::Animation(const AnimationData& data, Direction dir, sf::Sprite& sprite)
     : m_dir(dir), m_sprite(sprite),m_data(data),m_index(0)
@@ -24,8 +23,9 @@ void Animation::direction(Direction dir)
     update();
 }
 
-void Animation::update(sf::Time i) {
-    if (i.asMilliseconds() == 0)
+void Animation::update(sf::Time i, bool is_pressed) {
+
+    if (!is_pressed)
     {
         m_index -- ;
         if(m_index < 0) m_index = 0;
@@ -33,15 +33,16 @@ void Animation::update(sf::Time i) {
 
     else {
         m_elapsed += i;
+        if(i.asMilliseconds() <= 100.f)++m_index;
+        else
         if (m_elapsed >= AnimationTime) {
             m_elapsed -= AnimationTime;
             if (m_index < m_data.m_data.size() - 1)
                 ++m_index;
-            m_index %= m_data.m_data.size();
 
         }
+        m_index %= m_data.m_data.size();
     }
-        std::cout << m_index<<"\n";
     update();
 }
 

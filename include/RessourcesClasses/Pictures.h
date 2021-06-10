@@ -5,8 +5,8 @@
 #include "AnimationData.h"
 
 
-const int DRIVER_VECTOR_LEN = 7;
-const int NUMBER_OF_DRIVERS = 7;
+const int DRIVER_VECTOR_LEN = 6;
+const int NUMBER_OF_DRIVERS = 6;
 enum  Drivers{
     Boewser,
     Dk,

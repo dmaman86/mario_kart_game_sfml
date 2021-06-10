@@ -31,7 +31,7 @@ Pictures &Pictures::instance() {
     return inst;
 }
 
-Pictures::Pictures():m_drivers(8)
+Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 {
     if(!(m_pics[Pictures::MarioDriver] = sf::Texture()).loadFromFile(Pictures::MarioDriver))
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
