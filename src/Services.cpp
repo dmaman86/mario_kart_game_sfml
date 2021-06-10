@@ -189,7 +189,7 @@ bool Services::updatePosition( std::string id, float positionX, float positionY 
     m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
     m_request_put.setBody(m_ostream.str());
 
-    m_response = m_http.sendRequest( m_request_put );
+    m_response = m_http.sendRequest( m_request_put, sf::seconds(0.1) );
 
     if( m_response.getStatus() != sf::Http::Response::Ok )
     {
@@ -206,7 +206,7 @@ bool Services::getPosition( std::string idOther, float& positionX, float& positi
     m_request_get.setMethod(sf::Http::Request::Get);
     m_request_get.setUri(HttpNetwork::path_player + "/" + idOther );
 
-    m_response = m_http.sendRequest( m_request_get );
+    m_response = m_http.sendRequest( m_request_get, sf::seconds(0.1) );
 
     if( m_response.getStatus() != sf::Http::Response::Ok )
         return false;

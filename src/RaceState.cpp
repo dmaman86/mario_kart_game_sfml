@@ -71,7 +71,7 @@ void RaceState::Update(float deltatime) {
 	m_map.calc(m_int_map.m_vec_obj,&m_player2, m_player.getIntLocation());
 	m_time_update += deltatime;
 
-	if (m_data->user.getOnline())
+	if (m_userJoin)
 	{
 		m_time_update += deltatime;
 		if (m_time_update > 0.1f)

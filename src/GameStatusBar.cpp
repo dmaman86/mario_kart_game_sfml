@@ -38,9 +38,9 @@ void GameStatusBar::printGameStatus(sf::RenderWindow& window, const  sf::Time& t
     if (m_isOnTime)
     {
         if (lefttime < 10)
-            m_timeTheLevel.setColor(sf::Color::Red);
+            m_timeTheLevel.setFillColor(sf::Color::Red);
         else
-            m_timeTheLevel.setColor(sf::Color::White);
+            m_timeTheLevel.setFillColor(sf::Color::White);
 
         m_timeTheLevel.setString("Time:" + std::to_string(lefttime));
     }
@@ -72,26 +72,26 @@ void GameStatusBar::printChangeColor(int life, const sf::Clock& clock,
     // If the score is greater than the current score 
     if (score > m_score)
     {
-        m_scoreText.setColor(sf::Color::Green);
+        m_scoreText.setFillColor(sf::Color::Green);
         m_scorechange = clock.getElapsedTime();
     }
     // If life is smaller than the present life
     if (life < m_life)
     {
-        m_lifeText.setColor(sf::Color::Red);
+        m_lifeText.setFillColor(sf::Color::Red);
         m_lifechange = clock.getElapsedTime();
 
     }
     // If the life is greater than the current life
     if (life > m_life)
     {
-        m_lifeText.setColor(sf::Color::Green);
+        m_lifeText.setFillColor(sf::Color::Green);
         m_lifechange = clock.getElapsedTime();
     }
     // If the time is greater than the current time
     if (time > m_time)
     {
-        m_timeTheLevel.setColor(sf::Color::Green);
+        m_timeTheLevel.setFillColor(sf::Color::Green);
         m_timechange = clock.getElapsedTime();
     }
     m_life = life;
@@ -99,13 +99,13 @@ void GameStatusBar::printChangeColor(int life, const sf::Clock& clock,
     m_score = score;
 
     if (clock.getElapsedTime().asSeconds() > m_scorechange.asSeconds() + 2)
-        m_scoreText.setColor(sf::Color::White);
+        m_scoreText.setFillColor(sf::Color::White);
 
     if (clock.getElapsedTime().asSeconds() > m_timechange.asSeconds() + 2)
-        m_timeTheLevel.setColor(sf::Color::White);
+        m_timeTheLevel.setFillColor(sf::Color::White);
 
     if (clock.getElapsedTime().asSeconds() > m_lifechange.asSeconds() + 2)
-        m_lifeText.setColor(sf::Color::White);
+        m_lifeText.setFillColor(sf::Color::White);
 
 }
 //====================================================
