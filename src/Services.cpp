@@ -30,7 +30,8 @@ bool Services::createUser( UserNetwork* user)
 
     m_response = m_http.sendRequest( m_request_post );
 
-    if( m_response.getStatus() != sf::Http::Response::Created )
+    if( m_response.getStatus() != sf::Http::Response::Created ||
+        m_response.getStatus() == sf::Http::Response::Unauthorized)
         return false;
 
     m_stream << m_response.getBody();

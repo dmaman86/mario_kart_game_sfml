@@ -16,13 +16,13 @@ class RaceState : public State
 public:
 	//================ Constructor / Distructor =================
 	RaceState(MarioKart::GameDataRef);
-	~RaceState() = default;
+	~RaceState();
 
 	//================ Virtual public functions =================
-	virtual void Init() override;
-	virtual void HandleEvent(const sf::Event&)override;
-	virtual void Update(float)override;
-	virtual void Draw() override;
+	void Init() override;
+	void HandleEvent(const sf::Event&) override;
+	void Update(float) override;
+	void Draw() override;
 
 private:
 	//================ Private functions =========================
@@ -45,5 +45,6 @@ private:
 	MapFileCollision m_int_map;
 	Pipe pipe;
 	UserNetwork *m_userJoin;
+	float m_time_update;
 
 }; // end RaceState
