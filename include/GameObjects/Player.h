@@ -11,32 +11,32 @@ class Player : public PlayerBase {
 
 public:
 	Player();
-	Player(const sf::Vector2f, const sf::Vector2f loc, std::string id, std::string sprite);
-
-	void setIntLocation(const sf::Vector2f& loc);
+	Player(const sf::Vector2f loc, const sf::Vector2f pos,
+           std::string sprite);
 	void updateSpeed(float);
 	void updateDir();
 	void updateLocation(float);
 	void setCoefficientOfFriction(const float cof);
-
+    void spindriver();
 	void setAngle(float);
 	float getAngle();
-	//sf::Vector2f m_location;
-	void driveBack();
-	void speedUp(float);
-	void speedDown(float);
-	void updateAcceleration();
+    void driveBack();
 	float getSpeed()const;
 	void handleLock(float);
-	float m_coefficient_of_friction;
-	float m_force, m_mass, m_acceleration;
-	bool m_is_lock;
-	sf::Vector2f m_last_pos;
-	float m_angle;
-	float m_speed;
-	Animation m_animation;
-    std::string m_idHost;
+	void updateAnimation();
+
+
+private:
+
+    Animation m_animation;
     sf::Clock m_playerClock;
+    sf::Vector2f m_last_pos;
+    float m_angle;
+    float m_coefficient_of_friction;
+    float m_force, m_acceleration;
+    bool m_is_lock;
     bool m_is_pressed;
+    bool m_is_spin;
+
 };
 

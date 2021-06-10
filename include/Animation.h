@@ -9,6 +9,7 @@ public:
     Animation(const AnimationData&, Direction dir, sf::Sprite& sprite);
     void direction(Direction dir);
     void update(sf::Time i, bool is_pressed);
+    void spin(float dt);
 
 private:
     void update();

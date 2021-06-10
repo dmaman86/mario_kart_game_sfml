@@ -7,10 +7,12 @@
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
                         pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)),
                         m_userJoin( data->user.getOnline()? new UserNetwork() : nullptr ),
-                        m_player(sf::Vector2f(WITDH_G / 2, HIGHT_G - 50),
-                                 sf::Vector2f(63, 124),
-                                 m_data->user.getId(),
-                                 m_data->user.getSprite()),
+                                                    m_player(sf::Vector2f(
+                                                            WITDH_G / 2,
+                                                            HIGHT_G - 50),
+                                                             sf::Vector2f(63,
+                                                                          124),
+                                                             m_data->user.getSprite()),
                         m_time_update(0.0f),
                         m_map_race( data->user.getIfHost() ? data->user.getMapGame() : "mario_circuit_2.png")
 {
@@ -43,33 +45,15 @@ void RaceState::Init()
 	m_int_map.fillMap("mario_circuit_2.txt");
 	m_int_map.fillObjectMap("mario_circuit_2.txt");
 	//std::cout << m_int_map(6, 20);
+	m_clock.restart();
 }
 void RaceState::Draw() {
 
-    m_player.m_animation.update(m_player.m_playerClock.getElapsedTime(), m_player.m_is_pressed);
-	int xx = m_player.getIntLocation().x;
-	int zz = m_player.getIntLocation().y;
-
-	//std::cout << " XX is: "<<xx << " ZZ is: "<<zz <<"   ";
-  //  std::cout <<" int map is: "  << m_int_map(zz,xx) << " angle: "<<m_player.getAngle() << " \n" ;
-	// std::cout << "X is: " << m_cameraX << " Y is: " << m_cameraY<< " z is: " << m_cameraZ<<"theta :" << m_theta << std::endl;
-
+    m_player.updateAnimation();
 	m_data->window->draw(m_map.getSprite());
-
 	drawStaticObjects();
-	//    for(int i = 0 ; i < 128; i ++)
-	//        for(int j = 0 ; j < 128; j ++)
-	//        {
-	//            if(m_int_map(i,j) == 7.0 )
-	//            {
-	//                auto pipe = Pipe(sf::Vector2f(i+100,j+100),sf::Vector2f(50,50));
-	//                pipe.draw(*m_data->window);
-	//            }
-	//        }
-
 	m_player.draw(*m_data->window);
-	//m_player2.draw(*m_data->window);
-	// pipe.draw(*m_data->window);
+
 }
 
 void RaceState::Update(float deltatime) {
@@ -78,8 +62,8 @@ void RaceState::Update(float deltatime) {
 	processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
 	m_player.updateLocation(deltatime);
 
-	m_cameraX = m_player.getIntLocation().x * 8 - 50 * sin(m_player.getAngle() * 3.1415 / 180);
-	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * cos(m_player.getAngle() * 3.1415 / 180);
+	m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
+	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
 
 	m_theta = m_player.getAngle();
 	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
@@ -101,16 +85,12 @@ void RaceState::Update(float deltatime) {
 	// updateDynamic();
 	//updateObjLocation();
 	HandleCollision(deltatime);
+
 }
 
 void RaceState::HandleEvent(const sf::Event&)
 {
 	m_player.updateDir();
-}
-
-void RaceState::BuildVecObj()
-{
-
 }
 
 void RaceState::drawStaticObjects() {
@@ -182,8 +162,7 @@ void RaceState::updateObjLocation()
 				obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
 					sf::Vector2f(m_player.getIntLocation().x, m_player.getIntLocation().y));
 
-				camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
-					sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
+				camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),sf::Vector2f(m_cameraZ, m_cameraX))) / 8.f;
 
 				d.second->setPosition(sf::Vector2f(xs, ys));
 

@@ -17,14 +17,18 @@ namespace // anonymous namespace — the standard way to make function "static"
 	void PlayerBanana(Object& player, Object& banana)
 	{
 		Player& Pl = dynamic_cast<Player&>(player);
+        Banana& Bn = dynamic_cast<Banana&>(banana);
+        if(Bn.getIsActive())
+            Pl.spindriver();
+        Bn.setIsActive(false);
 
-		Pl.driveBack();
 	}
 
 	void BananaPlayer(Object& Banana,
 		Object& Player)
 	{
 		PlayerBanana(Player, Banana);
+
 	}
 
 	// primary collision-processing functions
@@ -35,6 +39,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 
 		Pl.driveBack();
 	}
+
 
 //...
 

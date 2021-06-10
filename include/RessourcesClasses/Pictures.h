@@ -5,8 +5,8 @@
 #include "AnimationData.h"
 
 
-const int DRIVER_VECTOR_LEN = 6;
-const int NUMBER_OF_DRIVERS = 6;
+const int DRIVER_VECTOR_LEN = 12;
+const int NUMBER_OF_DRIVERS = 12;
 enum  Drivers{
     Boewser,
     Dk,
@@ -23,7 +23,6 @@ public:
 
     static Pictures& instance();
     static  const std::string drivers;
-
     static  const std::string MarioDriver;
     static  const std::string mario_circuit_2;
     static  const std::string misc;

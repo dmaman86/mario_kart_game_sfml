@@ -51,3 +51,19 @@ void Animation::update()
     m_sprite.setTextureRect(m_data.m_data[m_index]);
    // std::cout << m_data.m_data[m_index].left <<"  "<<m_data.m_data[m_index].top<<" \n" ;
 }
+
+void Animation::spin(float dt) {
+
+
+    if(m_index == m_data.m_data.size()-1)
+        m_sprite.setScale(-3,3);
+    else if  (m_index == 0)
+        m_sprite.setScale(3,3);
+
+    (m_sprite.getScale().x > 0 )? m_index+=2:m_index--;
+
+    m_index %= m_data.m_data.size();
+
+
+    update();
+}
