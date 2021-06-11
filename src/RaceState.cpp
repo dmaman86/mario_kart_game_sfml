@@ -91,8 +91,8 @@ void RaceState::Update(float deltatime) {
             m_time_update = 0.0f;
 		}
 	}
-	// updateDynamic();
-	//updateObjLocation();
+	 updateDynamic();
+	updateObjLocation();
 	HandleCollision(deltatime);
 
 }
