@@ -78,14 +78,14 @@ void RaceState::Update(float deltatime) {
 	if (m_userJoin)
 	{
 		m_time_update += deltatime;
+        m_response_up = std::async( std::launch::async, [&]() {
+            m_data->services.updatePosition(m_data->user.getId(), m_player ); });
+        m_response_get = std::async( std::launch::async, [&](){
+            m_data->services.getPosition( m_userJoin->getId(), m_player2 );});
 		if (m_time_update > 0.1f)
 		{
-            m_response_up = std::async( std::launch::async, [&]() {
-                m_data->services.updatePosition(m_data->user.getId(), m_player ); });
-            m_response_get = std::async( std::launch::async, [&](){
-                m_data->services.getPosition( m_userJoin->getId(), &m_player2 );
-            });
-
+            m_response_up.get();
+            m_response_get.get();
             // if(response_up.valid() && response_get.valid())
             updateDynamic();
             m_time_update = 0.0f;

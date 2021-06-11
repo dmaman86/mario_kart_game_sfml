@@ -193,12 +193,12 @@ bool Services::updatePosition( std::string id, PlayerBase player )
     return m_http.sendRequest(m_request_put).getStatus() == sf::Http::Response::Ok;
 }
 
-bool Services::getPosition( std::string idOther, PlayerBase* player )
+bool Services::getPosition( std::string idOther, PlayerBase& player )
 {
     m_stream.str("");
     m_stream.clear();
     m_request_get.setMethod(sf::Http::Request::Get);
-    m_request_get.setUri(HttpNetwork::path_player + "/" + idOther );
+    m_request_get.setUri(HttpNetwork::path_user + "/" + idOther );
 
     m_response = m_http.sendRequest( m_request_get );
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -210,6 +210,9 @@ bool Services::getPosition( std::string idOther, PlayerBase* player )
     boost::property_tree::read_json(m_stream, pt);
     // player->getLocation().x = pt.get<float>("positionX");
     // player->getLocation().y = pt.get<float>("positionY");
-    player->setLocation( pt.get<float>("positionX"), pt.get<float>("positionY") );
+    std::cout << "line 213: " << m_stream.str() << std::endl;
+    auto x = pt.get<float>("positionX");
+    auto y = pt.get<float>("positionY");
+    player.setLocation( x, y );
     return true;
 }
