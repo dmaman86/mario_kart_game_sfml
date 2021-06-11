@@ -10,7 +10,7 @@ public:
     ~Fonts() = default;
 
     const sf::Font& getFont() const;
-
+    const sf::Font& getFontMario() const;
     static Fonts& instance();
 
 private:
@@ -19,6 +19,7 @@ private:
 
 private:
     sf::Font m_font_game;
+    sf::Font m_fontMario;
 };
 
 

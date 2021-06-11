@@ -10,6 +10,8 @@
 #include "MapFileCollision.h"
 #include "Pipe.h"
 #include "UserNetwork.h"
+#include "GameStatusBar.h"
+
 
 class RaceState : public State
 {
@@ -46,6 +48,6 @@ private:
 	UserNetwork *m_userJoin;
 	float m_time_update;
     std::string m_map_race;
+	GameStatusBar m_status;
 
-
-}; // end RaceState
+}; // end RaceState 

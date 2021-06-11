@@ -5,6 +5,7 @@
 #include "Utilities.h"
 
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
+						m_status(*data->window),
                         pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)),
                         m_userJoin( data->user.getOnline()? new UserNetwork() : nullptr ),
                         m_player(sf::Vector2f(WITDH_G / 2,HIGHT_G - 50),sf::Vector2f(63,124),m_data->user.getSprite()),
@@ -41,8 +42,8 @@ void RaceState::Init()
 	m_int_map.fillObjectMap(m_map_race);
     m_player.setLastScorePos( m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x));
 
-
 	m_clock.restart();
+	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
 
 }
 void RaceState::Draw() {
@@ -51,6 +52,7 @@ void RaceState::Draw() {
 	m_data->window->draw(m_map.getSprite());
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
+	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
 
 }
 

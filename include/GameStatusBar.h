@@ -1,26 +1,24 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
+#include "MarioKart.h"
 class GameStatusBar {
 
 
 public:
-    GameStatusBar();
-    void printGameStatus(sf::RenderWindow&, const sf::Time&, const sf::Clock&, bool,
-        int score, int lap);
+    GameStatusBar(sf::RenderWindow& data);
+    void printGameStatus(const sf::Clock&, int , int, int);
 
 private:
     //=========private members======================
-    sf::Text m_scoreText;
-    sf::Text m_levelText;
-    sf::Text m_lifeText;
-    sf::Text m_timeTheLevel;
-    int m_life, m_score;
-    sf::Time m_time, m_lifechange, m_scorechange, m_timechange;
+    sf::Text m_raceLoc;
+    sf::Text m_lap;
+    sf::Text m_timeGame;
+    sf::Text m_coins;
+    sf::RenderWindow& m_windows;
 
+    int m_minutes = 0;
     //=========private function======================
+    std::string timeCalculation(const sf::Clock& time);
+    void printboard();
 
-    void printboard(sf::RenderWindow& window);
-    void printChangeColor(int life, const sf::Clock& clock,
-        const sf::Time& time, int score);
 };
