@@ -16,6 +16,7 @@ public:
 	const bool getIsInAngle()const { return m_is_in_angle; }
 	const bool collisionWith(const GameObj& b)const;
     sf::Vector2f& getLocation(){ return m_location; }
+    void setLocation( float x, float y ){ m_location.x = x; m_location.y = y; }
     bool getIsActive(){return m_is_active;}
     void setIsActive(bool boo){m_is_active = boo;}
 protected:

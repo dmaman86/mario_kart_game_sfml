@@ -83,7 +83,7 @@ void RaceState::Update(float deltatime) {
             m_response_up = std::async( std::launch::async, [&]() {
                 m_data->services.updatePosition(m_data->user.getId(), m_player ); });
             m_response_get = std::async( std::launch::async, [&](){
-                m_data->services.getPosition( m_userJoin->getId(), m_player2 );
+                m_data->services.getPosition( m_userJoin->getId(), &m_player2 );
             });
 
             // if(response_up.valid() && response_get.valid())

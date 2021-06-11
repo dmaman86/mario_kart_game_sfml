@@ -193,7 +193,7 @@ bool Services::updatePosition( std::string id, PlayerBase player )
     return m_http.sendRequest(m_request_put).getStatus() == sf::Http::Response::Ok;
 }
 
-bool Services::getPosition( std::string idOther, PlayerBase& player )
+bool Services::getPosition( std::string idOther, PlayerBase* player )
 {
     m_stream.str("");
     m_stream.clear();
@@ -208,7 +208,8 @@ bool Services::getPosition( std::string idOther, PlayerBase& player )
     m_stream << m_response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
-    player.getLocation().x = pt.get<float>("positionX");
-    player.getLocation().y = pt.get<float>("positionY");
+    // player->getLocation().x = pt.get<float>("positionX");
+    // player->getLocation().y = pt.get<float>("positionY");
+    player->setLocation( pt.get<float>("positionX"), pt.get<float>("positionY") );
     return true;
 }

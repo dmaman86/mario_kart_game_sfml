@@ -31,7 +31,7 @@ public:
     bool createRace( UserNetwork* );
     bool getUsers( std::vector<UserNetwork>&, const std::string );
     bool updatePosition( std::string, PlayerBase );
-    bool getPosition( std::string, PlayerBase& );
+    bool getPosition( std::string, PlayerBase* );
 
 
 private:
