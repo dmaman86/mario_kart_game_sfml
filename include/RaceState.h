@@ -1,7 +1,9 @@
 #pragma once
-#include "mode7.h"
+
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <future>
+#include "mode7.h"
 #include "Macros.h"
 #include "Player.h"
 #include "PlayerOnline.h"
@@ -49,5 +51,7 @@ private:
 	float m_time_update;
     std::string m_map_race;
 	GameStatusBar m_status;
+    std::future<void> m_response_up;
+    std::future<void> m_response_get;
 
 }; // end RaceState 

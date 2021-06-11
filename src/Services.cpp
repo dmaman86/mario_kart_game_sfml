@@ -178,43 +178,37 @@ void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string
     }
 }
 
-bool Services::updatePosition( std::string id, float positionX, float positionY )
+bool Services::updatePosition( std::string id, PlayerBase player )
 {
     m_ostream.str("");
     m_ostream.clear();
     m_request_put.setMethod( sf::Http::Request::Put );
     m_request_put.setUri( HttpNetwork::path_player + "/" + id );
 
-    m_ostream << "positionX=" << positionX << "&positionY=" << positionY;
+    m_ostream << "positionX=" << player.getLocation().x
+              << "&positionY=" << player.getLocation().y;
     m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
     m_request_put.setBody(m_ostream.str());
-
-    m_response = m_http.sendRequest( m_request_put, sf::seconds(0.1) );
-
-    if( m_response.getStatus() != sf::Http::Response::Ok )
-    {
-       // std::cout << m_response.getBody() << std::endl;
-        return false;
-    }
-    return true;
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    return m_http.sendRequest(m_request_put).getStatus() == sf::Http::Response::Ok;
 }
 
-bool Services::getPosition( std::string idOther, float& positionX, float& positionY )
+bool Services::getPosition( std::string idOther, PlayerBase& player )
 {
     m_stream.str("");
     m_stream.clear();
     m_request_get.setMethod(sf::Http::Request::Get);
     m_request_get.setUri(HttpNetwork::path_player + "/" + idOther );
 
-    m_response = m_http.sendRequest( m_request_get, sf::seconds(0.1) );
-
+    m_response = m_http.sendRequest( m_request_get );
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     if( m_response.getStatus() != sf::Http::Response::Ok )
         return false;
 
     m_stream << m_response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
-    positionX = pt.get<float>("positionX");
-    positionY = pt.get<float>("positionY");
+    player.getLocation().x = pt.get<float>("positionX");
+    player.getLocation().y = pt.get<float>("positionY");
     return true;
 }

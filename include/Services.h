@@ -7,9 +7,13 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <chrono>
+#include <thread>
+
 #include "Macros.h"
 #include "UserNetwork.h"
-#include <string>
+#include "PlayerBase.h"
 
 namespace pt = boost::property_tree;
 
@@ -26,8 +30,8 @@ public:
     bool getIdOtherUser(UserNetwork* );
     bool createRace( UserNetwork* );
     bool getUsers( std::vector<UserNetwork>&, const std::string );
-    bool updatePosition( std::string, float, float );
-    bool getPosition( std::string, float&, float& );
+    bool updatePosition( std::string, PlayerBase );
+    bool getPosition( std::string, PlayerBase& );
 
 
 private:
