@@ -44,6 +44,7 @@ void MenuState::Init()
 	
 	m_buttons.push_back(m_online);
 	m_buttons.push_back(m_carrer);
+    setVolume();
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
