@@ -7,10 +7,11 @@
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
 						m_status(*data->window),
                         pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)),
-                        m_userJoin( data->user.getOnline()? new UserNetwork() : nullptr ),
-                        m_player(sf::Vector2f(WITDH_G / 2,HIGHT_G - 50),sf::Vector2f(63,124),m_data->user.getSprite()),
-                        m_time_update(
-                                0.0f),
+                        m_userJoin( data->user.getOnline() ? new UserNetwork() : nullptr ),
+                        m_player(sf::Vector2f(WITDH_G / 2,HIGHT_G - 50),
+                                 sf::Vector2f(63,124),
+                                 m_data->user.getSprite()),
+                        m_time_update(0.0f),
                         m_map_race( data->user.getIfHost() ? data->user.getMapGame() : "mario_circuit_2.png")
 {
 	if(m_userJoin)
