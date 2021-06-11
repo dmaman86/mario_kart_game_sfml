@@ -1,4 +1,3 @@
-
 #include "Utilities.h"
 
 const float calcLength(const sf::Vector2f a, const  sf::Vector2f b) {
@@ -11,4 +10,6 @@ float calcSinDegree(float m_angle) {
 float calcCosDegree(float m_angle) {
     return std::cos(m_angle * 3.141592 / 180);
 }
+
+
 

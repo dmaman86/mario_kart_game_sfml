@@ -13,7 +13,7 @@ public:
 	void setScale(float x, float y) { m_sprite.setScale(x, y); }
 	void setPosition(sf::Vector2f);
 	void setInAngle(bool b) { m_is_in_angle = b; }
-	const bool getIsInAngle() { return m_is_in_angle; }
+	const bool getIsInAngle()const { return m_is_in_angle; }
 	const bool collisionWith(const GameObj& b)const;
     sf::Vector2f& getLocation(){ return m_location; }
     bool getIsActive(){return m_is_active;}

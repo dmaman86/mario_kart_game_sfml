@@ -11,8 +11,7 @@ class Player : public PlayerBase {
 
 public:
 	Player();
-	Player(const sf::Vector2f loc, const sf::Vector2f pos,
-           std::string sprite);
+	Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite);
 	void updateSpeed(float);
 	void updateDir();
 	void updateLocation(float);
@@ -24,6 +23,10 @@ public:
 	float getSpeed()const;
 	void handleLock(float);
 	void updateAnimation();
+	void setLastScorePos(unsigned int score);
+     int getLastScorePos()const;
+    void addLap(){++m_lap;}
+    int getLap(){return m_lap;}
 
 
 private:
@@ -37,6 +40,8 @@ private:
     bool m_is_lock;
     bool m_is_pressed;
     bool m_is_spin;
+    int m_last_pos_score;
+    int m_lap;
 
 };
 
