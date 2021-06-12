@@ -46,6 +46,6 @@ private:
     int m_last_pos_score;
     int m_lap;
 	float m_smaller_time;
-
+	std::vector<sf::Sprite> m_speeds_s; 
 };
 

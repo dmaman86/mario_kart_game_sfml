@@ -48,6 +48,11 @@ public:
     static const std::string rectangle;
 	static const std::string sky_back;
 	static const std::string sky_front;
+	static const std::string speed0;
+	static const std::string speed1;
+	static const std::string speed2;
+	static const std::string speed3;
+	static const std::string speed4;
 
 
     const sf::Texture& getTexture(std::string) const;

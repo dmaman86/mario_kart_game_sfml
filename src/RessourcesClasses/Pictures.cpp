@@ -27,7 +27,11 @@ const std::string Pictures::rectangle = "rectangle.jpg";
 const std::string Pictures::drivers = "drivers.png";
 const std::string Pictures::sky_back = "sky_back.png";
 const std::string Pictures::sky_front = "sky_front.png";
-
+const std::string Pictures::speed0 = "speed0.png";
+const std::string Pictures::speed1 = "speed1.png";
+const std::string Pictures::speed2 = "speed2.png";
+const std::string Pictures::speed3 = "speed3.png";
+const std::string Pictures::speed4 = "speed4.png";
 
 Pictures &Pictures::instance() {
     static Pictures inst;
@@ -86,6 +90,16 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 		throw std::runtime_error("Cant Open " + Pictures::sky_back);
 	if (!(m_pics[Pictures::sky_front] = sf::Texture()).loadFromFile(Pictures::sky_front))
 		throw std::runtime_error("Cant Open " + Pictures::sky_front);
+	if (!(m_pics[Pictures::speed0] = sf::Texture()).loadFromFile(Pictures::speed0))
+		throw std::runtime_error("Cant Open " + Pictures::speed0);
+	if (!(m_pics[Pictures::speed1] = sf::Texture()).loadFromFile(Pictures::speed1))
+		throw std::runtime_error("Cant Open " + Pictures::speed1);
+	if (!(m_pics[Pictures::speed2] = sf::Texture()).loadFromFile(Pictures::speed2))
+		throw std::runtime_error("Cant Open " + Pictures::speed2);
+	if (!(m_pics[Pictures::speed3] = sf::Texture()).loadFromFile(Pictures::speed3))
+		throw std::runtime_error("Cant Open " + Pictures::speed3);
+	if (!(m_pics[Pictures::speed4] = sf::Texture()).loadFromFile(Pictures::speed4))
+		throw std::runtime_error("Cant Open " + Pictures::speed4);
 
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
         m_drivers[i] = (setDriverData(i));

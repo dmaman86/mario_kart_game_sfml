@@ -21,12 +21,22 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
+
+	for (size_t i = 0; i < 5;i++) {
+		sf::Sprite spr(Pictures::instance().getTexture("speed" + std::to_string(i) + ".png"));
+		m_speeds_s.push_back(spr);
+	}
+	
 }
 
 void Player::draw(sf::RenderWindow& win)
 {
-	/*if (m_is_smaller&& m_smaller_time)
-		this->m_sprite.setScale(m_sprite.getScale()/2.f);*/
+	static size_t i = 0;
+	
+	if (m_force >= MAX_SPEED - 2 && m_coefficient_of_friction != 2)
+	{
+		win.draw(m_speeds_s[(i++) % m_speeds_s.size()]);
+	}
 	PlayerBase::draw(win);
 
 }
