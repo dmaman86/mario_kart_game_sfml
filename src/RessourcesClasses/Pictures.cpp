@@ -25,6 +25,9 @@ const std::string Pictures::ToadDriver = "toad.png";
 const std::string Pictures::YoshiDriver = "yoshi.png";
 const std::string Pictures::rectangle = "rectangle.jpg";
 const std::string Pictures::drivers = "drivers.png";
+const std::string Pictures::sky_back = "sky_back.png";
+const std::string Pictures::sky_front = "sky_front.png";
+
 
 Pictures &Pictures::instance() {
     static Pictures inst;
@@ -79,6 +82,10 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::rectangle);
     if (!(m_pics[Pictures::drivers] = sf::Texture()).loadFromFile(Pictures::drivers))
         throw std::runtime_error("Cant Open " + Pictures::drivers);
+	if (!(m_pics[Pictures::sky_back] = sf::Texture()).loadFromFile(Pictures::sky_back))
+		throw std::runtime_error("Cant Open " + Pictures::sky_back);
+	if (!(m_pics[Pictures::sky_front] = sf::Texture()).loadFromFile(Pictures::sky_front))
+		throw std::runtime_error("Cant Open " + Pictures::sky_front);
 
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
         m_drivers[i] = (setDriverData(i));

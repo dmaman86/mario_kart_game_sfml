@@ -30,11 +30,10 @@ private:
 	void HandleCollision(float deltatime);
 	void updateObjLocation();
 	void updateDynamic();
-
+	void updateSky();
 
 	//================ Private members ==========================
 	sf::RenderWindow m_window;
-	sf::Sprite m_sky;
 	Mode7 m_map;
 	float m_cameraX, m_cameraY, m_cameraZ, m_theta;
 	sf::Clock m_clock;
@@ -46,6 +45,9 @@ private:
 	UserNetwork *m_userJoin;
 	float m_time_update;
     std::string m_map_race;
+
+	sf::Sprite m_sky_back;
+	sf::Sprite m_sky_front;
 
 
 }; // end RaceState

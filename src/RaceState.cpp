@@ -44,13 +44,23 @@ void RaceState::Init()
 	m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
 	m_int_map.fillMap("mario_circuit_2.txt");
 	m_int_map.fillObjectMap("mario_circuit_2.txt");
-	//std::cout << m_int_map(6, 20);
+	
+	m_sky_back.setTexture(Pictures::instance().getTexture(Pictures::sky_back));
+	m_sky_back.setScale(3, 3);
+	m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
+	m_sky_front.setScale(5, 5);
+	m_sky_front.setPosition(0, m_data->window->getSize().y / 10.5);
+	m_sky_front.setTextureRect(sf::Rect(1040, 0, 1024/5,32));
+	
 	m_clock.restart();
 }
 void RaceState::Draw() {
 
+	
     m_player.updateAnimation();
 	m_data->window->draw(m_map.getSprite());
+	m_data->window->draw(m_sky_back);
+	m_data->window->draw(m_sky_front);
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
 
@@ -61,7 +71,7 @@ void RaceState::Update(float deltatime) {
 	m_player.updateSpeed(deltatime);
 	processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
 	m_player.updateLocation(deltatime);
-
+	this->updateSky();
 	m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
 
@@ -155,6 +165,7 @@ void RaceState::updateObjLocation()
 {
 	float obj_length, camera_length;
 	unsigned int xs, ys;
+
 	for (auto& d : m_int_map.m_vec_obj)
 	{
 		if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
@@ -206,6 +217,22 @@ void RaceState::updateDynamic()
                             m_player2.getLastLocation().y*8,
                             (m_player2.getIntLocation().x * 8),
                             (m_player2.getIntLocation().y * 8));
+}
+
+void RaceState::updateSky()
+{
+	auto x = m_sky_front.getTextureRect();
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		x.left += 3;
+	
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		if (x.left <= 10)
+			x.left = 1040;
+		x.left -= 3;
+	}
+	x.left %= 2560;
+	m_sky_front.setTextureRect(x);
 }
 
 

@@ -45,6 +45,9 @@ public:
     static const std::string ToadDriver;
     static const std::string YoshiDriver;
     static const std::string rectangle;
+	static const std::string sky_back;
+	static const std::string sky_front;
+
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);
