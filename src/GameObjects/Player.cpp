@@ -4,6 +4,7 @@
 #include<iostream>
 #include "Utilities.h"
 
+//========================== Constructor / Destructor =========================
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) :
         m_animation(Pictures::instance().getDriveAnimationData(sprite),Direction::Left,m_sprite),
         PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
@@ -28,7 +29,44 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 	}
 	
 }
+//=============================================================================
+Player::Player() : m_animation(Pictures::instance().m_drivers[0], Direction::Left, m_sprite) {
 
+}
+//=============================================================================s
+void Player::Update(const float deltatime, const int fs)
+{
+	updateSpeed(deltatime);
+	setLastScorePos(fs);
+	updateLocation(deltatime);
+}
+
+//=============================================================================
+void Player::updateDir()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		this->m_force -= 0.25;
+	}
+}
+//=============================================================================
+void Player::CheckLap(const int fs)
+{
+	if (fs - getLastScorePos() >= 400)
+		addLap();
+	std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
+}
+
+//=============================================================================
+void Player::updateAnimation() {
+
+	if (!m_is_spin)
+		m_animation.update(m_playerClock.getElapsedTime(), m_is_pressed);
+	else
+		m_animation.spin(m_playerClock.getElapsedTime().asSeconds());
+
+}
+
+//=============================================================================s
 void Player::draw(sf::RenderWindow& win)
 {
 	static size_t i = 0;
@@ -41,10 +79,54 @@ void Player::draw(sf::RenderWindow& win)
 
 }
 
-Player::Player(): m_animation (Pictures::instance().m_drivers[0],Direction::Left,m_sprite) {
+//=============================================================================
+void Player::driveBack()
+{
+	if (!m_is_lock) {
+		m_last_pos = m_location;
+	}
+	m_is_lock = true;
+}
+
+//=============================================================================
+void Player::spindriver() {
+	m_force = 0;
+	m_is_lock = true;
+	m_is_spin = true;
+	m_playerClock.restart();
 
 }
 
+//=============================================================================
+void Player::driveSmaller()
+{
+	if (!m_is_smaller)
+	{
+		m_is_smaller = true;
+		m_smaller_time = m_playerClock.getElapsedTime().asSeconds();
+		this->m_sprite.setScale(m_sprite.getScale() / 2.f);
+	}
+}
+
+//=============================================================================
+void Player::setCoefficientOfFriction(const float cof)
+{
+	m_coefficient_of_friction = cof;
+}
+
+//=============================================================================
+void Player::setAngle(const float agl) {
+	m_angle = agl;
+	if (m_angle >= 360) m_angle = 0;
+	else if (m_angle < 0) m_angle += 360;
+}
+//=============================================================================
+void Player::setLastScorePos(const unsigned int score) { m_last_pos_score = score; }
+
+//=============================================================================
+const int Player::getLastScorePos() const { return m_last_pos_score; }
+
+//=============================================================================
 void Player::updateSpeed(float delta) {
 	
 	if (m_is_smaller&& m_playerClock.getElapsedTime().asSeconds() > m_smaller_time + 4.f)
@@ -116,14 +198,9 @@ void Player::updateSpeed(float delta) {
 
     }
 }
-void Player::updateDir()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		this->m_force -= 0.25;
-	}
-}
 
-void Player::updateLocation(float delta)
+//=============================================================================s
+void Player::updateLocation(const float delta)
 {
 	if (!m_is_lock) {
 		m_location.x += calcSinDegree(m_angle) * delta * m_force / m_coefficient_of_friction;
@@ -131,28 +208,8 @@ void Player::updateLocation(float delta)
 	}
 }
 
-void Player::setCoefficientOfFriction(const float cof)
-{
-	m_coefficient_of_friction = cof;
-}
-
-
-
-float Player::getAngle() {
-	return m_angle;
-}
-
-float Player::getSpeed() const {
-	return m_force;
-}
-
-void Player::setAngle(float agl) {
-    m_angle = agl;
-    if (m_angle >= 360) m_angle = 0;
-    else if (m_angle < 0) m_angle += 360;
-}
-
-void Player::handleLock(float dt)
+//=============================================================================
+void Player::handleLock(const float dt)
 {
 	if (calcLength(m_location, m_last_pos) >= 4.5)
 	{
@@ -165,43 +222,3 @@ void Player::handleLock(float dt)
 		m_location.y -= calcCosDegree(m_angle) * dt * -m_force / 1.5;
 	}
 }
-
-void Player::driveBack()
-{
-	if (!m_is_lock) {
-		m_last_pos = m_location;
-	}
-	m_is_lock = true;
-}
-
-void Player::spindriver() {
-    m_force = 0;
-    m_is_lock = true;
-    m_is_spin = true;
-   m_playerClock.restart();
-
-}
-
-void Player::driveSmaller()
-{
-	if (!m_is_smaller)
-	{
-		m_is_smaller = true;
-		m_smaller_time = m_playerClock.getElapsedTime().asSeconds();
-		this->m_sprite.setScale(m_sprite.getScale() / 2.f);
-	}
-}
-
-void Player::updateAnimation() {
-
-    if(!m_is_spin)
-        m_animation.update(m_playerClock.getElapsedTime(), m_is_pressed);
-    else
-        m_animation.spin(m_playerClock.getElapsedTime().asSeconds());
-
-}
-
-void Player::setLastScorePos(unsigned int score) {m_last_pos_score = score;}
-
-int Player::getLastScorePos() const {return m_last_pos_score;}
-

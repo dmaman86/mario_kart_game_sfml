@@ -18,7 +18,7 @@
 class RaceState : public State
 {
 public:
-	//================ Constructor / Distructor =================
+	//================ Constructor / Destructor =================
 	RaceState(MarioKart::GameDataRef);
 	~RaceState();
 
@@ -30,12 +30,17 @@ public:
 
 private:
 	//================ Private functions =========================
+	void InitNetwork();
+	void InitMap();
+	void InitSky();
+	void UpdateNetwork(float);
+	void UpdateMap();
+	void UpdatePlayer(float);
 	void drawStaticObjects();
 	void HandleCollision(float deltatime);
 	void updateObjLocation();
 	void updateDynamic();
 	void updateSky();
-
 
 	//================ Private members ==========================
 	sf::RenderWindow m_window;

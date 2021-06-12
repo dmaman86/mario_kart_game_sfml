@@ -4,6 +4,7 @@
 #include "CollisionHandling.h"
 #include "Utilities.h"
 
+//========================== Constructor / Destructor =========================
 RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
 						m_status(*data->window),
                         pipe(sf::Vector2f(150, 230), sf::Vector2f(50, 50)),
@@ -17,16 +18,28 @@ RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
 	if(m_userJoin)
 		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
 }
-
+//=============================================================================
 RaceState::~RaceState()
 {
     delete m_userJoin;
 }
 
+//========================= Init section ======================================
 void RaceState::Init()
 {
 	m_window.setFramerateLimit(60);
-	
+	InitNetwork();
+	InitMap();
+	InitSky();
+	m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+	m_clock.restart();
+	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
+
+}
+
+//=============================================================================
+void RaceState::InitNetwork()
+{
 	if (m_userJoin)
 	{
 		m_player2 = PlayerOnline(m_userJoin->getSprite(),
@@ -34,26 +47,90 @@ void RaceState::Init()
 
 		m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
 	}
+}
+
+//=============================================================================
+void RaceState::InitMap()
+{
 	m_cameraX = m_player.getIntLocation().x * 8;
 	m_cameraY = -17;
 	m_cameraZ = m_player.getIntLocation().y * 8;;
-
 	m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
 	m_int_map.fillMap(m_map_race);
 	m_int_map.fillObjectMap(m_map_race);
-    m_player.setLastScorePos( m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x));
-	
+}
+//=============================================================================
+void RaceState::InitSky()
+{
 	m_sky_back.setTexture(Pictures::instance().getTexture(Pictures::sky_back));
 	m_sky_back.setScale(3, 3);
 	m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
 	m_sky_front.setScale(5, 5);
 	m_sky_front.setPosition(0, m_data->window->getSize().y / 10.5);
 	m_sky_front.setTextureRect(sf::Rect(1040, 0, 1024 / 5, 32));
-
-	m_clock.restart();
-	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
-
 }
+
+
+//============================== Handle Event ==================================
+void RaceState::HandleEvent(const sf::Event&)
+{
+	m_player.updateDir();
+}
+
+//================================= Update =====================================
+void RaceState::Update(float deltatime) {
+	
+	UpdatePlayer(deltatime);
+	this->updateSky();
+	UpdateMap();
+	UpdateNetwork(deltatime);
+	HandleCollision(deltatime);
+}
+
+//=============================================================================
+void RaceState::UpdateNetwork(float deltatime)
+{
+	m_time_update += deltatime;
+
+	if (m_userJoin)
+	{
+		m_time_update += deltatime;
+		m_response_up = std::async(std::launch::async, [&]() {
+			m_data->services.updatePosition(m_data->user.getId(), m_player); });
+		m_response_get = std::async(std::launch::async, [&]() {
+			m_data->services.getPosition(m_userJoin->getId(), m_player2);});
+		if (m_time_update > 0.1f)
+		{
+			m_response_up.get();
+			m_response_get.get();
+			// if(response_up.valid() && response_get.valid())
+			updateDynamic();
+			m_time_update = 0.0f;
+		}
+	}
+	//updateDynamic();
+	//updateObjLocation();
+}
+
+//=============================================================================
+void RaceState::UpdateMap()
+{
+	m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
+	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
+	m_theta = m_player.getAngle();
+	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
+	m_map.setTheta(m_player.getAngle());
+	m_map.calc(m_int_map.m_vec_obj, &m_player2, m_player.getIntLocation());
+}
+
+//=============================================================================
+void RaceState::UpdatePlayer(float deltatime)
+{
+	m_player.Update(deltatime, m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+	m_player.CheckLap(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+}
+
+//=============================================================================
 void RaceState::Draw() {
 
     m_player.updateAnimation();
@@ -63,57 +140,9 @@ void RaceState::Draw() {
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
 	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
-
 }
 
-void RaceState::Update(float deltatime) {
-
-	m_player.updateSpeed(deltatime);
-	processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
-	m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x));
-	m_player.updateLocation(deltatime);
-    if(m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x) - m_player.getLastScorePos() >= 400 )
-        m_player.addLap();
-    std::cout <<m_player.getLastScorePos() << "  ::   " << m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x) << " "<< m_player.getLap() << " \n";
-	
-	this->updateSky();
-
-	m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
-	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
-
-	m_theta = m_player.getAngle();
-	m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
-	m_map.setTheta(m_player.getAngle());
-	m_map.calc(m_int_map.m_vec_obj,&m_player2, m_player.getIntLocation());
-	m_time_update += deltatime;
-
-	if (m_userJoin)
-	{
-		m_time_update += deltatime;
-        m_response_up = std::async( std::launch::async, [&]() {
-            m_data->services.updatePosition(m_data->user.getId(), m_player ); });
-        m_response_get = std::async( std::launch::async, [&](){
-            m_data->services.getPosition( m_userJoin->getId(), m_player2 );});
-		if (m_time_update > 0.1f)
-		{
-            m_response_up.get();
-            m_response_get.get();
-            // if(response_up.valid() && response_get.valid())
-            updateDynamic();
-            m_time_update = 0.0f;
-		}
-	}
-	updateDynamic();
-	//updateObjLocation();
-	HandleCollision(deltatime);
-
-}
-
-void RaceState::HandleEvent(const sf::Event&)
-{
-	m_player.updateDir();
-}
-
+//=============================================================================
 void RaceState::drawStaticObjects() {
 
 	for (auto& x : m_int_map.m_vec_obj)
@@ -164,14 +193,16 @@ void RaceState::drawStaticObjects() {
 //    }
 }
 
+//=============================================================================
 void RaceState::HandleCollision(float deltatime)
 {
-
 	for (auto& obj : m_int_map.m_vec_obj)
 		if(obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
 			processCollision(m_player, *obj.second);
+	processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
 }
 
+//=============================================================================
 void RaceState::updateObjLocation()
 {
 	float obj_length, camera_length;
@@ -220,6 +251,7 @@ void RaceState::updateObjLocation()
 	}
 }
 
+//=============================================================================
 void RaceState::updateDynamic()
 {
 	m_player2.updateLastLocation();
@@ -229,6 +261,7 @@ void RaceState::updateDynamic()
                             (m_player2.getIntLocation().y * 8));
 }
 
+//=============================================================================
 void RaceState::updateSky()
 {
 	auto x = m_sky_front.getTextureRect();
@@ -244,5 +277,3 @@ void RaceState::updateSky()
 	x.left %= 2560;
 	m_sky_front.setTextureRect(x);
 }
-
-
