@@ -37,11 +37,11 @@ void Animation::update(sf::Time i, bool is_pressed) {
         else
         if (m_elapsed >= AnimationTime) {
             m_elapsed -= AnimationTime;
-            if (m_index < m_data.m_data.size() - 1)
+            if (m_index < DRIVER_SIDE_LEN - 1)
                 ++m_index;
 
         }
-        m_index %= m_data.m_data.size();
+        m_index %= DRIVER_SIDE_LEN;
     }
     update();
 }
@@ -62,7 +62,7 @@ void Animation::spin(float dt) {
 
     (m_sprite.getScale().x > 0 )? m_index+=2:m_index--;
 
-    m_index %= m_data.m_data.size();
+    m_index %= DRIVER_VECTOR_LEN;
 
 
     update();

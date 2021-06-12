@@ -60,25 +60,29 @@ void Player::updateSpeed(float delta) {
 	}
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                if (this->getSpeed() > 0){
-                    this->setAngle(this->getAngle() + 3);
-                    if(!m_is_pressed) {
-                        m_is_pressed = true;
-                        m_playerClock.restart();
-                    }
+            if (this->getSpeed() > 0){
+                this->setAngle(this->getAngle() + 3);
+                if(!m_is_pressed) {
+                    m_is_pressed = true;
+                    m_playerClock.restart();
                 }
-                m_sprite.setScale(-3,3);
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            {
-                if (this->getSpeed() > 0){
+        if(m_sprite.getScale().x > 0 )
+            m_animation.setIndex(0);
+            m_sprite.setScale(-3,3);
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        if (this->getSpeed() > 0){
             this->setAngle(this->getAngle() - 3);
             if(!m_is_pressed) {
-                m_is_pressed = true;
-                m_playerClock.restart();
-            }
+            m_is_pressed = true;
+            m_playerClock.restart();
+             }
         }
-        m_sprite.setScale(3,3);
+        if(m_sprite.getScale().x < 0 )
+            m_animation.setIndex(0);
+    m_sprite.setScale(3,3);
     }
     else {
         this->m_is_pressed = false;

@@ -10,7 +10,7 @@ public:
     void direction(Direction dir);
     void update(sf::Time i, bool is_pressed);
     void spin(float dt);
-
+    void setIndex(int i){m_index = i;}
 private:
     void update();
 

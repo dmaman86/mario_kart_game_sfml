@@ -179,5 +179,6 @@ sf::Sprite Mode7::getSprite()
 {
 	m_texture.update(m_imageTransformed);
 	m_sprite.setTexture(m_texture);
+	//m_sprite.setScale(2,2);
 	return m_sprite;
 }

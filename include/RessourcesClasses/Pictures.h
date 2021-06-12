@@ -7,6 +7,7 @@
 
 const int DRIVER_VECTOR_LEN = 12;
 const int NUMBER_OF_DRIVERS = 8;
+const int DRIVER_SIDE_LEN = 6;
 enum  Drivers{
     Boewser,
     Dk,
