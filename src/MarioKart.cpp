@@ -16,6 +16,9 @@ MarioKart::MarioKart()
 	m_dataGame(new DataGame(m_window)) {
     m_window.setFramerateLimit(60);
 
+
+
+
     if (User == users::Liran)
     {
         m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));

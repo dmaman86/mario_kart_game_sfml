@@ -6,30 +6,39 @@
 #include "Banana.h"
 #include "Pictures.h"
 #include "PlayerOnline.h"
+#include "Utilities.h"
 MapFileCollision::MapFileCollision() {
 
 }
 
 void MapFileCollision::fillMap(const std::string str) {
-	std::vector<std::vector <int>> map_int;
-	std::ifstream m_file(str);
-	int input;
-	if (!m_file.is_open())
-		throw std::range_error("cannot open m_file");
-	for (int i = 0; i < 128; ++i)
-	{
-		std::vector<int> row;
-		for (int j = 0; j < 128; ++j)
-		{
-			input = m_file.get() - 48;
 
-			row.push_back(input);
-		}
-		m_file.get();
-		map_int.push_back(row);
-	}
-	m_file.close();
-	this->fillMap(map_int);
+    std::string name = str.substr(0,str.find('.'));
+	auto map_int = readFromFile<char>(name+".txt");
+    auto score_map = readFromFile<int>("mario_circuit_2_scores.txt");
+    m_map.resize(map_int.size());
+
+    for (size_t i = 0;i < map_int.size();i++)
+    {
+        for (size_t j = 0;j < map_int[i].size();j++)
+        {
+            switch (map_int[i][j]-48)
+            {
+                case 0:
+                    m_map[i].push_back(std::make_unique<FloorAsphalt>(score_map[i][j]));
+                    break;
+                case 1:
+                    m_map[i].push_back(std::make_unique<FloorBrick>(score_map[i][j]));
+                    break;
+                case 2:
+                    m_map[i].push_back(std::make_unique<FloorSand>(score_map[i][j]));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 }
 
 Floor& MapFileCollision::operator()(unsigned int i, unsigned int j) {
@@ -48,31 +57,9 @@ sf::Vector2f MapFileCollision::transferPixelToCords(sf::Vector2f loc) {
 	return sf::Vector2f(loc / 8.f);
 }
 
-void MapFileCollision::fillMap(const std::vector<std::vector<int>>& map_int)
+void MapFileCollision::fillMap(const std::vector<std::vector<char>>&  map_int)
 {
-	m_map.resize(map_int.size());
 
-	for (size_t i = 0;i < map_int.size();i++)
-	{
-		//m_map[i].resize(map_int[i].size());
-		for (size_t j = 0;j < map_int[i].size();j++)
-		{
-			switch (map_int[i][j])
-			{
-			case 0:
-				m_map[i].push_back(std::make_unique<FloorAsphalt>());
-				break;
-			case 1:
-				m_map[i].push_back(std::make_unique<FloorBrick>());
-				break;
-			case 2:
-				m_map[i].push_back(std::make_unique<FloorSand>());
-				break;
-			default:
-				break;
-			}
-		}
-	}
 }
 
 void MapFileCollision::fillObjectMap(std::string) {

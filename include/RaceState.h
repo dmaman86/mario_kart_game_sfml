@@ -1,7 +1,9 @@
 #pragma once
-#include "mode7.h"
+
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <future>
+#include "mode7.h"
 #include "Macros.h"
 #include "Player.h"
 #include "PlayerOnline.h"
@@ -10,6 +12,8 @@
 #include "MapFileCollision.h"
 #include "Pipe.h"
 #include "UserNetwork.h"
+#include "GameStatusBar.h"
+
 
 class RaceState : public State
 {
@@ -30,10 +34,11 @@ private:
 	void HandleCollision(float deltatime);
 	void updateObjLocation();
 	void updateDynamic();
-	void updateSky();
+
 
 	//================ Private members ==========================
 	sf::RenderWindow m_window;
+	sf::Sprite m_sky;
 	Mode7 m_map;
 	float m_cameraX, m_cameraY, m_cameraZ, m_theta;
 	sf::Clock m_clock;
@@ -45,9 +50,8 @@ private:
 	UserNetwork *m_userJoin;
 	float m_time_update;
     std::string m_map_race;
+	GameStatusBar m_status;
+    std::future<void> m_response_up;
+    std::future<void> m_response_get;
 
-	sf::Sprite m_sky_back;
-	sf::Sprite m_sky_front;
-
-
-}; // end RaceState
+}; // end RaceState 

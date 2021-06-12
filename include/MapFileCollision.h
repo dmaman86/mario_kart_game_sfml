@@ -16,6 +16,7 @@ public:
 	Floor& operator()(unsigned int, unsigned int);
 	//float calcLength(sf::Vector2f, sf::Vector2f);
 	sf::Vector2f transferPixelToCords(sf::Vector2f);
+    int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
 	void addObjects(float x, float y, PlayerOnline* obj)
 	{
 		m_vec_obj[std::pair(x, y)] = std::make_unique
@@ -35,6 +36,6 @@ public:
 
 private:
 
-	void fillMap(const std::vector<std::vector<int>>&);
+	void fillMap(const std::vector<std::vector<char>> &);
 	std::vector<std::vector<std::unique_ptr<Floor>>> m_map;
 };

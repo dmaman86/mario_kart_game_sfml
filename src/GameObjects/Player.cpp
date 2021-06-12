@@ -13,7 +13,8 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
         m_is_lock(0),
         m_last_pos(0,0),
         m_coefficient_of_friction(1),
-        m_is_spin(false)
+        m_is_spin(false),
+        m_lap(0)
 {
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
@@ -26,8 +27,7 @@ Player::Player(): m_animation (Pictures::instance().m_drivers[0],Direction::Left
 
 void Player::updateSpeed(float delta) {
 
-    std::cout << m_is_spin << " " <<m_is_lock <<"\n";
-    if(m_is_spin && m_playerClock.getElapsedTime().asSeconds() > 2) {
+    if(m_is_spin && m_playerClock.getElapsedTime().asSeconds() > 1.5f) {
         m_is_spin = false;
         m_is_lock = false;
     }
@@ -87,7 +87,6 @@ void Player::updateSpeed(float delta) {
 }
 void Player::updateDir()
 {
-
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		this->m_force -= 0.25;
@@ -161,4 +160,8 @@ void Player::updateAnimation() {
         m_animation.spin(m_playerClock.getElapsedTime().asSeconds());
 
 }
+
+void Player::setLastScorePos(unsigned int score) {m_last_pos_score = score;}
+
+int Player::getLastScorePos() const {return m_last_pos_score;}
 

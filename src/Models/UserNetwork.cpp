@@ -5,12 +5,13 @@ UserNetwork::UserNetwork():
         m_id(""),
         m_name(""),
         m_sprite(""),
-        m_sound(true),
+        m_sound(false),
         m_host(false),
         m_inGame(false),
         m_map_game(""),
         m_idOther(""),
-		m_online(false)
+		m_online(false),
+		m_music(false)
 {
 
 }
