@@ -42,6 +42,13 @@ void RaceState::Init()
 	m_int_map.fillMap(m_map_race);
 	m_int_map.fillObjectMap(m_map_race);
     m_player.setLastScorePos( m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x));
+	
+	m_sky_back.setTexture(Pictures::instance().getTexture(Pictures::sky_back));
+	m_sky_back.setScale(3, 3);
+	m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
+	m_sky_front.setScale(5, 5);
+	m_sky_front.setPosition(0, m_data->window->getSize().y / 10.5);
+	m_sky_front.setTextureRect(sf::Rect(1040, 0, 1024 / 5, 32));
 
 	m_clock.restart();
 	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
@@ -51,6 +58,8 @@ void RaceState::Draw() {
 
     m_player.updateAnimation();
 	m_data->window->draw(m_map.getSprite());
+	m_data->window->draw(m_sky_back);
+	m_data->window->draw(m_sky_front);
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
 	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
@@ -66,6 +75,9 @@ void RaceState::Update(float deltatime) {
     if(m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x) - m_player.getLastScorePos() >= 400 )
         m_player.addLap();
     std::cout <<m_player.getLastScorePos() << "  ::   " << m_int_map.getFloorScore(m_player.getLocation().y,m_player.getLocation().x) << " "<< m_player.getLap() << " \n";
+	
+	this->updateSky();
+
 	m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
 	m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
 
@@ -215,6 +227,22 @@ void RaceState::updateDynamic()
                             m_player2.getLastLocation().y*8,
                             (m_player2.getIntLocation().x * 8),
                             (m_player2.getIntLocation().y * 8));
+}
+
+void RaceState::updateSky()
+{
+	auto x = m_sky_front.getTextureRect();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		x.left += 3;
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		if (x.left <= 10)
+			x.left = 1040;
+		x.left -= 3;
+	}
+	x.left %= 2560;
+	m_sky_front.setTextureRect(x);
 }
 
 
