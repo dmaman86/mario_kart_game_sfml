@@ -7,6 +7,8 @@
 #include "Pictures.h"
 #include "PlayerOnline.h"
 #include "Utilities.h"
+#include "Ghost.h"
+
 MapFileCollision::MapFileCollision() {
 
 }
@@ -75,6 +77,7 @@ void MapFileCollision::fillObjectMap(std::string) {
 	m_vec_obj[std::pair(595.0, 475.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(595.0 / 8, 475.0 / 8));
 	m_vec_obj[std::pair(215.0, 437.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(215.0 / 8, 437.0 / 8));
 	m_vec_obj[std::pair(590.0, 850.0)] = std::make_unique<Banana>(sf::Vector2f(0.0, 0.0), sf::Vector2f(590.0 / 8, 850.0 / 8));
+	m_vec_obj[std::pair(400.0, 900.0)] = std::make_unique<Ghost>(sf::Vector2f(0.0, 0.0), sf::Vector2f(400.0 / 8, 900.0 / 8));
 
 	//m_vec_obj[std::pair(575.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(575.0 / 8, 500.0 / 8));
 	//m_vec_obj[std::pair(600.0, 500.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(600.0 / 8, 500.0 / 8));

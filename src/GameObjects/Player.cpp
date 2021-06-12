@@ -14,6 +14,8 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
         m_last_pos(0,0),
         m_coefficient_of_friction(1),
         m_is_spin(false),
+		m_is_smaller(false),
+		m_smaller_time(0.f),
         m_lap(0)
 {
 	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
@@ -21,13 +23,27 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 	m_sprite.scale(3, 3);
 }
 
+void Player::draw(sf::RenderWindow& win)
+{
+	/*if (m_is_smaller&& m_smaller_time)
+		this->m_sprite.setScale(m_sprite.getScale()/2.f);*/
+	PlayerBase::draw(win);
+
+}
+
 Player::Player(): m_animation (Pictures::instance().m_drivers[0],Direction::Left,m_sprite) {
 
 }
 
 void Player::updateSpeed(float delta) {
-
-    if(m_is_spin && m_playerClock.getElapsedTime().asSeconds() > 1.5f) {
+	
+	if (m_is_smaller&& m_playerClock.getElapsedTime().asSeconds() > m_smaller_time + 4.f)
+	{
+		m_is_smaller = false;
+		this->m_sprite.setScale(m_sprite.getScale() * 2.f);
+	}
+    
+	if(m_is_spin && m_playerClock.getElapsedTime().asSeconds() > 1.5f) {
         m_is_spin = false;
         m_is_lock = false;
     }
@@ -69,7 +85,8 @@ void Player::updateSpeed(float delta) {
             }
         if(m_sprite.getScale().x > 0 )
             m_animation.setIndex(0);
-            m_sprite.setScale(-3,3);
+		if(m_sprite.getScale().x >= 0)
+            m_sprite.setScale(-1*m_sprite.getScale().x, m_sprite.getScale().y);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
@@ -82,7 +99,7 @@ void Player::updateSpeed(float delta) {
         }
         if(m_sprite.getScale().x < 0 )
             m_animation.setIndex(0);
-    m_sprite.setScale(3,3);
+	m_sprite.setScale(abs(m_sprite.getScale().x), m_sprite.getScale().y);
     }
     else {
         this->m_is_pressed = false;
@@ -91,7 +108,6 @@ void Player::updateSpeed(float delta) {
 }
 void Player::updateDir()
 {
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		this->m_force -= 0.25;
 	}
@@ -154,6 +170,16 @@ void Player::spindriver() {
     m_is_spin = true;
    m_playerClock.restart();
 
+}
+
+void Player::driveSmaller()
+{
+	if (!m_is_smaller)
+	{
+		m_is_smaller = true;
+		m_smaller_time = m_playerClock.getElapsedTime().asSeconds();
+		this->m_sprite.setScale(m_sprite.getScale() / 2.f);
+	}
 }
 
 void Player::updateAnimation() {

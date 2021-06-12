@@ -12,11 +12,13 @@ class Player : public PlayerBase {
 public:
 	Player();
 	Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite);
+	virtual void draw(sf::RenderWindow& m_window) override;
 	void updateSpeed(float);
 	void updateDir();
 	void updateLocation(float);
 	void setCoefficientOfFriction(const float cof);
     void spindriver();
+	void driveSmaller();
 	void setAngle(float);
 	float getAngle();
     void driveBack();
@@ -40,8 +42,10 @@ private:
     bool m_is_lock;
     bool m_is_pressed;
     bool m_is_spin;
+	bool m_is_smaller;
     int m_last_pos_score;
     int m_lap;
+	float m_smaller_time;
 
 };
 
