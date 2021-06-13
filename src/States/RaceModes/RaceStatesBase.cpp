@@ -8,7 +8,7 @@
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_status(*data->window),
                                                     m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
-                                                             sf::Vector2f(63,110),
+                                                             sf::Vector2f(112,56),
                                                              m_data->user.getSprite()),
                                                     m_map_race( "mario_circuit_2.png")
 {
@@ -57,11 +57,14 @@ void RaceStatesBase::InitMap()
 void RaceStatesBase::InitSky()
 {
     m_sky_back.setTexture(Pictures::instance().getTexture(Pictures::sky_back));
-    m_sky_back.setScale(3, 3);
-    m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
-    m_sky_front.setScale(5, 5);
-    m_sky_front.setPosition(0, m_data->window->getSize().y / 10.5);
-    m_sky_front.setTextureRect(sf::Rect(1040, 0, 1024 / 5, 32));
+	m_sky_back.setTextureRect(sf::Rect(0, 0, 300, 32));
+	m_sky_back.setScale(4, 4);
+	m_sky_back.setPosition(0, m_data->window->getSize().y / 6.33);
+
+	m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
+	m_sky_front.setTextureRect(sf::Rect(0, 0, 300, 32));
+	m_sky_front.setScale(4, 4);
+    m_sky_front.setPosition(0, m_data->window->getSize().y / 6.33);
 }
 
 
@@ -188,12 +191,12 @@ void RaceStatesBase::updateSky()
     auto x = m_sky_front.getTextureRect();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        x.left += 3;
+        x.left += 1;
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         if (x.left <= 10)
             x.left = 1040;
-        x.left -= 3;
+        x.left -= 1;
     }
     x.left %= 2560;
     m_sky_front.setTextureRect(x);

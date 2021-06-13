@@ -1,6 +1,5 @@
 #include "MenuState.h"
 #include "MarioKart.h"
-#include "RaceState.h"
 #include "Macros.h"
 #include "user.h"
 #include "WelcomeState.h"
@@ -16,21 +15,10 @@ MarioKart::MarioKart()
 	m_dataGame(new DataGame(m_window)) {
     m_window.setFramerateLimit(60);
 
-
-
-
     if (User == users::Liran)
     {
         m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
     }
-    if (User == users::Liron)
-    {
-	    m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));
-    }    
-	if (User == users::Daniel)
-	{
-		m_dataGame->stateStack.AddState(StateStack::StateRef(new RaceState(m_dataGame)));
-	}
 }
 
 void MarioKart::run()
