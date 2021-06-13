@@ -29,7 +29,6 @@ bool Services::createUser( UserNetwork* user)
     m_request_post.setBody( m_ostream.str() );
 
     m_response = m_http.sendRequest( m_request_post );
-
     if( m_response.getStatus() != sf::Http::Response::Created ||
         m_response.getStatus() == sf::Http::Response::Unauthorized)
         return false;
@@ -180,22 +179,24 @@ void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string
 
 void Services::updatePosition( UserNetwork* user, PlayerBase* player, std::mutex* mutex )
 {
-    int f = 0;
+    static int f = 0;
+    sf::Http::Response local_response;
+    m_request_put.setMethod( sf::Http::Request::Put );
+    m_request_put.setUri( HttpNetwork::path_player + "/" + user->getId() );
+    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+
     while( f < 1 )
     {
         m_ostream.str("");
         m_ostream.clear();
-        m_request_put.setMethod( sf::Http::Request::Put );
-        m_request_put.setUri( HttpNetwork::path_player + "/" + user->getId() );
 
         m_ostream << "positionX=" << player->getLocation().x
                   << "&positionY=" << player->getLocation().y;
-        m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
         m_request_put.setBody(m_ostream.str());
-        m_response = m_http.sendRequest( m_request_put );
+        local_response = m_http.sendRequest( m_request_put );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         mutex->lock();
-        if(m_response.getStatus() != sf::Http::Response::Ok )
+        if(local_response.getStatus() != sf::Http::Response::Ok )
             user->setOnline(false);
         mutex->unlock();
     }
@@ -203,27 +204,29 @@ void Services::updatePosition( UserNetwork* user, PlayerBase* player, std::mutex
 
 void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mutex* mutex )
 {
-    int f = 0;
-    while( player->getMove() )
+    static int i = 0;
+    sf::Http::Response local_response;
+    sf::Http::Request request(HttpNetwork::path_player + "/" + otherUser->getId(), sf::Http::Request::Get);
+    sf::Http http(HttpNetwork::url);
+    while( i < 1 )
     {
         m_stream.str("");
         m_stream.clear();
-        m_request_get.setMethod(sf::Http::Request::Get);
-        m_request_get.setUri(HttpNetwork::path_player + "/" + otherUser->getId() );
 
-        m_response = m_http.sendRequest( m_request_get );
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        local_response = http.sendRequest( request );
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
         mutex->lock();
-        if( m_response.getStatus() != sf::Http::Response::Ok )
+        if( local_response.getStatus() != sf::Http::Response::Ok )
             otherUser->setOnline(false);
         else
         {
-            m_stream << m_response.getBody();
+            m_stream << local_response.getBody();
+            std::cout << "Services, line 224: " <<  m_stream.str() << std::endl;
             boost::property_tree::ptree pt;
             boost::property_tree::read_json(m_stream, pt);
             auto x = pt.get<float>("positionX");
             auto y = pt.get<float>("positionY");
-            player->setLocation( x, y );
+            player->setLocation(sf::Vector2f(x, y));
         }
         mutex->unlock();
     }
