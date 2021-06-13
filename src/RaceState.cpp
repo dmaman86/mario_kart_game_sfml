@@ -47,23 +47,26 @@ void RaceState::InitNetwork()
 {
 	if (m_userJoin)
 	{
-		m_player2 = PlayerOnline(m_userJoin->getSprite(),
-			sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
+//		m_player2 = PlayerOnline(m_userJoin->getSprite(),
+	//		sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
 		if (m_data->user.getIfHost())
 		{
-			m_player.setLocation(sf::Vector2f(63, 110));
+			m_player.setLocation(sf::Vector2f(112, 56));
 			m_player2 = PlayerOnline(m_userJoin->getSprite(),
 				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(117, 59));
-		} 
+            m_int_map.addObjects(117 * 8, 59 * 8, &m_player2);
+
+        }
 	
 		else
 		{	
 			m_player.setLocation(sf::Vector2f(117, 59));
 			m_player2 = PlayerOnline(m_userJoin->getSprite(),
 				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
-		}
+            m_int_map.addObjects(112*8, 56 * 8, &m_player2);
+
+        }
 		
-		m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
         m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1);
         m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2);
 	}
@@ -296,7 +299,7 @@ void RaceState::updateSky()
 bool RaceState::correctDirection()
 {
 	bool currect = false;
-	std::cout << m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
+	//std::cout << m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
 	
 
 	if (m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())

@@ -222,7 +222,7 @@ void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mut
         {
 			player->updateLastLocation();
             m_stream << local_response.getBody();
-            std::cout << "Services, line 224: " <<  m_stream.str() << std::endl;
+            //std::cout << "Services, line 224: " <<  m_stream.str() << std::endl;
             boost::property_tree::ptree pt;
             boost::property_tree::read_json(m_stream, pt);
             auto x = pt.get<float>("positionX");
