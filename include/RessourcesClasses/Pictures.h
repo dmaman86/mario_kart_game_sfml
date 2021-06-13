@@ -53,6 +53,7 @@ public:
 	static const std::string speed2;
 	static const std::string speed3;
 	static const std::string speed4;
+    static const std::string MenuButtons;
 
 
     const sf::Texture& getTexture(std::string) const;

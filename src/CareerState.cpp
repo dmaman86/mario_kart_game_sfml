@@ -1,3 +1,4 @@
+#include <CareerMenu.h>
 #include"CareerState.h"
 #include "Pictures.h"
 #include "MenuState.h"
@@ -40,7 +41,7 @@ void CareerState::HandleEvent(const sf::Event& event)
         }
 		if (m_new_game.getGlobalBounds().contains(location)) {
 
-			m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)));
+			m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)));
 		}
 		if (m_load_game.getGlobalBounds().contains(location)) {
 		}

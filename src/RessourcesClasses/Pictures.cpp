@@ -32,6 +32,7 @@ const std::string Pictures::speed1 = "speed1.png";
 const std::string Pictures::speed2 = "speed2.png";
 const std::string Pictures::speed3 = "speed3.png";
 const std::string Pictures::speed4 = "speed4.png";
+const std::string Pictures::MenuButtons = "menuButtons.png";
 
 Pictures &Pictures::instance() {
     static Pictures inst;
@@ -100,6 +101,10 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 		throw std::runtime_error("Cant Open " + Pictures::speed3);
 	if (!(m_pics[Pictures::speed4] = sf::Texture()).loadFromFile(Pictures::speed4))
 		throw std::runtime_error("Cant Open " + Pictures::speed4);
+    if (!(m_pics[Pictures::MenuButtons] = sf::Texture()).loadFromFile(Pictures::MenuButtons))
+        throw std::runtime_error("Cant Open " + Pictures::MenuButtons);
+
+
 
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
         m_drivers[i] = (setDriverData(i));
