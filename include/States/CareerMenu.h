@@ -3,11 +3,12 @@
 #include <SFML/Audio.hpp>
 #include "State.h"
 #include "MarioKart.h"
+#include "UserCareer.h"
 
 class CareerMenu: public State
 {
 public:
-    CareerMenu(MarioKart::GameDataRef&);
+    CareerMenu(MarioKart::GameDataRef&, UserCareer &);
     ~CareerMenu() = default;
 
     void Init()override;
@@ -32,7 +33,7 @@ private:
 
     bool m_backMenu;
     sf::Sound m_click;
-
+    UserCareer m_user;
 };
 
 
