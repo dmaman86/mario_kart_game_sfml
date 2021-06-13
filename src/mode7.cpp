@@ -134,37 +134,39 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 
 							camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
 								sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
-
-							d.second->setPosition(sf::Vector2f(xs, ys));
+							
+							//d.second->setPosition(sf::Vector2f(xs , ys ));
 
 							if (camera_length < 10) // x < 10
 							{
 								d.second->setScale(3, 3);
-								d.second->setPosition(sf::Vector2f(xs, ys - 20));
+								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 20) * 2));
 							}
 							else if (camera_length < 15)// 10 < x < 15
 							{
 								d.second->setScale(2, 2);
-								d.second->setPosition(sf::Vector2f(xs, ys - 15));
+								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 15) * 2));
 							}
 							else if (camera_length < 20)// 15 < x < 20
 							{
 								d.second->setScale(1.5, 1.5);
-								d.second->setPosition(sf::Vector2f(xs, ys - 10));
+								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 10) * 2));
 							}
 							else if (camera_length < 25)// 20 < x < 25
 							{
-								d.second->setScale(1, 1);
-								d.second->setPosition(sf::Vector2f(xs, ys - 5));
+								d.second->setScale(0.8, 0.8);
+								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 5) * 2) );
 							}
-							else if (camera_length < 30)// 25 < x < 30
+							else if (camera_length < 28)// 25 < x < 30
 							{
 								d.second->setScale(0.5, 0.5);
+								d.second->setPosition(sf::Vector2f(xs * 2, ys * 2));
+
 							}
 
 							d.second->setInAngle(true);
 
-							if (camera_length < 5.0 || camera_length > 30)
+							if (camera_length < 0.5 || camera_length > 28)
 								d.second->setInAngle(false);
 
 						}
@@ -180,6 +182,6 @@ sf::Sprite Mode7::getSprite()
 	m_texture.update(m_imageTransformed);
 	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);
-	m_sprite.setScale(2.5,2.5);
+	m_sprite.setScale(2,2);
 	return m_sprite;
 }
