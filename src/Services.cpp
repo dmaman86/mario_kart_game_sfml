@@ -220,6 +220,7 @@ void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mut
             otherUser->setOnline(false);
         else
         {
+			player->updateLastLocation();
             m_stream << local_response.getBody();
             std::cout << "Services, line 224: " <<  m_stream.str() << std::endl;
             boost::property_tree::ptree pt;

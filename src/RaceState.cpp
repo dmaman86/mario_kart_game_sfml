@@ -102,15 +102,15 @@ void RaceState::UpdateNetwork(float deltatime)
 	if (m_userJoin)
 	{
 		m_time_update += deltatime;
-		if (m_time_update > 0.1f)
-		{
+	//	if (m_time_update > 0.005f)
+	//	{
 		    m_mutex_player2.lock();
 		    std::cout << "RaceState. New position player 2: " << m_player2.getLocation().x <<
 		                " " << m_player2.getLocation().y << std::endl;
             updateDynamic();
 		    m_mutex_player2.unlock();
 			m_time_update = 0.0f;
-		}
+	//	}
 	}
 	//updateDynamic();
 	//updateObjLocation();
@@ -258,11 +258,10 @@ void RaceState::updateObjLocation()
 //=============================================================================
 void RaceState::updateDynamic()
 {
-	m_player2.updateLastLocation();
 	m_int_map.updateObjects(m_player2.getLastLocation().x*8,
-                            m_player2.getLastLocation().y*8,
-                            (m_player2.getLastLocation().x * 8),
-                            (m_player2.getLastLocation().y * 8));
+							m_player2.getLastLocation().y*8,
+                            (m_player2.getLocation().x * 8),
+                            (m_player2.getLocation().y * 8));
 }
 
 //=============================================================================
