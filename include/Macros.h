@@ -6,8 +6,8 @@
 const int WITDH = 1920;
 const int HIGHT = 1136;
 
-const int WITDH_G = 512;
-const int HIGHT_G = 256;
+const int WITDH_G = 600;
+const int HIGHT_G = 300;
 
 const int ROADW = 2000;
 const int SEGMENT_LENGTH = 200; 
