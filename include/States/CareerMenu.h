@@ -26,7 +26,8 @@ private:
     sf::Text m_name;
     sf::Text m_moneys;
     sf::Text m_car;
-
+    sf::Sprite m_career;
+    sf::Sprite m_save;
     MarioKart::GameDataRef m_data;
 
     bool m_backMenu;

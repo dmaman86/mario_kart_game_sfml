@@ -23,12 +23,15 @@ void CareerMenu::Init()
     m_coin.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons));
     m_dk.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons));
     m_garage.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons));
+    m_save.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons));
+    m_career.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons));
 
     m_time.setTextureRect(sf::Rect(38,4,456,77));
     m_coin.setTextureRect(sf::Rect(50,70,600,100));
     m_dk.setTextureRect(sf::Rect(30,220,494,66));
     m_garage.setTextureRect(sf::Rect(30,350,400,85));
-
+    m_career.setTextureRect(sf::Rect(30,450,400,85));
+    m_save.setTextureRect(sf::Rect(30,550,400,85));
     m_time.setPosition(250,250);
     m_coin.setPosition(250,325);
    m_dk.setPosition(250,450);
@@ -52,6 +55,8 @@ void CareerMenu::Init()
     m_name.setPosition(1450,250);
     m_moneys.setPosition(1450,350);
     m_car.setPosition(1450,450);
+
+    m_career.setPosition(100,100);
 
 }
 
@@ -104,6 +109,9 @@ void CareerMenu::Draw()
     m_data->window->draw(m_name);
     m_data->window->draw(m_moneys);
     m_data->window->draw(m_car);
+    m_data->window->draw(m_career);
+    m_data->window->draw(m_save);
+
 
 
 }
