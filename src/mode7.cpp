@@ -178,7 +178,8 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 sf::Sprite Mode7::getSprite()
 {
 	m_texture.update(m_imageTransformed);
+	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);
-	//m_sprite.setScale(2,2);
+	m_sprite.setScale(2.5,2.5);
 	return m_sprite;
 }
