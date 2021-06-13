@@ -3,9 +3,12 @@
 #include "MenuState.h"
 #include "GetDataState.h"
 #include "Fonts.h"
-CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
+#include <string>
+
+CareerMenu::CareerMenu(MarioKart::GameDataRef& data, UserCareer& user): m_data(data),
                                                         m_backMenu(false),
-                                                        m_background()
+                                                        m_background(),
+                                                         m_user(user)
 {
 }
 
@@ -47,8 +50,8 @@ void CareerMenu::Init()
     m_moneys.setFont(Fonts::instance().Fonts::getFontMario());
     m_car.setFont(Fonts::instance().Fonts::getFontMario());
 
-    m_name.setString("Liran");
-    m_moneys.setString("10000$");
+    m_name.setString(m_user.getName());
+    m_moneys.setString(std::to_string(m_user.getCoins()) + "$");
     m_car.setString("Mario Mother fucker");
 
 

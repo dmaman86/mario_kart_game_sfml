@@ -1,8 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <iostream>
+#include <fstream>
 #include "State.h"
 #include "MarioKart.h"
+#include "UserCareer.h"
 
 class CareerState : public State
 {
@@ -15,6 +18,7 @@ public:
 	void Update(float) override;
 	void Draw() override;
 private:
+	void openLoadFile();
 	void setVolume();
 	sf::Sprite m_background;
 	sf::Sprite m_back;
@@ -22,7 +26,7 @@ private:
 	sf::Sprite m_load_game;
 
 
-
+	UserCareer m_user;
 	MarioKart::GameDataRef m_data;
 
 	bool m_backMenu;

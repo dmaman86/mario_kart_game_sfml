@@ -4,6 +4,8 @@
 #include "MenuState.h"
 #include "GetDataState.h"
 
+
+
 CareerState::CareerState(MarioKart::GameDataRef& data): m_data(data),
                                                     m_backMenu(false),
                                                     m_background()
@@ -41,9 +43,11 @@ void CareerState::HandleEvent(const sf::Event& event)
         }
 		if (m_new_game.getGlobalBounds().contains(location)) {
 
-			m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)));
+			m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)));
 		}
 		if (m_load_game.getGlobalBounds().contains(location)) {
+            openLoadFile();
+            m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)));
 		}
 
     }
@@ -64,6 +68,25 @@ void CareerState::Draw()
 	m_data->window->draw(m_back);
 	m_data->window->draw(m_new_game);
 	m_data->window->draw(m_load_game);
+}
+
+void CareerState::openLoadFile()
+{
+    std::string line_text;
+    std::string line;
+
+    std::ifstream loadGame;
+    loadGame.open("load.txt");
+    if(loadGame.fail())
+        throw std::runtime_error("Error: loadGame not found/exist\n");
+
+    std::getline(loadGame, line_text);
+    m_user.setName(line_text);
+    std::getline(loadGame, line_text);
+    m_user.setCoins(std::stoi(line_text));
+
+
+    loadGame.close();
 }
 
 void CareerState::setVolume()
