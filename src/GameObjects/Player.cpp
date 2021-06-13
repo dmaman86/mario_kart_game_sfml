@@ -53,7 +53,7 @@ void Player::CheckLap(const int fs)
 {
 	if (fs - getLastScorePos() >= 400)
 		addLap();
-	std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
+	// std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
 }
 
 //=============================================================================
@@ -83,7 +83,7 @@ void Player::draw(sf::RenderWindow& win)
 void Player::driveBack()
 {
 	if (!m_is_lock) {
-		m_last_pos = m_location;
+		m_last_pos = *m_location;
 	}
 	m_is_lock = true;
 }
@@ -203,22 +203,23 @@ void Player::updateSpeed(float delta) {
 void Player::updateLocation(const float delta)
 {
 	if (!m_is_lock) {
-		m_location.x += calcSinDegree(m_angle) * delta * m_force / m_coefficient_of_friction;
-		m_location.y -= calcCosDegree(m_angle)* delta * m_force / m_coefficient_of_friction;
+	    setMove();
+		m_location->x += calcSinDegree(m_angle) * delta * m_force / m_coefficient_of_friction;
+		m_location->y -= calcCosDegree(m_angle)* delta * m_force / m_coefficient_of_friction;
 	}
 }
 
 //=============================================================================
 void Player::handleLock(const float dt)
 {
-	if (calcLength(m_location, m_last_pos) >= 4.5)
+	if (calcLength(*m_location, m_last_pos) >= 4.5)
 	{
 		m_is_lock = false;
 		m_force = 0;
 	}
 	else
 	{
-		m_location.x += calcSinDegree(m_angle) * dt * -m_force / 1.5;
-		m_location.y -= calcCosDegree(m_angle) * dt * -m_force / 1.5;
+		m_location->x += calcSinDegree(m_angle) * dt * -m_force / 1.5;
+		m_location->y -= calcCosDegree(m_angle) * dt * -m_force / 1.5;
 	}
 }

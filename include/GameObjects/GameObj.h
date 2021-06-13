@@ -15,13 +15,14 @@ public:
 	void setInAngle(bool b) { m_is_in_angle = b; }
 	const bool getIsInAngle()const { return m_is_in_angle; }
 	const bool collisionWith(const GameObj& b)const;
-    sf::Vector2f& getLocation(){ return m_location; }
-    void setLocation( float x, float y ){ m_location.x = x; m_location.y = y; }
+    sf::Vector2f& getLocation(){ return *m_location; }
+    void setLocation( float x, float y ){ m_location->x = x; m_location->y = y; }
+    void setLocation(sf::Vector2f loc){ *m_location = loc; }
     bool getIsActive(){return m_is_active;}
     void setIsActive(bool boo){m_is_active = boo;}
 protected:
 	sf::Sprite m_sprite;
-	sf::Vector2f m_location;
+	sf::Vector2f *m_location;
 	bool m_is_in_angle;
 	bool m_is_active;
 };

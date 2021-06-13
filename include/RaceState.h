@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <future>
+#include <thread>
+#include <mutex>
+
 #include "mode7.h"
 #include "Macros.h"
 #include "Player.h"
@@ -13,6 +16,7 @@
 #include "Pipe.h"
 #include "UserNetwork.h"
 #include "GameStatusBar.h"
+#include "Services.h"
 
 
 class RaceState : public State
@@ -56,8 +60,13 @@ private:
 	float m_time_update;
     std::string m_map_race;
 	GameStatusBar m_status;
-    std::future<void> m_response_up;
-    std::future<void> m_response_get;
+
+    std::thread m_thread_up;
+    std::thread m_thread_get;
+    std::mutex m_mutex_player2;
+    std::mutex m_mutex_player1;
+    Services m_services;
+
 	sf::Sprite m_sky_back;
 	sf::Sprite m_sky_front;
 }; // end RaceState 

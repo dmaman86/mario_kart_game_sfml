@@ -13,7 +13,12 @@ RaceState::RaceState(MarioKart::GameDataRef data) : m_data(data),
                                  sf::Vector2f(63,124),
                                  m_data->user.getSprite()),
                         m_time_update(0.0f),
-                        m_map_race( data->user.getIfHost() ? data->user.getMapGame() : "mario_circuit_2.png")
+                        m_map_race( data->user.getIfHost() ? data->user.getMapGame() : "mario_circuit_2.png"),
+                        m_mutex_player1(),
+                        m_mutex_player2(),
+                        m_thread_up(),
+                        m_thread_get(),
+                        m_services()
 {
 	if(m_userJoin)
 		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
@@ -46,6 +51,8 @@ void RaceState::InitNetwork()
 			sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(63, 110));
 
 		m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
+        m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1);
+        m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2);
 	}
 }
 
@@ -82,8 +89,8 @@ void RaceState::Update(float deltatime) {
 	
 	UpdatePlayer(deltatime);
 	this->updateSky();
-	UpdateMap();
 	UpdateNetwork(deltatime);
+    UpdateMap();
 	HandleCollision(deltatime);
 }
 
@@ -95,16 +102,13 @@ void RaceState::UpdateNetwork(float deltatime)
 	if (m_userJoin)
 	{
 		m_time_update += deltatime;
-		m_response_up = std::async(std::launch::async, [&]() {
-			m_data->services.updatePosition(m_data->user.getId(), m_player); });
-		m_response_get = std::async(std::launch::async, [&]() {
-			m_data->services.getPosition(m_userJoin->getId(), m_player2);});
 		if (m_time_update > 0.1f)
 		{
-			m_response_up.get();
-			m_response_get.get();
-			// if(response_up.valid() && response_get.valid())
-			updateDynamic();
+		    m_mutex_player2.lock();
+		    std::cout << "RaceState. New position player 2: " << m_player2.getLocation().x <<
+		                " " << m_player2.getLocation().y << std::endl;
+            updateDynamic();
+		    m_mutex_player2.unlock();
 			m_time_update = 0.0f;
 		}
 	}
@@ -257,8 +261,8 @@ void RaceState::updateDynamic()
 	m_player2.updateLastLocation();
 	m_int_map.updateObjects(m_player2.getLastLocation().x*8,
                             m_player2.getLastLocation().y*8,
-                            (m_player2.getIntLocation().x * 8),
-                            (m_player2.getIntLocation().y * 8));
+                            (m_player2.getLastLocation().x * 8),
+                            (m_player2.getLastLocation().y * 8));
 }
 
 //=============================================================================
