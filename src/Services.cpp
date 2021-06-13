@@ -178,41 +178,53 @@ void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string
     }
 }
 
-bool Services::updatePosition( std::string id, PlayerBase player )
+void Services::updatePosition( UserNetwork* user, PlayerBase* player, std::mutex* mutex )
 {
-    m_ostream.str("");
-    m_ostream.clear();
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( HttpNetwork::path_player + "/" + id );
+    int f = 0;
+    while( f < 1 )
+    {
+        m_ostream.str("");
+        m_ostream.clear();
+        m_request_put.setMethod( sf::Http::Request::Put );
+        m_request_put.setUri( HttpNetwork::path_player + "/" + user->getId() );
 
-    m_ostream << "positionX=" << player.getLocation().x
-              << "&positionY=" << player.getLocation().y;
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
-    m_request_put.setBody(m_ostream.str());
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    return m_http.sendRequest(m_request_put).getStatus() == sf::Http::Response::Ok;
+        m_ostream << "positionX=" << player->getLocation().x
+                  << "&positionY=" << player->getLocation().y;
+        m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+        m_request_put.setBody(m_ostream.str());
+        m_response = m_http.sendRequest( m_request_put );
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        mutex->lock();
+        if(m_response.getStatus() != sf::Http::Response::Ok )
+            user->setOnline(false);
+        mutex->unlock();
+    }
 }
 
-bool Services::getPosition( std::string idOther, PlayerBase& player )
+void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mutex* mutex )
 {
-    m_stream.str("");
-    m_stream.clear();
-    m_request_get.setMethod(sf::Http::Request::Get);
-    m_request_get.setUri(HttpNetwork::path_user + "/" + idOther );
+    int f = 0;
+    while( player->getMove() )
+    {
+        m_stream.str("");
+        m_stream.clear();
+        m_request_get.setMethod(sf::Http::Request::Get);
+        m_request_get.setUri(HttpNetwork::path_player + "/" + otherUser->getId() );
 
-    m_response = m_http.sendRequest( m_request_get );
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    if( m_response.getStatus() != sf::Http::Response::Ok )
-        return false;
-
-    m_stream << m_response.getBody();
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_json(m_stream, pt);
-    // player->getLocation().x = pt.get<float>("positionX");
-    // player->getLocation().y = pt.get<float>("positionY");
-    std::cout << "line 213: " << m_stream.str() << std::endl;
-    auto x = pt.get<float>("positionX");
-    auto y = pt.get<float>("positionY");
-    player.setLocation( x, y );
-    return true;
+        m_response = m_http.sendRequest( m_request_get );
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        mutex->lock();
+        if( m_response.getStatus() != sf::Http::Response::Ok )
+            otherUser->setOnline(false);
+        else
+        {
+            m_stream << m_response.getBody();
+            boost::property_tree::ptree pt;
+            boost::property_tree::read_json(m_stream, pt);
+            auto x = pt.get<float>("positionX");
+            auto y = pt.get<float>("positionY");
+            player->setLocation( x, y );
+        }
+        mutex->unlock();
+    }
 }

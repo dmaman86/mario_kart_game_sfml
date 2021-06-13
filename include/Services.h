@@ -10,6 +10,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <mutex>
 
 #include "Macros.h"
 #include "UserNetwork.h"
@@ -30,8 +31,8 @@ public:
     bool getIdOtherUser(UserNetwork* );
     bool createRace( UserNetwork* );
     bool getUsers( std::vector<UserNetwork>&, const std::string );
-    bool updatePosition( std::string, PlayerBase );
-    bool getPosition( std::string, PlayerBase& );
+    void updatePosition( UserNetwork*, PlayerBase*, std::mutex* );
+    void getPosition( UserNetwork*, PlayerBase*, std::mutex* );
 
 
 private:

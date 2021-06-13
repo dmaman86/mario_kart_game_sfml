@@ -7,7 +7,12 @@ public:
 	PlayerBase() {};
 	PlayerBase(const sf::Texture&, const sf::Vector2f pos, const sf::Vector2f loc);
 
+	void setMove(){ m_start_move = true; }
+	bool getMove(){ return m_start_move; }
+
 protected:
 
+private:
+    bool m_start_move;
 };
 

@@ -203,6 +203,7 @@ void Player::updateSpeed(float delta) {
 void Player::updateLocation(const float delta)
 {
 	if (!m_is_lock) {
+	    setMove();
 		m_location.x += calcSinDegree(m_angle) * delta * m_force / m_coefficient_of_friction;
 		m_location.y -= calcCosDegree(m_angle)* delta * m_force / m_coefficient_of_friction;
 	}
