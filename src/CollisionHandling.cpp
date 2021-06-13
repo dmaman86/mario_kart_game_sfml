@@ -10,7 +10,7 @@
 #include "Banana.h"
 #include "Ghost.h"
 #include "Player.h"
-
+#include "PlayerOnline.h"
 
 namespace // anonymous namespace — the standard way to make function "static"
 {
@@ -53,6 +53,11 @@ namespace // anonymous namespace — the standard way to make function "static"
 
 		Pl.driveBack();
 	}
+
+	void PlayerPlayerOnline(Object& player,Object& player2)
+    {
+
+    }
 
 
 //...
@@ -104,6 +109,9 @@ HitMap initializeCollisionMap()
 	
 	phm[Key(typeid(Player), typeid(Ghost))] = &PlayerGhost;
 	phm[Key(typeid(Ghost), typeid(Player))] = &GhostPlayer;
+
+    phm[Key(typeid(Player), typeid(PlayerOnline))] = &PlayerPlayerOnline;
+    phm[Key(typeid(PlayerOnline), typeid(Player))] = &PlayerPlayerOnline;
 
 	phm[Key(typeid(Player), typeid(FloorAsphalt))] = &PlayerFloorAsphalt;
 	phm[Key(typeid(Player), typeid(FloorBrick))] = &PlayerFloorBrick;

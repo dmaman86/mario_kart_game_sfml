@@ -33,7 +33,7 @@ public:
 	void setCamera(float x, float y, float z);
 	void setFOVangle(float angle);
 	void setTheta(float theta);
-	void calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>&, PlayerOnline*, const sf::Vector2f);
+	void calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>&, const sf::Vector2f);
 	bool calcInAngle(float&, float&, const unsigned int, const unsigned int);
 	bool calcInAngle(unsigned int& ys, unsigned int& xs, const float xw, const float zw);
 	sf::Sprite getSprite();

@@ -8,8 +8,8 @@
 #include <sstream>
 #include <thread>
 #include <chrono>
-#include "RaceState.h"
-
+#include "States/RaceModes/OnlineRace.h"
+#include "RaceStatesBase.h"
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
@@ -200,7 +200,7 @@ void GetDataState::Update(float dt)
         }
         else if (!m_data->user.getOnline())
         {
-            m_data->stateStack.AddState(StateStack::StateRef(new RaceState(m_data)));
+            m_data->stateStack.AddState(StateStack::StateRef(new RaceStatesBase (m_data)));
         }
     }
     if (m_backMenu)

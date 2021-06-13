@@ -4,7 +4,7 @@
 #include "GetDataState.h"
 #include "Fonts.h"
 #include <string>
-
+#include "RaceStatesBase.h"
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data, UserCareer& user): m_data(data),
                                                         m_backMenu(false),
                                                         m_background(),
@@ -78,6 +78,7 @@ void CareerMenu::HandleEvent(const sf::Event& event)
         }
         if (m_coin.getGlobalBounds().contains(location)) {
             m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);
+
         }
         if (m_dk.getGlobalBounds().contains(location)) {
             m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);

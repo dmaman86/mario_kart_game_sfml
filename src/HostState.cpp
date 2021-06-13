@@ -1,7 +1,7 @@
 #include "HostState.h"
 #include "Pictures.h"
 #include "Fonts.h"
-#include "RaceState.h"
+#include "States/RaceModes/OnlineRace.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -135,7 +135,7 @@ void HostState::Update(float dt)
             {
                 std::cout << "go to race" << std::endl;
                 std::cout << "other id: " << m_data->user.getOtherId() << std::endl;
-                m_data->stateStack.AddState(StateStack::StateRef( new RaceState(m_data)));
+                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)));
                 break;
             }
         }

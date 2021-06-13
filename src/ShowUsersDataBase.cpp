@@ -1,7 +1,7 @@
 #include "ShowUsersDataBase.h"
 #include "Pictures.h"
 #include "Fonts.h"
-#include "RaceState.h"
+#include "OnlineRace.h"
 #include <iostream>
 
 ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef& data):
@@ -74,7 +74,7 @@ void ShowUsersDataBase::Update(float dt)
     {
         std::cout << "go to race state\n";
         if(m_data->services.createRace(&m_data->user))
-            m_data->stateStack.AddState(StateStack::StateRef( new RaceState(m_data)));
+            m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)));
     }
     m_data->services.getUsers( m_users, m_data->user.getId() );
     buildList( m_windowSize );
