@@ -36,6 +36,7 @@ void MapFileCollision::fillMap(const std::string str) {
                     m_map[i].push_back(std::make_unique<FloorSand>(score_map[i][j]));
                     break;
                 default:
+                    m_map[i].push_back(std::make_unique<FloorBrick>(score_map[i][j]));
                     break;
             }
         }

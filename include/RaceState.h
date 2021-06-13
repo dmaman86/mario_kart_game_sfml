@@ -45,6 +45,7 @@ private:
 	void updateObjLocation();
 	void updateDynamic();
 	void updateSky();
+	bool correctDirection();
 
 	//================ Private members ==========================
 	sf::RenderWindow m_window;

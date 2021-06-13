@@ -14,7 +14,7 @@ GameStatusBar::GameStatusBar(sf::RenderWindow& windows) :m_windows(windows){
 }
 
 //====================================================
-void GameStatusBar::printGameStatus(const sf::Clock& time, int lap, int raceLoc, int coins) {
+void GameStatusBar::printGameStatus(const sf::Clock& time, int lap, int raceLoc, int coins, bool correctDirection) {
 
 
     m_lap.setString("Lap:" + std::to_string(lap));
@@ -23,7 +23,7 @@ void GameStatusBar::printGameStatus(const sf::Clock& time, int lap, int raceLoc,
 
     m_raceLoc.setString("Race:" + std::to_string(raceLoc));
     
-    m_coins.setString(std::to_string(coins));
+    m_coins.setString(std::to_string(correctDirection));
 
     m_lap.setPosition(800, 800);
     m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 809);

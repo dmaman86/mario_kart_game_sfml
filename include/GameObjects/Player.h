@@ -33,7 +33,8 @@ public:
 	const int  getLastScorePos()const;
 	const int  getLap() const { return m_lap; }
 	const float getSpeed()const { return m_force; };
-	
+	const bool getIsLoc()const { return m_is_lock; };
+
 private:
 	//================ Private functions =========================
 	void handleLock(const float);

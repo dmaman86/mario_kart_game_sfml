@@ -38,7 +38,7 @@ void RaceState::Init()
 	InitSky();
 	m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
 	m_clock.restart();
-	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
+	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
 
 }
 
@@ -143,7 +143,7 @@ void RaceState::Draw() {
 	m_data->window->draw(m_sky_front);
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
-	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0);
+	m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
 }
 
 //=============================================================================
@@ -280,4 +280,20 @@ void RaceState::updateSky()
 	}
 	x.left %= 2560;
 	m_sky_front.setTextureRect(x);
+}
+
+//=============================================================================
+bool RaceState::correctDirection()
+{
+	bool currect = false;
+	std::cout << m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
+	
+
+	if (m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
+		currect = false;
+	else if (m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
+		currect = true;
+
+
+	return currect;
 }
