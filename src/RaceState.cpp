@@ -48,8 +48,21 @@ void RaceState::InitNetwork()
 	if (m_userJoin)
 	{
 		m_player2 = PlayerOnline(m_userJoin->getSprite(),
-			sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(63, 110));
-
+			sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
+		if (m_data->user.getIfHost())
+		{
+			m_player.setLocation(sf::Vector2f(63, 110));
+			m_player2 = PlayerOnline(m_userJoin->getSprite(),
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(117, 59));
+		} 
+	
+		else
+		{	
+			m_player.setLocation(sf::Vector2f(117, 59));
+			m_player2 = PlayerOnline(m_userJoin->getSprite(),
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
+		}
+		
 		m_int_map.addObjects(63 * 8, 110 * 8, &m_player2);
         m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1);
         m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2);
@@ -102,15 +115,13 @@ void RaceState::UpdateNetwork(float deltatime)
 	if (m_userJoin)
 	{
 		m_time_update += deltatime;
-		if (m_time_update > 0.1f)
-		{
+	//	if (m_time_update > 0.005f)
+	//	{
 		    m_mutex_player2.lock();
-		    std::cout << "RaceState. New position player 2: " << m_player2.getLocation().x <<
-		                " " << m_player2.getLocation().y << std::endl;
             updateDynamic();
 		    m_mutex_player2.unlock();
 			m_time_update = 0.0f;
-		}
+	//	}
 	}
 	//updateDynamic();
 	//updateObjLocation();
@@ -258,11 +269,10 @@ void RaceState::updateObjLocation()
 //=============================================================================
 void RaceState::updateDynamic()
 {
-	m_player2.updateLastLocation();
 	m_int_map.updateObjects(m_player2.getLastLocation().x*8,
-                            m_player2.getLastLocation().y*8,
-                            (m_player2.getLastLocation().x * 8),
-                            (m_player2.getLastLocation().y * 8));
+							m_player2.getLastLocation().y*8,
+                            (m_player2.getLocation().x * 8),
+                            (m_player2.getLocation().y * 8));
 }
 
 //=============================================================================
