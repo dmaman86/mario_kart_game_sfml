@@ -82,13 +82,13 @@ void OnlineRace::UpdateNetwork(float deltatime)
 	if (m_userJoin)
 	{
 		m_time_update += deltatime;
-	//	if (m_time_update > 0.005f)
-	//	{
+		if (m_time_update > 0.1f)
+		{
 		    m_mutex_player2.lock();
             updateDynamic();
 		    m_mutex_player2.unlock();
 			m_time_update = 0.0f;
-	//	}
+		}
 	}
 
 }

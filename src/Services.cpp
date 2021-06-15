@@ -214,7 +214,7 @@ void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mut
         m_stream.clear();
 
         local_response = http.sendRequest( request );
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         mutex->lock();
         if( local_response.getStatus() != sf::Http::Response::Ok )
             otherUser->setOnline(false);
