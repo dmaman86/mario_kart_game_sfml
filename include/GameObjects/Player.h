@@ -35,10 +35,10 @@ public:
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
 
-private:
+protected:
 	//================ Private functions =========================
 	void handleLock(const float);
-	void updateSpeed(const float);
+	virtual void updateSpeed(const float);
 	void updateLocation(const float);
 	void addLap() { ++m_lap; }
 	

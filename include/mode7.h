@@ -8,8 +8,16 @@
 #include <vector>
 #include "GameObj.h"
 #include "PlayerOnline.h"
+#include "Player.h"
+#include <thread>
 
-class Mode7 final
+
+struct data {
+    std::map<std::pair<float, float>,GameObj*> m_newvec;
+
+};
+
+class Mode7
 {
 
 private:
@@ -33,11 +41,11 @@ public:
 	void setCamera(float x, float y, float z);
 	void setFOVangle(float angle);
 	void setTheta(float theta);
-	void calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>&, const sf::Vector2f);
+	void calc1(){static int i = 0;};
+	void calc(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>&);
 	bool calcInAngle(float&, float&, const unsigned int, const unsigned int);
 	bool calcInAngle(unsigned int& ys, unsigned int& xs, const float xw, const float zw);
 	sf::Sprite getSprite();
-
-
+	void initThread(std::map<std::pair<float, float >, std::shared_ptr<GameObj>>);
 
 };

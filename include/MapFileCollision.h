@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "PlayerOnline.h"
 #include "Floor.h"
+typedef std::shared_ptr<GameObj> ptr;
 
 class MapFileCollision {
 public:
@@ -19,7 +20,7 @@ public:
     int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
 	void addObjects(float x, float y, PlayerOnline* obj)
 	{
-		m_vec_obj[std::pair(x, y)] = std::make_unique
+		m_vec_obj[std::pair(x, y)] = std::make_shared
 			<PlayerOnline>(*obj);
 	};
 	void updateObjects(float x, float y, float z, float w)
@@ -32,7 +33,7 @@ public:
 		}
 	}
 	//  std::vector<std::unique_ptr<GameObj>> m_vec_obj;
-	std::map<std::pair<float, float >, std::unique_ptr<GameObj>> m_vec_obj;
+	std::map<std::pair<float, float >, ptr> m_vec_obj;
 
 private:
 

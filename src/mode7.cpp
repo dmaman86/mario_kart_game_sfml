@@ -1,8 +1,9 @@
 #include "mode7.h"
 #include "Pictures.h"
 #include <cmath>
+#include <unistd.h>
 #include "Utilities.h"
-
+#include "Macros.h"
 /*Mode7::Mode7() : m_screenWidth{}, m_screenHeight{}, m_T{}, m_L{},
 			m_imageWidth{}, m_imageHeight{}, m_FOV{}, m_D{}, m_cameraX{},
 			m_cameraY{}, m_cameraZ{}, m_cosinus{1}, m_sinus{} {}
@@ -27,6 +28,7 @@ Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, f
 	setCamera(cameraX, cameraY, cameraZ);
 	setFOVangle(FOV);
 	setTheta(theta);
+
 }
 
 void Mode7::setScreen(unsigned int width, unsigned int height)
@@ -107,11 +109,14 @@ bool Mode7::calcInAngle( unsigned int& ys, unsigned int& xs,const float xw, cons
 //                m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int )zw));
 //        }
 //}
-void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& vec,const sf::Vector2f p_pos)
+void Mode7::calc(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec)
 {
-	//for (auto& x : vec)
-	//	x.second->setInAngle(false);
 
+    while (1)
+    {
+       // sleep(0.01);
+        //if(mutex->unlock())
+        //std::cout << "dasds \n";
 	float xw, zw, obj_length, camera_length;
 	for (unsigned int ys{ m_T + 1 }; ys < m_screenHeight; ys++)
 		for (unsigned int xs{}; xs < m_screenWidth; xs++)
@@ -128,12 +133,14 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 					if (abs(d.first.second - zw) <= 4 && abs(d.first.first - xw) <= 2)
 					{
 						{
-							obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
-								sf::Vector2f(p_pos.x, p_pos.y));
+//                            int p_x;
+//                            int p_y;
+//                            obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
+//                                                    sf::Vector2f(*p_x, *p_y));
 
 							camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
 								sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
-							
+
 							//d.second->setPosition(sf::Vector2f(xs , ys ));
 
 							if (camera_length < 10) // x < 10
@@ -173,7 +180,7 @@ void Mode7::calc(std::map<std::pair<float, float >, std::unique_ptr<GameObj>>& v
 				}
 			}
 		}
-}
+}}
 
 
 sf::Sprite Mode7::getSprite()
@@ -184,3 +191,11 @@ sf::Sprite Mode7::getSprite()
 	m_sprite.setScale(2,2);
 	return m_sprite;
 }
+
+void Mode7::initThread(std::map<std::pair<float, float>, std::shared_ptr<GameObj>> vec) {
+
+      //m_build_map_thread = std::thread(&calc,std::ref(vec));
+
+}
+
+

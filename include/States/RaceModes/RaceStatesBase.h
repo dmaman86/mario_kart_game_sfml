@@ -16,7 +16,7 @@
 #include "GameStatusBar.h"
 #include "Services.h"
 #include "PlayerOnline.h"
-
+#include <thread>
 
 class RaceStatesBase : public State
 {
@@ -57,4 +57,6 @@ protected:
     GameStatusBar m_status;
     sf::Sprite m_sky_back;
     sf::Sprite m_sky_front;
+    std::thread m_build_map_thread;
+
 }; // end RaceState

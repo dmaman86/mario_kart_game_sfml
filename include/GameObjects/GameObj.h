@@ -20,6 +20,7 @@ public:
     void setLocation(sf::Vector2f loc){ *m_location = loc; }
     bool getIsActive(){return m_is_active;}
     void setIsActive(bool boo){m_is_active = boo;}
+    sf::Sprite& getSprite(){return m_sprite;};
 protected:
 	sf::Sprite m_sprite;
 	sf::Vector2f *m_location;

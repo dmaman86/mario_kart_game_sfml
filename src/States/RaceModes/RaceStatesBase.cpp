@@ -3,7 +3,7 @@
 #include <cmath>
 #include "CollisionHandling.h"
 #include "Utilities.h"
-
+#include "mode7.h"
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_status(*data->window),
@@ -38,6 +38,8 @@ void RaceStatesBase::Init()
     m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
     m_clock.restart();
     m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
+    //m_map.initThread(m_int_map.m_vec_obj);
+    m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
 
 }
 
@@ -80,6 +82,7 @@ void RaceStatesBase::Update(float deltatime) {
     UpdatePlayer(deltatime);
     this->updateSky();
     UpdateMap();
+    updateObjLocation();
     HandleCollision(deltatime);
 }
 
@@ -92,7 +95,8 @@ void RaceStatesBase::UpdateMap()
     m_theta = m_player.getAngle();
     m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
     m_map.setTheta(m_player.getAngle());
-    m_map.calc(m_int_map.m_vec_obj, m_player.getIntLocation());
+
+    //m_map.calc(m_int_map.m_vec_obj,);
 }
 
 //=============================================================================
@@ -121,7 +125,7 @@ void RaceStatesBase::drawStaticObjects() {
         if (x.second->getIsInAngle())
         {
             x.second->draw(*m_data->window);
-            x.second->setInAngle(false);
+            //x.second->setInAngle(false);
         }
 
 }
