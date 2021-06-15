@@ -142,45 +142,45 @@ void RaceStatesBase::updateObjLocation()
     unsigned int xs, ys;
     for (auto& d : m_int_map.m_vec_obj)
     {
-        if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
-        {
-            obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
-                                    sf::Vector2f(m_player.getIntLocation().x, m_player.getIntLocation().y));
+        //if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
+        //{
+        //    obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
+        //                            sf::Vector2f(m_player.getIntLocation().x, m_player.getIntLocation().y));
 
-            camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),sf::Vector2f(m_cameraZ, m_cameraX))) / 8.f;
+        //    camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),sf::Vector2f(m_cameraZ, m_cameraX))) / 8.f;
 
-            d.second->setPosition(sf::Vector2f(xs, ys));
+        //    d.second->setPosition(sf::Vector2f(xs, ys));
 
-            if (camera_length < 10) // x < 10
-            {
-                d.second->setScale(3, 3);
-                d.second->setPosition(sf::Vector2f(xs, ys - 20));
-            }
-            else if (camera_length < 15)// 10 < x < 15
-            {
-                d.second->setScale(2, 2);
-                d.second->setPosition(sf::Vector2f(xs, ys - 15));
-            }
-            else if (camera_length < 20)// 15 < x < 20
-            {
-                d.second->setScale(1.5, 1.5);
-                d.second->setPosition(sf::Vector2f(xs, ys - 10));
-            }
-            else if (camera_length < 25)// 20 < x < 25
-            {
-                d.second->setScale(1, 1);
-                d.second->setPosition(sf::Vector2f(xs, ys - 5));
-            }
-            else if (camera_length < 30)// 25 < x < 30
-            {
-                d.second->setScale(0.5, 0.5);
-            }
+        //    if (camera_length < 10) // x < 10
+        //    {
+        //        d.second->setScale(3, 3);
+        //        d.second->setPosition(sf::Vector2f(xs, ys - 20));
+        //    }
+        //    else if (camera_length < 15)// 10 < x < 15
+        //    {
+        //        d.second->setScale(2, 2);
+        //        d.second->setPosition(sf::Vector2f(xs, ys - 15));
+        //    }
+        //    else if (camera_length < 20)// 15 < x < 20
+        //    {
+        //        d.second->setScale(1.5, 1.5);
+        //        d.second->setPosition(sf::Vector2f(xs, ys - 10));
+        //    }
+        //    else if (camera_length < 25)// 20 < x < 25
+        //    {
+        //        d.second->setScale(1, 1);
+        //        d.second->setPosition(sf::Vector2f(xs, ys - 5));
+        //    }
+        //    else if (camera_length < 30)// 25 < x < 30
+        //    {
+        //        d.second->setScale(0.5, 0.5);
+        //    }
 
-            d.second->setInAngle(true);
+        //    d.second->setInAngle(true);
 
-            if (camera_length < 5.0 || camera_length > 30)
-                d.second->setInAngle(false);
-        }
+        //    if (camera_length < 5.0 || camera_length > 30)
+        //        d.second->setInAngle(false);
+        //}
     }
 }
 

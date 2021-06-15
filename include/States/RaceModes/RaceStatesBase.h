@@ -15,6 +15,7 @@
 #include "UserNetwork.h"
 #include "GameStatusBar.h"
 #include "Services.h"
+#include "PlayerOnline.h"
 
 
 class RaceStatesBase : public State
@@ -43,9 +44,9 @@ protected:
     void updateObjLocation();
     void updateSky();
     bool correctDirection();
-
+	void updateDynamic();
     //================ Private members ==========================
-
+	PlayerOnline m_player2;
     Mode7 m_map;
     float m_cameraX, m_cameraY, m_cameraZ, m_theta;
     sf::Clock m_clock;

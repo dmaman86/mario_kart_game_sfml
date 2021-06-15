@@ -87,6 +87,10 @@ void MapFileCollision::fillObjectMap(std::string) {
 	m_vec_obj[std::pair(250.0, 525.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 525.0 / 8));
 	m_vec_obj[std::pair(250.0, 575.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 575.0 / 8));
 
+	m_vec_obj[std::pair(900.0, 330.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(900.0 / 8, 330.0 / 8));
+	m_vec_obj[std::pair(850.0, 330.0)] = std::make_unique<Banana>(sf::Vector2f(0.0, 0.0), sf::Vector2f(900.0 / 8, 330.0 / 8));
+	m_vec_obj[std::pair(950.0, 330.0)] = std::make_unique<Ghost>(sf::Vector2f(0.0, 0.0), sf::Vector2f(900.0 / 8, 330.0 / 8));
+
 	//m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::KoopaDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 500.0 / 8));
 	//m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::LuigiDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 8, 500.0 / 8));
 }
