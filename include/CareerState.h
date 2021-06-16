@@ -18,6 +18,7 @@ public:
 	void HandleEvent(const sf::Event&) override;
 	void Update(float) override;
 	void Draw() override;
+	void Resume() override;
 private:
 	void openLoadFile();
 	/*sf::Sprite m_new_game;

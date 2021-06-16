@@ -103,8 +103,8 @@ void GetDataState::initVectorSprites( const sf::Vector2u& windowSize )
     for( auto it = m_drivers.begin(); it != m_drivers.end(); it++, i+=5 )
     {
         it->second.setTextureRect(sf::Rect(62, 0, 33, 30));
-        it->second.scale(6, 6);
-        it->second.setPosition( 150 + ( i * 40 ), (it->second.getGlobalBounds().height / 2) + 100);
+        it->second.scale(3, 4);
+        it->second.setPosition( 120 + ( i * 30 ), (it->second.getGlobalBounds().height / 2) + 20);
     }
 }
 

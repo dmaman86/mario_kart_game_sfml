@@ -16,6 +16,7 @@ public:
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    void Resume() override;
 private:
     void saveUser();
 

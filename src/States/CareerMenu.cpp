@@ -130,10 +130,12 @@ void CareerMenu::Update(float)
             break;
         }
     }
+}
 
-
-
-
+void CareerMenu::Resume()
+{
+    for(auto& button : m_buttons)
+        button.second = false;
 }
 
 void CareerMenu::Draw()

@@ -68,8 +68,12 @@ void CareerState::Update(float)
             break;
         }
     }
+}
 
-
+void CareerState::Resume()
+{
+    for(auto& button : m_buttons)
+        button.second = false;
 }
 
 void CareerState::Draw()
