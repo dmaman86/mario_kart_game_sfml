@@ -13,7 +13,6 @@ protected:
     void InitOfMenu(MarioKart::GameDataRef);
     sf::Sprite m_background;
     sf::Sprite m_back;
-    bool m_backMenu = false;
     sf::Vector2u m_windowSize;
     sf::Sound m_click;
 

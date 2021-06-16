@@ -4,8 +4,9 @@
 #include "State.h"
 #include "MarioKart.h"
 #include "UserCareer.h"
+#include "StateOfMenu.h"
 
-class CareerMenu: public State
+class CareerMenu: public StateOfMenu
 {
 public:
     CareerMenu(MarioKart::GameDataRef&, UserCareer &);
@@ -16,23 +17,24 @@ public:
     void Update(float) override;
     void Draw() override;
 private:
-    void setVolume();
-    sf::Sprite m_background;
-    sf::Sprite m_back;
-    sf::Sprite m_time;
-    sf::Sprite m_dk;
-    sf::Sprite m_coin;
-    sf::Sprite m_garage;
+    void saveUser();
+
+    //sf::Sprite m_time;
+    //sf::Sprite m_dk;
+    //sf::Sprite m_coin;
+    //sf::Sprite m_garage;
     sf::Sprite m_driver;
     sf::Text m_name;
     sf::Text m_moneys;
     sf::Text m_car;
-    sf::Sprite m_career;
-    sf::Sprite m_save;
+    //sf::Sprite m_career;
+    //sf::Sprite m_save;
     MarioKart::GameDataRef m_data;
 
-    bool m_backMenu;
-    sf::Sound m_click;
+    using Pair = std::pair< sf::Sprite, bool >;
+    std::vector< Pair > m_buttons;
+    //bool m_backMenu;
+   // sf::Sound m_click;
     UserCareer m_user;
 };
 

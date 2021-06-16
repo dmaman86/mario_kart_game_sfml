@@ -6,29 +6,21 @@
 
 
 
-CareerState::CareerState(MarioKart::GameDataRef& data): m_data(data),
-                                                    m_backMenu(false),
-                                                    m_background()
+CareerState::CareerState(MarioKart::GameDataRef& data): m_data(data), m_user()
 {
+    InitOfMenu(m_data);
 }
 
 void CareerState::Init()
 {
-    sf::Vector2u textureSize, windowSize;
-    windowSize = m_data->window->getSize();
-    textureSize = Pictures::instance().getTexture(Pictures::menuBackground).getSize();
-
-    m_background.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
-    m_background.setScale((float)windowSize.x / textureSize.x,
-                          (float)windowSize.y / textureSize.y);
-
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
-	m_new_game.setTexture(Pictures::instance().getTexture(Pictures::new_game));
-	m_load_game.setTexture(Pictures::instance().getTexture(Pictures::load_game));
-    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
-
-	m_new_game.setPosition((float)windowSize.x / 2.5,(float)windowSize.y / 2.5);
-	m_load_game.setPosition((float)windowSize.x / 2.5, (float)windowSize.y / 2.5 + 100);
+  
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//new game
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 75, 405, 66));
+    m_buttons.back().first.setPosition((float)m_windowSize.x / 2.5, (float)m_windowSize.y / 2.5);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//load game
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 160, 428, 67));
+    m_buttons.back().first.setPosition((float)m_windowSize.x / 2.5, (float)m_windowSize.y / 2.5 + 100);
+    m_buttons.emplace_back(m_back,false);
 
 }
 
@@ -38,36 +30,54 @@ void CareerState::HandleEvent(const sf::Event& event)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
-        if (m_back.getGlobalBounds().contains(location)) {
-            m_backMenu = true;
+        for (auto& button : m_buttons)
+        {
+            if (button.first.getGlobalBounds().contains(location))
+                button.second = true;
+            else
+                button.second = false;
         }
-		if (m_new_game.getGlobalBounds().contains(location)) {
-
-			m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)));
-		}
-		if (m_load_game.getGlobalBounds().contains(location)) {
-            openLoadFile();
-            m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)));
-		}
 
     }
 }
 
 void CareerState::Update(float)
 {
-    setVolume();
-    if (m_backMenu)
+    setVolume(m_data->user.getIfSound());
+ 
+    for (size_t i{ 0 }; i < 3; i++)
     {
-        m_data->stateStack.RemoveState();
+        switch (i)
+        {
+        case 0:
+            if (m_buttons[0].second)//if pres new game
+                m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)),false);
+
+            break;
+        case 1:
+            if (m_buttons[1].second)//if pres load game
+            {
+                openLoadFile();
+                m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)),false);
+            }
+            break;
+        case 2:
+            if (m_buttons[2].second)//if pres back
+                m_data->stateStack.RemoveState();
+
+            break;
+        }
     }
+
+
 }
 
 void CareerState::Draw()
 {
 	m_data->window->draw(m_background);
-	m_data->window->draw(m_back);
-	m_data->window->draw(m_new_game);
-	m_data->window->draw(m_load_game);
+
+    for (auto it : m_buttons)
+        m_data->window->draw(it.first);
 }
 
 void CareerState::openLoadFile()
@@ -85,15 +95,12 @@ void CareerState::openLoadFile()
     std::getline(loadGame, line_text);
     m_user.setCoins(std::stoi(line_text));
 
+    while (loadGame.peek() != std::ifstream::traits_type::eof())
+    {
+        std::getline(loadGame, line_text);
+        m_user.setCar(line_text);
+    }
 
     loadGame.close();
-}
-
-void CareerState::setVolume()
-{
-    if(m_data->user.getIfSound())
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
 }
 

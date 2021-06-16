@@ -10,9 +10,7 @@
 
 MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_buttons(),
-                                                    m_showExtra(false),
-                                                    m_online(Pictures::instance().getTexture(Pictures::online), false),
-                                                    m_carrer(Pictures::instance().getTexture(Pictures::career), false)
+                                                    m_showExtra(false)
 {
 }
 
@@ -26,24 +24,33 @@ void MenuState::Init()
     m_background.setScale((float)windowSize.x / textureSize.x,
                           (float)windowSize.y / textureSize.y);
 
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::about), false);
+
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//about
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 640, 255, 60));
     m_buttons.back().first.setPosition(100, 440);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::help), false);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//help
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 330, 187, 62));
     m_buttons.back().first.setPosition(100, 300);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::letsPlay), false);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//let spaly
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 250, 414, 64));
     m_buttons.back().first.setPosition(100, 200);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::settings), false);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 717, 360, 65));
     m_buttons.back().first.setPosition(100, 370);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//online
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 0, 265, 55));
+    m_buttons.back().first.setPosition(800, 220);
+    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//carrer
+    m_buttons.back().first.setTextureRect(sf::Rect(0, 485, 265, 70));
+    m_buttons.back().first.setPosition(1100, 220);
+
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
     m_startMusic.openFromFile(Sounds::menu);
     m_startMusic.setLoop(true);
-   // m_startMusic.play();
-    setposition();
+    //m_startMusic.play();
 	
-	m_buttons.push_back(m_online);
-	m_buttons.push_back(m_carrer);
     setVolume();
 }
 
@@ -55,18 +62,13 @@ void MenuState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
 
-        for( auto & button:m_buttons)
+        for (auto& button : m_buttons)
         {
-            if(button.first.getGlobalBounds().contains(location))
-				button.second = true;
+            if (button.first.getGlobalBounds().contains(location))
+                button.second = true;
             else
-				button.second = false;
+                button.second = false;
         }
-
-       // if(m_online.first.getGlobalBounds().contains(location))
-        //    m_online.second = true;
-        //if(m_carrer.first.getGlobalBounds().contains(location))
-         //   m_carrer.second = true;
     }
     if (sf::Event::MouseMoved == event.type)
     {
@@ -105,8 +107,6 @@ void MenuState::Update(float dt)
 		case 2:
 			if (m_buttons[2].second)
 				m_showExtra = true;
-			/*if(m_buttons[2].second)
-				m_data->stateStack.AddState(StateStack::StateRef( new GetDataState(m_data)), false);*/
 			break;
 		case 3:
 			if (m_buttons[3].second)
@@ -120,10 +120,10 @@ void MenuState::Update(float dt)
 			}
 			break;
             case 5:
-				if (m_buttons[5].second)
-				{
-					m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
-				}
+                if (m_buttons[5].second)
+                {
+                    m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
+                }
                 break;
         }
     }
@@ -164,11 +164,3 @@ void MenuState::setVolume()
         m_click.setVolume(0);
 
 }
-
-
-void MenuState::setposition()
-{
-    m_online.first.setPosition(800, 220);
-    m_carrer.first.setPosition(1100, 220);
-}
-

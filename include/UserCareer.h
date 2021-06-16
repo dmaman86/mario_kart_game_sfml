@@ -15,7 +15,8 @@ public:
     const int getCoins()const { return m_numberCoins;}; 
     void setName(std::string name) { m_name = name; };
     void setCoins(int coins) { m_numberCoins = coins; };
-
+    void setCar(std::string name);
+    const std::string getDrivers() { return m_drivers[0]; };
 private:
    
     std::string m_name;

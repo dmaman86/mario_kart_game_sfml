@@ -12,11 +12,15 @@ SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic)
 void SettingsState::Init()
 {
 
-    //title
-    m_title.setTexture(Pictures::instance().getTexture(Pictures::settings));
-    m_title.setPosition(m_windowSize.x / (unsigned)2.5 , 100);
+    
+
+    m_title.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
+    m_title.setTextureRect(sf::Rect(0, 717, 360, 65));
+    m_title.setPosition(m_windowSize.x / (unsigned)2.5, 100);
     m_title.setOrigin(m_title.getLocalBounds().width / 2,
-                      m_title.getLocalBounds().height / 2);
+        m_title.getLocalBounds().height / 2);
+
+
 
 
 
@@ -32,7 +36,7 @@ void SettingsState::Init()
         m_shapeSound.setFillColor(sf::Color::Green);
     else
         m_shapeSound.setFillColor(sf::Color::Red);
-    m_shapeSound.setPosition(m_windowSize.x / 1.7, ((m_windowSize.y / 2u) - 185));
+    m_shapeSound.setPosition(m_windowSize.x / 1.6, ((m_windowSize.y / 2u) + 100));
     m_shapeSound.setOrigin(m_shapeSound.getLocalBounds().width / 2,
                            m_shapeSound.getLocalBounds().height / 2);
 
@@ -41,7 +45,7 @@ void SettingsState::Init()
         m_shapeMusic.setFillColor(sf::Color::Green);
     else
         m_shapeMusic.setFillColor(sf::Color::Red);
-    m_shapeMusic.setPosition(m_windowSize.x / 1.7, ((m_windowSize.y / 2u) - 75));
+    m_shapeMusic.setPosition(m_windowSize.x / 1.6, ((m_windowSize.y / 2u) + 25));
     m_shapeMusic.setOrigin(m_shapeMusic.getLocalBounds().width / 2,
                            m_shapeMusic.getLocalBounds().height / 2);
 
@@ -52,14 +56,14 @@ void SettingsState::Init()
     m_messageMusic.setOrigin(m_messageMusic.getLocalBounds().width / 2,
                              m_messageMusic.getLocalBounds().height / 2);
     m_messageMusic.setPosition(sf::Vector2f(m_windowSize.x / (unsigned)2.5,
-                                            (m_windowSize.y / 2u) + -100));
+                                            (m_windowSize.y / 2u) + 25));
 
     //msg Sound
     m_messageSound = createFont("SoundFX:", sf::Color::Black, 50);
     m_messageSound.setOrigin(m_messageSound.getLocalBounds().width / 2,
                              m_messageSound.getLocalBounds().height / 2);
     m_messageSound.setPosition(sf::Vector2f(m_windowSize.x / (unsigned)2.5,
-                                            (m_windowSize.y / 2u) - 200));
+                                            (m_windowSize.y / 2u) + 100));
 
 
 
@@ -74,7 +78,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
                 { event.mouseButton.x, event.mouseButton.y });
         m_click.play();
         if (m_back.getGlobalBounds().contains(location)) {
-            m_backMenu = true;
+            m_data->stateStack.RemoveState();
         }
         else if (m_shapeSound.getGlobalBounds().contains(location))
         {
@@ -90,12 +94,6 @@ void SettingsState::HandleEvent(const sf::Event& event)
 void SettingsState::Update(float)
 {
     setVolume(m_data->user.getIfSound());
-
-
-    if (m_backMenu)
-    {
-        m_data->stateStack.RemoveState();
-    }
 }
 
 void SettingsState::Draw()

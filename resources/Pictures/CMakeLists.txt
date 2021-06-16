@@ -13,6 +13,7 @@ configure_file ("new_game.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("load_game.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("menuButtons.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("lakitu.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("menuButtons1.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 add_subdirectory(Speed)
 

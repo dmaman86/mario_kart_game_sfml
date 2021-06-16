@@ -21,8 +21,9 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
     m_background.setScale((float)m_windowSize.x / textureSize.x,
         (float)m_windowSize.y / textureSize.y);
 
-    //back
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
+    m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//about
+    m_back.setTextureRect(sf::Rect(0, 563, 180, 63));
+
     //sound
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 

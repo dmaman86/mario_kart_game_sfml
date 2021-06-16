@@ -3,8 +3,8 @@
 #include <string>
 
 
-const int WITDH = 1920;
-const int HIGHT = 1136;
+const int WITDH = 1440;
+const int HIGHT = 810;
 
 const int WITDH_G = 600;
 const int HIGHT_G = 300;

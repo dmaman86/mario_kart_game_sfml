@@ -2,12 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "State.h"
+#include "StateOfMenu.h"
 #include "MarioKart.h"
 
-class helpState : public State
+class helpState : public StateOfMenu
 {
 public:
-    helpState(MarioKart::GameDataRef);
+    helpState(MarioKart::GameDataRef&);
     ~helpState() = default;
 
 
@@ -16,14 +17,7 @@ public:
     void Update(float) override ;
     void Draw() override;
 private:
-    void setVolume();
-    sf::Sprite m_background;
-    sf::Sprite m_back;
-
     MarioKart::GameDataRef m_data;
-
-    bool m_backMenu;
-    sf::Sound m_click;
 
 };
 

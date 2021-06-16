@@ -1,7 +1,7 @@
 #include "mode7.h"
 #include "Pictures.h"
 #include <cmath>
-#include <unistd.h>
+//#include <unistd.h>
 #include "Utilities.h"
 #include "Macros.h"
 /*Mode7::Mode7() : m_screenWidth{}, m_screenHeight{}, m_T{}, m_L{},

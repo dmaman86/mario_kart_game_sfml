@@ -6,3 +6,8 @@ UserCareer::UserCareer(std::string name, std::string coins, std::vector<std::str
 
 
 }
+
+void UserCareer::setCar(std::string name)
+{
+	m_drivers.push_back(name);
+}

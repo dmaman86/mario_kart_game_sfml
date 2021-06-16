@@ -2,24 +2,13 @@
 #include "Pictures.h"
 #include "MenuState.h"
 
-helpState::helpState(MarioKart::GameDataRef data): m_data(data),
-                                                    m_backMenu(false),
-                                                    m_background()
+helpState::helpState(MarioKart::GameDataRef& data): m_data(data)
 {
+    InitOfMenu(m_data);
 }
 
 void helpState::Init()
 {
-    sf::Vector2u textureSize, windowSize;
-    windowSize = m_data->window->getSize();
-    textureSize = Pictures::instance().getTexture(Pictures::menuBackground).getSize();
-
-    m_background.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
-    m_background.setScale((float)windowSize.x / textureSize.x,
-                          (float)windowSize.y / textureSize.y);
-
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
-    m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 }
 
 void helpState::HandleEvent(const sf::Event& event)
@@ -29,18 +18,15 @@ void helpState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
         if (m_back.getGlobalBounds().contains(location)) {
-            m_backMenu = true;
+            m_data->stateStack.RemoveState();
+
         }
     }
 }
 
 void helpState::Update(float)
 {
-    setVolume();
-    if (m_backMenu)
-    {
-        m_data->stateStack.RemoveState();
-    }
+    setVolume(m_data->user.getIfSound());
 }
 
 void helpState::Draw()
@@ -49,11 +35,4 @@ void helpState::Draw()
 	m_data->window->draw(m_back);
 }
 
-void helpState::setVolume()
-{
-    if(m_data->user.getIfSound())
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
-}
 
