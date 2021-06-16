@@ -20,7 +20,7 @@ public:
 	void Draw() override;
 	void Resume() override;
 private:
-	void openLoadFile();
+	bool openLoadFile();
 	/*sf::Sprite m_new_game;
 	sf::Sprite m_load_game;*/
 	using Pair = std::pair< sf::Sprite, bool >;

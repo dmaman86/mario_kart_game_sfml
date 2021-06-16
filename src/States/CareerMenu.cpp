@@ -5,6 +5,9 @@
 #include "Fonts.h"
 #include <string>
 #include "RaceStatesBase.h"
+#include <iostream>
+#include <fstream>
+#include <filesystem>
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data, UserCareer& user): m_data(data),
                                                                         m_user(user)
 {
@@ -154,6 +157,37 @@ void CareerMenu::Draw()
 
 void CareerMenu::saveUser()
 {
+    std::fstream file;
+    //std::fstream  ofs;
+
+
+    //ofs.open("load.txt", std::ios::out | std::ios::trunc);
+    //if (ofs.fail())
+    //    throw std::runtime_error("Error: loadGame not found/exist\n");
+
+    // ofs << "dfsdgsdg";
+    //// //std::getline(loadGame, line_text);
+    //// //m_user.setName(line_text);
+    //// //std::getline(loadGame, line_text);
+    //// //m_user.setCoins(std::stoi(line_text));
+
+    // //while (loadGame.peek() != std::ifstream::traits_type::eof())
+    // //{
+    // //    std::getline(loadGame, line_text);
+    // //    m_user.setCar(line_text);
+    // //}
+
+    //ofs.close();
+    //m_buttons[5].second = false;
+
+    remove("save.txt");
+
+    std::ofstream ("save.txt");
+
+    file.open("save.txt");
+    file << "Writing this to a file.\n";
+    file.close();
+    m_buttons[5].second = false;
 
 }
 

@@ -3,7 +3,9 @@
 #include "Pictures.h"
 #include "MenuState.h"
 #include "GetDataState.h"
-
+#include <iostream>
+#include <fstream>
+#include <filesystem>
 
 
 CareerState::CareerState(MarioKart::GameDataRef& data): m_data(data), m_user()
@@ -57,7 +59,7 @@ void CareerState::Update(float)
         case 1:
             if (m_buttons[1].second)//if pres load game
             {
-                openLoadFile();
+                if(openLoadFile())
                 m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data, m_user)),false);
             }
             break;
@@ -84,27 +86,33 @@ void CareerState::Draw()
         m_data->window->draw(it.first);
 }
 
-void CareerState::openLoadFile()
+bool CareerState::openLoadFile()
 {
-    std::string line_text;
-    std::string line;
-
-    std::ifstream loadGame;
-    loadGame.open("load.txt");
-    if(loadGame.fail())
-        throw std::runtime_error("Error: loadGame not found/exist\n");
-
-    std::getline(loadGame, line_text);
-    m_user.setName(line_text);
-    std::getline(loadGame, line_text);
-    m_user.setCoins(std::stoi(line_text));
-
-    while (loadGame.peek() != std::ifstream::traits_type::eof())
+    if (std::filesystem::exists("save.txt"))
     {
-        std::getline(loadGame, line_text);
-        m_user.setCar(line_text);
-    }
+        std::string line_text;
+        std::string line;
 
-    loadGame.close();
+        std::ifstream loadGame;
+        loadGame.open("save.txt");
+        if (loadGame.fail())
+            throw std::runtime_error("Error: loadGame not found/exist\n");
+
+        std::getline(loadGame, line_text);
+        m_user.setName(line_text);
+        std::getline(loadGame, line_text);
+        // m_user.setCoins(std::stoi(line_text));
+
+        while (loadGame.peek() != std::ifstream::traits_type::eof())
+        {
+            std::getline(loadGame, line_text);
+            m_user.setCar(line_text);
+        }
+
+        loadGame.close();
+        return true;
+    }
+    m_buttons[1].second = false;
+    return false;
 }
 
