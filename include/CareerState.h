@@ -6,7 +6,7 @@
 #include "State.h"
 #include "StateOfMenu.h"
 #include "MarioKart.h"
-#include "UserCareer.h"
+#include "Button.h"
 
 class CareerState : public StateOfMenu
 {
@@ -21,12 +21,8 @@ public:
 	void Resume() override;
 private:
 	bool openLoadFile();
-	/*sf::Sprite m_new_game;
-	sf::Sprite m_load_game;*/
-	using Pair = std::pair< sf::Sprite, bool >;
-	std::vector< Pair > m_buttons;
-
-	UserCareer m_user;
+	void resetButtons(size_t);
+	std::vector< Button > m_buttons;
 	MarioKart::GameDataRef m_data;
 
 };

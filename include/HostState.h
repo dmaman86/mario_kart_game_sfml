@@ -7,7 +7,7 @@
 #include "State.h"
 #include "MarioKart.h"
 #include "Macros.h"
-#include "UserNetwork.h"
+#include "User.h"
 
 
 class HostState : public State

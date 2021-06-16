@@ -46,7 +46,7 @@ void HostState::Init()
     m_createGame.setOrigin(m_createGame.getLocalBounds().width / 2,
                            m_createGame.getLocalBounds().height / 2);
     m_createGame.setPosition(sf::Vector2f(m_windowSize.x * 0.5f,
-                                    (m_windowSize.y / 2) + (5 * 100)));
+                                    (m_windowSize.y / 2) + 300));
     m_createGame.setOutlineColor(sf::Color::White);
     m_createGame.setOutlineThickness(5.f);
     initVectorMaps();

@@ -3,13 +3,13 @@
 #include <SFML/Audio.hpp>
 #include "State.h"
 #include "MarioKart.h"
-#include "UserCareer.h"
 #include "StateOfMenu.h"
+#include "Button.h"
 
 class CareerMenu: public StateOfMenu
 {
 public:
-    CareerMenu(MarioKart::GameDataRef&, UserCareer &);
+    CareerMenu(MarioKart::GameDataRef&);
     ~CareerMenu() = default;
 
     void Init()override;
@@ -19,6 +19,7 @@ public:
     void Resume() override;
 private:
     void saveUser();
+    void resetButtons(size_t);
 
     //sf::Sprite m_time;
     //sf::Sprite m_dk;
@@ -32,11 +33,9 @@ private:
     //sf::Sprite m_save;
     MarioKart::GameDataRef m_data;
 
-    using Pair = std::pair< sf::Sprite, bool >;
-    std::vector< Pair > m_buttons;
+    std::vector< Button > m_buttons;
     //bool m_backMenu;
    // sf::Sound m_click;
-    UserCareer m_user;
 };
 
 

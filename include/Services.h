@@ -13,7 +13,7 @@
 #include <mutex>
 
 #include "Macros.h"
-#include "UserNetwork.h"
+#include "User.h"
 #include "PlayerBase.h"
 
 namespace pt = boost::property_tree;
@@ -24,15 +24,15 @@ public:
     Services();
     ~Services();
 
-    bool createUser( UserNetwork* );
-    bool updateUser( UserNetwork* );
-    bool getUser( UserNetwork*, const std::string );
-    bool deleteUser( UserNetwork* );
-    bool getIdOtherUser(UserNetwork* );
-    bool createRace( UserNetwork* );
-    bool getUsers( std::vector<UserNetwork>&, const std::string );
-    void updatePosition( UserNetwork*, PlayerBase*, std::mutex* );
-    void getPosition( UserNetwork*, PlayerBase*, std::mutex* );
+    bool createUser(User* );
+    bool updateUser(User* );
+    bool getUser(User*, const std::string );
+    bool deleteUser(User* );
+    bool getIdOtherUser(User* );
+    bool createRace(User* );
+    bool getUsers(std::vector<User>&, const std::string );
+    void updatePosition(User*, PlayerBase*, std::mutex* );
+    void getPosition(User*, PlayerBase*, std::mutex* );
 
 
 private:
@@ -45,7 +45,7 @@ private:
     std::stringstream m_stream;
     std::ostringstream m_ostream;
 
-    void buildVecUsers( std::vector<UserNetwork>&,
+    void buildVecUsers( std::vector<User>&,
                         const std::string,
                         boost::property_tree::ptree const& );
 };

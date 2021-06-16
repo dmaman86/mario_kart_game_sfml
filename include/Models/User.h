@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include "SFML/Graphics.hpp"
+#include <vector>
 
-class UserNetwork
+class User
 {
 public:
-    UserNetwork();
-    UserNetwork(std::string id, std::string name, std::string sprite, std::string map);
-    ~UserNetwork() = default;
+    User();
+    User(std::string id, std::string name, std::string sprite, std::string map);
+    ~User() = default;
 
     void setId( std::string );
     void setIdOther( std::string );
@@ -30,6 +30,10 @@ public:
     void setIfMusic(bool music) { m_music = music; }
 	void setOnline(const bool b) { m_online = b; }
 	const bool getOnline() { return m_online; }
+	const int getCoins()const{ return m_numberCoins; }
+	void setCoins(int coins){ m_numberCoins = coins; }
+	void setCar(std::string name){ m_drivers.emplace_back(name); }
+    const std::string& getDrive(size_t i){ return m_drivers[i]; }
 
 private:
     std::string m_id;
@@ -37,9 +41,13 @@ private:
     std::string m_name;
     std::string m_sprite;
     std::string m_map_game;
+    std::vector<std::string> m_drivers;
     bool m_inGame;
     bool m_sound;
     bool m_music;
     bool m_host;
 	bool m_online;
+	int m_numberCoins;
+
+	void initDrivers();
 };

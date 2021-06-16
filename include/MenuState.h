@@ -6,6 +6,7 @@
 #include "State.h"
 #include "MarioKart.h"
 #include "Sounds.h"
+#include "Button.h"
 
 class MenuState : public State
 {
@@ -20,14 +21,10 @@ public:
     void Resume() override;
     void stopMusic();
 private:
-    using Pair = std::pair< sf::Sprite, bool >;
-    using Extra = std::pair< sf::Sprite, bool >;
     void setVolume();
     void updateColors(const sf::Vector2f);
-    std::vector< Pair > m_buttons;
+    std::vector< Button > m_buttons;
     sf::Sprite m_background;
-    Extra m_carrer;
-    Extra m_online;
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;

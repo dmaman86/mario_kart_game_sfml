@@ -6,7 +6,7 @@
 #include <SFML/Network.hpp>
 
 #include "StateStack.h"
-#include "UserNetwork.h"
+#include "User.h"
 #include "Services.h"
 
 
@@ -26,7 +26,7 @@ public:
         sf::RenderWindow* window;
         StateStack stateStack;
         Services services;
-        UserNetwork user;
+        User user;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;
 

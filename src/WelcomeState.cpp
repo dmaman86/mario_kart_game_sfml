@@ -29,13 +29,14 @@ void WelcomeState::Init()
     m_text.setOrigin(m_text.getLocalBounds().width / 2,
                      m_text.getLocalBounds().height / 2);
     m_text.setPosition(sf::Vector2f(windowSize.x * 0.5f,
-                                        (windowSize.y / 2) + (5 * 100)));
+                                        (windowSize.y / 2) + 300));
     m_text.setOutlineColor(sf::Color::White);
     m_text.setOutlineThickness(5.f);
 
     m_logoMario.setTexture(Pictures::instance().getTexture(Pictures::marioLogo));
-    setposition();
-
+    m_logoMario.setOrigin(m_logoMario.getGlobalBounds().width / 2,
+                          m_logoMario.getGlobalBounds().height / 2);
+    m_logoMario.setPosition(sf::Vector2f(windowSize.x /2, (windowSize.y /2) - 100) );
 }
 
 void WelcomeState::HandleEvent(const sf::Event& event)
@@ -70,9 +71,4 @@ void WelcomeState::Draw()
     if(m_showText)
         window.draw(m_text);
 
-}
-
-void WelcomeState::setposition()
-{
-    m_logoMario.setPosition(450,200);
 }

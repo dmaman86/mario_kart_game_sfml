@@ -1,7 +1,7 @@
 #include "MenuState.h"
 #include "MarioKart.h"
 #include "Macros.h"
-#include "user.h"
+#include "users_project.h"
 #include "WelcomeState.h"
 
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
@@ -15,7 +15,7 @@ MarioKart::MarioKart()
 	m_dataGame(new DataGame(m_window)) {
     m_window.setFramerateLimit(60);
 
-    if (User == users::Liran)
+    if (user_project == users::Liran)
     {
         m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
     }

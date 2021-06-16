@@ -2,13 +2,9 @@
 #include "Pictures.h"
 #include "Sounds.h"
 
-
-void StateOfMenu::setVolume(bool data)
+StateOfMenu::StateOfMenu(MarioKart::GameDataRef data): m_back(Pictures::MenuButtons1)
 {
-    if (data)
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
+    InitOfMenu(data);
 }
 
 void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
@@ -21,10 +17,17 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
     m_background.setScale((float)m_windowSize.x / textureSize.x,
         (float)m_windowSize.y / textureSize.y);
 
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//about
-    m_back.setTextureRect(sf::Rect(0, 563, 180, 63));
+    m_back.setTextureInRect(0, 563, 180, 63);
 
     //sound
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
+}
+
+void StateOfMenu::setVolume(bool data)
+{
+    if (data)
+        m_click.setVolume(100);
+    else
+        m_click.setVolume(0);
 }

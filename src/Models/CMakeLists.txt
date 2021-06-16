@@ -1,1 +1,1 @@
-target_sources(test_mario_kart PRIVATE "UserNetwork.cpp")
+target_sources(test_mario_kart PRIVATE "User.cpp")

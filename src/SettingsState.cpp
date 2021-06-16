@@ -3,10 +3,14 @@
 #include "MenuState.h"
 #include "Fonts.h"
 
-SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic): m_data(data), m_shapeSound(30), m_shapeMusic(30), m_menuMusic(menuMusic)
+SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic):
+    m_data(data),
+    m_shapeSound(30),
+    m_shapeMusic(30),
+    m_menuMusic(menuMusic),
+    StateOfMenu(data)
 {
-      
-    InitOfMenu(m_data);
+
 }
 
 void SettingsState::Init()
@@ -77,7 +81,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
         m_click.play();
-        if (m_back.getGlobalBounds().contains(location)) {
+        if (m_back.validGlobalBound(location)) {
             m_data->stateStack.RemoveState();
         }
         else if (m_shapeSound.getGlobalBounds().contains(location))
@@ -101,7 +105,7 @@ void SettingsState::Draw()
     m_data->window->draw(m_background);
     m_data->window->draw(m_rectangle);
     m_data->window->draw(m_title);
-    m_data->window->draw(m_back);
+    m_back.draw(m_data->window);
     m_data->window->draw(m_shapeSound);
     m_data->window->draw(m_shapeMusic);
     m_data->window->draw(m_messageMusic);

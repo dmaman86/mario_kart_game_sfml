@@ -17,7 +17,7 @@ Services::~Services()
 
 }
 
-bool Services::createUser( UserNetwork* user)
+bool Services::createUser(User* user)
 {
     m_ostream.str("");
     m_ostream.clear();
@@ -40,7 +40,7 @@ bool Services::createUser( UserNetwork* user)
     return true;
 }
 
-bool Services::getUser( UserNetwork* user, const std::string idOther )
+bool Services::getUser(User* user, const std::string idOther )
 {
     m_stream.str("");
     m_stream.clear();
@@ -62,7 +62,7 @@ bool Services::getUser( UserNetwork* user, const std::string idOther )
     return true;
 }
 
-bool Services::updateUser(UserNetwork* user)
+bool Services::updateUser(User* user)
 {
     m_ostream.str("");
     m_ostream.clear();
@@ -84,10 +84,10 @@ bool Services::updateUser(UserNetwork* user)
     return true;
 }
 
-bool Services::deleteUser(UserNetwork* user)
+bool Services::deleteUser(User* user)
 {
-    m_request_del.setMethod(sf::Http::Request::Delete);
-    m_request_del.setUri(HttpNetwork::path_user + "/" + user->getId() );
+    m_request_del.setMethod(sf::Http::Request::Put);
+    m_request_del.setUri("/app/api/update_to_delete/" + user->getId() );
 
     m_response = m_http.sendRequest( m_request_del );
 
@@ -96,7 +96,7 @@ bool Services::deleteUser(UserNetwork* user)
     return true;
 }
 
-bool Services::createRace(UserNetwork * user)
+bool Services::createRace(User * user)
 {
     m_ostream.str("");
     m_ostream.clear();
@@ -107,14 +107,11 @@ bool Services::createRace(UserNetwork * user)
     m_request_put.setBody( m_ostream.str() );
     m_response = m_http.sendRequest( m_request_put );
     if( m_response.getStatus() != sf::Http::Response::Ok )
-    {
-        //std::cout << m_response.getBody() << std::endl;
         return false;
-    }
     return true;
 }
 
-bool Services::getIdOtherUser(UserNetwork * user)
+bool Services::getIdOtherUser(User * user)
 {
     m_stream.str("");
     m_stream.clear();
@@ -133,7 +130,7 @@ bool Services::getIdOtherUser(UserNetwork * user)
     return true;
 }
 
-bool Services::getUsers(std::vector<UserNetwork> & users, const std::string id)
+bool Services::getUsers(std::vector<User> & users, const std::string id)
 {
     m_stream.str("");
     m_stream.clear();
@@ -158,7 +155,7 @@ bool Services::getUsers(std::vector<UserNetwork> & users, const std::string id)
     return true;
 }
 
-void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string id, boost::property_tree::ptree const& pt)
+void Services::buildVecUsers(std::vector<User>& users, const std::string id, boost::property_tree::ptree const& pt)
 {
     using boost::property_tree::ptree;
     std::vector< std::string > values;
@@ -168,7 +165,7 @@ void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string
     }
     if( values[0] != id )
     {
-        UserNetwork user( values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
+        User user(values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
         std::stringstream ss(values[4]);
         bool game = false;
         ss >> game;
@@ -177,7 +174,7 @@ void Services::buildVecUsers( std::vector<UserNetwork>& users, const std::string
     }
 }
 
-void Services::updatePosition( UserNetwork* user, PlayerBase* player, std::mutex* mutex )
+void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex )
 {
     static int f = 0;
     sf::Http::Response local_response;
@@ -202,7 +199,7 @@ void Services::updatePosition( UserNetwork* user, PlayerBase* player, std::mutex
     }
 }
 
-void Services::getPosition( UserNetwork* otherUser, PlayerBase* player, std::mutex* mutex )
+void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mutex )
 {
     static int i = 0;
     sf::Http::Response local_response;

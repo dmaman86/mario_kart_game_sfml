@@ -12,7 +12,7 @@
 #include "State.h"
 #include "MapFileCollision.h"
 #include "Pipe.h"
-#include "UserNetwork.h"
+#include "User.h"
 #include "GameStatusBar.h"
 #include "Services.h"
 #include "PlayerOnline.h"

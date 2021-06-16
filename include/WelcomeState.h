@@ -16,8 +16,6 @@ public:
     void Update(float) override;
     void Draw() override;
 private:
-    void setposition();
-
     sf::Sprite m_background;
     sf::Sprite m_logoSuper;
     sf::Sprite m_logoMario;

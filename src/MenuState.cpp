@@ -25,24 +25,24 @@ void MenuState::Init()
                           (float)windowSize.y / textureSize.y);
 
 
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//about
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 640, 255, 60));
-    m_buttons.back().first.setPosition(100, 440);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//help
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 330, 187, 62));
-    m_buttons.back().first.setPosition(100, 300);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//let spaly
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 250, 414, 64));
-    m_buttons.back().first.setPosition(100, 200);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 717, 360, 65));
-    m_buttons.back().first.setPosition(100, 370);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//online
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 0, 265, 55));
-    m_buttons.back().first.setPosition(800, 220);
-    m_buttons.emplace_back(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//carrer
-    m_buttons.back().first.setTextureRect(sf::Rect(0, 485, 265, 70));
-    m_buttons.back().first.setPosition(1100, 220);
+    m_buttons.emplace_back(Pictures::MenuButtons1);//about
+    m_buttons.back().setTextureInRect(0, 640, 255, 60);
+    m_buttons.back().setInPosition(sf::Vector2f(100, 440));
+    m_buttons.emplace_back(Pictures::MenuButtons1);//help
+    m_buttons.back().setTextureInRect(0, 330, 187, 62);
+    m_buttons.back().setInPosition(sf::Vector2f(100, 300));
+    m_buttons.emplace_back(Pictures::MenuButtons1);//let spaly
+    m_buttons.back().setTextureInRect(0, 250, 414, 64);
+    m_buttons.back().setInPosition(sf::Vector2f(100, 200));
+    m_buttons.emplace_back(Pictures::MenuButtons1);//settings
+    m_buttons.back().setTextureInRect(0, 717, 360, 65);
+    m_buttons.back().setInPosition(sf::Vector2f(100, 370));
+    m_buttons.emplace_back(Pictures::MenuButtons1);//online
+    m_buttons.back().setTextureInRect(0, 0, 265, 55);
+    m_buttons.back().setInPosition(sf::Vector2f(800, 220));
+    m_buttons.emplace_back(Pictures::MenuButtons1);//carrer
+    m_buttons.back().setTextureInRect(0, 485, 265, 70);
+    m_buttons.back().setInPosition(sf::Vector2f(1100, 220));
 
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
@@ -64,10 +64,8 @@ void MenuState::HandleEvent(const sf::Event& event)
 
         for (auto& button : m_buttons)
         {
-            if (button.first.getGlobalBounds().contains(location))
-                button.second = true;
-            else
-                button.second = false;
+            if ( auto res = button.validGlobalBound(location); res)
+                button.updateIfSelected(res);
         }
     }
     if (sf::Event::MouseMoved == event.type)
@@ -83,10 +81,9 @@ void MenuState::updateColors(const sf::Vector2f loc)
 {
 	for (auto & button : m_buttons)
 	{
-		button.first.setColor(sf::Color(255, 255, 255, 250));
-
-		if (button.first.getGlobalBounds().contains(loc))
-			button.first.setColor(sf::Color(255, 255, 255, 130));
+	    button.setFillInColor(255, 255, 255, 250);
+	    if(button.validGlobalBound(loc))
+	        button.setFillInColor(255, 255, 255, 130);
 	}
 }
 
@@ -101,26 +98,26 @@ void MenuState::Update(float dt)
 			// state about
 			break;
 		case 1:
-			if (m_buttons[1].second)
+			if (m_buttons[1].getIfSelected())
 				m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
 			break;
 		case 2:
-			if (m_buttons[2].second)
+			if (m_buttons[2].getIfSelected())
 				m_showExtra = true;
 			break;
 		case 3:
-			if (m_buttons[3].second)
+			if (m_buttons[3].getIfSelected())
 				m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
 			break;
 		case 4:
-			if (m_buttons[4].second)
+			if (m_buttons[4].getIfSelected())
 			{
 				m_data->user.setOnline(true);
 				m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
 			}
 			break;
             case 5:
-                if (m_buttons[5].second)
+                if (m_buttons[5].getIfSelected())
                 {
                     m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
                 }
@@ -135,14 +132,14 @@ void MenuState::Draw()
 
 	for (auto it = m_buttons.begin();
 		 (m_showExtra) ? it != m_buttons.cend() : it != m_buttons.cend() - 2 ; it++)
-		m_data->window->draw(it->first);
+		it->draw(m_data->window);
 	
 }
 
 void MenuState::Resume()
 {
 	for (auto& button : m_buttons)
-        button.second = false;
+        button.resetIfSelected();
     setVolume();
     m_showExtra = false;
 }

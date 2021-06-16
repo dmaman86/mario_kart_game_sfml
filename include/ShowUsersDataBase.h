@@ -7,7 +7,8 @@
 #include "State.h"
 #include "MarioKart.h"
 #include "Macros.h"
-#include "UserNetwork.h"
+#include "User.h"
+#include "Button.h"
 
 namespace pt = boost::property_tree;
 
@@ -31,10 +32,9 @@ private:
     bool m_validConnection;
     bool m_backMenu;
     bool m_selectedUser;
-    std::vector<UserNetwork> m_users;
+    std::vector<User> m_users;
 
-    typedef std::pair< sf::RectangleShape, bool > pair;
-    using ListUsers = std::vector< pair >;
+    using ListUsers = std::vector< Button >;
     ListUsers m_users_rectangle;
     std::vector< sf::Text > m_list_text;
     std::vector< sf::Sprite > m_list_sprites;

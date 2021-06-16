@@ -3,7 +3,7 @@
 #include <thread>
 #include <mutex>
 #include "PlayerOnline.h"
-#include "UserNetwork.h"
+#include "User.h"
 #include "Services.h"
 #include "RaceStatesBase.h"
 
@@ -27,7 +27,7 @@ private:
 
 	//================ Private members ==========================
 	PlayerOnline m_player2;
-	UserNetwork *m_userJoin;
+	User *m_userJoin;
 	float m_time_update;
     std::thread m_thread_up;
     std::thread m_thread_get;

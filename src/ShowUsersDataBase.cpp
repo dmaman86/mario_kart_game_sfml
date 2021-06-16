@@ -30,8 +30,8 @@ void ShowUsersDataBase::Init()
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Online Drivers");
     m_title.setFillColor(sf::Color(76, 0, 153));
-    m_title.setCharacterSize(100);
-    m_title.setPosition((m_windowSize.x / 2) - 500, 100);
+    m_title.setCharacterSize(70);
+    m_title.setPosition((m_windowSize.x / 2.f) - 500, 100);
 
     m_data->services.getUsers( m_users, m_data->user.getId() );
     buildList( m_windowSize );
@@ -52,11 +52,12 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
             for( size_t i{ 0 }; i < m_users_rectangle.size(); i++ )
             {
                 auto rec = m_users_rectangle[ i ];
-                if( rec.first.getGlobalBounds().contains(location))
+                if( rec.validGlobalBound(location))
                 {
                     //std::cout << m_users.at( i ).getId() << " " << m_users.at( i ).getName() << std::endl;
-                    m_data->user.setIdOther(m_users.at( i ).getId());
+                    m_data->user.setIdOther(rec.getId());
                     m_selectedUser = true;
+                    break;
                 }
             }
         }
@@ -89,7 +90,7 @@ void ShowUsersDataBase::Draw()
     window.draw(m_title);
 
     for( auto & rec : m_users_rectangle )
-        window.draw( rec.first );
+        rec.draw(&window);
 
     for( auto& txt: m_list_text )
         window.draw( txt );
@@ -115,13 +116,13 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
 
     for( auto itr = m_users.begin(); itr != m_users.end(); itr++, i++ )
     {
-        sf::RectangleShape rectangle;
+        auto button = Button( itr->getId(), Pictures::rectangle);
         sf::Text text;
         sf::Sprite sprite;
 
         text.setFont(Fonts::instance().getFont());
         text.setFillColor(sf::Color(76, 0, 153));
-        text.setCharacterSize(70);
+        text.setCharacterSize(60);
         text.setStyle(sf::Text::Bold);
         text.setString( (*itr).getName() );
         text.setPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
@@ -129,28 +130,15 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
         m_list_text.push_back(text);
         sprite.setTexture(Pictures::instance().getTexture(itr->getSprite()));
         sprite.setTextureRect((sf::Rect(95, 0, 33,30 )));
-        sprite.scale(3, 3);
+        sprite.scale(2, 2);
         sprite.setPosition(sf::Vector2f((windowSize.x / text.getPosition().x) + 1200,
                                         (windowSize.y / 3 ) + (i * 100)));
         m_list_sprites.push_back(sprite);
 
-        rectangle.setSize(sf::Vector2f{900, 90});
-        rectangle.setFillColor(sf::Color(0, 0, 0, 80));
-        rectangle.setPosition(sf::Vector2f((windowSize.x / 3) - 150,
-                                           (windowSize.y / 3) + (i * 100)));
-
-        if( itr->getInGame() )
-        {
-            rectangle.setOutlineColor(sf::Color::Red);
-            rectangle.setOutlineThickness(5);
-            m_users_rectangle.push_back( pair( rectangle, false ) );
-        }
-        else
-        {
-            rectangle.setOutlineColor(sf::Color::White);
-            rectangle.setOutlineThickness(5);
-            m_users_rectangle.push_back( pair( rectangle, true ) );
-        }
-
+        button.setInPosition(sf::Vector2f((windowSize.x / 3) - 150,
+                                          (windowSize.y / 3) + (i * 100)));
+        button.setInScale(1.2f, 0.2f);
+        button.setFillInColor(0, 0, 0, 120);
+        m_users_rectangle.emplace_back(button);
     }
 }
