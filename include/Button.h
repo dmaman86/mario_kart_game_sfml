@@ -4,9 +4,13 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <string>
+#include <memory>
+#include <functional>
 
 class Button
 {
+public:
+    typedef std::function<void()> Callback;
 public:
 	Button( const std::string& );
 	Button(const std::string&, const std::string&);
@@ -34,10 +38,14 @@ public:
     void setFillInColor(int x, int y, int z, int w){
         m_button.setColor(sf::Color(x, y, z, w));
     }
+    void setCallback(Callback);
+    void initCallback();
+
 
 private:
 	sf::Sprite m_button;
 	std::string m_name;
 	std::string m_id;
 	bool m_selected;
+	Callback m_callBack;
 };

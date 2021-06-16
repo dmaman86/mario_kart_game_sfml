@@ -46,3 +46,14 @@ void Button::draw( sf::RenderWindow* window )
 {
     window->draw(m_button);
 }
+
+void Button::setCallback(Callback callback)
+{
+    m_callBack = callback;
+}
+
+void Button::initCallback()
+{
+    if(m_callBack)
+        m_callBack();
+}

@@ -20,10 +20,19 @@ void CareerState::Init()
     m_buttons.emplace_back(Pictures::MenuButtons1);
     m_buttons.back().setTextureInRect(0, 75, 405, 66);
     m_buttons.back().setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
+    });
     m_buttons.emplace_back(Pictures::MenuButtons1);
     m_buttons.back().setTextureInRect(0, 160, 428, 67);
     m_buttons.back().setInPosition(sf::Vector2f(m_windowSize.x / 2.5, m_windowSize.y / 2.5 + 100));
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
+    });
     m_buttons.emplace_back(m_back);
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.RemoveState();
+    });
 }
 
 void CareerState::HandleEvent(const sf::Event& event)
@@ -66,7 +75,7 @@ void CareerState::Update(float)
             case 0:
             {
                 if (m_buttons[0].getIfSelected())//if pres new game
-                    m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
+                    m_buttons[0].initCallback();
                 break;
             }
             case 1:
@@ -74,14 +83,14 @@ void CareerState::Update(float)
                 if (m_buttons[1].getIfSelected())//if pres load game
                 {
                     if(openLoadFile())
-                        m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
+                        m_buttons[1].initCallback();
                 }
                 break;
             }
             case 2:
             {
                 if (m_buttons[2].getIfSelected())//if pres back
-                    m_data->stateStack.RemoveState();
+                    m_buttons[2].initCallback();
                 break;
             }
         }

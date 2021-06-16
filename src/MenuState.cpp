@@ -28,21 +28,38 @@ void MenuState::Init()
     m_buttons.emplace_back(Pictures::MenuButtons1);//about
     m_buttons.back().setTextureInRect(0, 640, 255, 60);
     m_buttons.back().setInPosition(sf::Vector2f(100, 440));
+
     m_buttons.emplace_back(Pictures::MenuButtons1);//help
     m_buttons.back().setTextureInRect(0, 330, 187, 62);
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
+    });
     m_buttons.back().setInPosition(sf::Vector2f(100, 300));
+
     m_buttons.emplace_back(Pictures::MenuButtons1);//let spaly
     m_buttons.back().setTextureInRect(0, 250, 414, 64);
     m_buttons.back().setInPosition(sf::Vector2f(100, 200));
+
     m_buttons.emplace_back(Pictures::MenuButtons1);//settings
     m_buttons.back().setTextureInRect(0, 717, 360, 65);
     m_buttons.back().setInPosition(sf::Vector2f(100, 370));
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
+    });
     m_buttons.emplace_back(Pictures::MenuButtons1);//online
     m_buttons.back().setTextureInRect(0, 0, 265, 55);
     m_buttons.back().setInPosition(sf::Vector2f(800, 220));
+    m_buttons.back().setCallback([this](){
+        m_data->user.setOnline(true);
+        m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
+    });
+
     m_buttons.emplace_back(Pictures::MenuButtons1);//carrer
     m_buttons.back().setTextureInRect(0, 485, 265, 70);
     m_buttons.back().setInPosition(sf::Vector2f(1100, 220));
+    m_buttons.back().setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
+    });
 
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
@@ -89,9 +106,9 @@ void MenuState::updateColors(const sf::Vector2f loc)
 
 void MenuState::Update(float dt)
 {
-
     for( size_t i{ 0 }; i < 6; i++ )
     {
+
 		switch (i)
 		{
 		case 0:
@@ -99,7 +116,7 @@ void MenuState::Update(float dt)
 			break;
 		case 1:
 			if (m_buttons[1].getIfSelected())
-				m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
+				m_buttons[1].initCallback();
 			break;
 		case 2:
 			if (m_buttons[2].getIfSelected())
@@ -107,20 +124,15 @@ void MenuState::Update(float dt)
 			break;
 		case 3:
 			if (m_buttons[3].getIfSelected())
-				m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
+                m_buttons[3].initCallback();
 			break;
 		case 4:
 			if (m_buttons[4].getIfSelected())
-			{
-				m_data->user.setOnline(true);
-				m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
-			}
+			    m_buttons[4].initCallback();
 			break;
             case 5:
                 if (m_buttons[5].getIfSelected())
-                {
-                    m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
-                }
+                    m_buttons[5].initCallback();
                 break;
         }
     }

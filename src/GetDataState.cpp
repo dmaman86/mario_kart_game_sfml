@@ -57,11 +57,18 @@ void GetDataState::Init()
     m_createGame.setInOrigin();
     m_createGame.setInPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
                                             (windowSize.y / 3) + 100));
+    m_createGame.setCallback([this](){
+        m_data->user.setHost(true);
+        m_data->stateStack.AddState(StateStack::StateRef( new HostState(m_data)), false);
+    });
 
     m_joinGame.setTextureInRect(500, 238, 600, 60);
     m_joinGame.setInOrigin();
     m_joinGame.setInPosition(sf::Vector2f((windowSize.x / m_createGame.getInPosition().x) + 1000,
                                           (windowSize.y / 3 ) + 200));
+    m_joinGame.setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
+    });
 
     m_playerText.setFont(Fonts::instance().getFont());
     m_playerText.setCharacterSize(50);
@@ -182,10 +189,7 @@ void GetDataState::Update(float dt)
     if( m_send_data )
     {
         if(m_hostPressed)
-        {
-            m_data->user.setHost(true);
-            m_data->stateStack.AddState(StateStack::StateRef( new HostState(m_data)), false);
-        }
+            m_createGame.initCallback();
         else if(m_joinPressed)
         {
             m_data->user.setHost(false);
@@ -198,7 +202,7 @@ void GetDataState::Update(float dt)
                 m_nextState = m_data->services.createUser(&m_data->user);
             }
             if(m_nextState)
-                m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
+                m_joinGame.initCallback();
         }
         else if (!m_data->user.getOnline())
         {
