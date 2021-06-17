@@ -3,12 +3,12 @@
 #include "RaceStatesBase.h"
 #include <SFML/Graphics.hpp>
 
-class TimeRace : public RaceStatesBase
+class CoinRace : public RaceStatesBase
 {
 public:
 	//================ Constructor / Destructor =================
-	TimeRace(MarioKart::GameDataRef);
-	~TimeRace();
+	CoinRace(MarioKart::GameDataRef);
+	~CoinRace();
 
 	//================ Virtual public functions =================
 
@@ -18,8 +18,7 @@ public:
 private:
 	//================ Private functions =========================
 	void finishRase(const bool);
-	const bool isFinishTime();
-	
+	const bool isFinish();
+
 	//================ Private members ==========================
-	sf::Time m_time_level;
 };

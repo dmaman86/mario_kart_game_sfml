@@ -10,6 +10,8 @@
 #include <filesystem>
 #include "TimeRace.h"
 #include "GarageState.h"
+#include "CoinRace.h"
+
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
                                                         m_buttons(),
@@ -43,7 +45,7 @@ void CareerMenu::Init()
     m_buttons.back().setTextureInRect(0, 955, 562, 57);
     m_buttons.back().setInPosition(sf::Vector2f(150, 400));
     m_buttons.back().setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new RaceStatesBase(m_data)), false);
+        m_data->stateStack.AddState(StateStack::StateRef(new CoinRace(m_data)), false);
     });
 
     //dk

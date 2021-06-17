@@ -1,48 +1,42 @@
-#include "TimeRace.h"
+#include "CoinRace.h"
 #include "Fonts.h"
+#include "Coin.h"
 
 //========================== Constructor / Destructor =========================
-TimeRace::TimeRace(MarioKart::GameDataRef data) : 
+CoinRace::CoinRace(MarioKart::GameDataRef data) :
 	RaceStatesBase(data, data->user.getMapGame())
-	, m_time_level(sf::seconds(50))
 {
 }
 
 //=============================================================================
-TimeRace::~TimeRace()
+CoinRace::~CoinRace()
 {
 }
 
 //================================= Update =====================================
-void TimeRace::Update(float deltatime) {
+void CoinRace::Update(float deltatime) {
 
 	RaceStatesBase::Update(deltatime);
-	
-	if (isFinishTime())
-	{
-		finishRase(false);
-	}
 
-	if (m_player.getLap() == 2)
+	if (isFinish())
 	{
-		auto add_points = m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds();
-		m_data->user.setCoins(int(add_points)+ m_data->user.getCoins());
+		auto add_points = Coin::getCount()*50 / m_clock.getElapsedTime().asSeconds();
+		m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
 		finishRase(true);
 	}
 }
 
 //=============================================================================
-void TimeRace::Draw()
+void CoinRace::Draw()
 {
 	RaceStatesBase::Draw();
 	m_status.printGameStatus
-		(sf::seconds(m_time_level.asSeconds() - 
-			m_clock.getElapsedTime().asSeconds()),
-			m_player.getLap(), 0, 0, correctDirection());
+	(sf::seconds(m_clock.getElapsedTime().asSeconds()),
+		m_player.getLap(), 0, 0, correctDirection());
 }
 
 //=============================================================================
-void TimeRace::finishRase(const bool w_or_l)
+void CoinRace::finishRase(const bool w_or_l)
 {
 	m_data->user.updateInGame(false);
 	m_data->stateStack.RemoveState();
@@ -66,7 +60,7 @@ void TimeRace::finishRase(const bool w_or_l)
 }
 
 //=============================================================================
-const bool TimeRace::isFinishTime()
+const bool CoinRace::isFinish()
 {
-	return (m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds()) <= 0;
+	return (Coin::getCount() - Coin::getCollected()) <= 0;
 }

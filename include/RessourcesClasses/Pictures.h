@@ -49,6 +49,8 @@ public:
 	static const std::string speed4;
     static const std::string MenuButtons1;
     static const std::string GameStartGui;
+    static const std::string Keyboard;
+
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);

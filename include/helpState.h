@@ -18,6 +18,7 @@ public:
     void Draw() override;
 private:
     MarioKart::GameDataRef m_data;
+    sf::Sprite m_keyboard;
 
 };
 
