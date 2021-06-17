@@ -38,7 +38,7 @@ void TimeRace::Update(float deltatime) {
 	if (m_player.getLap() == 2)
 	{
 		auto add_points = m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds();
-		m_data->user.setCoins(int(add_points));
+		m_data->user.setCoins(int(add_points)+ m_data->user.getCoins());
 		finishRase(true);
 	}
 }
