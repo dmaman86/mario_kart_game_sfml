@@ -4,12 +4,11 @@
 #include "ShowUsersDataBase.h"
 #include "HostState.h"
 #include "Sounds.h"
-#include <iostream>
-#include <sstream>
 #include <thread>
 #include <chrono>
-#include "States/RaceModes/OnlineRace.h"
 #include "RaceStatesBase.h"
+#include "CareerMenu.h"
+
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
@@ -206,7 +205,7 @@ void GetDataState::Update(float dt)
         }
         else if (!m_data->user.getOnline())
         {
-            m_data->stateStack.AddState(StateStack::StateRef(new RaceStatesBase (m_data)));
+            m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu (m_data)));
         }
     }
     if (m_backMenu)
@@ -231,15 +230,15 @@ void GetDataState::Draw()
         window.draw(m_back);
 
         for( auto driver : m_drivers )
-            driver.draw(&window);
+            window.draw(driver);
 
         if(m_save_data)
-            m_save.draw(&window);
+            window.draw(m_save);
     }
     else if( m_send_data && m_data->user.getOnline())
     {
-        m_createGame.draw(&window);
-        m_joinGame.draw(&window);
+        window.draw(m_createGame);
+        window.draw(m_joinGame);
     }
 
 }

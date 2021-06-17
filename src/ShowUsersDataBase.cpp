@@ -90,7 +90,7 @@ void ShowUsersDataBase::Draw()
     window.draw(m_title);
 
     for( auto & rec : m_users_rectangle )
-        rec.draw(&window);
+        window.draw(rec);
 
     for( auto& txt: m_list_text )
         window.draw( txt );

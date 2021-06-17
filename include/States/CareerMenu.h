@@ -21,21 +21,13 @@ private:
     void saveUser();
     void resetButtons(size_t);
 
-    //sf::Sprite m_time;
-    //sf::Sprite m_dk;
-    //sf::Sprite m_coin;
-    //sf::Sprite m_garage;
     sf::Sprite m_driver;
     sf::Text m_name;
     sf::Text m_moneys;
     sf::Text m_car;
-    //sf::Sprite m_career;
-    //sf::Sprite m_save;
     MarioKart::GameDataRef m_data;
-
+    sf::Sprite m_driverUser;
     std::vector< Button > m_buttons;
-    //bool m_backMenu;
-   // sf::Sound m_click;
 };
 
 

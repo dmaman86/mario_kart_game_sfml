@@ -144,7 +144,7 @@ void MenuState::Draw()
 
 	for (auto it = m_buttons.begin();
 		 (m_showExtra) ? it != m_buttons.cend() : it != m_buttons.cend() - 2 ; it++)
-		it->draw(m_data->window);
+		m_data->window->draw(it->getSprite());
 	
 }
 

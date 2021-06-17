@@ -21,7 +21,7 @@ void CareerState::Init()
     m_buttons.back().setTextureInRect(0, 75, 405, 66);
     m_buttons.back().setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
     m_buttons.back().setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
+        m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);
     });
     m_buttons.emplace_back(Pictures::MenuButtons1);
     m_buttons.back().setTextureInRect(0, 160, 428, 67);
@@ -108,7 +108,7 @@ void CareerState::Draw()
 	m_data->window->draw(m_background);
 
     for (auto it : m_buttons)
-        it.draw(m_data->window);
+        m_data->window->draw(it);
 }
 
 bool CareerState::openLoadFile()

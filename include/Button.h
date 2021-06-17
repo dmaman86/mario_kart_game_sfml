@@ -3,11 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 #include <string>
 #include <memory>
 #include <functional>
 
-class Button
+class Button : public sf::Drawable, public sf::Transformable
 {
 public:
     typedef std::function<void()> Callback;
@@ -28,7 +30,7 @@ public:
         m_button.setOrigin(m_button.getLocalBounds().width / 2,
                          m_button.getLocalBounds().height / 2);
     }
-    void draw( sf::RenderWindow* );
+    // void draw( sf::RenderWindow* );
     float getWidth(){ return m_button.getGlobalBounds().width; }
     float getHeight(){ return m_button.getGlobalBounds().height; }
     const std::string& getName(){ return m_name; }
@@ -40,7 +42,10 @@ public:
     }
     void setCallback(Callback);
     void initCallback();
+    const sf::Sprite& getSprite(){ return m_button; }
 
+private:
+    void draw(sf::RenderTarget&, sf::RenderStates) const;
 
 private:
 	sf::Sprite m_button;

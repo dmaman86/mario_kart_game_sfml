@@ -42,9 +42,15 @@ void Button::setInPosition( const sf::Vector2f& position )
     m_button.setPosition(position);
 }
 
-void Button::draw( sf::RenderWindow* window )
+/*void Button::draw( sf::RenderWindow* window )
 {
     window->draw(m_button);
+}*/
+
+void Button::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+    states.transform *= getTransform();
+    target.draw(m_button);
 }
 
 void Button::setCallback(Callback callback)

@@ -34,7 +34,7 @@ void helpState::Update(float)
 void helpState::Draw()
 {
 	m_data->window->draw(m_background);
-	m_back.draw(m_data->window);
+	m_data->window->draw(m_back);
 }
 
 
