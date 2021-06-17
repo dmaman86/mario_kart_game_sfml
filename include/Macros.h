@@ -18,6 +18,8 @@ const float EPSILON_SPEED = 1.5;
 const int MAPSIZE = 1024;
 const int PIPE = 7;
 
+const int SCALEPLAYER = 3;
+
 namespace HttpNetwork
 {
     const std::string url = "http://us-central1-fb-api-server-mario.cloudfunctions.net";

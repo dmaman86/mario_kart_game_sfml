@@ -11,6 +11,8 @@ helpState::helpState(MarioKart::GameDataRef& data):
 
 void helpState::Init()
 {
+    m_keyboard.setTexture(Pictures::instance().getTexture(Pictures::Keyboard));
+    m_keyboard.setPosition(500,400);
 }
 
 void helpState::HandleEvent(const sf::Event& event)
@@ -35,6 +37,8 @@ void helpState::Draw()
 {
 	m_data->window->draw(m_background);
 	m_data->window->draw(m_back);
+    m_data->window->draw(m_keyboard);
+
 }
 
 
