@@ -40,7 +40,7 @@ void RaceStatesBase::Init()
     m_clock.restart();
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_int_map.m_vec_obj);
-    m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
+    //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
 }
 
 
@@ -84,6 +84,7 @@ void RaceStatesBase::Update(float deltatime) {
     UpdateMap();
     updateObjLocation();
     HandleCollision(deltatime);
+
 }
 
 
@@ -96,7 +97,7 @@ void RaceStatesBase::UpdateMap()
     m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
     m_map.setTheta(m_player.getAngle());
 
-    //m_map.calc(m_int_map.m_vec_obj,);
+    m_map.calc(m_int_map.m_vec_obj);
 }
 
 //=============================================================================

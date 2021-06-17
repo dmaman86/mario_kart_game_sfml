@@ -24,7 +24,6 @@ private:
 	void InitNetwork();
 	void UpdateNetwork(float);
 	void updateDynamic();
-	const bool isFinish() override { return false; };
 
 	//================ Private members ==========================
 	PlayerOnline m_player2;

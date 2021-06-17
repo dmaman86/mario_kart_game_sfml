@@ -18,9 +18,9 @@ public:
 
 private:
 	//================ Private functions =========================
-	void finishRase();
-	const bool isFinish() override;
-
+	void finishRase(const bool);
+	const bool isFinishTime();
+	
 	//================ Private members ==========================
 	sf::Time m_time_level;
 };

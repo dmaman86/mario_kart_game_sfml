@@ -81,7 +81,7 @@ void CareerMenu::Init()
     m_name.setPosition(1000,100);
     m_name.setFillColor(sf::Color::Black);
     m_name.setScale(1.5, 1.5);
-    m_moneys.setPosition(1000,200);
+	m_moneys.setPosition(1000,200);
     m_moneys.setFillColor(sf::Color::Black);
     m_moneys.setScale(1.5, 1.5);
 
@@ -133,7 +133,8 @@ void CareerMenu::resetButtons(size_t index )
 void CareerMenu::Update(float)
 {
     setVolume(m_data->user.getIfSound());
-
+	m_moneys.setString(std::to_string(m_data->user.getCoins()) + "$");
+	
     for (size_t i{ 1 }; i < 7; i++)
     {
         switch (i)
