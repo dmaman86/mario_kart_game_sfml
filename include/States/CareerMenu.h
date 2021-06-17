@@ -20,8 +20,9 @@ public:
 private:
     void saveUser();
     void resetButtons(size_t);
-
+    void updateColors(const sf::Vector2f);
     sf::Sprite m_driver;
+    sf::Sprite m_title;
     sf::Text m_name;
     sf::Text m_moneys;
     sf::Text m_car;
@@ -29,6 +30,20 @@ private:
     sf::Sprite m_driverUser;
     std::vector< Button > m_buttons;
     sf::RectangleShape m_rect;
+
+
+    enum Foo {
+        Boewser,
+        Dk,
+        Mario,
+        Koopa,
+        Luigi,
+        Peach,
+        Toad,
+        Yoshi
+    };
+
+
 };
 
 

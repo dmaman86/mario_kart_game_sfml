@@ -126,12 +126,12 @@ bool CareerState::openLoadFile()
         std::getline(loadGame, line_text);
         m_data->user.setName(line_text);
         std::getline(loadGame, line_text);
-        // m_user.setCoins(std::stoi(line_text));
+        m_data->user.setCoins(std::stoi(line_text));
 
-        while (loadGame.peek() != std::ifstream::traits_type::eof())
+        //while (loadGame.peek() != std::ifstream::traits_type::eof())
         {
             std::getline(loadGame, line_text);
-            m_data->user.setCar(line_text);
+            m_data->user.setSprite(line_text);
         }
 
         loadGame.close();
@@ -140,4 +140,3 @@ bool CareerState::openLoadFile()
     m_buttons[1].resetIfSelected();
     return false;
 }
-
