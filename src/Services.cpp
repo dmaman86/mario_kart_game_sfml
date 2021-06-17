@@ -1,13 +1,7 @@
 #include "Services.h"
 
-Services::Services(): m_http(HttpNetwork::url),
-                      m_request_post(),
-                      m_request_put(),
-                      m_request_del(),
-                      m_request_get(),
-                      m_ostream(),
-                      m_stream(),
-                      m_response()
+Services::Services(): m_ostream(),
+                      m_stream()
 {
 
 }
@@ -21,19 +15,20 @@ bool Services::createUser(User* user)
 {
     m_ostream.str("");
     m_ostream.clear();
-    m_request_post.setMethod(sf::Http::Request::Post);
-    m_request_post.setUri(HttpNetwork::path_user );
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_post(HttpNetwork::path_user, sf::Http::Request::Post);
 
     m_ostream << "name=" << user->getName() << "&sprite=" << user->getSprite()
               << "&host=" << user->getIfHost() << "&map=" << user->getMapGame();
-    m_request_post.setBody( m_ostream.str() );
+    request_post.setBody( m_ostream.str() );
 
-    m_response = m_http.sendRequest( m_request_post );
-    if( m_response.getStatus() != sf::Http::Response::Created ||
-        m_response.getStatus() == sf::Http::Response::Unauthorized)
+    response = http.sendRequest( request_post );
+    if( response.getStatus() != sf::Http::Response::Created ||
+        response.getStatus() == sf::Http::Response::Unauthorized)
         return false;
 
-    m_stream << m_response.getBody();
+    m_stream << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
     user->setId( pt.get<std::string>("id") );
@@ -44,15 +39,16 @@ bool Services::getUser(User* user, const std::string idOther )
 {
     m_stream.str("");
     m_stream.clear();
-    m_request_get.setMethod(sf::Http::Request::Get);
-    m_request_get.setUri(HttpNetwork::path_user + "/" + idOther );
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_get(HttpNetwork::path_user + "/" + idOther, sf::Http::Request::Get);
 
-    m_response = m_http.sendRequest( m_request_get );
+    response = http.sendRequest( request_get );
 
-    if( m_response.getStatus() != sf::Http::Response::Ok )
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
 
-    m_stream << m_response.getBody();
+    m_stream << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
     user->setId(idOther);
@@ -66,32 +62,33 @@ bool Services::updateUser(User* user)
 {
     m_ostream.str("");
     m_ostream.clear();
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( HttpNetwork::path_user + "/" + user->getId() );
+
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_put(HttpNetwork::path_user + "/" + user->getId(), sf::Http::Request::Put);
 
     m_ostream << "name=" << user->getName() << "&sprite=" << user->getSprite()
-              << "&host=" << user->getIfHost() << "&map=" << user->getMapGame();
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
-    m_request_put.setBody(m_ostream.str());
+              << "&host=" << user->getIfHost() << "&map=" << user->getMapGame()
+              << "&idOther=" << user->getOtherId();
+    request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+    request_put.setBody(m_ostream.str());
 
-    m_response = m_http.sendRequest( m_request_put );
+    response = http.sendRequest( request_put );
 
-    if( m_response.getStatus() != sf::Http::Response::Ok )
-    {
-        //std::cout << m_response.getBody() << std::endl;
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
-    }
     return true;
 }
 
 bool Services::deleteUser(User* user)
 {
-    m_request_del.setMethod(sf::Http::Request::Put);
-    m_request_del.setUri("/app/api/update_to_delete/" + user->getId() );
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_del("/app/api/update_to_delete/" + user->getId(), sf::Http::Request::Put);
 
-    m_response = m_http.sendRequest( m_request_del );
+    response = http.sendRequest( request_del );
 
-    if( m_response.getStatus() != sf::Http::Response::Ok )
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
     return true;
 }
@@ -100,13 +97,15 @@ bool Services::createRace(User * user)
 {
     m_ostream.str("");
     m_ostream.clear();
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( "/app/api/create_race/" + user->getId() );
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_put("/app/api/create_race/" + user->getId(), sf::Http::Request::Put);
+
+    request_put.setField("Content-Type", "application/x-www-form-urlencoded");
     m_ostream << "idOther=" << user->getOtherId();
-    m_request_put.setBody( m_ostream.str() );
-    m_response = m_http.sendRequest( m_request_put );
-    if( m_response.getStatus() != sf::Http::Response::Ok )
+    request_put.setBody( m_ostream.str() );
+    response = http.sendRequest( request_put );
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
     return true;
 }
@@ -115,15 +114,16 @@ bool Services::getIdOtherUser(User * user)
 {
     m_stream.str("");
     m_stream.clear();
-    m_request_get.setMethod(sf::Http::Request::Get);
-    m_request_get.setUri(HttpNetwork::path_user + "/" + user->getId() );
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_get(HttpNetwork::path_user + "/" + user->getId(), sf::Http::Request::Get);
 
-    m_response = m_http.sendRequest( m_request_get );
+    response = http.sendRequest( request_get );
 
-    if( m_response.getStatus() != sf::Http::Response::Ok )
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
 
-    m_stream << m_response.getBody();
+    m_stream << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
     user->setIdOther( pt.get<std::string>("idOther") );
@@ -134,16 +134,18 @@ bool Services::getUsers(std::vector<User> & users, const std::string id)
 {
     m_stream.str("");
     m_stream.clear();
-    m_request_get.setMethod( sf::Http::Request::Get );
-    m_request_get.setUri( HttpNetwork::path_user );
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_get( HttpNetwork::path_user, sf::Http::Request::Get);
+
     users.clear();
 
-    m_response = m_http.sendRequest( m_request_get );
+    response = http.sendRequest( request_get );
 
-    if( m_response.getStatus() != sf::Http::Response::Ok )
+    if( response.getStatus() != sf::Http::Response::Ok )
         return false;
 
-    m_stream << m_response.getBody();
+    m_stream << response.getBody();
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(m_stream, pt);
 
@@ -178,9 +180,9 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex 
 {
     static int f = 0;
     sf::Http::Response local_response;
-    m_request_put.setMethod( sf::Http::Request::Put );
-    m_request_put.setUri( HttpNetwork::path_player + "/" + user->getId() );
-    m_request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+    sf::Http::Request request_put(HttpNetwork::path_player + "/" + user->getId(), sf::Http::Request::Put);
+    sf::Http http(HttpNetwork::url);
+    request_put.setField("Content-Type", "application/x-www-form-urlencoded");
 
     while( f < 1 )
     {
@@ -189,8 +191,8 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex 
 
         m_ostream << "positionX=" << player->getLocation().x
                   << "&positionY=" << player->getLocation().y;
-        m_request_put.setBody(m_ostream.str());
-        local_response = m_http.sendRequest( m_request_put );
+        request_put.setBody(m_ostream.str());
+        local_response = http.sendRequest( request_put );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         mutex->lock();
         if(local_response.getStatus() != sf::Http::Response::Ok )

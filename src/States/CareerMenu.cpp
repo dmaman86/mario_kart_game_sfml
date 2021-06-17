@@ -12,7 +12,8 @@
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
                                                         m_buttons(),
-                                                        m_driverUser()
+                                                        m_driverUser(),
+                                                        m_rect()
 {
 
 }
@@ -87,10 +88,17 @@ void CareerMenu::Init()
 
     m_car.setPosition(1000,300);
     m_car.setFillColor(sf::Color::Black);
+
     m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
-    m_driverUser.setTextureRect(sf::Rect(95, 0, 33, 30));
-    m_driverUser.scale(7, 7);
+    m_driverUser.setTextureRect(sf::Rect(355, 33, 30, 30));
+    m_driverUser.scale(10, 8);
     m_driverUser.setPosition(1000, 500);
+
+    m_rect.setFillColor(sf::Color(0, 0, 0, 100));
+    m_rect.setSize(sf::Vector2f(300, 300));
+    m_rect.setOutlineColor(sf::Color::Red);
+    m_rect.setOutlineThickness(5);
+    m_rect.setPosition(990, 450);
 }
 
 void CareerMenu::HandleEvent(const sf::Event& event)
@@ -175,6 +183,7 @@ void CareerMenu::Draw()
     m_data->window->draw(m_name);
     m_data->window->draw(m_moneys);
     m_data->window->draw(m_car);
+    m_data->window->draw(m_rect);
     m_data->window->draw(m_driverUser);
 
     for (auto it : m_buttons)

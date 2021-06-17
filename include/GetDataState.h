@@ -27,30 +27,28 @@ private:
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
     sf::String m_playerInput;
-    sf::Sprite m_back;
     sf::Text m_playerText;
     sf::Text m_title_get_name;
-    std::vector< Button > m_drivers;
+    std::vector< std::shared_ptr<Button> > m_drivers;
     sf::Sound m_click;
     Button m_save;
     Button m_joinGame;
     Button m_createGame;
+    Button m_back;
 
     const int m_limit = 15;
     bool m_save_data;
     bool m_send_data;
-    bool m_hostPressed;
-    bool m_joinPressed;
     bool m_nextState;
     float m_effectTime;
-    bool m_backMenu;
     std::string m_user_name;
     std::string m_user_sprite;
 
     void centerOrigin(sf::Text&);
     void inputLogic(int charTyped);
     void deleteLastChar();
-    void initVectorSprites(const sf::Vector2u&);
+    void initVectorSpritesOnline(const sf::Vector2u&);
+    void initVectorSpritesOffline(const sf::Vector2u&);
     void setVolume();
     void resetOtherDrivers(size_t);
 };

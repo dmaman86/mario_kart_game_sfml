@@ -28,6 +28,7 @@ private:
     MarioKart::GameDataRef m_data;
     sf::Sprite m_driverUser;
     std::vector< Button > m_buttons;
+    sf::RectangleShape m_rect;
 };
 
 
