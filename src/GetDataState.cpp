@@ -12,15 +12,12 @@
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
-                                                         m_backMenu(false),
-                                                         m_back(),
+                                                         m_back(Pictures::back),
                                                          m_playerText(),
                                                          m_save_data(false),
                                                          m_send_data(false),
                                                          m_effectTime(0.0f),
                                                          m_nextState(false),
-                                                         m_hostPressed(false),
-                                                         m_joinPressed(false),
                                                          m_save(Pictures::MenuButtons1),
                                                          m_joinGame(Pictures::MenuButtons1),
                                                          m_createGame(Pictures::MenuButtons1)
@@ -49,7 +46,8 @@ void GetDataState::Init()
 
     m_save.setTextureInRect(500, 0, 212, 54);
     m_save.setInOrigin();
-    m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,(windowSize.y / 2) + 300));
+    m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,
+                                      (windowSize.y / 2) + 300));
 
     m_createGame.setTextureInRect(500, 155, 600, 60);
     m_createGame.setInOrigin();
@@ -74,33 +72,51 @@ void GetDataState::Init()
     centerOrigin(m_playerText);
     m_playerText.setPosition(sf::Vector2f(windowSize.x / 2.5, (windowSize.y / 2) + 200));
 
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
-    m_back.setTextureRect(sf::Rect(0, 563, 180, 63));
+    m_back.setCallback([this](){
+        m_data->user.setOnline(false);
+        m_data->stateStack.RemoveState();
+    });
+    if(m_data->user.getOnline())
+        initVectorSpritesOnline(windowSize);
+    else
+        initVectorSpritesOffline(windowSize);
 
-    initVectorSprites(windowSize);
     m_playerText.setString("_");
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
     setVolume();
 }
 
-void GetDataState::initVectorSprites( const sf::Vector2u& windowSize )
+void GetDataState::initVectorSpritesOnline( const sf::Vector2u& windowSize )
 {
-    m_drivers.emplace_back(Button(Pictures::MarioDriver));
-    m_drivers.emplace_back(Button(Pictures::BowserDriver));
-    m_drivers.emplace_back(Button(Pictures::DKDriver));
-    m_drivers.emplace_back(Button(Pictures::KoopaDriver));
-    m_drivers.emplace_back(Button(Pictures::LuigiDriver));
-    m_drivers.emplace_back(Button(Pictures::PeachDriver));
-    m_drivers.emplace_back(Button(Pictures::ToadDriver));
-    m_drivers.emplace_back(Button(Pictures::YoshiDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::MarioDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::BowserDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::DKDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::KoopaDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::LuigiDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::PeachDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::ToadDriver));
+    m_drivers.emplace_back(std::make_shared<Button>(Pictures::YoshiDriver));
 
     size_t i = 0;
     for( auto it = m_drivers.begin(); it != m_drivers.end(); it++, i+=5 )
     {
-        it->setTextureInRect(62, 0, 33, 30);
-        it->setInScale(3, 4);
-        it->setInPosition(sf::Vector2f(120 + ( i * 30 ), (it->getWidth() / 2) + 20) );
+        it->get()->setTextureInRect(62, 0, 33, 30);
+        it->get()->setInScale(5, 5);
+        it->get()->setInPosition(sf::Vector2f(120 + ( i * 30 ), (windowSize.y / 2 ) - 200));
+    }
+}
+
+void GetDataState::initVectorSpritesOffline(const sf::Vector2u & windowSize)
+{
+    size_t j = 0;
+    for(size_t i{0}; i < m_data->user.getMaxDrivers(); i++, j += 5)
+    {
+        auto button = std::make_shared<Button>(m_data->user.getDrive(i));
+        button->setTextureInRect(62, 0, 33, 30);
+        button->setIntoScale(5, 5);
+        button->setInPosition(sf::Vector2f(120 + ( j * 30 ), (windowSize.y / 2 ) - 200));
+        m_drivers.emplace_back(button);
     }
 }
 
@@ -121,24 +137,23 @@ void GetDataState::HandleEvent(const sf::Event & event)
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
 
-        if (m_back.getGlobalBounds().contains(location))
-        {
-            m_backMenu = !m_backMenu;
-        }
-        else if(m_createGame.validGlobalBound(location))
-            m_hostPressed = true;
-        else if(m_joinGame.validGlobalBound(location))
-            m_joinPressed = true;
+        if (auto res = m_back.validGlobalBound(location); res)
+            m_back.updateIfSelected(res);
+
+        else if(auto res = m_createGame.validGlobalBound(location); res)
+            m_createGame.updateIfSelected(res);
+        else if(auto res = m_joinGame.validGlobalBound(location); res)
+            m_joinGame.updateIfSelected(res);
         else
         {
             for(size_t i{0}; i < m_drivers.size(); i++)
             {
                 auto& driver = m_drivers[i];
-                if(auto res = driver.validGlobalBound(location); res)
+                if(auto res = driver->validGlobalBound(location); res)
                 {
-                    driver.updateIfSelected(res);
-                    m_user_sprite = driver.getName();
-                    driver.setTextureInRect(95, 0, 33, 30);
+                    driver->updateIfSelected(res);
+                    m_user_sprite = driver->getName();
+                    driver->setTextureInRect(95, 0, 33, 30);
                     resetOtherDrivers(i);
                 }
             }
@@ -167,7 +182,7 @@ void GetDataState::resetOtherDrivers(size_t index)
         if( i != index)
         {
             auto& driver = m_drivers[ i ];
-            driver.setTextureInRect(62, 0, 33, 30);
+            driver.get()->setTextureInRect(62, 0, 33, 30);
         }
     }
 }
@@ -188,33 +203,35 @@ void GetDataState::Update(float dt)
     }
     if( m_send_data )
     {
-        if(m_hostPressed)
-            m_createGame.initCallback();
-        else if(m_joinPressed)
+        if(m_data->user.getOnline())
         {
-            m_data->user.setHost(false);
-            if(m_data->user.getId().size() > 0)
-                m_nextState = m_data->services.updateUser(&m_data->user);
-            else
+            if(m_createGame.getIfSelected())
+                m_createGame.initCallback();
+            else if(m_joinGame.getIfSelected())
             {
-                // new user
-                m_data->user.setId("");
-                m_nextState = m_data->services.createUser(&m_data->user);
+                m_data->user.setHost(false);
+                if(m_data->user.getId().size() > 0)
+                    m_nextState = m_data->services.updateUser(&m_data->user);
+                else
+                {
+                    // new user
+                    m_data->user.setId("");
+                    m_nextState = m_data->services.createUser(&m_data->user);
+                }
+                if(m_nextState)
+                    m_joinGame.initCallback();
             }
-            if(m_nextState)
-                m_joinGame.initCallback();
         }
-        else if (!m_data->user.getOnline())
+        else
         {
             m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu (m_data)));
         }
     }
-    if (m_backMenu)
+    if (m_back.getIfSelected())
     {
         if(m_data->user.getId().size() > 0)
             m_data->services.deleteUser(&m_data->user);
-        m_data->user.setOnline(false);
-        m_data->stateStack.RemoveState();
+        m_back.initCallback();
     }
 }
 
@@ -231,7 +248,7 @@ void GetDataState::Draw()
         window.draw(m_back);
 
         for( auto driver : m_drivers )
-            window.draw(driver);
+            window.draw(*driver.get());
 
         if(m_save_data)
             window.draw(m_save);
@@ -248,8 +265,11 @@ void GetDataState::Resume()
 {
     m_send_data = false;
     m_nextState = false;
-    m_joinPressed = false;
-    m_hostPressed = false;
+    m_save_data = false;
+    m_save.resetIfSelected();
+    m_joinGame.resetIfSelected();
+    m_createGame.resetIfSelected();
+    m_back.resetIfSelected();
     setVolume();
 }
 

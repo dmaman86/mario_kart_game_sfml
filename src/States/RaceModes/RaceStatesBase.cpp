@@ -1,11 +1,10 @@
+#include "..\..\..\include\States\RaceModes\RaceStatesBase.h"
 #include "RaceStatesBase.h"
 #include "Pictures.h"
 #include <cmath>
 #include "CollisionHandling.h"
 #include "Utilities.h"
 #include "mode7.h"
-#include "TraficLight.h"
-#include "StartCloud.h"
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_status(*data->window),
@@ -21,7 +20,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data,const  std::string& map): m_data(data),
                                                                      m_status(*data->window),
                                                                      m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
-                                                                              sf::Vector2f(63,110),
+                                                                              sf::Vector2f(112, 56),
                                                                               m_data->user.getSprite()),
                                                                      m_map_race( "mario_circuit_2.png") {
 
@@ -39,29 +38,9 @@ void RaceStatesBase::Init()
     InitSky();
     m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
     m_clock.restart();
-    m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
+   // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_int_map.m_vec_obj);
-    m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
-    auto liran = StartCloud();
-    auto dd = TraficLight();
-    m_clock.restart();
-    sf::Clock ll;
-    ll.restart();
-    auto delta8 = 0.f;
-    while(delta8 < 4)
-    {
-        auto delta = ll.restart();
-        delta8+=delta.asSeconds();
-
-        liran.updateAnimation(delta);
-        dd.updateAnimation(delta);
-        m_data->window->clear();
-        this->Draw();
-        liran.draw(*m_data->window);
-        dd.draw(*m_data->window);
-        m_data->window->display();
-
-    }
+    //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
 }
 
 
@@ -105,6 +84,7 @@ void RaceStatesBase::Update(float deltatime) {
     UpdateMap();
     updateObjLocation();
     HandleCollision(deltatime);
+
 }
 
 
@@ -117,7 +97,7 @@ void RaceStatesBase::UpdateMap()
     m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
     m_map.setTheta(m_player.getAngle());
 
-    //m_map.calc(m_int_map.m_vec_obj,);
+    m_map.calc(m_int_map.m_vec_obj);
 }
 
 //=============================================================================
@@ -136,7 +116,6 @@ void RaceStatesBase::Draw() {
     m_data->window->draw(m_sky_front);
     drawStaticObjects();
     m_player.draw(*m_data->window);
-    m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
 }
 
 //=============================================================================
@@ -242,3 +221,4 @@ bool RaceStatesBase::correctDirection()
 
     return currect;
 }
+

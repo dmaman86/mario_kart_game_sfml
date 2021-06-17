@@ -32,8 +32,10 @@ public:
 	const bool getOnline() { return m_online; }
 	const int getCoins()const{ return m_numberCoins; }
 	void setCoins(int coins){ m_numberCoins = coins; }
-	void setCar(std::string name){ m_drivers.emplace_back(name); }
+	void setCar(std::string name){ m_drivers.emplace_back(name);
+                                    m_max_drivers++; }
     const std::string& getDrive(size_t i){ return m_drivers[i]; }
+    const int getMaxDrivers(){ return m_max_drivers; }
 
 private:
     std::string m_id;
@@ -48,6 +50,7 @@ private:
     bool m_host;
 	bool m_online;
 	int m_numberCoins;
+	int m_max_drivers;
 
 	void initDrivers();
 };

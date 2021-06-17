@@ -14,7 +14,7 @@ GameStatusBar::GameStatusBar(sf::RenderWindow& windows) :m_windows(windows){
 }
 
 //====================================================
-void GameStatusBar::printGameStatus(const sf::Clock& time, int lap, int raceLoc, int coins, bool correctDirection) {
+void GameStatusBar::printGameStatus(const sf::Time& time, int lap, int raceLoc, int coins, bool correctDirection) {
 
 
     m_lap.setString("Lap:" + std::to_string(lap));
@@ -25,21 +25,21 @@ void GameStatusBar::printGameStatus(const sf::Clock& time, int lap, int raceLoc,
     
     m_coins.setString(std::to_string(correctDirection));
 
-    m_lap.setPosition(800, 800);
-    m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 809);
-    m_timeGame.setPosition(m_raceLoc.getPosition().x + m_raceLoc.getGlobalBounds().width + 30.f, 809);
-    m_coins.setPosition(m_timeGame.getPosition().x + m_timeGame.getGlobalBounds().width + 30.f, 809);
+    m_lap.setPosition(800, 500);
+    m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 500);
+    m_timeGame.setPosition(m_raceLoc.getPosition().x + m_raceLoc.getGlobalBounds().width + 30.f, 500);
+    m_coins.setPosition(m_timeGame.getPosition().x + m_timeGame.getGlobalBounds().width + 30.f, 500);
 
     printboard();
 
 }
 //====================================================
 
-std::string GameStatusBar::timeCalculation(const sf::Clock& time)
+std::string GameStatusBar::timeCalculation(const sf::Time& time)
 {
     std::string strTime;
 
-    auto seconds = time.getElapsedTime().asSeconds() - 60 * m_minutes;
+    auto seconds = time.asSeconds() - 60 * m_minutes;
     auto millieSeconds = (seconds - int(seconds)) * 100;
     if (seconds < 10)
         strTime = "Time: " + std::to_string(m_minutes) + "'" + "0" + std::to_string(int(seconds)) + '"' + std::to_string(int(millieSeconds));
@@ -48,7 +48,6 @@ std::string GameStatusBar::timeCalculation(const sf::Clock& time)
 
     if (seconds > 60)
         m_minutes++;
-
 
     return strTime;
 }

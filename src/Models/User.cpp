@@ -12,7 +12,8 @@ User::User():
         m_idOther(""),
 		m_online(false),
 		m_numberCoins(0),
-		m_drivers()
+		m_drivers(),
+		m_max_drivers(0)
 {
     initDrivers();
 }
@@ -56,4 +57,5 @@ void User::initDrivers()
 {
     m_drivers.emplace_back("mario.png");
     m_drivers.emplace_back("peach.png");
+    m_max_drivers = 2;
 }
