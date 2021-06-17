@@ -8,4 +8,5 @@ target_sources(test_mario_kart PRIVATE
 		"SkyLine.cpp"
 		"Banana.cpp"
 		"Ghost.cpp"
-		"SeconedPlayer.cpp")
+		"SeconedPlayer.cpp"
+		"Coin.cpp")

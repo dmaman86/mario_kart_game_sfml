@@ -9,6 +9,7 @@
 #include "Pipe.h"
 #include "Banana.h"
 #include "Ghost.h"
+#include "Coin.h"
 #include "Player.h"
 #include "PlayerOnline.h"
 
@@ -23,17 +24,15 @@ namespace // anonymous namespace — the standard way to make function "static"
         if(Bn.getIsActive())
             Pl.spindriver();
         Bn.setIsActive(false);
-
 	}
 
 	void BananaPlayer(Object& Banana,
 		Object& Player)
 	{
 		PlayerBanana(Player, Banana);
-
 	}
 
-	void PlayerGhost(Object& player, Object& Ghost)
+	void PlayerGhost(Object& player, Object& ghost)
 	{
 		Player& Pl = dynamic_cast<Player&>(player);
 		Pl.driveSmaller();
@@ -43,8 +42,22 @@ namespace // anonymous namespace — the standard way to make function "static"
 		Object& Player)
 	{
 		PlayerGhost(Player, Ghost);
-
 	}
+
+	void PlayerCoin(Object& player, Object& coin)
+	{
+		Player& Pl = dynamic_cast<Player&>(player);
+		Coin& co = dynamic_cast<Coin&>(coin);
+		if (co.getIsActive())
+			co.addCollected();
+		co.setIsActive(false);
+	}
+
+	void CoinPlayer(Object& coin, Object& Player)
+	{
+		PlayerCoin(Player, coin);
+	}
+
 	// primary collision-processing functions
 	void PlayerPipe(Object& player,Object& pipe)
 	{
@@ -110,6 +123,9 @@ HitMap initializeCollisionMap()
 	phm[Key(typeid(Player), typeid(Ghost))] = &PlayerGhost;
 	phm[Key(typeid(Ghost), typeid(Player))] = &GhostPlayer;
 
+	phm[Key(typeid(Player), typeid(Coin))] = &PlayerCoin;
+	phm[Key(typeid(Coin), typeid(Player))] = &CoinPlayer;
+	
     phm[Key(typeid(Player), typeid(PlayerOnline))] = &PlayerPlayerOnline;
     phm[Key(typeid(PlayerOnline), typeid(Player))] = &PlayerPlayerOnline;
 
