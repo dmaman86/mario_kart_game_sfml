@@ -11,6 +11,7 @@
 #include "TimeRace.h"
 #include "GarageState.h"
 #include "CoinRace.h"
+#include "DriftKingRace.h"
 
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
@@ -53,7 +54,7 @@ void CareerMenu::Init()
     m_buttons.back().setTextureInRect(0, 795, 522, 66);
     m_buttons.back().setInPosition(sf::Vector2f(150, 475));
     m_buttons.back().setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new RaceStatesBase(m_data)), false);
+        m_data->stateStack.AddState(StateStack::StateRef(new DriftKingRace(m_data)), false);
     });
 
     //garage

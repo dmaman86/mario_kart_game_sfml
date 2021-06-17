@@ -34,6 +34,7 @@ public:
 	const int  getLap() const { return m_lap; }
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
+	const float getCoefficient()const { return m_coefficient_of_friction; }
 
 protected:
 	//================ Private functions =========================
