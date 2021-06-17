@@ -49,8 +49,7 @@ void GetDataState::Init()
 
     m_save.setTextureInRect(500, 0, 212, 54);
     m_save.setInOrigin();
-    m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,
-                                      (windowSize.y / 2) + 300));
+    m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,(windowSize.y / 2) + 300));
 
     m_createGame.setTextureInRect(500, 155, 600, 60);
     m_createGame.setInOrigin();
@@ -75,7 +74,9 @@ void GetDataState::Init()
     centerOrigin(m_playerText);
     m_playerText.setPosition(sf::Vector2f(windowSize.x / 2.5, (windowSize.y / 2) + 200));
 
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
+    m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_back.setTextureRect(sf::Rect(0, 563, 180, 63));
+
     initVectorSprites(windowSize);
     m_playerText.setString("_");
 

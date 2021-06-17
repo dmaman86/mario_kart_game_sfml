@@ -1,6 +1,7 @@
 
 #include "SeconedPlayer.h"
 #include "Macros.h"
+#include <cmath>
 void SeconedPlayer::updateSpeed(const float delta) {
 
 

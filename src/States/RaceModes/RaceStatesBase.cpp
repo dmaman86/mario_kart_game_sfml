@@ -4,6 +4,8 @@
 #include "CollisionHandling.h"
 #include "Utilities.h"
 #include "mode7.h"
+#include "TraficLight.h"
+#include "StartCloud.h"
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_status(*data->window),
@@ -40,7 +42,26 @@ void RaceStatesBase::Init()
     m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_int_map.m_vec_obj);
     m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
+    auto liran = StartCloud();
+    auto dd = TraficLight();
+    m_clock.restart();
+    sf::Clock ll;
+    ll.restart();
+    auto delta8 = 0.f;
+    while(delta8 < 4)
+    {
+        auto delta = ll.restart();
+        delta8+=delta.asSeconds();
 
+        liran.updateAnimation(delta);
+        dd.updateAnimation(delta);
+        m_data->window->clear();
+        this->Draw();
+        liran.draw(*m_data->window);
+        dd.draw(*m_data->window);
+        m_data->window->display();
+
+    }
 }
 
 

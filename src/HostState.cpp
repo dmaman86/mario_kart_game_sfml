@@ -32,7 +32,7 @@ void HostState::Init()
     m_background.setScale((float)m_windowSize.x / textureSize.x,
                           (float)m_windowSize.y / textureSize.y);
 
-    m_back.setTexture(Pictures::instance().getTexture(Pictures::back));
+    m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Select Map");
     m_title.setFillColor(sf::Color(76, 0, 153));

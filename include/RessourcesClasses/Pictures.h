@@ -2,7 +2,6 @@
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include <string>
-#include "AnimationData.h"
 
 
 const int DRIVER_VECTOR_LEN = 12;
@@ -29,15 +28,9 @@ public:
     static  const std::string misc;
     static  const std::string menuBackground;
     static  const std::string marioLogo;
-    static  const std::string letsPlay;
     static  const std::string help;
     static  const std::string about;
-    static  const std::string online;
-    static  const std::string settings;
-    static  const std::string career;
     static  const std::string back;
-	static  const std::string new_game;
-	static  const std::string load_game;
     static const std::string BowserDriver;
     static const std::string DKDriver;
     static const std::string KoopaDriver;
@@ -53,20 +46,27 @@ public:
 	static const std::string speed2;
 	static const std::string speed3;
 	static const std::string speed4;
-    static const std::string MenuButtons;
     static const std::string MenuButtons1;
-
+    static const std::string GameStartGui;
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);
-    const AnimationData& getDriveAnimationData(std::string);
+    std::vector <sf::IntRect>& getDriveAnimationData(std::string);
 
-    std::vector<AnimationData> m_drivers;
+
+    const std::vector<sf::IntRect>& getTraffic();
+    const std::vector<sf::IntRect>& getCloud();
+
 
 private:
     Pictures();
     Pictures(const Pictures &) = default;
     std::unordered_map<std::string,sf::Texture> m_pics;
     std::unordered_map<std::string,sf::Image> m_maps;
-    AnimationData setDriverData(int i);
+    std::vector <sf::IntRect> setDriverData(int i);
+    std::vector<sf::IntRect> m_trafficLight;
+    std::vector<sf::IntRect> m_startCloud;
+    std::vector <std::vector<sf::IntRect >> m_drivers;
+
+
 };

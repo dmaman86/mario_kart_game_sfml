@@ -1,12 +1,13 @@
 #include "Macros.h"
 #include "Player.h"
 #include "Pictures.h"
-#include<iostream>
 #include "Utilities.h"
 
+
+const auto AnimationTime = 5000.f;
 //========================== Constructor / Destructor =========================
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) :
-        m_animation(Pictures::instance().getDriveAnimationData(sprite),Direction::Left,m_sprite),
+        m_animation(Pictures::instance().getDriveAnimationData(sprite),m_sprite,AnimationTime),
         PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
         m_angle(0.0),
         m_force(0),
@@ -30,7 +31,7 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 	
 }
 //=============================================================================
-Player::Player() : m_animation(Pictures::instance().m_drivers[0], Direction::Left, m_sprite) {
+Player::Player(): m_animation(m_sprite) {
 
 }
 //=============================================================================s

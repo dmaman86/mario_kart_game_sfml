@@ -2,67 +2,51 @@
 #include "Animation.h"
 #include "Pictures.h"
 
-const auto AnimationTime = sf::seconds(3.f);
-
-Animation::Animation(const AnimationData& data, Direction dir, sf::Sprite& sprite)
-    : m_dir(dir), m_sprite(sprite),m_data(data),m_index(0)
-{
+Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& sprite,float animationtime)
+    :m_sprite(sprite),m_data(data),m_index(0),m_animationTime(animationtime),m_elapsed(sf::Time::Zero){
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
     update();
 }
 
-void Animation::direction(Direction dir)
-{
 
-    if (m_dir == dir || dir == Direction::Stay)
-    {
-        return;
-    }
 
-    m_dir = dir;
-    update();
-}
+void Animation::update(sf::Time delta, bool is_pressed) {
+    m_elapsed += delta;
 
-void Animation::update(sf::Time i, bool is_pressed) {
-
-    if (!is_pressed)
-    {
+    if(m_elapsed >= sf::seconds(1.f)){
+        m_elapsed -= sf::seconds(1.f);
+        std::cout << m_elapsed.asSeconds()<<"\n";
+    if (!is_pressed){
         m_index -- ;
         if(m_index < 0) m_index = 0;
     }
-
-    else {
-        m_elapsed += i;
-        if(i.asMilliseconds() <= 100.f)++m_index;
-        else
-        if (m_elapsed >= AnimationTime) {
-            m_elapsed -= AnimationTime;
-            if (m_index < DRIVER_SIDE_LEN - 1)
-                ++m_index;
+    else
+        if (m_index < m_data.size() - 1) {
+            ++m_index;
+            m_index %= m_data.size();
+        }
+        update();
 
         }
-        m_index %= DRIVER_SIDE_LEN;
-    }
-    update();
+
 }
 
 void Animation::update()
 {
-    m_sprite.setTextureRect(m_data.m_data[m_index]);
-   // std::cout << m_data.m_data[m_index].left <<"  "<<m_data.m_data[m_index].top<<" \n" ;
+    m_sprite.setTextureRect(m_data[m_index]);
 }
 
 void Animation::spin(float dt) {
 
 
-    if(m_index == m_data.m_data.size()-1)
+    if(m_index == m_data.size()-1)
         m_sprite.setScale(-3,3);
     else if  (m_index == 0)
         m_sprite.setScale(3,3);
 
     (m_sprite.getScale().x > 0 )? m_index+=2:m_index--;
 
-    m_index %= DRIVER_VECTOR_LEN;
+    m_index %= m_data.size();
 
 
     update();

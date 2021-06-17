@@ -7,15 +7,6 @@ const std::string Pictures::mario_circuit_2 = "mario_circuit_2.png";
 const std::string Pictures::misc = "misc.png";
 const std::string Pictures::menuBackground = "menuBackground.png";
 const std::string Pictures::marioLogo = "marioLogo.png";
-const std::string Pictures::letsPlay = "letsPlay.png";
-const std::string Pictures::help = "help.png";
-const std::string Pictures::about = "about.png";
-const std::string Pictures::online = "online.png";
-const std::string Pictures::settings = "settings.png";
-const std::string Pictures::career = "career.png";
-const std::string Pictures::back = "back.png";
-const std::string Pictures::new_game = "new_game.png";
-const std::string Pictures::load_game = "load_game.png";
 const std::string Pictures::BowserDriver = "bowser.png";
 const std::string Pictures::DKDriver = "dk.png";
 const std::string Pictures::KoopaDriver = "koopa.png";
@@ -32,8 +23,9 @@ const std::string Pictures::speed1 = "speed1.png";
 const std::string Pictures::speed2 = "speed2.png";
 const std::string Pictures::speed3 = "speed3.png";
 const std::string Pictures::speed4 = "speed4.png";
-const std::string Pictures::MenuButtons = "menuButtons.png";
 const std::string Pictures::MenuButtons1 = "menuButtons1.png";
+const std::string Pictures::GameStartGui = "gameStartGui.png";
+
 
 
 Pictures &Pictures::instance() {
@@ -53,24 +45,6 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::menuBackground);
     if(!(m_pics[Pictures::marioLogo] = sf::Texture()).loadFromFile(Pictures::marioLogo))
         throw std::runtime_error("Cant Open " + Pictures::marioLogo);
-    if(!(m_pics[Pictures::letsPlay] = sf::Texture()).loadFromFile(Pictures::letsPlay))
-        throw std::runtime_error("Cant Open " + Pictures::letsPlay);
-    if(!(m_pics[Pictures::help] = sf::Texture()).loadFromFile(Pictures::help))
-        throw std::runtime_error("Cant Open " + Pictures::help);
-    if(!(m_pics[Pictures::about] = sf::Texture()).loadFromFile(Pictures::about))
-        throw std::runtime_error("Cant Open " + Pictures::about);
-    if(!(m_pics[Pictures::online] = sf::Texture()).loadFromFile(Pictures::online))
-        throw std::runtime_error("Cant Open " + Pictures::online);
-    if(!(m_pics[Pictures::settings] = sf::Texture()).loadFromFile(Pictures::settings))
-        throw std::runtime_error("Cant Open " + Pictures::settings);
-    if(!(m_pics[Pictures::career] = sf::Texture()).loadFromFile(Pictures::career))
-        throw std::runtime_error("Cant Open " + Pictures::career);
-	if (!(m_pics[Pictures::back] = sf::Texture()).loadFromFile(Pictures::back))
-		throw std::runtime_error("Cant Open " + Pictures::back);
-	if(!(m_pics[Pictures::new_game] = sf::Texture()).loadFromFile(Pictures::new_game))
-        throw std::runtime_error("Cant Open " + Pictures::new_game);
-	if (!(m_pics[Pictures::load_game] = sf::Texture()).loadFromFile(Pictures::load_game))
-		throw std::runtime_error("Cant Open " + Pictures::load_game);
     if(!(m_pics[Pictures::BowserDriver] = sf::Texture()).loadFromFile(Pictures::BowserDriver))
         throw std::runtime_error("Cant Open " + Pictures::BowserDriver);
     if(!(m_pics[Pictures::DKDriver] = sf::Texture()).loadFromFile(Pictures::DKDriver))
@@ -103,8 +77,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 		throw std::runtime_error("Cant Open " + Pictures::speed3);
 	if (!(m_pics[Pictures::speed4] = sf::Texture()).loadFromFile(Pictures::speed4))
 		throw std::runtime_error("Cant Open " + Pictures::speed4);
-    if (!(m_pics[Pictures::MenuButtons] = sf::Texture()).loadFromFile(Pictures::MenuButtons))
-        throw std::runtime_error("Cant Open " + Pictures::MenuButtons);
+    if (!(m_pics[Pictures::GameStartGui] = sf::Texture()).loadFromFile(Pictures::GameStartGui))
+        throw std::runtime_error("Cant Open " + Pictures::GameStartGui);
     if (!(m_pics[Pictures::MenuButtons1] = sf::Texture()).loadFromFile(Pictures::MenuButtons1))
         throw std::runtime_error("Cant Open " + Pictures::MenuButtons1);
 
@@ -112,7 +86,15 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
         m_drivers[i] = (setDriverData(i));
     }
+    m_trafficLight.emplace_back(87,64,8,24);
+    m_trafficLight.emplace_back(96,64,8,24);
+    m_trafficLight.emplace_back(105,64,8,24);
+    m_trafficLight.emplace_back(114,64,8,24);
 
+
+    m_startCloud.push_back(sf::Rect(5,1,36,32));
+    m_startCloud.push_back(sf::Rect(47,1,36,32));
+    m_startCloud.push_back(sf::Rect(89,1,36,32));
 
 }
 
@@ -124,24 +106,24 @@ const sf::Image &Pictures::getMapTex(std::string string) {
     return m_maps[string];
 }
 
-AnimationData Pictures::setDriverData(int i) {
+std::vector <sf::IntRect >  Pictures::setDriverData(int i) {
 
     const auto size = sf::Vector2i(34, 34);
     auto location = sf::Vector2i(6,8+ i * 35);
     const auto middleSpace = sf::Vector2i(0, 10);
-    auto driver = AnimationData{};
+    auto driver = std::vector <sf::IntRect >() ;
 
 
     for (int j = 0; j < DRIVER_VECTOR_LEN; ++j) {
 
-        driver.m_data.emplace_back( location,size);
+        driver.emplace_back( location,size);
         location.x += 32;
     }
 
     return driver;
 }
 
-const AnimationData& Pictures::getDriveAnimationData(std::string driver) {
+std::vector <sf::IntRect >&  Pictures::getDriveAnimationData(std::string driver) {
 
     if(driver == MarioDriver)
     {
@@ -182,6 +164,14 @@ const AnimationData& Pictures::getDriveAnimationData(std::string driver) {
         return m_drivers[Yoshi];
     }
     else return m_drivers[Mario];
+}
+
+const std::vector<sf::IntRect>&Pictures::getTraffic() {
+    return m_trafficLight;
+}
+
+const std::vector<sf::IntRect> &Pictures::getCloud() {
+    return m_startCloud;
 }
 
 
