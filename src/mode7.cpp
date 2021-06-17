@@ -112,8 +112,8 @@ bool Mode7::calcInAngle( unsigned int& ys, unsigned int& xs,const float xw, cons
 void Mode7::calc(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec)
 {
 
-    while (1)
-    {
+//    while (1)
+ //   {
        // sleep(0.01);
         //if(mutex->unlock())
         //std::cout << "dasds \n";
@@ -180,7 +180,7 @@ void Mode7::calc(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& ve
 				}
 			}
 		}
-}}
+}//}
 
 
 sf::Sprite Mode7::getSprite()

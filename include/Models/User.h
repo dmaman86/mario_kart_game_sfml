@@ -31,7 +31,7 @@ public:
 	void setOnline(const bool b) { m_online = b; }
 	const bool getOnline() { return m_online; }
 	const int getCoins()const{ return m_numberCoins; }
-	void setCoins(int coins){ m_numberCoins = coins; }
+	void setCoins(int coins){ m_numberCoins += coins; }
 	void setCar(std::string name){ m_drivers.emplace_back(name);
                                     m_max_drivers++; }
     const std::string& getDrive(size_t i){ return m_drivers[i]; }
