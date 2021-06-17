@@ -6,7 +6,7 @@ class GameStatusBar {
 
 public:
     GameStatusBar(sf::RenderWindow& data);
-    void printGameStatus(const sf::Clock&, int , int, int, bool);
+    void printGameStatus(const sf::Time&, int , int, int, bool);
 
 private:
     //=========private members======================
@@ -18,7 +18,7 @@ private:
 
     int m_minutes = 0;
     //=========private function======================
-    std::string timeCalculation(const sf::Clock& time);
+    std::string timeCalculation(const sf::Time& time);
     void printboard();
 
 };
