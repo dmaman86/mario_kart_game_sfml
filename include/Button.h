@@ -14,6 +14,7 @@ class Button : public sf::Drawable, public sf::Transformable
 public:
     typedef std::function<void()> Callback;
 public:
+
 	Button( const std::string& );
 	Button(const std::string&, const std::string&);
 	~Button() = default;

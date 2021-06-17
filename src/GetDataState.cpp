@@ -12,7 +12,7 @@
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_background(),
                                                          m_drivers(),
-                                                         m_back(Pictures::back),
+                                                         m_back(Pictures::MenuButtons1),
                                                          m_playerText(),
                                                          m_save_data(false),
                                                          m_send_data(false),
@@ -85,6 +85,7 @@ void GetDataState::Init()
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
     setVolume();
+    m_back.setTextureInRect(0,563,180,63);
 }
 
 void GetDataState::initVectorSpritesOnline( const sf::Vector2u& windowSize )
