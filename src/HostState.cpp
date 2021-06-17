@@ -17,7 +17,8 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_nextState(false),
                                                      m_effectTime(0.0f),
                                                      m_createRoom(false),
-                                                     m_pressEnter(false)
+                                                     m_pressEnter(false),
+                                                     m_maps_string()
 {
 
 }
@@ -54,10 +55,13 @@ void HostState::Init()
 
 void HostState::initVectorMaps()
 {
+    m_maps_string.emplace_back(Pictures::mario_circuit_2);
+    m_maps_string.emplace_back(Pictures::donut_plains_1);
+    m_maps_string.emplace_back(Pictures::mario_circuit_2);
     for( size_t i{ 0 }; i < 3; i++ )
     {
         auto tex = sf::Texture();
-        tex.loadFromImage(Pictures::instance().getMapTex(Pictures::mario_circuit_2));
+        tex.loadFromImage(Pictures::instance().getMapTex(m_maps_string[i]));
         m_textures.emplace_back(tex);
     }
     for(size_t i{ 0 }, j{ 0 }; i < 3; i++, j+=5 )
@@ -66,7 +70,7 @@ void HostState::initVectorMaps()
         rectangle->setSize(sf::Vector2f(300, 300));
         rectangle->setTexture(&m_textures[ i ]);
         rectangle->setPosition(300 + ( j * 80 ), (rectangle->getGlobalBounds().height / 2) + 100);
-        m_maps.emplace_back(Pictures::mario_circuit_2, std::pair(*rectangle, false));
+        m_maps.emplace_back(m_maps_string[i], std::pair(*rectangle, false));
     }
 }
 
@@ -135,7 +139,7 @@ void HostState::Update(float dt)
             {
                 std::cout << "go to race" << std::endl;
                 std::cout << "other id: " << m_data->user.getOtherId() << std::endl;
-                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)));
+                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
                 break;
             }
         }

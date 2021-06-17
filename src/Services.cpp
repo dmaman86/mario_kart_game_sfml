@@ -97,6 +97,8 @@ bool Services::createRace(User * user)
 {
     m_ostream.str("");
     m_ostream.clear();
+    m_stream.str("");
+    m_stream.clear();
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
     sf::Http::Request request_put("/app/api/create_race/" + user->getId(), sf::Http::Request::Put);
@@ -107,6 +109,12 @@ bool Services::createRace(User * user)
     response = http.sendRequest( request_put );
     if( response.getStatus() != sf::Http::Response::Ok )
         return false;
+
+    m_stream << response.getBody();
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_json(m_stream, pt);
+    user->setMapGame( pt.get<std::string>("map") );
+
     return true;
 }
 

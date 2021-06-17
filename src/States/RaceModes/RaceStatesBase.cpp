@@ -10,7 +10,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                              sf::Vector2f(112,56),
                                                              m_data->user.getSprite()),
-                                                    m_map_race( "mario_circuit_2.png")
+                                                    m_map_race( m_data->user.getMapGame())
 {
 
 }
@@ -21,7 +21,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data,const  std::string& m
                                                                      m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                                               sf::Vector2f(112, 56),
                                                                               m_data->user.getSprite()),
-                                                                     m_map_race( "mario_circuit_2.png") {
+                                                                     m_map_race( m_data->user.getMapGame()) {
 
 }
 
