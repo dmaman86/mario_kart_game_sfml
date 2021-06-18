@@ -42,17 +42,17 @@ void MenuState::Init()
     buttonSettings->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
     });
-    auto buttonOnline = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonOnline->setTextureInRect(0, 0, 265, 55);
-    buttonOnline->setInPosition(sf::Vector2f(800, 220));
-    buttonOnline->setCallback([this](){
+    m_button_online = std::make_shared<Button>(Pictures::MenuButtons1);
+    m_button_online->setTextureInRect(0, 0, 265, 55);
+    m_button_online->setInPosition(sf::Vector2f(800, 220));
+    m_button_online->setCallback([this](){
         m_data->user.setOnline(true);
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
     });
-    auto buttonCarer = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonCarer->setTextureInRect(0, 485, 265, 70);
-    buttonCarer->setInPosition(sf::Vector2f(1100, 220));
-    buttonCarer->setCallback([this](){
+    m_button_carer = std::make_shared<Button>(Pictures::MenuButtons1);
+    m_button_carer->setTextureInRect(0, 485, 265, 70);
+    m_button_carer->setInPosition(sf::Vector2f(1100, 220));
+    m_button_carer->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
     });
 
@@ -60,8 +60,6 @@ void MenuState::Init()
     m_buttons[Options::About] = buttonAbout;
     m_buttons[Options::Settings] = buttonSettings;
     m_buttons[Options::LetPlay] = buttonLetPlay;
-    m_buttons[Options::Online] = buttonOnline;
-    m_buttons[Options::Carer] = buttonCarer;
 
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
@@ -80,6 +78,14 @@ void MenuState::HandleEvent(const sf::Event& event)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
+
+        if(m_showExtra)
+        {
+            if(auto res = m_button_online->validGlobalBound(location); res)
+                m_button_online->updateIfSelected(res);
+            if(auto res = m_button_carer->validGlobalBound(location); res)
+                m_button_carer->updateIfSelected(res);
+        }
 
         for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         {
@@ -127,16 +133,12 @@ void MenuState::Update(float dt)
 			    if (it->second->getIfSelected())
                     it->second->initCallback();
 			    break;
-		    case Options::Online:
-			    if (it->second->getIfSelected())
-			        it->second->initCallback();
-			    break;
-		    case Options::Carer:
-                if (it->second->getIfSelected())
-                    it->second->initCallback();
-                break;
         }
     }
+    if(m_button_online->getIfSelected())
+        m_button_online->initCallback();
+    if(m_button_carer->getIfSelected())
+        m_button_carer->initCallback();
 }
 
 void MenuState::Draw()
@@ -144,13 +146,12 @@ void MenuState::Draw()
 	m_data->window->draw(m_background);
 
 	for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
+        m_data->window->draw(*it->second.get());
+
+	if(m_showExtra)
     {
-        if(it->first == Options::LetPlay && !m_showExtra)
-        {
-            m_data->window->draw(it->second->getSprite());
-            break;
-        }
-        m_data->window->draw(it->second->getSprite());
+	    m_data->window->draw(*m_button_online.get());
+	    m_data->window->draw(*m_button_carer.get());
     }
 }
 
@@ -158,6 +159,8 @@ void MenuState::Resume()
 {
 	for (auto& button : m_buttons)
         button.second->resetIfSelected();
+	m_button_carer->resetIfSelected();
+	m_button_online->resetIfSelected();
     setVolume();
     m_showExtra = false;
 }

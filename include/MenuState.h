@@ -26,11 +26,11 @@ private:
         About,
         Help,
         Settings,
-        LetPlay,
-        Online,
-        Carer
+        LetPlay
     };
     std::map<Options, std::shared_ptr<Button>> m_buttons;
+    std::shared_ptr<Button> m_button_online;
+    std::shared_ptr<Button> m_button_carer;
     sf::Sprite m_background;
 
     MarioKart::GameDataRef m_data;
