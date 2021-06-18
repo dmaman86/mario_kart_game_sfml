@@ -124,7 +124,7 @@ void RaceStatesBase::drawStaticObjects() {
         if (x.second->getIsInAngle())
         {
             x.second->draw(*m_data->window);
-            //x.second->setInAngle(false);
+            x.second->setInAngle(false);
         }
 
 }
