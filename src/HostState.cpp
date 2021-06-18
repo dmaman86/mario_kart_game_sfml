@@ -1,7 +1,8 @@
 #include "HostState.h"
 #include "Pictures.h"
 #include "Fonts.h"
-#include "States/RaceModes/OnlineRace.h"
+#include "OnlineRace.h"
+#include "CareerMenu.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -34,6 +35,8 @@ void HostState::Init()
                           (float)m_windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_back.setTextureRect(sf::Rect(0,563,180,63));
+
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Select Map");
     m_title.setFillColor(sf::Color(76, 0, 153));
@@ -122,13 +125,15 @@ void HostState::Update(float dt)
             m_effectTime = 0.0f;
         }
     }
-    if(m_createRoom)
+    if(m_createRoom && m_data->user.getOnline())
     {
-        if(m_data->user.getId().size() > 0 )
+        if(m_data->user.getId().size() > 0)
             m_pressEnter = m_data->services.updateUser(&m_data->user);
         else
             m_pressEnter = m_data->services.createUser(&m_data->user);
     }
+    if(m_createRoom && !m_data->user.getOnline())
+        m_data->stateStack.AddState(StateStack::StateRef( new CareerMenu(m_data)), false);
     if(m_pressEnter)
     {
         while(m_data->user.getOtherId().size() < 1 )
@@ -137,13 +142,12 @@ void HostState::Update(float dt)
                 std::cout << "something wrong in host state" << std::endl;
             else if( m_data->user.getOtherId().size() > 1 )
             {
-                std::cout << "go to race" << std::endl;
-                std::cout << "other id: " << m_data->user.getOtherId() << std::endl;
                 m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
                 break;
             }
         }
     }
+
 }
 
 void HostState::Draw()

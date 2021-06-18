@@ -2,7 +2,7 @@
 #include "Pictures.h"
 #include "Sounds.h"
 
-StateOfMenu::StateOfMenu(MarioKart::GameDataRef data): m_back(Pictures::MenuButtons1)
+StateOfMenu::StateOfMenu(MarioKart::GameDataRef data)
 {
     InitOfMenu(data);
 }
@@ -17,7 +17,8 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
     m_background.setScale((float)m_windowSize.x / textureSize.x,
         (float)m_windowSize.y / textureSize.y);
 
-    m_back.setTextureInRect(0, 563, 180, 63);
+    m_back = std::make_shared<Button>(Pictures::MenuButtons1);
+    m_back->setTextureInRect(0, 563, 180, 63);
 
     //sound
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));

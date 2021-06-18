@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "State.h"
@@ -19,6 +20,5 @@ public:
 private:
     MarioKart::GameDataRef m_data;
     sf::Sprite m_keyboard;
-
 };
 

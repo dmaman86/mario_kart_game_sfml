@@ -21,7 +21,7 @@ void helpState::HandleEvent(const sf::Event& event)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
-        if (m_back.validGlobalBound(location)) {
+        if (m_back->validGlobalBound(location)) {
             m_data->stateStack.RemoveState();
 
         }
@@ -36,7 +36,7 @@ void helpState::Update(float)
 void helpState::Draw()
 {
 	m_data->window->draw(m_background);
-	m_data->window->draw(m_back);
+	m_data->window->draw(*m_back.get());
     m_data->window->draw(m_keyboard);
 
 }

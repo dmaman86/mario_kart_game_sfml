@@ -10,29 +10,33 @@
 
 CareerState::CareerState(MarioKart::GameDataRef& data):
     m_data(data),
-    StateOfMenu(data)
+    StateOfMenu(data),
+    m_buttons()
 {
 
 }
 
 void CareerState::Init()
 {
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(0, 75, 405, 66);
-    m_buttons.back().setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
-    m_buttons.back().setCallback([this](){
+    auto buttonNewGame = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonNewGame->setTextureInRect(0, 75, 405, 66);
+    buttonNewGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
+    buttonNewGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);
     });
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(0, 160, 428, 67);
-    m_buttons.back().setInPosition(sf::Vector2f(m_windowSize.x / 2.5, m_windowSize.y / 2.5 + 100));
-    m_buttons.back().setCallback([this](){
+    auto buttonLoadGame = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonLoadGame->setTextureInRect(0, 160, 428, 67);
+    buttonLoadGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5, m_windowSize.y / 2.5 + 100));
+    buttonLoadGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
     });
-    m_buttons.emplace_back(m_back);
-    m_buttons.back().setCallback([this](){
-        m_data->stateStack.RemoveState();
+    m_back->setCallback([this](){
+       m_data->stateStack.RemoveState();
     });
+
+    m_buttons[Options::NewGame] = buttonNewGame;
+    m_buttons[Options::LoadGame] = buttonLoadGame;
+    m_buttons[Options::Back] = m_back;
 }
 
 void CareerState::HandleEvent(const sf::Event& event)
@@ -43,64 +47,59 @@ void CareerState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
 
-        for(size_t i{0}; i < m_buttons.size(); i++)
+        for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         {
-            if( auto res = m_buttons[ i ].validGlobalBound(location); res)
+            auto& button = it->second;
+            if( auto res = button->validGlobalBound(location); res)
             {
-                m_buttons[ i ].updateIfSelected(res);
-                resetButtons(i);
+                button->updateIfSelected(res);
+                resetButtons(it->first);
                 break;
             }
         }
     }
 }
 
-void CareerState::resetButtons(size_t index)
+void CareerState::resetButtons(Options option)
 {
-    for(size_t i{0}; i < m_buttons.size(); i++)
+    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        if( i != index)
-            m_buttons[ i ].resetIfSelected();
+        if(it->first != option)
+            it->second->resetIfSelected();
     }
 }
 
 void CareerState::Update(float)
 {
     setVolume(m_data->user.getIfSound());
- 
-    for (size_t i{ 0 }; i < m_buttons.size(); i++)
+
+    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        switch (i)
+        switch (it->first)
         {
-            case 0:
-            {
-                if (m_buttons[0].getIfSelected())//if pres new game
-                    m_buttons[0].initCallback();
+            case Options::NewGame:
+                if (it->second->getIfSelected())//if pres new game
+                    it->second->initCallback();
                 break;
-            }
-            case 1:
-            {
-                if (m_buttons[1].getIfSelected())//if pres load game
+            case Options::LoadGame:
+                if (it->second->getIfSelected())//if pres load game
                 {
                     if(openLoadFile())
-                        m_buttons[1].initCallback();
+                        it->second->initCallback();
                 }
                 break;
-            }
-            case 2:
-            {
-                if (m_buttons[2].getIfSelected())//if pres back
-                    m_buttons[2].initCallback();
+            case Options::Back:
+                if (it->second->getIfSelected())//if pres back
+                    it->second->initCallback();
                 break;
-            }
         }
     }
 }
 
 void CareerState::Resume()
 {
-    for(auto& button : m_buttons)
-        button.resetIfSelected();
+    for (auto& button : m_buttons)
+        button.second->resetIfSelected();
 }
 
 void CareerState::Draw()
@@ -108,7 +107,7 @@ void CareerState::Draw()
 	m_data->window->draw(m_background);
 
     for (auto it : m_buttons)
-        m_data->window->draw(it);
+        m_data->window->draw(*it.second.get());
 }
 
 bool CareerState::openLoadFile()
@@ -137,6 +136,6 @@ bool CareerState::openLoadFile()
         loadGame.close();
         return true;
     }
-    m_buttons[1].resetIfSelected();
+    m_buttons[Options::LoadGame]->resetIfSelected();
     return false;
 }

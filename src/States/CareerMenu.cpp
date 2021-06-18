@@ -26,54 +26,60 @@ CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
 void CareerMenu::Init()
 {
     // carrer title
-    m_title.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
-    m_title.setTextureRect(sf::Rect( 0, 485, 270, 60));
-    m_title.setPosition(sf::Vector2f(150, 150));
-    m_title.setScale(1.25,1.5);
-
+    auto buttonCarer = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonCarer->setTextureInRect( 0, 485, 270, 60);
+    buttonCarer->setInPosition(sf::Vector2f(150, 150));
+    buttonCarer->setInScale(1.25, 1.5);
 
     // time title
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(0, 875, 453, 60);
-    m_buttons.back().setInPosition(sf::Vector2f(150, 325));
-    m_buttons.back().setCallback([this](){
+    auto buttonTime = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonTime->setTextureInRect(0, 875, 453, 60);
+    buttonTime->setInPosition(sf::Vector2f(150, 325));
+    buttonTime->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new TimeRace(m_data)), false);
     });
 
     //collect coins
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(0, 955, 562, 57);
-    m_buttons.back().setInPosition(sf::Vector2f(150, 400));
-    m_buttons.back().setCallback([this](){
+    auto buttonCollectionCoins = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonCollectionCoins->setTextureInRect(0, 955, 562, 57);
+    buttonCollectionCoins->setInPosition(sf::Vector2f(150, 400));
+    buttonCollectionCoins->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CoinRace(m_data)), false);
     });
 
     //dk
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(0, 795, 522, 66);
-    m_buttons.back().setInPosition(sf::Vector2f(150, 475));
-    m_buttons.back().setCallback([this](){
+    auto buttonDK = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonDK->setTextureInRect(0, 795, 522, 66);
+    buttonDK->setInPosition(sf::Vector2f(150, 475));
+    buttonDK->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new RaceStatesBase(m_data)), false);
     });
 
     //garage
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(520, 80, 280, 62);
-    m_buttons.back().setInPosition(sf::Vector2f(150, 550));
-    m_buttons.back().setCallback([this](){
+    auto buttonGarage = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonGarage->setTextureInRect(520, 80, 280, 62);
+    buttonGarage->setInPosition(sf::Vector2f(150, 550));
+    buttonGarage->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GarageState(m_data)), false);
     });
 
     //save
-    m_buttons.emplace_back(Pictures::MenuButtons1);
-    m_buttons.back().setTextureInRect(500, 0, 212, 54);
-    m_buttons.back().setInPosition(sf::Vector2f(150, 625));
+    auto buttonSave = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonSave->setTextureInRect(500, 0, 212, 54);
+    buttonSave->setInPosition(sf::Vector2f(150, 625));
 
     //back
-    m_buttons.emplace_back(m_back);
-    m_buttons.back().setCallback([this](){
+    m_back->setCallback([this](){
         m_data->stateStack.RemoveState();
     });
+
+    m_buttons[Options::Carer] = buttonCarer;
+    m_buttons[Options::Time] = buttonTime;
+    m_buttons[Options::CollectCoins] = buttonCollectionCoins;
+    m_buttons[Options::DK] = buttonDK;
+    m_buttons[Options::Garage] = buttonGarage;
+    m_buttons[Options::Save] = buttonSave;
+    m_buttons[Options::Back] = m_back;
 
     m_name.setFont(Fonts::instance().Fonts::getFontMario());
     m_moneys.setFont(Fonts::instance().Fonts::getFontMario());
@@ -116,13 +122,12 @@ void CareerMenu::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
 
-        for(size_t i{0}; i < m_buttons.size(); i++)
+        for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         {
-            auto& button = m_buttons[ i ];
-            if(auto res = button.validGlobalBound(location); res)
+            if(auto res = it->second->validGlobalBound(location); res)
             {
-                button.updateIfSelected(res);
-                resetButtons(i);
+                it->second->updateIfSelected(res);
+                resetButtons(it->first);
                 break;
             }
         }
@@ -141,19 +146,22 @@ void CareerMenu::updateColors(const sf::Vector2f loc)
 {
     for (auto& button : m_buttons)
     {
-        button.setFillInColor(255, 255, 255, 250);
-        if (button.validGlobalBound(loc))
-            button.setFillInColor(255, 255, 255, 130);
+        if(button.first != Options::Carer)
+        {
+            button.second->setFillInColor(255, 255, 255, 250);
+            if(button.second->validGlobalBound(loc))
+                button.second->setFillInColor(255, 255, 255, 130);
+        }
     }
 }
 
 
-void CareerMenu::resetButtons(size_t index )
+void CareerMenu::resetButtons(Options option)
 {
-    for(size_t i{ 0 }; i < m_buttons.size(); i++)
+    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        if(i != index)
-            m_buttons[ i ].resetIfSelected();
+        if(it->first != option)
+            it->second->resetIfSelected();
     }
 }
 
@@ -162,37 +170,36 @@ void CareerMenu::Update(float)
     setVolume(m_data->user.getIfSound());
     m_moneys.setString(std::to_string(m_data->user.getCoins()) + '$');
 
-    for (size_t i{ 1 }; i < 7; i++)
+    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        switch (i)
+        switch (it->first)
         {
-        case 1://if pres time race
-            if (m_buttons[0].getIfSelected())
-                m_buttons[0].initCallback();
-            break;
-        case 2://if pres collect coins race
-            if (m_buttons[1].getIfSelected())
-                m_buttons[1].initCallback();
-            break;
-
-        case 3://if pres dk race
-            if (m_buttons[2].getIfSelected())
-                m_buttons[2].initCallback();
-            break;
-
-        case 4: // if press garage state
-            if (m_buttons[3].getIfSelected())
-                m_buttons[3].initCallback();
+            case Options::Carer:
                 break;
-        case 5: // if save press
-            if (m_buttons[4].getIfSelected())
-                saveUser();
-            break;
-        case 6://if pres back
-            if (m_buttons[5].getIfSelected())
-                m_data->stateStack.RemoveState();
-
-            break;
+            case Options::Time:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
+            case Options::CollectCoins:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
+            case Options::DK:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
+            case Options::Garage:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
+            case Options::Save:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
+            case Options::Back:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
         }
     }
 }
@@ -200,7 +207,7 @@ void CareerMenu::Update(float)
 void CareerMenu::Resume()
 {
     for(auto& button : m_buttons)
-        button.resetIfSelected();
+        button.second->resetIfSelected();
 }
 
 void CareerMenu::Draw()
@@ -216,7 +223,7 @@ void CareerMenu::Draw()
     m_data->window->draw(m_driverUser);
 
     for (auto it : m_buttons)
-        m_data->window->draw(it);
+        m_data->window->draw(*it.second.get());
 
 }
 
@@ -234,8 +241,7 @@ void CareerMenu::saveUser()
     file << m_data->user.getSprite() << "\n";
 
     file.close();
-    m_buttons[5].resetIfSelected();
-
+    m_buttons[Options::Save]->resetIfSelected();
 }
 
 

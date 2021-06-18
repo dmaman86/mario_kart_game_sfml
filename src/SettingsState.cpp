@@ -16,16 +16,11 @@ SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic)
 void SettingsState::Init()
 {
 
-    
-
     m_title.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
     m_title.setTextureRect(sf::Rect(0, 717, 360, 65));
     m_title.setPosition(m_windowSize.x / (unsigned)2.5, 100);
     m_title.setOrigin(m_title.getLocalBounds().width / 2,
         m_title.getLocalBounds().height / 2);
-
-
-
 
 
     m_rectangle.setTexture(Pictures::instance().getTexture(Pictures::rectangle));
@@ -81,7 +76,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
         m_click.play();
-        if (m_back.validGlobalBound(location)) {
+        if (m_back->validGlobalBound(location)) {
             m_data->stateStack.RemoveState();
         }
         else if (m_shapeSound.getGlobalBounds().contains(location))
@@ -106,7 +101,7 @@ void SettingsState::Draw()
     m_data->window->draw(m_rectangle);
     m_data->window->draw(m_title);
     // m_back.draw(m_data->window);
-    m_data->window->draw(m_back);
+    m_data->window->draw(*m_back.get());
     m_data->window->draw(m_shapeSound);
     m_data->window->draw(m_shapeMusic);
     m_data->window->draw(m_messageMusic);

@@ -21,13 +21,23 @@ public:
     void Resume() override;
     void stopMusic();
 private:
-    void setVolume();
-    void updateColors(const sf::Vector2f);
-    std::vector< Button > m_buttons;
+    enum class Options
+    {
+        About,
+        Help,
+        Settings,
+        LetPlay,
+        Online,
+        Carer
+    };
+    std::map<Options, std::shared_ptr<Button>> m_buttons;
     sf::Sprite m_background;
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
     sf::Music m_startMusic;
     bool m_showExtra;
+
+    void setVolume();
+    void updateColors(const sf::Vector2f&);
 };

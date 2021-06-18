@@ -26,6 +26,7 @@ void ShowUsersDataBase::Init()
                           (float)m_windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_back.setTextureRect(sf::Rect(0,563,180,63));
 
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Online Drivers");
