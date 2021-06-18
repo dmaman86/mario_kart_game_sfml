@@ -33,6 +33,7 @@ private:
     sf::Vector2u m_windowSize;
     VectorMaps m_maps;
     VectorTextures m_textures;
+    std::vector<std::string> m_maps_string;
 
     bool m_validConnection;
     bool m_backMenu;

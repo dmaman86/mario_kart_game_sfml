@@ -26,6 +26,7 @@ void ShowUsersDataBase::Init()
                           (float)m_windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_back.setTextureRect(sf::Rect(0,563,180,63));
 
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Online Drivers");
@@ -75,7 +76,7 @@ void ShowUsersDataBase::Update(float dt)
     {
         std::cout << "go to race state\n";
         if(m_data->services.createRace(&m_data->user))
-            m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)));
+            m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
     }
     m_data->services.getUsers( m_users, m_data->user.getId() );
     buildList( m_windowSize );

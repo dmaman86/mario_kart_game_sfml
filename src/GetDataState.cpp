@@ -7,6 +7,7 @@
 #include <thread>
 #include <chrono>
 #include "RaceStatesBase.h"
+#include "HostState.h"
 #include "CareerMenu.h"
 
 GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
@@ -225,7 +226,7 @@ void GetDataState::Update(float dt)
         }
         else
         {
-            m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu (m_data)));
+            m_createGame.initCallback();
         }
     }
     if (m_back.getIfSelected())

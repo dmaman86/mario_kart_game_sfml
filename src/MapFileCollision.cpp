@@ -19,7 +19,7 @@ void MapFileCollision::fillMap(const std::string str) {
 
     std::string name = str.substr(0,str.find('.'));
 	auto map_int = readFromFile<char>(name+".txt");
-    auto score_map = readFromFile<int>("mario_circuit_2_scores.txt");
+    auto score_map = readFromFile<int>(name + "_scores.txt");
     m_map.resize(map_int.size());
 
     for (size_t i = 0;i < map_int.size();i++)

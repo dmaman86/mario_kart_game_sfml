@@ -1,8 +1,10 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <fstream>
+#include <map>
 #include "State.h"
 #include "StateOfMenu.h"
 #include "MarioKart.h"
@@ -20,10 +22,16 @@ public:
 	void Draw() override;
 	void Resume() override;
 private:
-	bool openLoadFile();
-	void resetButtons(size_t);
-	std::vector< Button > m_buttons;
+    enum class Options
+    {
+        NewGame,
+        LoadGame,
+        Back
+    };
+    std::map<Options, std::shared_ptr<Button>> m_buttons;
 	MarioKart::GameDataRef m_data;
 
+    bool openLoadFile();
+    void resetButtons(Options);
 };
 

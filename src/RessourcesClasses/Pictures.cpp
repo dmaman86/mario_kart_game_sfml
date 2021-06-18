@@ -4,6 +4,7 @@
 
 const std::string Pictures::MarioDriver = "mario.png";
 const std::string Pictures::mario_circuit_2 = "mario_circuit_2.png";
+const std::string Pictures::donut_plains_1 = "base.png";
 const std::string Pictures::misc = "misc.png";
 const std::string Pictures::menuBackground = "menuBackground.png";
 const std::string Pictures::marioLogo = "marioLogo.png";
@@ -40,6 +41,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
     if(!(m_maps[Pictures::mario_circuit_2] = sf::Image()).loadFromFile(Pictures::mario_circuit_2))
         throw std::runtime_error("Cant Open " + Pictures::mario_circuit_2);
+    if(!(m_maps[Pictures::donut_plains_1] = sf::Image()).loadFromFile(Pictures::donut_plains_1))
+        throw std::runtime_error("Can't Open " + Pictures::donut_plains_1);
 	if (!(m_pics[Pictures::misc] = sf::Texture()).loadFromFile(Pictures::misc))
 		throw std::runtime_error("Cant Open " + Pictures::misc);
     if(!(m_pics[Pictures::menuBackground] = sf::Texture()).loadFromFile(Pictures::menuBackground))
@@ -106,8 +109,8 @@ const sf::Texture &Pictures::getTexture(std::string name) const {
     return m_pics.at(name);
 }
 
-const sf::Image &Pictures::getMapTex(std::string string) {
-    return m_maps[string];
+const sf::Image &Pictures::getMapTex(std::string name) {
+    return m_maps.at(name);
 }
 
 std::vector <sf::IntRect >  Pictures::setDriverData(int i) {

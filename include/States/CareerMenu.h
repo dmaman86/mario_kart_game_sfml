@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <map>
 #include "State.h"
 #include "MarioKart.h"
 #include "StateOfMenu.h"
@@ -18,9 +19,17 @@ public:
     void Draw() override;
     void Resume() override;
 private:
-    void saveUser();
-    void resetButtons(size_t);
-    void updateColors(const sf::Vector2f);
+    enum class Options
+    {
+        Carer,
+        Time,
+        CollectCoins,
+        DK,
+        Garage,
+        Save,
+        Back
+    };
+
     sf::Sprite m_driver;
     sf::Sprite m_title;
     sf::Text m_name;
@@ -28,7 +37,7 @@ private:
     sf::Text m_car;
     MarioKart::GameDataRef m_data;
     sf::Sprite m_driverUser;
-    std::vector< Button > m_buttons;
+    std::map<Options, std::shared_ptr<Button>> m_buttons;
     sf::RectangleShape m_rect;
 
 
@@ -43,7 +52,9 @@ private:
         Yoshi
     };
 
-
+    void saveUser();
+    void resetButtons(Options);
+    void updateColors(const sf::Vector2f);
 };
 
 

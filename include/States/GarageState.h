@@ -1,8 +1,10 @@
 #pragma once
+
 #include"StateOfMenu.h"
 #include "Button.h"
 #include <vector>
 #include <algorithm>
+#include <map>
 
 
 class GarageState :public StateOfMenu
@@ -18,13 +20,15 @@ public:
 	void Draw() override;
 
 private:
-	void resetButtons(size_t);
-	void initVectorSprites(const sf::Vector2u&);
-
-
-	
+    enum class Options
+    {
+        Back
+    };
 
 	MarioKart::GameDataRef m_data;
 	std::vector<std::pair< Button, sf::Text>> m_drivers;
-	std::vector< Button > m_buttons;
+    std::map<Options, std::shared_ptr<Button>> m_buttons;
+
+    void resetButtons(Options);
+    void initVectorSprites(const sf::Vector2u&);
 };

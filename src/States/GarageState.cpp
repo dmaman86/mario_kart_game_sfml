@@ -12,13 +12,10 @@ void GarageState::Init()
     windowSize = m_data->window->getSize();
     initVectorSprites(windowSize);
 
-
-
-    m_buttons.emplace_back(m_back);
-    m_buttons.back().setCallback([this]() {
+    m_back->setCallback([this](){
         m_data->stateStack.RemoveState();
-        });
-
+    });
+    m_buttons[Options::Back] = m_back;
 }
 
 void GarageState::HandleEvent(const sf::Event& event)
@@ -29,12 +26,12 @@ void GarageState::HandleEvent(const sf::Event& event)
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
 
-        for (size_t i{ 0 }; i < m_buttons.size(); i++)
+        for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         {
-            if (auto res = m_buttons[i].validGlobalBound(location); res)
+            if( auto res = it->second->validGlobalBound(location); res)
             {
-                m_buttons[i].updateIfSelected(res);
-                resetButtons(i);
+                it->second->updateIfSelected(res);
+                resetButtons(it->first);
                 break;
             }
         }
@@ -45,30 +42,23 @@ void GarageState::Update(float )
 {
 
     setVolume(m_data->user.getIfSound());
-
-    for (size_t i{ 0 }; i < m_buttons.size(); i++)
+    for( auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        switch (i)
+        switch (it->first)
         {
-        case 0:
-        {
-            if (m_buttons[0].getIfSelected())//if pres back
-                m_buttons[0].initCallback();
-            break;
-        }
-        
-      
+            case Options::Back:
+                if(it->second->getIfSelected())
+                    it->second->initCallback();
+                break;
         }
     }
-
-   
 }
 
 void GarageState::Draw()
 {
     m_data->window->draw(m_background);
     for (auto it : m_buttons)
-        m_data->window->draw(it);
+        m_data->window->draw(*it.second.get());
 
     for (auto driver : m_drivers)
     {
@@ -78,12 +68,12 @@ void GarageState::Draw()
 
 }
 
-void GarageState::resetButtons(size_t index)
+void GarageState::resetButtons(Options option)
 {
-    for (size_t i{ 0 }; i < m_buttons.size(); i++)
+    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        if (i != index)
-            m_buttons[i].resetIfSelected();
+        if(it->first != option)
+            it->second->resetIfSelected();
     }
 }
 

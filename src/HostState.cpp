@@ -1,7 +1,8 @@
 #include "HostState.h"
 #include "Pictures.h"
 #include "Fonts.h"
-#include "States/RaceModes/OnlineRace.h"
+#include "OnlineRace.h"
+#include "CareerMenu.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -17,7 +18,8 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_nextState(false),
                                                      m_effectTime(0.0f),
                                                      m_createRoom(false),
-                                                     m_pressEnter(false)
+                                                     m_pressEnter(false),
+                                                     m_maps_string()
 {
 
 }
@@ -33,6 +35,8 @@ void HostState::Init()
                           (float)m_windowSize.y / textureSize.y);
 
     m_back.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_back.setTextureRect(sf::Rect(0,563,180,63));
+
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Select Map");
     m_title.setFillColor(sf::Color(76, 0, 153));
@@ -54,10 +58,13 @@ void HostState::Init()
 
 void HostState::initVectorMaps()
 {
+    m_maps_string.emplace_back(Pictures::mario_circuit_2);
+    m_maps_string.emplace_back(Pictures::donut_plains_1);
+    m_maps_string.emplace_back(Pictures::mario_circuit_2);
     for( size_t i{ 0 }; i < 3; i++ )
     {
         auto tex = sf::Texture();
-        tex.loadFromImage(Pictures::instance().getMapTex(Pictures::mario_circuit_2));
+        tex.loadFromImage(Pictures::instance().getMapTex(m_maps_string[i]));
         m_textures.emplace_back(tex);
     }
     for(size_t i{ 0 }, j{ 0 }; i < 3; i++, j+=5 )
@@ -66,7 +73,7 @@ void HostState::initVectorMaps()
         rectangle->setSize(sf::Vector2f(300, 300));
         rectangle->setTexture(&m_textures[ i ]);
         rectangle->setPosition(300 + ( j * 80 ), (rectangle->getGlobalBounds().height / 2) + 100);
-        m_maps.emplace_back(Pictures::mario_circuit_2, std::pair(*rectangle, false));
+        m_maps.emplace_back(m_maps_string[i], std::pair(*rectangle, false));
     }
 }
 
@@ -118,13 +125,15 @@ void HostState::Update(float dt)
             m_effectTime = 0.0f;
         }
     }
-    if(m_createRoom)
+    if(m_createRoom && m_data->user.getOnline())
     {
-        if(m_data->user.getId().size() > 0 )
+        if(m_data->user.getId().size() > 0)
             m_pressEnter = m_data->services.updateUser(&m_data->user);
         else
             m_pressEnter = m_data->services.createUser(&m_data->user);
     }
+    if(m_createRoom && !m_data->user.getOnline())
+        m_data->stateStack.AddState(StateStack::StateRef( new CareerMenu(m_data)), false);
     if(m_pressEnter)
     {
         while(m_data->user.getOtherId().size() < 1 )
@@ -133,13 +142,12 @@ void HostState::Update(float dt)
                 std::cout << "something wrong in host state" << std::endl;
             else if( m_data->user.getOtherId().size() > 1 )
             {
-                std::cout << "go to race" << std::endl;
-                std::cout << "other id: " << m_data->user.getOtherId() << std::endl;
-                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)));
+                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
                 break;
             }
         }
     }
+
 }
 
 void HostState::Draw()

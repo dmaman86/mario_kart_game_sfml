@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "State.h"
@@ -13,7 +14,7 @@ protected:
     void setVolume(bool);
     void InitOfMenu(MarioKart::GameDataRef);
     sf::Sprite m_background;
-    Button m_back;
+    std::shared_ptr<Button> m_back;
     sf::Vector2u m_windowSize;
     sf::Sound m_click;
 
