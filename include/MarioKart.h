@@ -18,7 +18,6 @@ namespace sf
 class MarioKart
 {
 public:
-    //TODO: add data user and another data to send to all states
     struct DataGame
     {
         DataGame( sf::RenderWindow& );

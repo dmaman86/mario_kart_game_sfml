@@ -20,6 +20,7 @@ public:
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    void Resume() override;
 private:
     using Pair = std::pair<std::string, std::pair<sf::RectangleShape, bool >>;
     using VectorMaps = std::vector< Pair >;

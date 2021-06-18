@@ -165,6 +165,16 @@ void HostState::Draw()
         window.draw(m_createGame);
 }
 
+void HostState::Resume()
+{
+    m_validConnection = false;
+    m_backMenu = false;
+    m_createPressed = false;
+    m_nextState = false;
+    m_createRoom = false;
+    m_pressEnter = false;
+}
+
 void HostState::centerOrigin(sf::Text & text)
 {
 

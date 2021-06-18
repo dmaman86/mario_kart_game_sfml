@@ -2,8 +2,15 @@
 #include "Animation.h"
 #include "Pictures.h"
 #include "Macros.h"
+
 Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& sprite,float animationtime)
-    :m_sprite(sprite),m_data(data),m_index(0),m_animationTime(animationtime),m_elapsed(sf::Time::Zero){
+    :m_sprite(sprite),
+     m_data(data),
+     m_index(0),
+     m_animationTime(animationtime),
+     m_elapsed(sf::Time::Zero)
+{
+    // TODO: לירן למה זה? אם אתה שם בהערה את השורה זה מסתדר באונליין
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
     update();
 }

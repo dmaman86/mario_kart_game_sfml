@@ -4,6 +4,7 @@
 #include "CollisionHandling.h"
 #include "Utilities.h"
 #include <thread>
+
 //========================== Constructor / Destructor =========================
 OnlineRace::OnlineRace(MarioKart::GameDataRef data) : RaceStatesBase(data ,data->user.getMapGame() ),
                                                       m_userJoin(data->user.getOnline() ? new User() : nullptr ),
