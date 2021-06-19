@@ -13,7 +13,8 @@ OnlineRace::OnlineRace(MarioKart::GameDataRef data) : RaceStatesBase(data ,data-
                                                       m_mutex_player2(),
                                                       m_thread_up(),
                                                       m_thread_get(),
-                                                      m_services()
+                                                      m_services(),
+                                                      m_finish(false)
 {
     if(m_userJoin)
 		 m_data->services.getUser(m_userJoin, m_data->user.getOtherId());
@@ -55,8 +56,8 @@ void OnlineRace::InitNetwork()
 
         }
 		
-        m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1);
-        m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2);
+        m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1, &m_finish);
+        m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2, &m_finish);
 	}
 }
 
@@ -66,6 +67,16 @@ void OnlineRace::InitNetwork()
 void OnlineRace::HandleEvent(const sf::Event& ev)
 {
     RaceStatesBase::HandleEvent(ev);
+    if(sf::Event::KeyPressed)
+    {
+        if(ev.key.code == sf::Keyboard::N)
+        {
+            m_finish = true;
+            m_thread_get.detach();
+            m_thread_up.detach();
+            m_data->stateStack.RemoveState();
+        }
+    }
 }
 
 //================================= Update =====================================

@@ -68,6 +68,7 @@ void CareerMenu::Init()
     auto buttonSave = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonSave->setTextureInRect(500, 0, 212, 54);
     buttonSave->setInPosition(sf::Vector2f(150, 625));
+    buttonSave->setCallback(std::bind(&CareerMenu::saveUser, this));
 
     //back
     m_back->setCallback([this](){
@@ -195,8 +196,7 @@ void CareerMenu::Update(float)
                 break;
             case Options::Save:
                 if (it->second->getIfSelected())
-                    saveUser();
-                    //it->second->initCallback();
+                    it->second->initCallback();
                 break;
             case Options::Back:
                 if(it->second->getIfSelected())
@@ -243,7 +243,7 @@ void CareerMenu::saveUser()
 
     file.open("save.txt");
     if (file.fail())
-    throw std::runtime_error("Error: file not found/exist\n");
+        throw std::runtime_error("Error: file not found/exist\n");
 
     file << m_data->user.getName() << "\n";
     file << m_data->user.getCoins() << "\n";

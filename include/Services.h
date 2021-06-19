@@ -31,8 +31,8 @@ public:
     bool getIdOtherUser(User* );
     bool createRace(User* );
     bool getUsers(std::vector<User>&, const std::string );
-    void updatePosition(User*, PlayerBase*, std::mutex* );
-    void getPosition(User*, PlayerBase*, std::mutex* );
+    void updatePosition(User*, PlayerBase*, std::mutex*, bool* );
+    void getPosition(User*, PlayerBase*, std::mutex*, bool* );
 
 
 private:

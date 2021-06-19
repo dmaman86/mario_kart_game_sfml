@@ -184,7 +184,7 @@ void Services::buildVecUsers(std::vector<User>& users, const std::string id, boo
     }
 }
 
-void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex )
+void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex, bool* finish )
 {
     static int f = 0;
     sf::Http::Response local_response;
@@ -202,6 +202,8 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex 
         request_put.setBody(m_ostream.str());
         local_response = http.sendRequest( request_put );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        if(*finish)
+            pthread_exit(0);
         mutex->lock();
         if(local_response.getStatus() != sf::Http::Response::Ok )
             user->setOnline(false);
@@ -209,7 +211,7 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex 
     }
 }
 
-void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mutex )
+void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mutex, bool* finish )
 {
     static int i = 0;
     sf::Http::Response local_response;
@@ -222,6 +224,8 @@ void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mute
 
         local_response = http.sendRequest( request );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        if(*finish)
+            pthread_exit(0);
         mutex->lock();
         if( local_response.getStatus() != sf::Http::Response::Ok )
             otherUser->setOnline(false);

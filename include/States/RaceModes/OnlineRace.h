@@ -34,5 +34,5 @@ private:
     std::mutex m_mutex_player2;
     std::mutex m_mutex_player1;
     Services m_services;
-
+    bool m_finish;
 };

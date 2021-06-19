@@ -21,7 +21,8 @@ GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_nextState(false),
                                                          m_save(Pictures::MenuButtons1),
                                                          m_joinGame(Pictures::MenuButtons1),
-                                                         m_createGame(Pictures::MenuButtons1)
+                                                         m_createGame(Pictures::MenuButtons1),
+                                                         m_errorShow(false)
 {
 
 }
@@ -44,6 +45,16 @@ void GetDataState::Init()
                                m_title_get_name.getLocalBounds().height / 2);
     m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
                                        (windowSize.y / 2u) + (unsigned)20));
+
+    m_error.setFont(Fonts::instance().getFont());
+    m_error.setString("Error to connect with serve");
+    m_error.setFillColor(sf::Color::Red);
+    m_error.setCharacterSize(50);
+    m_error.setOrigin(m_error.getLocalBounds().width / 2,
+                      m_error.getLocalBounds().height / 2);
+    m_error.setPosition(sf::Vector2f(windowSize.x / 2,
+                                              windowSize.y / 2));
+
 
     m_save.setTextureInRect(500, 0, 212, 54);
     m_save.setInOrigin();
@@ -212,13 +223,16 @@ void GetDataState::Update(float dt)
             else if(m_joinGame.getIfSelected())
             {
                 m_data->user.setHost(false);
+
                 if(m_data->user.getId().size() > 0)
+                {
                     m_nextState = m_data->services.updateUser(&m_data->user);
+                    if(!m_nextState) m_errorShow = true;
+                }
                 else
                 {
-                    // new user
-                    m_data->user.setId("");
                     m_nextState = m_data->services.createUser(&m_data->user);
+                    if(!m_nextState) m_errorShow = true;
                 }
                 if(m_nextState)
                     m_joinGame.initCallback();
@@ -243,22 +257,30 @@ void GetDataState::Draw()
 
     window.draw(m_background);
 
-    if(!m_send_data)
+    if(!m_errorShow)
     {
-        window.draw(m_title_get_name);
-        window.draw(m_playerText);
-        window.draw(m_back);
+        if(!m_send_data)
+        {
+            window.draw(m_title_get_name);
+            window.draw(m_playerText);
+            window.draw(m_back);
 
-        for( auto driver : m_drivers )
-            window.draw(*driver.get());
+            for( auto driver : m_drivers )
+                window.draw(*driver.get());
 
-        if(m_save_data)
-            window.draw(m_save);
+            if(m_save_data)
+                window.draw(m_save);
+        }
+        else if( m_send_data && m_data->user.getOnline())
+        {
+            window.draw(m_createGame);
+            window.draw(m_joinGame);
+        }
     }
-    else if( m_send_data && m_data->user.getOnline())
+    else
     {
-        window.draw(m_createGame);
-        window.draw(m_joinGame);
+        window.draw(m_back);
+        window.draw(m_error);
     }
 
 }

@@ -22,6 +22,7 @@ public:
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    void Resume() override;
 private:
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;

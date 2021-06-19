@@ -100,6 +100,11 @@ void ShowUsersDataBase::Draw()
         window.draw( spt );
 }
 
+void ShowUsersDataBase::Resume()
+{
+    m_selectedUser = false;
+}
+
 // private functions
 void ShowUsersDataBase::centerOrigin(sf::Text& text)
 {

@@ -42,10 +42,26 @@ void Button::setInPosition( const sf::Vector2f& position )
     m_button.setPosition(position);
 }
 
-/*void Button::draw( sf::RenderWindow* window )
+void Button::updateIfSelected(bool selected)
 {
-    window->draw(m_button);
-}*/
+    m_selected = selected;
+}
+
+void Button::resetIfSelected()
+{
+    m_selected = false;
+}
+
+const sf::Vector2f& Button::getInPosition()
+{
+    return m_button.getPosition();
+}
+
+void Button::setInOrigin()
+{
+    m_button.setOrigin(m_button.getLocalBounds().width / 2,
+                       m_button.getLocalBounds().height / 2);
+}
 
 void Button::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
@@ -62,4 +78,44 @@ void Button::initCallback()
 {
     if(m_callBack)
         m_callBack();
+}
+
+float Button::getWidth()
+{
+    return m_button.getGlobalBounds().width;
+}
+
+float Button::getHeight()
+{
+    return m_button.getGlobalBounds().height;
+}
+
+const std::string& Button::getName()
+{
+    return m_name;
+}
+
+void Button::setId(const std::string& id)
+{
+    m_id = id;
+}
+
+const std::string& Button::getId()
+{
+    return m_id;
+}
+
+const bool& Button::getIfSelected()
+{
+    return m_selected;
+}
+
+void Button::setFillInColor(int x, int y, int z, int w)
+{
+    m_button.setColor(sf::Color(x, y, z, w));
+}
+
+const sf::Sprite& Button::getSprite()
+{
+    return m_button;
 }

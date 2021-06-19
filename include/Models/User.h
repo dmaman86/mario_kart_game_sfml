@@ -13,29 +13,28 @@ public:
     void setId( std::string );
     void setIdOther( std::string );
     const std::string& getId();
-    const std::string& getName(){ return m_name; }
-    const std::string& getOtherId(){ return m_idOther; }
+    const std::string& getName();
+    const std::string& getOtherId();
     void setName( std::string );
     void setSprite( std::string );
-    const std::string& getSprite(){ return m_sprite; }
-    void updateInGame(bool game){ m_inGame = game; }
-    bool getInGame(){ return m_inGame; }
-    bool getIfSound() { return m_sound; }
-    void setIfSound(bool sound) { m_sound = sound; }
-    void setHost(bool host){ m_host = host; }
-    bool getIfHost(){ return m_host; }
-    void setMapGame(std::string map){ m_map_game = map; }
-    const std::string& getMapGame(){ return m_map_game; }
-    bool getIfMusic() { return m_music; }
-    void setIfMusic(bool music) { m_music = music; }
-	void setOnline(const bool b) { m_online = b; }
-	const bool getOnline() { return m_online; }
-	const int getCoins()const{ return m_numberCoins; }
-	void setCoins(int coins){ m_numberCoins = coins; }
-	void setDrive(std::string name){ m_drivers.emplace_back(name);
-                                    m_max_drivers++; }
-    const std::string& getDrive(size_t i){ return m_drivers[i]; }
-    const int getMaxDrivers(){ return m_max_drivers; }
+    const std::string& getSprite();
+    void updateInGame(bool);
+    bool getInGame();
+    bool getIfSound();
+    void setIfSound(bool);
+    void setHost(bool);
+    bool getIfHost();
+    void setMapGame(const std::string&);
+    const std::string& getMapGame();
+    bool getIfMusic();
+    void setIfMusic(bool);
+	void setOnline(const bool);
+	const bool getOnline();
+	const int getCoins()const;
+	void setCoins(int);
+	void setDrive(const std::string&);
+    const std::string& getDrive(size_t);
+    const int getMaxDrivers();
 
 private:
     std::string m_id;

@@ -3,12 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "State.h"
 #include "MarioKart.h"
 #include "Macros.h"
 #include "User.h"
-
+#include "Button.h"
 
 class HostState : public State
 {
@@ -22,28 +24,34 @@ public:
     void Draw() override;
     void Resume() override;
 private:
-    using Pair = std::pair<std::string, std::pair<sf::RectangleShape, bool >>;
-    using VectorMaps = std::vector< Pair >;
-    using VectorTextures = std::vector< sf::Texture >;
+    struct Map
+    {
+        std::string map_name;
+        sf::RectangleShape m_rect;
+        sf::Texture tex;
+        bool selected;
+    };
+    using VectorMaps = std::vector<std::shared_ptr<Map>>;
 
+    VectorMaps m_maps;
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
-    sf::Sprite m_back;
+    std::shared_ptr<Button> m_back;
     sf::Text m_title;
     sf::Text m_createGame;
+    sf::Text m_error;
+    sf::Text m_back_state;
     sf::Vector2u m_windowSize;
-    VectorMaps m_maps;
-    VectorTextures m_textures;
-    std::vector<std::string> m_maps_string;
 
     bool m_validConnection;
-    bool m_backMenu;
-    bool m_createPressed;
+    bool m_selected;
     bool m_nextState;
     bool m_createRoom;
     bool m_pressEnter;
+    bool m_errorShow;
     float m_effectTime;
 
-    void centerOrigin(sf::Text&);
-    void initVectorMaps();
+    void initTitlesTexts();
+    void initErrorsTexts();
+    void createMaps(VectorMaps&);
 };

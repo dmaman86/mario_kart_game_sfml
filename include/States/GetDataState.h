@@ -29,6 +29,7 @@ private:
     sf::String m_playerInput;
     sf::Text m_playerText;
     sf::Text m_title_get_name;
+    sf::Text m_error;
     std::vector< std::shared_ptr<Button> > m_drivers;
     sf::Sound m_click;
     Button m_save;
@@ -40,6 +41,7 @@ private:
     bool m_save_data;
     bool m_send_data;
     bool m_nextState;
+    bool m_errorShow;
     float m_effectTime;
     std::string m_user_name;
     std::string m_user_sprite;
