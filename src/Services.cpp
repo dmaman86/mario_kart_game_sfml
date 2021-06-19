@@ -223,7 +223,7 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex,
         local_response = http.sendRequest( request_put );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
-            pthread_exit(0);
+            return;
         mutex->lock();
         if(local_response.getStatus() != sf::Http::Response::Ok )
             user->setOnline(false);
@@ -245,7 +245,7 @@ void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mute
         local_response = http.sendRequest( request );
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
-            pthread_exit(0);
+            return;
         mutex->lock();
         if( local_response.getStatus() != sf::Http::Response::Ok )
             otherUser->setOnline(false);
