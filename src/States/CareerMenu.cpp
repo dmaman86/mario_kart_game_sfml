@@ -209,6 +209,9 @@ void CareerMenu::Resume()
 {
     for(auto& button : m_buttons)
         button.second->resetIfSelected();
+
+    m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
+
 }
 
 void CareerMenu::Draw()
@@ -239,6 +242,8 @@ void CareerMenu::saveUser()
     file.open("save.txt");
     file << m_data->user.getName() << "\n";
     file << m_data->user.getCoins() << "\n";
+    file << m_data->user.getMapGame() << "\n";
+    for(int i = 0; m_data->user.getMaxDrivers(); ++i)
     file << m_data->user.getSprite() << "\n";
 
     file.close();

@@ -32,7 +32,7 @@ public:
 	const bool getOnline() { return m_online; }
 	const int getCoins()const{ return m_numberCoins; }
 	void setCoins(int coins){ m_numberCoins = coins; }
-	void setCar(std::string name){ m_drivers.emplace_back(name);
+	void setDrive(std::string name){ m_drivers.emplace_back(name);
                                     m_max_drivers++; }
     const std::string& getDrive(size_t i){ return m_drivers[i]; }
     const int getMaxDrivers(){ return m_max_drivers; }

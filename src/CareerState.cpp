@@ -126,12 +126,16 @@ bool CareerState::openLoadFile()
         m_data->user.setName(line_text);
         std::getline(loadGame, line_text);
         m_data->user.setCoins(std::stoi(line_text));
+        std::getline(loadGame, line_text);
+        m_data->user.setMapGame(line_text);
 
-        //while (loadGame.peek() != std::ifstream::traits_type::eof())
+        while (loadGame.peek() != std::ifstream::traits_type::eof())
         {
             std::getline(loadGame, line_text);
-            m_data->user.setSprite(line_text);
+            m_data->user.setDrive(line_text);
         }
+
+        m_data->user.setSprite(m_data->user.getDrive(0));
 
         loadGame.close();
         return true;
