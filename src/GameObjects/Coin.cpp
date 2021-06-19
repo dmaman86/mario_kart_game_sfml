@@ -15,6 +15,12 @@ Coin::Coin(sf::Vector2f loc, const sf::Vector2f pos) :
 	++m_num_coins;
 }
 
+Coin::~Coin()
+{
+	--m_num_coins;
+	m_num_collected = 0;
+}
+
 // get functions :
 //===================================================
 const int Coin::getCount()

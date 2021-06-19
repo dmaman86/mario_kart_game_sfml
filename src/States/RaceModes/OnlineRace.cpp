@@ -42,7 +42,7 @@ void OnlineRace::InitNetwork()
 			m_player.setLocation(sf::Vector2f(112, 56));
 			m_player2 = PlayerOnline(m_userJoin->getSprite(),
 				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(117, 59));
-            m_int_map.addObjects(117 * 8, 59 * 8, &m_player2);
+            m_board.addObjects(117 * 8, 59 * 8, &m_player2);
 
         }
 	
@@ -51,7 +51,7 @@ void OnlineRace::InitNetwork()
 			m_player.setLocation(sf::Vector2f(117, 59));
 			m_player2 = PlayerOnline(m_userJoin->getSprite(),
 				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
-            m_int_map.addObjects(112*8, 56 * 8, &m_player2);
+            m_board.addObjects(112*8, 56 * 8, &m_player2);
 
         }
 		
@@ -99,7 +99,7 @@ void OnlineRace::UpdateNetwork(float deltatime)
 //=============================================================================
 void OnlineRace::updateDynamic()
 {
-	m_int_map.updateObjects(m_player2.getLastLocation().x*8,
+	m_board.updateObjects(m_player2.getLastLocation().x*8,
 							m_player2.getLastLocation().y*8,
                             (m_player2.getLocation().x * 8),
                             (m_player2.getLocation().y * 8));

@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "MarioKart.h"
 #include "State.h"
-#include "MapFileCollision.h"
+#include "Board.h"
 #include "Pipe.h"
 #include "User.h"
 #include "GameStatusBar.h"
@@ -53,7 +53,7 @@ protected:
     sf::Clock m_clock;
     MarioKart::GameDataRef m_data;
     Player m_player;
-    MapFileCollision m_int_map;
+    Board m_board;
     std::string m_map_race;
     GameStatusBar m_status;
     sf::Sprite m_sky_back;

@@ -56,7 +56,6 @@ void CoinRace::finishRase(const bool w_or_l)
 		m_data->window->draw(txt);
 		m_data->window->display();
 	}
-	//m_build_map_thread.~thread();
 }
 
 //=============================================================================

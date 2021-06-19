@@ -1,4 +1,4 @@
-#include "MapFileCollision.h"
+#include "Board.h"
 #include <fstream>
 #include <cmath>
 #include "Macros.h"
@@ -10,12 +10,11 @@
 #include "Ghost.h"
 #include "Coin.h"
 
-
-MapFileCollision::MapFileCollision() {
+Board::Board() {
 
 }
 
-void MapFileCollision::fillMap(const std::string str) {
+void Board::fillMap(const std::string str) {
 
     std::string name = str.substr(0,str.find('.'));
 	auto map_int = readFromFile<char>(name+".txt");
@@ -46,7 +45,7 @@ void MapFileCollision::fillMap(const std::string str) {
 
 }
 
-Floor& MapFileCollision::operator()(unsigned int i, unsigned int j) {
+Floor& Board::operator()(unsigned int i, unsigned int j) {
 	if (i < m_map.size() && j < m_map[0].size())
 		return *m_map[i][j].get();
 	throw std::range_error("m_map cannot get i or j");
@@ -57,17 +56,17 @@ Floor& MapFileCollision::operator()(unsigned int i, unsigned int j) {
 //	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 //}
 
-sf::Vector2f MapFileCollision::transferPixelToCords(sf::Vector2f loc) {
+sf::Vector2f Board::transferPixelToCords(sf::Vector2f loc) {
 
 	return sf::Vector2f(loc / 8.f);
 }
 
-void MapFileCollision::fillMap(const std::vector<std::vector<char>>&  map_int)
+void Board::fillMap(const std::vector<std::vector<char>>&  map_int)
 {
 
 }
 
-void MapFileCollision::fillObjectMap(std::string) {
+void Board::fillObjectMap(std::string) {
 	//m_vec_obj[std::pair(85*8, 88*4)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(85 , 88 ));
 	//m_vec_obj[std::pair(415.0, 675.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(85, 88));
 	//m_vec_obj[std::pair(815.0, 675.0)] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(85, 88));
@@ -101,3 +100,4 @@ void MapFileCollision::fillObjectMap(std::string) {
 	//m_vec_obj[std::pair(250.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::KoopaDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(250.0 / 8, 500.0 / 8));
 	//m_vec_obj[std::pair(625.0, 500.0)] = std::make_unique<PlayerOnline>(Pictures::instance().getTexture(Pictures::LuigiDriver), sf::Vector2f(0.0, 0.0), sf::Vector2f(625.0 / 8, 500.0 / 8));
 }
+

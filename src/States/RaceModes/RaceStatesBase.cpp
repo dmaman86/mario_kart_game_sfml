@@ -35,11 +35,11 @@ void RaceStatesBase::Init()
 {
     InitMap();
     InitSky();
-    m_player.setLastScorePos(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+    m_player.setLastScorePos(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
     m_clock.restart();
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
-    //m_map.initThread(m_int_map.m_vec_obj);
-    //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_int_map.m_vec_obj));
+    //m_map.initThread(m_board.m_vec_obj);
+    //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
 }
 
 
@@ -51,8 +51,8 @@ void RaceStatesBase::InitMap()
     m_cameraY = -17;
     m_cameraZ = m_player.getIntLocation().y * 8;;
     m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
-    m_int_map.fillMap(m_map_race);
-    m_int_map.fillObjectMap(m_map_race);
+    m_board.fillMap(m_map_race);
+    m_board.fillObjectMap(m_map_race);
 }
 //=============================================================================
 void RaceStatesBase::InitSky()
@@ -96,14 +96,14 @@ void RaceStatesBase::UpdateMap()
     m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
     m_map.setTheta(m_player.getAngle());
 
-    m_map.calc(m_int_map.m_vec_obj);
+    m_map.calc(m_board.getObjData());
 }
 
 //=============================================================================
 void RaceStatesBase::UpdatePlayer(float deltatime)
 {
-    m_player.Update(deltatime, m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
-    m_player.CheckLap(m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+    m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+    m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
 }
 
 //=============================================================================
@@ -120,7 +120,7 @@ void RaceStatesBase::Draw() {
 //=============================================================================
 void RaceStatesBase::drawStaticObjects() {
 
-    for (auto& x : m_int_map.m_vec_obj)
+    for (auto& x : m_board.getObjData())
         if (x.second->getIsInAngle())
         {
             x.second->draw(*m_data->window);
@@ -132,10 +132,10 @@ void RaceStatesBase::drawStaticObjects() {
 //=============================================================================
 void RaceStatesBase::HandleCollision(float deltatime)
 {
-    for (auto& obj : m_int_map.m_vec_obj)
+    for (auto& obj : m_board.getObjData())
         if(obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
             processCollision(m_player, *obj.second);
-    processCollision(m_player, m_int_map(m_player.getIntLocation().y, m_player.getIntLocation().x));
+    processCollision(m_player, m_board(m_player.getIntLocation().y, m_player.getIntLocation().x));
 }
 
 //=============================================================================
@@ -143,7 +143,7 @@ void RaceStatesBase::updateObjLocation()
 {
     float obj_length, camera_length;
     unsigned int xs, ys;
-    for (auto& d : m_int_map.m_vec_obj)
+    //for (auto& d : m_board.m_vec_obj)
     {
         //if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
         //{
@@ -209,12 +209,12 @@ void RaceStatesBase::updateSky()
 bool RaceStatesBase::correctDirection()
 {
     bool currect = false;
-    //std::cout << m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
+    //std::cout << m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
 
 
-    if (m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
+    if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
         currect = false;
-    else if (m_int_map.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
+    else if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
         currect = true;
 
 

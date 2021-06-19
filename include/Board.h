@@ -8,16 +8,17 @@
 #include "Floor.h"
 typedef std::shared_ptr<GameObj> ptr;
 
-class MapFileCollision {
+class Board {
 public:
 
-	MapFileCollision();
+	Board();
 	void fillMap(const std::string);
 	void fillObjectMap(const std::string);
 	Floor& operator()(unsigned int, unsigned int);
 	//float calcLength(sf::Vector2f, sf::Vector2f);
 	sf::Vector2f transferPixelToCords(sf::Vector2f);
     int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
+	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
 	void addObjects(float x, float y, PlayerOnline* obj)
 	{
 		m_vec_obj[std::pair(x, y)] = std::make_shared
@@ -32,11 +33,11 @@ public:
 
 		}
 	}
-	//  std::vector<std::unique_ptr<GameObj>> m_vec_obj;
-	std::map<std::pair<float, float >, ptr> m_vec_obj;
 
 private:
 
+	std::map<std::pair<float, float >, ptr> m_vec_obj;
 	void fillMap(const std::vector<std::vector<char>> &);
 	std::vector<std::vector<std::unique_ptr<Floor>>> m_map;
-};
+
+}; // end Board

@@ -3,7 +3,7 @@ target_sources (test_mario_kart PRIVATE
         "main.cpp"
         "MarioKart.cpp"
         "mode7.cpp"
-        "MapFileCollision.cpp"
+        "Board.cpp"
         "WelcomeState.cpp"
         "MenuState.cpp"
         "helpState.cpp"
