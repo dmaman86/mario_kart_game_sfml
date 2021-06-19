@@ -17,7 +17,7 @@ CoinRace::~CoinRace()
 void CoinRace::Update(float deltatime) {
 
 	RaceStatesBase::Update(deltatime);
-
+	m_player.updateAnimation(deltatime);
 	if (isFinish())
 	{
 		auto add_points = Coin::getCount()*50 / m_clock.getElapsedTime().asSeconds();
@@ -47,7 +47,7 @@ void CoinRace::finishRase(const bool w_or_l)
 		txt.setString("Lose");
 
 	auto cur_t = m_clock.getElapsedTime().asSeconds();
-	while (cur_t + 3.f > m_clock.getElapsedTime().asSeconds())
+	while (cur_t + 1.5f > m_clock.getElapsedTime().asSeconds())
 	{
 		m_data->window->clear();
 		m_cameraY -= 3;

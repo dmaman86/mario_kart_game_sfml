@@ -49,16 +49,16 @@ public:
 	static const std::string speed4;
     static const std::string MenuButtons1;
     static const std::string GameStartGui;
-    static const std::string Keyboard;
+    static const std::string helpStateback;
 	static const std::string game_boy;
 
-    const sf::Texture& getTexture(std::string) const;
-    const sf::Image& getMapTex(std::string);
-    std::vector <sf::IntRect>& getDriveAnimationData(std::string);
+    const sf::Texture& getTexture(const std::string &) const;
+    const sf::Image& getMapTex(const std::string &)const ;
+    const std::vector <sf::IntRect>& getDriveAnimationData(const std::string &)const;
 
 
-    const std::vector<sf::IntRect>& getTraffic();
-    const std::vector<sf::IntRect>& getCloud();
+    const std::vector<sf::IntRect>& getTraffic()const;
+    const std::vector<sf::IntRect>& getCloud()const;
 
 
 private:

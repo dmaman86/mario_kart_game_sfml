@@ -38,9 +38,10 @@ private:
     void processInput();
     void update( double );
     void render();
-private:
+
     const float m_dt = 1.0f / 60.0f;
     sf::Clock m_clock;
     sf::RenderWindow m_window;
     GameDataRef m_dataGame;
+    sf::Sprite m_mousecur;
 };

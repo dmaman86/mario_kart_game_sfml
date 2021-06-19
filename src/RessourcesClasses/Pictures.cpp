@@ -26,7 +26,7 @@ const std::string Pictures::speed3 = "speed3.png";
 const std::string Pictures::speed4 = "speed4.png";
 const std::string Pictures::MenuButtons1 = "menuButtons1.png";
 const std::string Pictures::GameStartGui = "gameStartGui.png";
-const std::string Pictures::Keyboard = "keyboard.png";
+const std::string Pictures::helpStateback = "helpStateback.png";
 const std::string Pictures::game_boy = "gameBoy.png";
 
 
@@ -85,8 +85,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::GameStartGui);
     if (!(m_pics[Pictures::MenuButtons1] = sf::Texture()).loadFromFile(Pictures::MenuButtons1))
         throw std::runtime_error("Cant Open " + Pictures::MenuButtons1);
-    if (!(m_pics[Pictures::Keyboard] = sf::Texture()).loadFromFile(Pictures::Keyboard))
-        throw std::runtime_error("Cant Open " + Pictures::Keyboard);
+    if (!(m_pics[Pictures::helpStateback] = sf::Texture()).loadFromFile(Pictures::helpStateback))
+        throw std::runtime_error("Cant Open " + Pictures::helpStateback);
 
 	if (!(m_pics[Pictures::game_boy] = sf::Texture()).loadFromFile(Pictures::game_boy))
 		throw std::runtime_error("Cant Open " + Pictures::game_boy);
@@ -101,25 +101,25 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
     m_trafficLight.emplace_back(114,64,8,24);
 
 
-    m_startCloud.push_back(sf::Rect(5,1,36,32));
-    m_startCloud.push_back(sf::Rect(47,1,36,32));
-    m_startCloud.push_back(sf::Rect(89,1,36,32));
+    m_startCloud.emplace_back(5,1,36,32);
+    m_startCloud.emplace_back(47,1,36,32);
+    m_startCloud.emplace_back(89,1,36,32);
 
 }
 
-const sf::Texture &Pictures::getTexture(std::string name) const {
+const sf::Texture &Pictures::getTexture(const std::string& name) const {
     return m_pics.at(name);
 }
 
-const sf::Image &Pictures::getMapTex(std::string name) {
+const sf::Image &Pictures::getMapTex(const std::string& name)const {
     return m_maps.at(name);
 }
 
-std::vector <sf::IntRect >  Pictures::setDriverData(int i) {
+std::vector <sf::IntRect > Pictures::setDriverData(int i) {
 
     const auto size = sf::Vector2i(34, 34);
-    auto location = sf::Vector2i(6,8+ i * 35);
-    const auto middleSpace = sf::Vector2i(0, 10);
+    auto location = sf::Vector2i(6,8+ i * 36);
+    const auto middleSpace = sf::Vector2i(0, 3);
     auto driver = std::vector <sf::IntRect >() ;
 
 
@@ -132,7 +132,7 @@ std::vector <sf::IntRect >  Pictures::setDriverData(int i) {
     return driver;
 }
 
-std::vector <sf::IntRect >&  Pictures::getDriveAnimationData(std::string driver) {
+const std::vector <sf::IntRect >&  Pictures::getDriveAnimationData(const std::string & driver)const {
 
     if(driver == MarioDriver)
     {
@@ -175,11 +175,11 @@ std::vector <sf::IntRect >&  Pictures::getDriveAnimationData(std::string driver)
     else return m_drivers[Mario];
 }
 
-const std::vector<sf::IntRect>&Pictures::getTraffic() {
+const std::vector<sf::IntRect>&Pictures::getTraffic() const{
     return m_trafficLight;
 }
 
-const std::vector<sf::IntRect> &Pictures::getCloud() {
+const std::vector<sf::IntRect> &Pictures::getCloud()const {
     return m_startCloud;
 }
 

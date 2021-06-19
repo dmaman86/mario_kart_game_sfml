@@ -53,7 +53,7 @@ void TimeRace::finishRase(const bool w_or_l)
 		txt.setString("Lose");
 
 	auto cur_t = m_clock.getElapsedTime().asSeconds();
-	while (cur_t + 3.f > m_clock.getElapsedTime().asSeconds())
+	while (cur_t + 2.f > m_clock.getElapsedTime().asSeconds())
 	{
 		m_data->window->clear();
 		m_cameraY -= 3;

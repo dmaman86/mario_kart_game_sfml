@@ -4,10 +4,11 @@
 #include "Utilities.h"
 
 
-const auto AnimationTime = 5000.f;
+const auto AnimationTime = 0.1f;
 //========================== Constructor / Destructor =========================
 Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) :
-        m_animation(Pictures::instance().getDriveAnimationData(sprite),m_sprite,AnimationTime),
+        m_animation(Pictures::instance().getDriveAnimationData(sprite),m_sprite,AnimationTime,
+                    false,DRIVER_SIDE_LEN),
         PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
         m_angle(0.0),
         m_force(0),
@@ -20,10 +21,9 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 		m_smaller_time(0.f),
         m_lap(0)
 {
-	m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
+    m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
-
 	for (size_t i = 0; i < 5;i++) {
 		sf::Sprite spr(Pictures::instance().getTexture("speed" + std::to_string(i) + ".png"));
 		m_speeds_s.push_back(spr);
@@ -58,12 +58,13 @@ void Player::CheckLap(const int fs)
 }
 
 //=============================================================================
-void Player::updateAnimation() {
-
+void Player::updateAnimation(float time) {
+      //  auto delta = time - m_timepasses;
+    //    m_timepasses = time;
 	if (!m_is_spin)
-		m_animation.update(m_playerClock.getElapsedTime(), m_is_pressed);
+		m_animation.update(time, m_is_pressed);
 	else
-		m_animation.spin(m_playerClock.getElapsedTime().asSeconds());
+		m_animation.spin(time);
 
 }
 

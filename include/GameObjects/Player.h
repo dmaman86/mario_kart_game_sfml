@@ -19,7 +19,7 @@ public:
 	void Update(const float, const int);
 	void updateDir();
 	void CheckLap(const int);
-	void updateAnimation();
+	void updateAnimation(float time);
 	virtual void draw(sf::RenderWindow& m_window) override;
 
 	void driveBack();
@@ -57,6 +57,7 @@ protected:
     int m_last_pos_score;
     int m_lap;
 	float m_smaller_time;
-	std::vector<sf::Sprite> m_speeds_s; 
+	std::vector<sf::Sprite> m_speeds_s;
+	sf::Time m_timepasses;
 };
 

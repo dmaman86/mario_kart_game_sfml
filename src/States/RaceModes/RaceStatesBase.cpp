@@ -4,6 +4,8 @@
 #include "CollisionHandling.h"
 #include "Utilities.h"
 #include "mode7.h"
+#include "TraficLight.h"
+#include "StartCloud.h"
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
                                                     m_status(*data->window),
@@ -45,6 +47,7 @@ void RaceStatesBase::Init()
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_board.m_vec_obj);
     //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
+    startRaceScreen();
 }
 
 
@@ -113,6 +116,7 @@ void RaceStatesBase::UpdatePlayer(float deltatime)
 {
     m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
     m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+    m_player.updateAnimation(deltatime);
 }
 
 //=============================================================================
@@ -120,7 +124,6 @@ void RaceStatesBase::Draw() {
 
 	m_data->window->draw(m_game_boy);
 	m_data->window->setView(m_view);
-	m_player.updateAnimation();
 	m_data->window->draw(m_map.getSprite());
 	m_data->window->draw(m_sky_back);
     m_data->window->draw(m_sky_front);
@@ -231,5 +234,26 @@ bool RaceStatesBase::correctDirection()
 
 
     return currect;
+}
+//=============================================================================
+void RaceStatesBase::startRaceScreen() {
+    auto trafficlight = TraficLight();
+    auto cloud = StartCloud();
+    sf::Time delta {};;
+    sf::Clock lira;
+    while(m_clock.getElapsedTime().asSeconds() < 4)
+    {
+
+        m_data->window->clear();
+        this->Draw();
+        delta = lira.restart();
+        trafficlight.updateAnimation(delta.asSeconds());
+        cloud.updateAnimation(delta.asSeconds());
+        cloud.draw(*m_data->window);
+        trafficlight.draw(*m_data->window);
+        m_data->window->display();
+
+    }
+
 }
 

@@ -6,7 +6,7 @@ class TraficLight {
 public:
     TraficLight();
     void draw(sf::RenderWindow&);
-    void updateAnimation(sf::Time);
+    void updateAnimation(float time);
 
 
 private:

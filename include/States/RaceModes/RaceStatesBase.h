@@ -45,7 +45,7 @@ protected:
     void updateSky();
     bool correctDirection();
 	void updateDynamic();
-
+    void startRaceScreen();
     //================ Private members ==========================
 	PlayerOnline m_player2;
     Mode7 m_map;
