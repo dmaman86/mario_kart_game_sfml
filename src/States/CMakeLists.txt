@@ -1,3 +1,14 @@
 target_sources(test_mario_kart PRIVATE "CareerMenu.cpp"
-                                       "GarageState.cpp")
+	                                   "CareerState.cpp"
+									   "GarageState.cpp"
+		                               "GetDataState.cpp"
+									   "helpState.cpp"
+									   "HostState"
+									   "MenuState.cpp"
+		                               "SettingsState.cpp"
+									   "ShowUsersDataBase.cpp"
+                                       "StateOfMenu.cpp"
+							           "WelcomeState.cpp"
+			                           )
+
 add_subdirectory(RaceModes)

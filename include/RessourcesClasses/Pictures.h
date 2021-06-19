@@ -50,7 +50,7 @@ public:
     static const std::string MenuButtons1;
     static const std::string GameStartGui;
     static const std::string Keyboard;
-
+	static const std::string game_boy;
 
     const sf::Texture& getTexture(std::string) const;
     const sf::Image& getMapTex(std::string);

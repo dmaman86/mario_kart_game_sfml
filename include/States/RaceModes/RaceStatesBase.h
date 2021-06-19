@@ -58,6 +58,7 @@ protected:
     GameStatusBar m_status;
     sf::Sprite m_sky_back;
     sf::Sprite m_sky_front;
+	sf::Sprite m_game_boy;
     std::thread m_build_map_thread;
-
+	sf::View m_view;
 }; // end RaceState

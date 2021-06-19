@@ -1,28 +1,15 @@
-
 target_sources (test_mario_kart PRIVATE
-        "main.cpp"
+		"Button.cpp"
+		"main.cpp"
         "MarioKart.cpp"
-        "mode7.cpp"
-        "Board.cpp"
-        "WelcomeState.cpp"
-        "MenuState.cpp"
-        "helpState.cpp"
-        "GetDataState.cpp"
-		"ShowUsersDataBase.cpp"
-        "SettingsState.cpp"
-        "StateOfMenu.cpp"
-		"Utilities.cpp"
-		"CollisionHandling.cpp"
-		"HostState.cpp"
-		"Animation.cpp"
 		"Services.cpp"
-		"CareerState.cpp"
-        "GameStatusBar.cpp"
-		"Button.cpp")
+		"Utilities.cpp"
+		)
 
-add_subdirectory(Machine)
 add_subdirectory(GameObjects)
-add_subdirectory(RessourcesClasses)
-add_subdirectory(Models)
-add_subdirectory(States)
+add_subdirectory(GameTools)
 add_subdirectory(GuiItems)
+add_subdirectory(Machine)
+add_subdirectory(Models)
+add_subdirectory(RessourcesClasses)
+add_subdirectory(States)

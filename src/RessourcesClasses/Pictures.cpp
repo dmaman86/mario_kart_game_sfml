@@ -27,7 +27,7 @@ const std::string Pictures::speed4 = "speed4.png";
 const std::string Pictures::MenuButtons1 = "menuButtons1.png";
 const std::string Pictures::GameStartGui = "gameStartGui.png";
 const std::string Pictures::Keyboard = "keyboard.png";
-
+const std::string Pictures::game_boy = "gameBoy.png";
 
 
 Pictures &Pictures::instance() {
@@ -88,6 +88,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
     if (!(m_pics[Pictures::Keyboard] = sf::Texture()).loadFromFile(Pictures::Keyboard))
         throw std::runtime_error("Cant Open " + Pictures::Keyboard);
 
+	if (!(m_pics[Pictures::game_boy] = sf::Texture()).loadFromFile(Pictures::game_boy))
+		throw std::runtime_error("Cant Open " + Pictures::game_boy);
 
 
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {

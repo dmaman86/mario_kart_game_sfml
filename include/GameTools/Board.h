@@ -15,7 +15,6 @@ public:
 	void fillMap(const std::string);
 	void fillObjectMap(const std::string);
 	Floor& operator()(unsigned int, unsigned int);
-	//float calcLength(sf::Vector2f, sf::Vector2f);
 	sf::Vector2f transferPixelToCords(sf::Vector2f);
     int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
 	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
