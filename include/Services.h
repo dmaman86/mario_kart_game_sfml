@@ -11,6 +11,7 @@
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include <pthread.h>
 
 #include "Macros.h"
 #include "User.h"
@@ -27,7 +28,8 @@ public:
     bool createUser(User* );
     bool updateUser(User* );
     bool getUser(User*, const std::string );
-    bool deleteUser(User* );
+    bool deleteUser(User*);
+    bool resetUser(User*);
     bool getIdOtherUser(User* );
     bool createRace(User* );
     bool getUsers(std::vector<User>&, const std::string );

@@ -104,7 +104,11 @@ void HostState::Update(float dt)
         while(m_data->user.getOtherId().size() < 1 )
         {
             if(!m_data->services.getIdOtherUser(&m_data->user))
+            {
                 std::cout << "something wrong in host state" << std::endl;
+                m_errorShow = true;
+                break;
+            }
             else if( m_data->user.getOtherId().size() > 1 )
             {
                 m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
@@ -143,6 +147,8 @@ void HostState::Resume()
     m_pressEnter = false;
     for(auto& map : m_maps)
         map->selected = false;
+    if(m_data->user.getId().size() > 1)
+        m_data->services.deleteUser(&m_data->user);
 }
 
 void HostState::initTitlesTexts()

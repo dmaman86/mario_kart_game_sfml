@@ -103,6 +103,8 @@ void ShowUsersDataBase::Draw()
 void ShowUsersDataBase::Resume()
 {
     m_selectedUser = false;
+    if(m_data->user.getId().size() > 1)
+        m_data->services.resetUser(&m_data->user);
 }
 
 // private functions

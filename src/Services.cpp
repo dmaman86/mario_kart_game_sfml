@@ -85,11 +85,31 @@ bool Services::deleteUser(User* user)
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
     sf::Http::Request request_del("/app/api/update_to_delete/" + user->getId(), sf::Http::Request::Put);
+    request_del.setField("Content-Type", "application/x-www-form-urlencoded");
 
     response = http.sendRequest( request_del );
 
     if( response.getStatus() != sf::Http::Response::Ok )
         return false;
+    user->setId("");
+    user->setIdOther("");
+    user->updateInGame(false);
+    return true;
+}
+
+bool Services::resetUser(User *user)
+{
+    sf::Http http(HttpNetwork::url);
+    sf::Http::Response response;
+    sf::Http::Request request_reset("/app/api/reset_user/" + user->getId(), sf::Http::Request::Put);
+    request_reset.setField("Content-Type", "application/x-www-form-urlencoded");
+
+    response = http.sendRequest( request_reset );
+
+    if( response.getStatus() != sf::Http::Response::Ok )
+        return false;
+    user->setIdOther("");
+    user->updateInGame(false);
     return true;
 }
 

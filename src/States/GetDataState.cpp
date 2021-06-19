@@ -295,6 +295,8 @@ void GetDataState::Resume()
     m_createGame.resetIfSelected();
     m_back.resetIfSelected();
     setVolume();
+    if(m_data->user.getId().size() > 1)
+        m_data->services.deleteUser(&m_data->user);
 }
 
 // private functions

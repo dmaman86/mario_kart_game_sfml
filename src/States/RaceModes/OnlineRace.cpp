@@ -56,8 +56,8 @@ void OnlineRace::InitNetwork()
 
         }
 		
-        m_thread_up = std::thread(&Services::updatePosition, &m_services, &m_data->user, &m_player, &m_mutex_player1, &m_finish);
-        m_thread_get = std::thread(&Services::getPosition, &m_services, m_userJoin, &m_player2, &m_mutex_player2, &m_finish);
+        m_thread_up = std::thread(&Services::updatePosition, &m_data->services, &m_data->user, &m_player, &m_mutex_player1, &m_finish);
+        m_thread_get = std::thread(&Services::getPosition, &m_data->services, m_userJoin, &m_player2, &m_mutex_player2, &m_finish);
 	}
 }
 
