@@ -84,8 +84,14 @@ void CareerState::Update(float)
             case Options::LoadGame:
                 if (it->second->getIfSelected())//if pres load game
                 {
-                    if(openLoadFile())
+                    if (openLoadFile())
+                    {
                         it->second->initCallback();
+                    }
+                /*    catch (const std::exception& a)
+                    {
+                        std::cout << a.what();
+                    }*/
                 }
                 break;
             case Options::Back:
@@ -118,9 +124,11 @@ bool CareerState::openLoadFile()
         std::string line;
 
         std::ifstream loadGame;
-        loadGame.open("save.txt");
-        if (loadGame.fail())
-            throw std::runtime_error("Error: loadGame not found/exist\n");
+       
+            loadGame.open("save.txt");
+            if (loadGame.fail())
+                throw std::runtime_error("Error: file not found/exist\n");
+
 
         std::getline(loadGame, line_text);
         m_data->user.setName(line_text);

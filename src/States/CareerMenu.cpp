@@ -194,14 +194,16 @@ void CareerMenu::Update(float)
                     it->second->initCallback();
                 break;
             case Options::Save:
-                if(it->second->getIfSelected())
-                    it->second->initCallback();
+                if (it->second->getIfSelected())
+                    saveUser();
+                    //it->second->initCallback();
                 break;
             case Options::Back:
                 if(it->second->getIfSelected())
                     it->second->initCallback();
                 break;
         }
+       // it->second->resetIfSelected();
     }
 }
 
@@ -240,11 +242,14 @@ void CareerMenu::saveUser()
 
 
     file.open("save.txt");
+    if (file.fail())
+    throw std::runtime_error("Error: file not found/exist\n");
+
     file << m_data->user.getName() << "\n";
     file << m_data->user.getCoins() << "\n";
     file << m_data->user.getMapGame() << "\n";
-    for(int i = 0; m_data->user.getMaxDrivers(); ++i)
-    file << m_data->user.getSprite() << "\n";
+    for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
+        file << m_data->user.getDrive(i) << "\n";
 
     file.close();
     m_buttons[Options::Save]->resetIfSelected();

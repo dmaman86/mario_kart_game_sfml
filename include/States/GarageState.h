@@ -30,7 +30,7 @@ private:
 	};
 
 
-    enum class Options
+    enum  Options
     {
         Back,
 		WantToBuy = 0,
