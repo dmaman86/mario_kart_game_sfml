@@ -13,17 +13,17 @@ float calcSinDegree(float m_angle );
 float calcCosDegree(float m_angle );
 
 template <class T>
-std::vector<std::vector<T>> readFromFile(std::string str){
+std::vector<std::vector<T>> readFromFile(std::string str,const int sizex = 128, const int sizey = 128){
 
     std::vector<std::vector <T>> map_int;
     std::ifstream m_file(str);
     T input;
     if (!m_file.is_open())
         throw std::range_error("cannot open m_file");
-    for (int i = 0; i < 128; ++i)
+    for (int i = 0; i < sizex; ++i)
     {
         std::vector<T> row;
-        for (int j = 0; j < 128; ++j)
+        for (int j = 0; j < sizey; ++j)
         {
             m_file >> input;
             row.push_back(input);
