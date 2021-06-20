@@ -65,7 +65,7 @@ void HostState::HandleEvent(const sf::Event & event)
         }
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && m_selected)
         m_pressEnter = true;
 }
 

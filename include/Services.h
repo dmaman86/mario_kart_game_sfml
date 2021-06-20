@@ -11,7 +11,6 @@
 #include <chrono>
 #include <thread>
 #include <mutex>
-#include <pthread.h>
 
 #include "Macros.h"
 #include "User.h"

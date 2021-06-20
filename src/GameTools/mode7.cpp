@@ -1,188 +1,88 @@
 #include "mode7.h"
 #include "Pictures.h"
 #include <cmath>
-//#include <unistd.h>
 #include "Utilities.h"
 #include "Macros.h"
-/*Mode7::Mode7() : m_screenWidth{}, m_screenHeight{}, m_T{}, m_L{},
-			m_imageWidth{}, m_imageHeight{}, m_FOV{}, m_D{}, m_cameraX{},
-			m_cameraY{}, m_cameraZ{}, m_cosinus{1}, m_sinus{} {}
-*/
-
-
-
-Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, float cameraX, float cameraY, float cameraZ, float theta, float FOV)
+//============================ Constructor ====================================
+Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, float theta, float FOV)
 {
 	setScreen(width, height);
-
-	try
-	{
-		loadImage(file);
-	}
-	catch (char const* s)
-	{
-		std::cout << s << " " << file << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
-	setCamera(cameraX, cameraY, cameraZ);
+	loadImage(file);
 	setFOVangle(FOV);
 	setTheta(theta);
-
 }
 
-void Mode7::setScreen(unsigned int width, unsigned int height)
-{
-	m_screenWidth = width;
-	m_screenHeight = height;
-	m_T = height / 2;//128
-	m_L = width / 2;
+//========================== Public functions =================================
 
-	m_imageTransformed.create(m_screenWidth, m_screenHeight, sf::Color::Black);
-	m_texture.create(m_screenWidth, m_screenHeight);
-}
-
-void Mode7::loadImage(std::string const& file)
-{
-	sf::Vector2u vec;
-	m_image = Pictures::instance().getMapTex(file);
-
-	vec = m_image.getSize();
-	m_imageWidth = vec.x;
-	m_imageHeight = vec.y;
-}
-
-void Mode7::setCamera(float x, float y, float z)
-{
-	m_cameraX = x;
-	m_cameraY = y;
-	m_cameraZ = z;
-}
-
-void Mode7::setFOVangle(float angle)
-{
-	m_FOV = angle;
-	m_D = m_T / std::tan(m_FOV * 3.1415 / 360.0);
-}
-
+//=============================================================================
 void Mode7::setTheta(float theta)
 {
-	m_cosinus = std::cos(theta * 3.1415 / 180.0);
-	m_sinus = std::sin(theta * 3.1415 / 180.0);
+	m_cosinus = float(std::cos(theta * 3.1415 / 180.0));
+	m_sinus = float(std::sin(theta * 3.1415 / 180.0));
 }
-
-
-bool Mode7::calcInAngle(float& xw, float& zw, const unsigned int ys, const unsigned int xs)
+//=============================================================================
+bool Mode7::calcInAngle
+	(sf::Vector2f & world_c, const sf::Vector2u screen_c,const Camera& camera)
 {
-	auto help = ((float)m_T - (float)ys);
-	auto help2 = m_D * m_cameraY;
-	auto help3 = ((float)xs - (float)m_L);
-	auto help4 = help3 / help;
-	auto help5 = help2 / help;
-	auto help6 = m_cameraY * help4;
+	auto dis_y = ((float)m_H_helf - (float)screen_c.y);
+	auto dis_x = ((float)screen_c.x - (float)m_W_half);
+	auto depth = m_D * camera.getY() / dis_y;
+	auto dis = camera.getY() * dis_x / dis_y;
 
-	xw = m_cameraX - (help6 * m_cosinus) - (help5 * m_sinus);
-	zw = m_cameraZ - (help6 * m_sinus) + (help5 * m_cosinus);
+	world_c.x = camera.getX() - (dis * m_cosinus) - (depth * m_sinus);
+	world_c.y = camera.getZ() - (dis * m_sinus) + (depth * m_cosinus);
 
-	return (xw < 0 || zw < 0 || xw >= m_imageWidth || zw >= m_imageHeight);
+	return (world_c.x < 0 || world_c.y < 0 ||
+		world_c.x >= m_imageWidth || world_c.y >= m_imageHeight);
 	
 }
-bool Mode7::calcInAngle( unsigned int& ys, unsigned int& xs,const float xw, const float zw)
+
+//=============================================================================
+void Mode7::UpdateImg
+	(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec
+	, const Camera& camera)
 {
-	auto b = (xw < 0 || zw < 0 || xw >= m_imageWidth || zw >= m_imageHeight);
-
-
-	return b;
-}
-
-//void Mode7::calc()
-//{
-//    for(unsigned int ys{m_T + 1}; ys < m_screenHeight; ys++)
-//        for(unsigned int xs{}; xs < m_screenWidth; xs++)
-//        {
-//            float const xw = m_cameraX - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_cosinus - m_D*m_cameraY / ((float)m_T - (float)ys) * m_sinus;
-//            float const zw = m_cameraZ - m_cameraY*((float)xs - (float)m_L) / ((float)m_T - (float)ys) * m_sinus + m_D*m_cameraY / ((float)m_T - (float)ys) * m_cosinus;
-//
-//            if(xw < 0 || zw < 0 || xw >= m_imageWidth || zw >= m_imageHeight)
-//                m_imageTransformed.setPixel(xs, ys, sf::Color::Black);
-//            else
-//                m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int )zw));
-//        }
-//}
-void Mode7::calc(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec)
-{
-
-//    while (1)
- //   {
-       // sleep(0.01);
-        //if(mutex->unlock())
-        //std::cout << "dasds \n";
-	float xw, zw, obj_length, camera_length;
-	for (unsigned int ys{ m_T + 1 }; ys < m_screenHeight; ys++)
-		for (unsigned int xs{}; xs < m_screenWidth; xs++)
+	float obj_length, camera_length;
+	sf::Vector2u screen_c;
+	sf::Vector2f world_c;
+	for (screen_c.y =  m_H_helf + 1 ;screen_c.y < m_screenHeight; screen_c.y++)
+		for (screen_c.x = 0; screen_c.x < m_screenWidth; screen_c.x++)
 		{
-			if (this->calcInAngle(xw, zw, ys, xs))
+			if (this->calcInAngle(world_c, screen_c, camera))
 			{
-				m_imageTransformed.setPixel(xs, ys, sf::Color::Black);
+				m_imageTransformed.setPixel(screen_c.x, screen_c.y, sf::Color::Black);
 			}
 			else
 			{
-				m_imageTransformed.setPixel(xs, ys, m_image.getPixel((unsigned int)xw, (unsigned int)zw));
+				m_imageTransformed.setPixel(screen_c.x, screen_c.y,
+					m_image.getPixel((unsigned int)world_c.x, (unsigned int)world_c.y));
+
 				for (auto& d : vec)
 				{
-					if (abs(d.first.second - zw) <= 4 && abs(d.first.first - xw) <= 2)
+	
+					auto abz = abs(d.first.second - world_c.y);
+					auto abx = abs(d.first.first - world_c.x);
+					if (abz <= 4 && abx <= 4)
 					{
-						{
-//                            int p_x;
-//                            int p_y;
-//                            obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
-//                                                    sf::Vector2f(*p_x, *p_y));
-
-							camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
-								sf::Vector2f(m_cameraZ, m_cameraX))) / 8.0;
-
-							//d.second->setPosition(sf::Vector2f(xs , ys ));
-
-							if (camera_length < 10) // x < 10
-							{
-								d.second->setScale(3, 3);
-								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 20) * 2));
-							}
-							else if (camera_length < 15)// 10 < x < 15
-							{
-								d.second->setScale(2, 2);
-								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 15) * 2));
-							}
-							else if (camera_length < 20)// 15 < x < 20
-							{
-								d.second->setScale(1.5, 1.5);
-								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 10) * 2));
-							}
-							else if (camera_length < 25)// 20 < x < 25
-							{
-								d.second->setScale(0.8, 0.8);
-								d.second->setPosition(sf::Vector2f(xs * 2, (ys - 5) * 2) );
-							}
-							else if (camera_length < 28)// 25 < x < 30
-							{
-								d.second->setScale(0.5, 0.5);
-								d.second->setPosition(sf::Vector2f(xs * 2, ys * 2));
-
-							}
-
+						camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
+							sf::Vector2f(camera.getZ(), camera.getX()))) / 8.f;
+						//if (camera_length >= 12.5|| (camera_length < 12.5 && abz <= 1 && abx <= 1)) {
 							d.second->setInAngle(true);
+							d.second->setPosition(sf::Vector2f(float(screen_c.x) * 2, float(screen_c.y) * 2));
 
-							if (camera_length < 0.5 || camera_length > 28)
+							d.second->setScale(30 / camera_length, 30 / camera_length);
+
+							if (camera_length < 0.5 || camera_length > 25)
 								d.second->setInAngle(false);
-
-						}
+						//}
 					}
 				}
 			}
 		}
-}//}
+}
 
 
+//=============================================================================
 sf::Sprite Mode7::getSprite()
 {
 	m_texture.update(m_imageTransformed);
@@ -192,10 +92,32 @@ sf::Sprite Mode7::getSprite()
 	return m_sprite;
 }
 
-void Mode7::initThread(std::map<std::pair<float, float>, std::shared_ptr<GameObj>> vec) {
+//========================== Public functions =================================
 
-      //m_build_map_thread = std::thread(&calc,std::ref(vec));
-
+//=============================================================================
+void Mode7::setScreen(unsigned int width, unsigned int height)
+{
+	m_screenWidth = width;
+	m_screenHeight = height;
+	m_H_helf = height / 2u;
+	m_W_half = width / 2u;
+	m_imageTransformed.create(m_screenWidth, m_screenHeight, sf::Color::Black);
+	m_texture.create(m_screenWidth, m_screenHeight);
 }
 
+//=============================================================================
+void Mode7::loadImage(std::string const& file)
+{
+	sf::Vector2u vec;
+	m_image = Pictures::instance().getMapTex(file);
+	vec = m_image.getSize();
+	m_imageWidth = vec.x;
+	m_imageHeight = vec.y;
+}
 
+//=============================================================================
+void Mode7::setFOVangle(float angle)
+{
+	m_FOV = angle;
+	m_D = m_H_helf / float(std::tan(m_FOV * 3.1415 / 360.0));
+}

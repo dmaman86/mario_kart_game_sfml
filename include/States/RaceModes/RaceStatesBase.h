@@ -41,15 +41,16 @@ protected:
     void UpdatePlayer(float);
     void drawStaticObjects();
     void HandleCollision(float deltatime);
-    void updateObjLocation();
     void updateSky();
     bool correctDirection();
-	void updateDynamic();
     void startRaceScreen();
     //================ Private members ==========================
 	PlayerOnline m_player2;
     Mode7 m_map;
-    float m_cameraX, m_cameraY, m_cameraZ, m_theta;
+	Camera m_camera;
+
+	float m_cameraX, m_cameraY, m_cameraZ;
+
     sf::Clock m_clock;
     MarioKart::GameDataRef m_data;
     Player m_player;
@@ -61,4 +62,5 @@ protected:
 	sf::Sprite m_game_boy;
     std::thread m_build_map_thread;
 	sf::View m_view;
-}; // end RaceState
+
+}; //end RaceStateBase

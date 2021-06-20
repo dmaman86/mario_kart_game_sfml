@@ -43,7 +43,6 @@ void RaceStatesBase::Init()
     m_clock.restart();
 	m_view.setViewport(sf::FloatRect(0.25f, 0.05, 0.5f, 0.5f));
 
-
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_board.m_vec_obj);
     //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
@@ -55,10 +54,9 @@ void RaceStatesBase::Init()
 //=============================================================================
 void RaceStatesBase::InitMap()
 {
-    m_cameraX = m_player.getIntLocation().x * 8;
-    m_cameraY = -17;
-    m_cameraZ = m_player.getIntLocation().y * 8;;
-    m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_cameraX, m_cameraY, m_cameraZ, m_player.getAngle(), 300.0);
+	m_camera.InitCamera(m_player.getIntLocation());
+	m_cameraY = -17;
+    m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_player.getAngle(), 300.0);
     m_board.fillMap(m_map_race);
     m_board.fillObjectMap(m_map_race);
 }
@@ -93,22 +91,16 @@ void RaceStatesBase::Update(float deltatime) {
     UpdatePlayer(deltatime);
     this->updateSky();
     UpdateMap();
-    updateObjLocation();
     HandleCollision(deltatime);
-
 }
 
 
 //=============================================================================
 void RaceStatesBase::UpdateMap()
 {
-    m_cameraX = m_player.getIntLocation().x * 8 - 50 * calcSinDegree(m_player.getAngle());
-    m_cameraZ = m_player.getIntLocation().y * 8 + 50 * calcCosDegree(m_player.getAngle());
-    m_theta = m_player.getAngle();
-    m_map.setCamera(m_cameraX, m_cameraY, m_cameraZ);
+	m_camera.setCamera(m_player.getLocation(), m_player.getAngle(), m_cameraY);
     m_map.setTheta(m_player.getAngle());
-
-    m_map.calc(m_board.getObjData());
+    m_map.UpdateImg(m_board.getObjData(), m_camera);
 }
 
 //=============================================================================
@@ -154,56 +146,6 @@ void RaceStatesBase::HandleCollision(float deltatime)
 }
 
 //=============================================================================
-void RaceStatesBase::updateObjLocation()
-{
-    float obj_length, camera_length;
-    unsigned int xs, ys;
-    //for (auto& d : m_board.m_vec_obj)
-    {
-        //if (m_map.calcInAngle( ys, xs,d.first.first, d.first.second))
-        //{
-        //    obj_length = calcLength(sf::Vector2f(d.second->getIntLocation().x, d.second->getIntLocation().y),
-        //                            sf::Vector2f(m_player.getIntLocation().x, m_player.getIntLocation().y));
-
-        //    camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),sf::Vector2f(m_cameraZ, m_cameraX))) / 8.f;
-
-        //    d.second->setPosition(sf::Vector2f(xs, ys));
-
-        //    if (camera_length < 10) // x < 10
-        //    {
-        //        d.second->setScale(3, 3);
-        //        d.second->setPosition(sf::Vector2f(xs, ys - 20));
-        //    }
-        //    else if (camera_length < 15)// 10 < x < 15
-        //    {
-        //        d.second->setScale(2, 2);
-        //        d.second->setPosition(sf::Vector2f(xs, ys - 15));
-        //    }
-        //    else if (camera_length < 20)// 15 < x < 20
-        //    {
-        //        d.second->setScale(1.5, 1.5);
-        //        d.second->setPosition(sf::Vector2f(xs, ys - 10));
-        //    }
-        //    else if (camera_length < 25)// 20 < x < 25
-        //    {
-        //        d.second->setScale(1, 1);
-        //        d.second->setPosition(sf::Vector2f(xs, ys - 5));
-        //    }
-        //    else if (camera_length < 30)// 25 < x < 30
-        //    {
-        //        d.second->setScale(0.5, 0.5);
-        //    }
-
-        //    d.second->setInAngle(true);
-
-        //    if (camera_length < 5.0 || camera_length > 30)
-        //        d.second->setInAngle(false);
-        //}
-    }
-}
-
-
-//=============================================================================
 void RaceStatesBase::updateSky()
 {
     auto x = m_sky_front.getTextureRect();
@@ -241,9 +183,10 @@ void RaceStatesBase::startRaceScreen() {
     auto cloud = StartCloud();
     sf::Time delta {};;
     sf::Clock lira;
+	UpdateMap();
     while(m_clock.getElapsedTime().asSeconds() < 4)
     {
-
+		m_data->window->draw(m_map.getSprite());
         m_data->window->clear();
         this->Draw();
         delta = lira.restart();
