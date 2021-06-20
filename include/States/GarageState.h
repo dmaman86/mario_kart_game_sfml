@@ -19,7 +19,13 @@ public:
 	void Update(float) override;
 	void Draw() override;
 
+	
+
 private:
+	
+
+
+
 	struct driver
 	{
 	public:
@@ -29,24 +35,34 @@ private:
 		sf::Text price;
 	};
 
-
-    enum  Options
+    enum class Options
     {
         Back,
-		WantToBuy = 0,
+		WantToBuy,
 		successfully,
 		EnoughMoney,
 
     };
 
+	void resetButtons(Options);
+	void initVectorSprites(const sf::Vector2u&);
+	void updateColors(const sf::Vector2f);
+	void buyingTest(std::string);
+	void initDriver(driver&, const int i, const int j);
+
 	MarioKart::GameDataRef m_data;
 	std::map<std::string, driver> m_drivers;
     std::map<Options, std::shared_ptr<Button>> m_buttons;
 
-    void resetButtons(Options);
-    void initVectorSprites(const sf::Vector2u&);
-	void updateColors(const sf::Vector2f);
-	void buyingTest(std::string);
+    
+
 	std::vector<std::pair<sf::Text, bool >> m_msg;
 	std::string m_selectCar;
+
+	sf::Text m_numberCoins;
+
+
+
 };
+
+

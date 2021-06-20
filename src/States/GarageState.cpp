@@ -41,6 +41,11 @@ void GarageState::Init()
         m_drivers.at(m_data->user.getDrive(i)).buy = false;
         m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
     }
+
+
+    m_numberCoins = sf::Text("my coins:"+ std::to_string(m_data->user.getCoins()), Fonts::instance().Fonts::getFontMario(), 50);
+    m_numberCoins.setPosition(1000, 100);
+    m_numberCoins.setColor(sf::Color::Black);
 }
 
 void GarageState::HandleEvent(const sf::Event& event)
@@ -92,6 +97,14 @@ void GarageState::Update(float )
                 break;
         }
     }
+
+    m_numberCoins.setString("my coins:" + std::to_string(m_data->user.getCoins()));
+
+    for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
+    {
+        m_drivers.at(m_data->user.getDrive(i)).buy = false;
+        m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
+    }
 }
 
 void GarageState::Draw()
@@ -100,7 +113,7 @@ void GarageState::Draw()
     for (auto it : m_buttons)
         m_data->window->draw(*it.second.get());
 
-    for (auto driver : m_drivers)
+    for (auto &driver : m_drivers)
     {
         m_data->window->draw(driver.second.sprite);
         m_data->window->draw(driver.second.price);
@@ -111,7 +124,7 @@ void GarageState::Draw()
         if(msg.second)
             m_data->window->draw(msg.first);
     }
-
+    m_data->window->draw(m_numberCoins);
 
 }
 
@@ -127,31 +140,36 @@ void GarageState::resetButtons(Options option)
 void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
 {
 
-
+    int i = -5;
+    size_t j = -30;
     m_drivers.emplace(std::make_pair(Pictures::BowserDriver, driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::DKDriver,     driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::MarioDriver,  driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::KoopaDriver,  driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::LuigiDriver,  driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::PeachDriver,  driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::ToadDriver,   driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    m_drivers.emplace(std::make_pair(Pictures::YoshiDriver,  driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::BowserDriver), i+=5, j+=35);
+    m_drivers.emplace(std::make_pair(Pictures::DKDriver, driver(true, (Pictures::drivers), sf::Text("1200", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::DKDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::MarioDriver,  driver(true, (Pictures::drivers), sf::Text("1300", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::MarioDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::KoopaDriver,  driver(true, (Pictures::drivers), sf::Text("1400", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::KoopaDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::LuigiDriver,  driver(true, (Pictures::drivers), sf::Text("1500", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::LuigiDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::PeachDriver,  driver(true, (Pictures::drivers), sf::Text("1600", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::PeachDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::ToadDriver,   driver(true, (Pictures::drivers), sf::Text("1700", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::ToadDriver), i += 5, j += 35);
+    m_drivers.emplace(std::make_pair(Pictures::YoshiDriver,  driver(true, (Pictures::drivers), sf::Text("1800", Fonts::instance().Fonts::getFontMario()))));
+    initDriver(m_drivers.at(Pictures::YoshiDriver), i += 5, j += 35);
 
+}
 
-    size_t i = 0;
-    size_t j = 5;
-    for (auto it = m_drivers.begin(); it != m_drivers.end(); it++, i += 5, j += 35)
-    {
+void GarageState::initDriver(driver& dr,const int i , const int j)
+{
+    dr.sprite.setTextureInRect(360, j, 33, 33);
+    dr.sprite.setInScale(3, 4);
+    dr.sprite.setInPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 150));
 
-        it->second.sprite.setTextureInRect(360, j, 33, 33);
-        it->second.sprite.setInScale(3, 4);
-        it->second.sprite.setInPosition(sf::Vector2f(120 + (i * 30), (it->second.sprite.getWidth() / 2) + 150));
+    dr.price.setColor(sf::Color::Blue);
+    dr.price.setPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 300));
 
-        it->second.price.setColor(sf::Color::Blue);
-        it->second.price.setPosition(sf::Vector2f(120 + (i * 30), (it->second.sprite.getWidth() / 2) + 300));
-
-
-    }
 }
 
 void GarageState::updateColors(const sf::Vector2f loc)
@@ -199,3 +217,5 @@ void GarageState::buyingTest(std::string car)
    m_msg[0].second = false;
 
 }
+
+
