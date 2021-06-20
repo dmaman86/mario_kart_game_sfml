@@ -26,6 +26,8 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
 	m_sprite.scale(3, 3);
 	for (size_t i = 0; i < 5;i++) {
 		sf::Sprite spr(Pictures::instance().getTexture("speed" + std::to_string(i) + ".png"));
+		spr.setScale(0.65, 0.5);
+		spr.setPosition(0, 80);
 		m_speeds_s.push_back(spr);
 	}
 	

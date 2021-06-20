@@ -11,7 +11,7 @@ class OnlineRace : public RaceStatesBase
 {
 public:
 	//================ Constructor / Destructor =================
-	OnlineRace(MarioKart::GameDataRef);
+	OnlineRace(MarioKart::GameDataRef&);
 	~OnlineRace();
 
 	//================ Virtual public functions =================

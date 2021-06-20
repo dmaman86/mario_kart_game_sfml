@@ -7,7 +7,7 @@ class CoinRace : public RaceStatesBase
 {
 public:
 	//================ Constructor / Destructor =================
-	CoinRace(MarioKart::GameDataRef);
+	CoinRace(MarioKart::GameDataRef&);
 	~CoinRace();
 
 	//================ Virtual public functions =================

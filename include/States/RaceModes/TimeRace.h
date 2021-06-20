@@ -7,11 +7,11 @@ class TimeRace : public RaceStatesBase
 {
 public:
 	//================ Constructor / Destructor =================
-	TimeRace(MarioKart::GameDataRef);
+	TimeRace(MarioKart::GameDataRef&);
 	~TimeRace();
 
 	//================ Virtual public functions =================
-
+	void Init() override;
 	void Update(float) override;
 	void Draw() override;
 

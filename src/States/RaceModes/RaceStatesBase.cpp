@@ -7,7 +7,7 @@
 #include "TraficLight.h"
 #include "StartCloud.h"
 //========================== Constructor / Destructor =========================
-RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
+RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data) : m_data(data),
                                                     m_status(*data->window),
                                                     m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                              sf::Vector2f(112,56),
@@ -18,7 +18,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data) : m_data(data),
 }
 
 
-RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef data,const  std::string& map): m_data(data),
+RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& map): m_data(data),
                                                                      m_status(*data->window),
                                                                      m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                                               sf::Vector2f(112, 56),
@@ -64,6 +64,11 @@ void RaceStatesBase::InitMap()
 //=============================================================================
 void RaceStatesBase::InitSky()
 {
+	auto textureSize = Pictures::instance().getTexture(Pictures::menuBackground).getSize();
+	m_background.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
+	m_background.setScale((float)m_data->window->getSize().x / textureSize.x,
+		(float)m_data->window->getSize().y / textureSize.y);
+
 	m_game_boy.setTexture(Pictures::instance().getTexture(Pictures::game_boy));
 	m_game_boy.setScale(1.5, 1);
 	m_game_boy.setPosition(150,0);
@@ -114,7 +119,8 @@ void RaceStatesBase::UpdatePlayer(float deltatime)
 
 //=============================================================================
 void RaceStatesBase::Draw() {
-
+	
+	m_data->window->draw(m_background);
 	m_data->window->draw(m_game_boy);
 	auto v = m_data->window->getView();
 	m_data->window->setView(m_view);

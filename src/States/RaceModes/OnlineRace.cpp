@@ -6,7 +6,7 @@
 #include <thread>
 
 //========================== Constructor / Destructor =========================
-OnlineRace::OnlineRace(MarioKart::GameDataRef data) : RaceStatesBase(data ,data->user.getMapGame() ),
+OnlineRace::OnlineRace(MarioKart::GameDataRef& data) : RaceStatesBase(data ,data->user.getMapGame() ),
                                                       m_userJoin(data->user.getOnline() ? new User() : nullptr ),
                                                       m_time_update(0.0f),
                                                       m_mutex_player1(),

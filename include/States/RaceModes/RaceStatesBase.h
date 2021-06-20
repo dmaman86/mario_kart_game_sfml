@@ -22,8 +22,8 @@ class RaceStatesBase : public State
 {
 public:
     //================ Constructor / Destructor =================
-    RaceStatesBase(MarioKart::GameDataRef);
-    RaceStatesBase(MarioKart::GameDataRef,const std::string& );
+    RaceStatesBase(MarioKart::GameDataRef&);
+    RaceStatesBase(MarioKart::GameDataRef&,const std::string& );
 
     ~RaceStatesBase();
 
@@ -57,6 +57,7 @@ protected:
     Board m_board;
     std::string m_map_race;
     GameStatusBar m_status;
+	sf::Sprite m_background;
     sf::Sprite m_sky_back;
     sf::Sprite m_sky_front;
 	sf::Sprite m_game_boy;

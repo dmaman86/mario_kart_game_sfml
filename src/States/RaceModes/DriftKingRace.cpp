@@ -2,7 +2,7 @@
 #include "Fonts.h"
 
 //========================== Constructor / Destructor =========================
-DriftKingRace::DriftKingRace(MarioKart::GameDataRef data) :
+DriftKingRace::DriftKingRace(MarioKart::GameDataRef& data) :
 	RaceStatesBase(data, data->user.getMapGame())
 {
 }

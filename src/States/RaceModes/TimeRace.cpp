@@ -2,7 +2,7 @@
 #include "Fonts.h"
 
 //========================== Constructor / Destructor =========================
-TimeRace::TimeRace(MarioKart::GameDataRef data) : 
+TimeRace::TimeRace(MarioKart::GameDataRef& data) : 
 	RaceStatesBase(data, data->user.getMapGame())
 	, m_time_level(sf::seconds(50))
 {
@@ -12,7 +12,14 @@ TimeRace::TimeRace(MarioKart::GameDataRef data) :
 TimeRace::~TimeRace()
 {
 }
+//=============================================================================
+void TimeRace::Init()
+{
+	if (m_data->user.getMapGame() == "base.png")
+		m_player.setLocation(sf::Vector2f(140/8, 550/8));
+	RaceStatesBase::Init();
 
+}
 //================================= Update =====================================
 void TimeRace::Update(float deltatime) {
 

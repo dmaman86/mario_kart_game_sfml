@@ -3,7 +3,7 @@
 #include "Coin.h"
 
 //========================== Constructor / Destructor =========================
-CoinRace::CoinRace(MarioKart::GameDataRef data) :
+CoinRace::CoinRace(MarioKart::GameDataRef& data) :
 	RaceStatesBase(data, data->user.getMapGame())
 {
 }

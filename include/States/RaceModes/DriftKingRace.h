@@ -7,7 +7,7 @@ class DriftKingRace : public RaceStatesBase
 {
 public:
 	//================ Constructor / Destructor =================
-	DriftKingRace(MarioKart::GameDataRef);
+	DriftKingRace(MarioKart::GameDataRef&);
 	~DriftKingRace();
 
 	//================ Virtual public functions =================
