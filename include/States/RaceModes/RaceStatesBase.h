@@ -15,8 +15,9 @@
 #include "User.h"
 #include "GameStatusBar.h"
 #include "Services.h"
-#include "PlayerOnline.h"
 #include <thread>
+#include "SkyLine.h"
+#include "SpeedScreen.h"
 
 class RaceStatesBase : public State
 {
@@ -41,27 +42,23 @@ protected:
     void UpdatePlayer(float);
     void drawStaticObjects();
     void HandleCollision(float deltatime);
-    void updateSky();
     bool correctDirection();
     void startRaceScreen();
     //================ Private members ==========================
-	PlayerOnline m_player2;
     Mode7 m_map;
 	Camera m_camera;
-
-	float m_cameraX, m_cameraY, m_cameraZ;
-
-    sf::Clock m_clock;
-    MarioKart::GameDataRef m_data;
+	MarioKart::GameDataRef m_data;
     Player m_player;
     Board m_board;
-    std::string m_map_race;
-    GameStatusBar m_status;
+	GameStatusBar m_status;
+	SkyLine m_sky;
+	SpeedScreen m_speed_scr;
+	float m_cameraY;
+	std::string m_map_race;
+	std::thread m_build_map_thread;
+	sf::Clock m_clock;
 	sf::Sprite m_background;
-    sf::Sprite m_sky_back;
-    sf::Sprite m_sky_front;
 	sf::Sprite m_game_boy;
-    std::thread m_build_map_thread;
 	sf::View m_view;
 
 }; //end RaceStateBase

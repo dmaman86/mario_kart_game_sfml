@@ -24,7 +24,8 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
                                                                               sf::Vector2f(112, 56),
                                                                               m_data->user.getSprite()),
                                                                      m_map_race( m_data->user.getMapGame()),
-	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2))// 1000.f, 600.f));
+	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
+	m_sky(), m_speed_scr()// 1000.f, 600.f));
 {
 
 }
@@ -59,7 +60,7 @@ void RaceStatesBase::InitMap()
 	m_cameraY = -17;
     m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_player.getAngle(), 300.0);
     m_board.fillMap(m_map_race);
-    m_board.fillObjectMap(m_map_race);
+	m_board.fillObjectMap(m_map_race);
 }
 //=============================================================================
 void RaceStatesBase::InitSky()
@@ -72,16 +73,6 @@ void RaceStatesBase::InitSky()
 	m_game_boy.setTexture(Pictures::instance().getTexture(Pictures::game_boy));
 	m_game_boy.setScale(1.5, 1);
 	m_game_boy.setPosition(150,0);
-
-    m_sky_back.setTexture(Pictures::instance().getTexture(Pictures::sky_back));
-	m_sky_back.setTextureRect(sf::Rect(0, 0, 300, 32));
-	m_sky_back.setScale(4, 4);
-	m_sky_back.setPosition(0, m_data->window->getSize().y / 10);
-
-	m_sky_front.setTexture(Pictures::instance().getTexture(Pictures::sky_front));
-	m_sky_front.setTextureRect(sf::Rect(0, 0, 300, 32));
-	m_sky_front.setScale(4, 4);
-    m_sky_front.setPosition(0, m_data->window->getSize().y / 10);
 }
 
 
@@ -95,7 +86,7 @@ void RaceStatesBase::HandleEvent(const sf::Event&)
 void RaceStatesBase::Update(float deltatime) {
 
     UpdatePlayer(deltatime);
-    this->updateSky();
+	m_sky.Update();
     UpdateMap();
     HandleCollision(deltatime);
 }
@@ -125,10 +116,11 @@ void RaceStatesBase::Draw() {
 	auto v = m_data->window->getView();
 	m_data->window->setView(m_view);
 	m_data->window->draw(m_map.getSprite());
-	m_data->window->draw(m_sky_back);
-    m_data->window->draw(m_sky_front);
+	m_data->window->draw(m_sky.getBack());
+	m_data->window->draw(m_sky.getFront());
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
+	m_speed_scr.Draw(*m_data->window, m_player.getSpeed(), m_player.getCoefficient());
 	m_data->window->setView(v);
 }
 
@@ -154,34 +146,14 @@ void RaceStatesBase::HandleCollision(float deltatime)
 }
 
 //=============================================================================
-void RaceStatesBase::updateSky()
-{
-    auto x = m_sky_front.getTextureRect();
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        x.left += 1;
-
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        if (x.left <= 10)
-            x.left = 1040;
-        x.left -= 1;
-    }
-    x.left %= 2560;
-    m_sky_front.setTextureRect(x);
-}
-
-//=============================================================================
 bool RaceStatesBase::correctDirection()
 {
     bool currect = false;
-    //std::cout << m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) << " "  << m_player.getLastScorePos() << "\n";
-
 
     if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
         currect = false;
     else if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
         currect = true;
-
 
     return currect;
 }
@@ -195,7 +167,6 @@ void RaceStatesBase::startRaceScreen() {
 
     while(m_clock.getElapsedTime().asSeconds() < 4)
     {
-		//m_data->window->draw(m_map.getSprite());
         m_data->window->clear();
 		RaceStatesBase::Draw();
         delta = lira.restart();

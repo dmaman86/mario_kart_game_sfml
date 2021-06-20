@@ -24,13 +24,6 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
-	for (size_t i = 0; i < 5;i++) {
-		sf::Sprite spr(Pictures::instance().getTexture("speed" + std::to_string(i) + ".png"));
-		spr.setScale(0.65, 0.5);
-		spr.setPosition(0, 80);
-		m_speeds_s.push_back(spr);
-	}
-	
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite) {
@@ -54,7 +47,7 @@ void Player::updateDir()
 //=============================================================================
 void Player::CheckLap(const int fs)
 {
-	if (fs - getLastScorePos() >= 400)
+	if (fs - getLastScorePos() >= 400 && !m_is_lock)
 		addLap();
 	// std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
 }
@@ -67,19 +60,6 @@ void Player::updateAnimation(float time) {
 		m_animation.update(time, m_is_pressed);
 	else
 		m_animation.spin(time);
-
-}
-
-//=============================================================================s
-void Player::draw(sf::RenderWindow& win)
-{
-	static size_t i = 0;
-	
-	if (m_force >= MAX_SPEED - 2 && m_coefficient_of_friction != 2)
-	{
-		win.draw(m_speeds_s[(i++) % m_speeds_s.size()]);
-	}
-	PlayerBase::draw(win);
 
 }
 
@@ -229,7 +209,7 @@ void Player::handleLock(const float dt)
 	}
 	else
 	{
-		m_location->x += calcSinDegree(m_angle) * dt * -m_force / 1.5;
-		m_location->y -= calcCosDegree(m_angle) * dt * -m_force / 1.5;
+		m_location->x += calcSinDegree(m_angle) * dt * -MAX_SPEED / 1.5;
+		m_location->y -= calcCosDegree(m_angle) * dt * -MAX_SPEED / 1.5;
 	}
 }
