@@ -84,7 +84,7 @@ bool Services::deleteUser(User* user)
 {
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
-    sf::Http::Request request_del("/app/api/update_to_delete/" + user->getId(), sf::Http::Request::Put);
+    sf::Http::Request request_del(HttpNetwork::path_delete + user->getId(), sf::Http::Request::Put);
     request_del.setField("Content-Type", "application/x-www-form-urlencoded");
 
     response = http.sendRequest( request_del );
@@ -101,7 +101,7 @@ bool Services::resetUser(User *user)
 {
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
-    sf::Http::Request request_reset("/app/api/reset_user/" + user->getId(), sf::Http::Request::Put);
+    sf::Http::Request request_reset(HttpNetwork::path_reset + user->getId(), sf::Http::Request::Put);
     request_reset.setField("Content-Type", "application/x-www-form-urlencoded");
 
     response = http.sendRequest( request_reset );
@@ -121,7 +121,7 @@ bool Services::createRace(User * user)
     m_stream.clear();
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
-    sf::Http::Request request_put("/app/api/create_race/" + user->getId(), sf::Http::Request::Put);
+    sf::Http::Request request_put(HttpNetwork::path_createRace + user->getId(), sf::Http::Request::Put);
 
     request_put.setField("Content-Type", "application/x-www-form-urlencoded");
     m_ostream << "idOther=" << user->getOtherId();
@@ -253,7 +253,6 @@ void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mute
         {
 			player->updateLastLocation();
             m_stream << local_response.getBody();
-            //std::cout << "Services, line 224: " <<  m_stream.str() << std::endl;
             boost::property_tree::ptree pt;
             boost::property_tree::read_json(m_stream, pt);
             auto x = pt.get<float>("positionX");

@@ -152,7 +152,7 @@ void GarageState::initDriver(driver& dr,const int i , const int j)
     dr.sprite.setInScale(3, 4);
     dr.sprite.setInPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 150));
 
-    dr.price.setColor(sf::Color::Blue);
+    dr.price.setFillColor(sf::Color::Blue);
     dr.price.setPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 300));
 
 }
@@ -163,7 +163,7 @@ void GarageState::blockingMyPlayers()
     for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
     {
         m_drivers.at(m_data->user.getDrive(i)).buy = false;
-        m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
+        m_drivers.at(m_data->user.getDrive(i)).price.setFillColor(sf::Color::Red);
     }
 }
 
@@ -172,11 +172,11 @@ void GarageState::blockingMyPlayers()
 void GarageState::createText(const sf::Vector2u windowSize)
 {
     m_msg.emplace_back(std::pair(sf::Text("Press Enter if you want to buy", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Blue);
+    m_msg.back().first.setFillColor(sf::Color::Blue);
     m_msg.emplace_back(std::pair(sf::Text("The car was successfully purchased", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Green);
+    m_msg.back().first.setFillColor(sf::Color::Green);
     m_msg.emplace_back(std::pair(sf::Text("you do not have enough money", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Red);
+    m_msg.back().first.setFillColor(sf::Color::Red);
 
     for (auto& msg : m_msg)
     {
@@ -189,7 +189,7 @@ void GarageState::createText(const sf::Vector2u windowSize)
 
     m_numberCoins = sf::Text("my coins:" + std::to_string(m_data->user.getCoins()), Fonts::instance().Fonts::getFontMario(),50);
     m_numberCoins.setPosition(1000, 100);
-    m_numberCoins.setColor(sf::Color::White);
+    m_numberCoins.setFillColor(sf::Color::White);
     m_numberCoins.setOutlineThickness(5.f);
 
 }

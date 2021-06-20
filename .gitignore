@@ -11,5 +11,3 @@ out/
 .DS_Store
 
 cmake-build-debug/
-
-./include/users_project.h

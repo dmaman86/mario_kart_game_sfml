@@ -1,7 +1,6 @@
 #include "MenuState.h"
 #include "MarioKart.h"
 #include "Macros.h"
-#include "users_project.h"
 #include "WelcomeState.h"
 #include "Pictures.h"
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
@@ -19,10 +18,7 @@ MarioKart::MarioKart()
     // m_mousecur.setTextureRect(sf::Rect(144,47,32,32));
     // m_mousecur.setOrigin(16,16);
     // m_window.setMouseCursorVisible(false);
-    if (user_project == users::Liran)
-    {
-        m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
-    }
+    m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
 }
 
 void MarioKart::run()
