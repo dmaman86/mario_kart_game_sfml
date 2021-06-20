@@ -49,7 +49,7 @@ private:
 	void updateColors(const sf::Vector2f);
 	void buyingTest(std::string);
 	void initDriver(driver&, const int i, const int j);
-
+	void blockingMyPlayers();
 	MarioKart::GameDataRef m_data;
 	std::map<std::string, driver> m_drivers;
     std::map<Options, std::shared_ptr<Button>> m_buttons;

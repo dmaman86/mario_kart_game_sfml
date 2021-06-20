@@ -36,12 +36,9 @@ void GarageState::Init()
     });
     m_buttons[Options::Back] = m_back;
 
-    for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
-    {
-        m_drivers.at(m_data->user.getDrive(i)).buy = false;
-        m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
-    }
+    
 
+    blockingMyPlayers();
 
     m_numberCoins = sf::Text("my coins:"+ std::to_string(m_data->user.getCoins()), Fonts::instance().Fonts::getFontMario(), 50);
     m_numberCoins.setPosition(1000, 100);
@@ -100,11 +97,7 @@ void GarageState::Update(float )
 
     m_numberCoins.setString("my coins:" + std::to_string(m_data->user.getCoins()));
 
-    for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
-    {
-        m_drivers.at(m_data->user.getDrive(i)).buy = false;
-        m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
-    }
+    blockingMyPlayers();
 }
 
 void GarageState::Draw()
@@ -170,6 +163,15 @@ void GarageState::initDriver(driver& dr,const int i , const int j)
     dr.price.setColor(sf::Color::Blue);
     dr.price.setPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 300));
 
+}
+
+void GarageState::blockingMyPlayers()
+{
+    for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
+    {
+        m_drivers.at(m_data->user.getDrive(i)).buy = false;
+        m_drivers.at(m_data->user.getDrive(i)).price.setColor(sf::Color::Red);
+    }
 }
 
 void GarageState::updateColors(const sf::Vector2f loc)
