@@ -38,6 +38,7 @@ RaceStatesBase::~RaceStatesBase()
 //========================= Init section ======================================
 void RaceStatesBase::Init()
 {
+	RaceStatesBase::InitPlayerLoc();
     InitMap();
     InitSky();
     m_player.setLastScorePos(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
@@ -61,6 +62,13 @@ void RaceStatesBase::InitMap()
     m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_player.getAngle(), 300.0);
     m_board.fillMap(m_map_race);
 	m_board.fillObjectMap(m_map_race);
+}
+void RaceStatesBase::InitPlayerLoc()
+{
+	if (m_data->user.getMapGame() == "base.png")
+		m_player.setLocation(sf::Vector2f(140 / 8, 550 / 8));
+	else if (m_data->user.getMapGame() == "ghost_valley.png")
+		m_player.setLocation(sf::Vector2f(950 / 8, 600 / 8));
 }
 //=============================================================================
 void RaceStatesBase::InitSky()

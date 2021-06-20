@@ -12,14 +12,7 @@ TimeRace::TimeRace(MarioKart::GameDataRef& data) :
 TimeRace::~TimeRace()
 {
 }
-//=============================================================================
-void TimeRace::Init()
-{
-	if (m_data->user.getMapGame() == "base.png")
-		m_player.setLocation(sf::Vector2f(140/8, 550/8));
-	RaceStatesBase::Init();
 
-}
 //================================= Update =====================================
 void TimeRace::Update(float deltatime) {
 

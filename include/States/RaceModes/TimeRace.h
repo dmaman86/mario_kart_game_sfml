@@ -11,7 +11,6 @@ public:
 	~TimeRace();
 
 	//================ Virtual public functions =================
-	void Init() override;
 	void Update(float) override;
 	void Draw() override;
 

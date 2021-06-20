@@ -222,7 +222,7 @@ void HostState::createMaps(HostState::VectorMaps & maps)
     maps[1] = std::make_shared<Map>();
     maps[1]->map_name = Pictures::donut_plains_1;
     maps[2] = std::make_shared<Map>();
-    maps[2]->map_name = Pictures::mario_circuit_2;
+    maps[2]->map_name = Pictures::ghost_valley;
 
     for(size_t i{0}, j{0}; i < maps.size(); i++, j += 5)
     {

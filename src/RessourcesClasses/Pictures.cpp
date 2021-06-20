@@ -5,6 +5,7 @@
 const std::string Pictures::MarioDriver = "mario.png";
 const std::string Pictures::mario_circuit_2 = "mario_circuit_2.png";
 const std::string Pictures::donut_plains_1 = "base.png";
+const std::string Pictures::ghost_valley = "ghost_valley.png";
 const std::string Pictures::misc = "misc.png";
 const std::string Pictures::menuBackground = "menuBackground.png";
 const std::string Pictures::marioLogo = "marioLogo.png";
@@ -43,6 +44,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::mario_circuit_2);
     if(!(m_maps[Pictures::donut_plains_1] = sf::Image()).loadFromFile(Pictures::donut_plains_1))
         throw std::runtime_error("Can't Open " + Pictures::donut_plains_1);
+	if (!(m_maps[Pictures::ghost_valley] = sf::Image()).loadFromFile(Pictures::ghost_valley))
+		throw std::runtime_error("Can't Open " + Pictures::ghost_valley);
 	if (!(m_pics[Pictures::misc] = sf::Texture()).loadFromFile(Pictures::misc))
 		throw std::runtime_error("Cant Open " + Pictures::misc);
     if(!(m_pics[Pictures::menuBackground] = sf::Texture()).loadFromFile(Pictures::menuBackground))

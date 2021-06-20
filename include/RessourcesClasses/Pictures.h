@@ -26,6 +26,7 @@ public:
     static  const std::string MarioDriver;
     static  const std::string mario_circuit_2;
     static const std::string donut_plains_1;
+	static const std::string ghost_valley;
     static  const std::string misc;
     static  const std::string menuBackground;
     static  const std::string marioLogo;

@@ -37,6 +37,7 @@ public:
 protected:
     //================ Private functions =========================
     void InitMap();
+	void InitPlayerLoc();
     void InitSky();
     void UpdateMap();
     void UpdatePlayer(float);
