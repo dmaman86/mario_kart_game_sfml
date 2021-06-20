@@ -47,6 +47,7 @@ void RaceStatesBase::Init()
     //m_map.initThread(m_board.m_vec_obj);
     //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
     startRaceScreen();
+
 }
 
 
@@ -115,13 +116,14 @@ void RaceStatesBase::UpdatePlayer(float deltatime)
 void RaceStatesBase::Draw() {
 
 	m_data->window->draw(m_game_boy);
+	auto v = m_data->window->getView();
 	m_data->window->setView(m_view);
 	m_data->window->draw(m_map.getSprite());
 	m_data->window->draw(m_sky_back);
     m_data->window->draw(m_sky_front);
 	drawStaticObjects();
 	m_player.draw(*m_data->window);
-
+	m_data->window->setView(v);
 }
 
 //=============================================================================
@@ -184,19 +186,24 @@ void RaceStatesBase::startRaceScreen() {
     sf::Time delta {};;
     sf::Clock lira;
 	UpdateMap();
+
     while(m_clock.getElapsedTime().asSeconds() < 4)
     {
-		m_data->window->draw(m_map.getSprite());
+		//m_data->window->draw(m_map.getSprite());
         m_data->window->clear();
-        this->Draw();
+		RaceStatesBase::Draw();
         delta = lira.restart();
+		auto v = m_data->window->getView();
+		m_data->window->setView(m_view);
         trafficlight.updateAnimation(delta.asSeconds());
         cloud.updateAnimation(delta.asSeconds());
         cloud.draw(*m_data->window);
         trafficlight.draw(*m_data->window);
         m_data->window->display();
+		m_data->window->setView(v);
 
     }
+	m_clock.restart();
 
 }
 

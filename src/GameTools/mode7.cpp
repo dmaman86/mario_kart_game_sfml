@@ -66,7 +66,7 @@ void Mode7::UpdateImg
 					{
 						camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
 							sf::Vector2f(camera.getZ(), camera.getX()))) / 8.f;
-						//if (camera_length >= 12.5|| (camera_length < 12.5 && abz <= 1 && abx <= 1)) {
+						if (camera_length >= 12.5|| (camera_length < 12.5 && abz <= 1 && abx <= 1)) {
 							d.second->setInAngle(true);
 							d.second->setPosition(sf::Vector2f(float(screen_c.x) * 2, float(screen_c.y) * 2));
 
@@ -74,7 +74,7 @@ void Mode7::UpdateImg
 
 							if (camera_length < 0.5 || camera_length > 25)
 								d.second->setInAngle(false);
-						//}
+						}
 					}
 				}
 			}

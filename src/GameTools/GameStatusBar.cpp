@@ -25,10 +25,10 @@ void GameStatusBar::printGameStatus(const sf::Time& time, int lap, int raceLoc, 
     
     m_coins.setString(std::to_string(correctDirection));
 
-    m_lap.setPosition(800, 500);
-    m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 500);
-    m_timeGame.setPosition(m_raceLoc.getPosition().x + m_raceLoc.getGlobalBounds().width + 30.f, 500);
-    m_coins.setPosition(m_timeGame.getPosition().x + m_timeGame.getGlobalBounds().width + 30.f, 500);
+    m_lap.setPosition(360, 50);
+    m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 50);
+    m_timeGame.setPosition(m_raceLoc.getPosition().x + m_raceLoc.getGlobalBounds().width + 30.f, 50);
+    m_coins.setPosition(m_timeGame.getPosition().x + m_timeGame.getGlobalBounds().width + 30.f, 50);
 
     printboard();
 
