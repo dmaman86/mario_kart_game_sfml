@@ -12,6 +12,7 @@
 #include "GarageState.h"
 #include "CoinRace.h"
 #include "DriftKingRace.h"
+#include "HostState.h"
 
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
@@ -36,25 +37,16 @@ void CareerMenu::Init()
     auto buttonTime = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonTime->setTextureInRect(0, 875, 453, 60);
     buttonTime->setInPosition(sf::Vector2f(150, 325));
-    buttonTime->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new TimeRace(m_data)), false);
-    });
 
     //collect coins
     auto buttonCollectionCoins = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonCollectionCoins->setTextureInRect(0, 955, 562, 57);
     buttonCollectionCoins->setInPosition(sf::Vector2f(150, 400));
-    buttonCollectionCoins->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new CoinRace(m_data)), false);
-    });
 
     //dk
     auto buttonDK = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonDK->setTextureInRect(0, 795, 522, 66);
     buttonDK->setInPosition(sf::Vector2f(150, 475));
-    buttonDK->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new DriftKingRace(m_data)), false);
-    });
 
     //garage
     auto buttonGarage = std::make_shared<Button>(Pictures::MenuButtons1);
@@ -180,15 +172,15 @@ void CareerMenu::Update(float)
                 break;
             case Options::Time:
                 if(it->second->getIfSelected())
-                    it->second->initCallback();
+                    m_data->stateStack.AddState(StateStack::StateRef(new HostState(m_data, "TimeRace")), false);
                 break;
             case Options::CollectCoins:
                 if(it->second->getIfSelected())
-                    it->second->initCallback();
+                    m_data->stateStack.AddState(StateStack::StateRef(new HostState(m_data, "CoinRace")), false);
                 break;
             case Options::DK:
                 if(it->second->getIfSelected())
-                    it->second->initCallback();
+                    m_data->stateStack.AddState(StateStack::StateRef(new HostState(m_data, "DriftKingRace")), false);
                 break;
             case Options::Garage:
                 if(it->second->getIfSelected())

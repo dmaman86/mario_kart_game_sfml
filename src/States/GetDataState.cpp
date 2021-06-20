@@ -239,9 +239,7 @@ void GetDataState::Update(float dt)
             }
         }
         else
-        {
-            m_createGame.initCallback();
-        }
+            m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)), false);
     }
     if (m_back.getIfSelected())
     {
@@ -256,14 +254,13 @@ void GetDataState::Draw()
     sf::RenderWindow& window = *m_data->window;
 
     window.draw(m_background);
-
+    window.draw(m_back);
     if(!m_errorShow)
     {
         if(!m_send_data)
         {
             window.draw(m_title_get_name);
             window.draw(m_playerText);
-            window.draw(m_back);
 
             for( auto driver : m_drivers )
                 window.draw(*driver.get());

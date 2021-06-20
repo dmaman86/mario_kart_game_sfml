@@ -17,7 +17,23 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_createRoom(false),
                                                      m_pressEnter(false),
                                                      m_errorShow(false),
-                                                     m_back_state()
+                                                     m_back_state(),
+                                                     m_type_info()
+{
+    createMaps(m_maps);
+}
+
+HostState::HostState(MarioKart::GameDataRef & data, const std::string& state): m_data( data ),
+                                                                    m_background(),
+                                                                    m_selected(false),
+                                                                    m_maps(3),
+                                                                    m_nextState(false),
+                                                                    m_effectTime(0.0f),
+                                                                    m_createRoom(false),
+                                                                    m_pressEnter(false),
+                                                                    m_errorShow(false),
+                                                                    m_back_state(),
+                                                                    m_type_info(state)
 {
     createMaps(m_maps);
 }
@@ -98,7 +114,14 @@ void HostState::Update(float dt)
             m_errorShow = true;
     }
     if(m_pressEnter && !m_data->user.getOnline())
-        m_data->stateStack.AddState(StateStack::StateRef( new CareerMenu(m_data)), false);
+    {
+        if(m_type_info == "CoinRace")
+            m_data->stateStack.AddState(StateStack::StateRef( new CoinRace(m_data)), false);
+        else if(m_type_info == "DriftKingRace")
+            m_data->stateStack.AddState(StateStack::StateRef( new DriftKingRace(m_data)), false);
+        else if(m_type_info == "TimeRace")
+            m_data->stateStack.AddState(StateStack::StateRef( new TimeRace(m_data)), false);
+    }
     if(m_createRoom)
     {
         while(m_data->user.getOtherId().size() < 1 )
@@ -160,7 +183,7 @@ void HostState::initTitlesTexts()
     m_title.setPosition((m_windowSize.x / 2) - 500, 100);
 
     m_createGame.setFont(Fonts::instance().getFont());
-    m_createGame.setString("Press Enter to Save");
+    m_createGame.setString("Press Enter to continue");
     m_createGame.setFillColor(sf::Color(76, 0, 153));
     m_createGame.setCharacterSize(60);
     m_createGame.setOrigin(m_createGame.getLocalBounds().width / 2,

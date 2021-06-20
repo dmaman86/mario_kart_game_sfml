@@ -5,17 +5,22 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <string>
 
 #include "State.h"
 #include "MarioKart.h"
 #include "Macros.h"
 #include "User.h"
 #include "Button.h"
+#include "CoinRace.h"
+#include "TimeRace.h"
+#include "DriftKingRace.h"
 
 class HostState : public State
 {
 public:
     HostState(MarioKart::GameDataRef&);
+    HostState(MarioKart::GameDataRef&, const std::string&);
     ~HostState() = default;
 
     void Init() override;
@@ -42,6 +47,7 @@ private:
     sf::Text m_error;
     sf::Text m_back_state;
     sf::Vector2u m_windowSize;
+    std::string m_type_info;
 
     bool m_validConnection;
     bool m_selected;
