@@ -75,27 +75,21 @@ void CareerMenu::Init()
     m_buttons[Options::Save] = buttonSave;
     m_buttons[Options::Back] = m_back;
 
-    m_name.setFont(Fonts::instance().Fonts::getFontMario());
-    m_moneys.setFont(Fonts::instance().Fonts::getFontMario());
-    m_car.setFont(Fonts::instance().Fonts::getFontMario());
 
-    m_name.setString(m_data->user.getName());
-    m_moneys.setString(std::to_string(m_data->user.getCoins()) + "$");
+
+
+    m_name = sf::Text(m_data->user.getName(),(Fonts::instance().Fonts::getFontMario()), 50);
+    m_moneys = sf::Text((std::to_string(m_data->user.getCoins()) + "$"), (Fonts::instance().Fonts::getFontMario()), 50);
     std::string name = m_data->user.getSprite().substr(0, m_data->user.getSprite().find(".png"));
-
-    m_car.setString(name);
-
-
+    m_car = sf::Text(name, (Fonts::instance().Fonts::getFontMario()), 50);
     m_name.setPosition(1000,100);
-    m_name.setFillColor(sf::Color::Black);
-    m_name.setScale(1.5, 1.5);
+    m_name.setOutlineThickness(5.f);
 	m_moneys.setPosition(1000,200);
-    m_moneys.setFillColor(sf::Color::Black);
-    m_moneys.setScale(1.5, 1.5);
-
-
+    m_moneys.setOutlineThickness(5.f);
     m_car.setPosition(1000,300);
-    m_car.setFillColor(sf::Color::Black);
+    m_car.setOutlineThickness(5.f);
+
+
 
     m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
     m_driverUser.setTextureRect(sf::Rect(355, 33, 30, 30));

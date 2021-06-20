@@ -8,6 +8,7 @@
 #include "Floor.h"
 #include "Pipe.h"
 #include "Banana.h"
+#include "SpeedMultiplier.h"
 #include "Ghost.h"
 #include "Coin.h"
 #include "Player.h"
@@ -15,6 +16,21 @@
 
 namespace // anonymous namespace — the standard way to make function "static"
 {
+
+	void PlayerSpeedMultiplier(Object& player, Object& speedMultiplier)
+	{
+		Player& Pl = dynamic_cast<Player&>(player);
+		SpeedMultiplier& Bn = dynamic_cast<SpeedMultiplier&>(speedMultiplier);
+		if (Bn.getIsActive())
+			Pl.SpeedMultiplier();
+		Bn.setIsActive(false);
+	}
+
+	void SpeedMultiplierPlayer(Object& Multiplier, Object& Player)
+	{
+		PlayerSpeedMultiplier(Player, Multiplier);
+	}
+
 
 
 	void PlayerBanana(Object& player, Object& banana)
@@ -126,6 +142,9 @@ HitMap initializeCollisionMap()
 	phm[Key(typeid(Player), typeid(Coin))] = &PlayerCoin;
 	phm[Key(typeid(Coin), typeid(Player))] = &CoinPlayer;
 	
+	phm[Key(typeid(Player), typeid(SpeedMultiplier))] = &PlayerSpeedMultiplier;
+	phm[Key(typeid(SpeedMultiplier), typeid(Player))] = &SpeedMultiplierPlayer;
+
     phm[Key(typeid(Player), typeid(PlayerOnline))] = &PlayerPlayerOnline;
     phm[Key(typeid(PlayerOnline), typeid(Player))] = &PlayerPlayerOnline;
 

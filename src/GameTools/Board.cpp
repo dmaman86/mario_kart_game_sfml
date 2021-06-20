@@ -4,6 +4,7 @@
 #include "Macros.h"
 #include "Pipe.h"
 #include "Banana.h"
+#include "SpeedMultiplier.h"
 #include "Pictures.h"
 #include "PlayerOnline.h"
 #include "Utilities.h"
@@ -81,6 +82,9 @@ void Board::fillObjectMap(std::string str) {
 			break;
 		case 4:
 			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			break;
+		case 5:
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<SpeedMultiplier>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
 			break;
 		default:
 			break;

@@ -113,6 +113,12 @@ void Player::driveSmaller()
 }
 
 //=============================================================================
+void Player::SpeedMultiplier()
+{
+	m_force = MAX_SPEED;
+}
+
+//=============================================================================
 void Player::setCoefficientOfFriction(const float cof)
 {
 	m_coefficient_of_friction = cof;

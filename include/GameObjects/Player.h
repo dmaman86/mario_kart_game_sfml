@@ -25,6 +25,7 @@ public:
 	void driveBack();
 	void spindriver();
 	void driveSmaller();
+	void SpeedMultiplier();
 
 	void setCoefficientOfFriction(const float cof);
 	void setAngle(const float);
