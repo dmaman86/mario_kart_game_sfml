@@ -33,5 +33,7 @@ private:
 
     bool openLoadFile();
     void resetButtons(Options);
+    void updateColors(const sf::Vector2f& loc);
+
 };
 

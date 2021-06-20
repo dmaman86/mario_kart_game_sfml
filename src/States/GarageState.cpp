@@ -5,30 +5,17 @@ GarageState::GarageState(MarioKart::GameDataRef& data):m_data(data), StateOfMenu
 {
     
 }
-
+//init the state 
+//=============================================================
 void GarageState::Init()
 {
+
     sf::Vector2u windowSize;
     windowSize = m_data->window->getSize();
     initVectorSprites(windowSize);
 
 
-    m_msg.emplace_back(std::pair(sf::Text("Press Enter if you want to buy", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Blue);
-    m_msg.emplace_back(std::pair(sf::Text("The car was successfully purchased", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Green);
-    m_msg.emplace_back(std::pair(sf::Text("you do not have enough money", Fonts::instance().Fonts::getFontMario()), false));
-    m_msg.back().first.setColor(sf::Color::Red);
-
-    for (auto& msg : m_msg)
-    {
-        msg.first.setOutlineThickness(5.f);
-        msg.first.setPosition(windowSize.x / (unsigned)2.5, 500);
-        msg.first.setOrigin(msg.first.getLocalBounds().width / 2,
-            msg.first.getLocalBounds().height / 2);
-        msg.first.setScale(2, 2);
-    }
-   
+    createText(windowSize);
 
 
     m_back->setCallback([this](){
@@ -36,15 +23,10 @@ void GarageState::Init()
     });
     m_buttons[Options::Back] = m_back;
 
-    
-
     blockingMyPlayers();
-
-    m_numberCoins = sf::Text("my coins:"+ std::to_string(m_data->user.getCoins()), Fonts::instance().Fonts::getFontMario(), 50);
-    m_numberCoins.setPosition(1000, 100);
-    m_numberCoins.setColor(sf::Color::Black);
 }
 
+//=============================================================
 void GarageState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type)
@@ -80,6 +62,9 @@ void GarageState::HandleEvent(const sf::Event& event)
  
 }
 
+//update the state 
+//update my coins and the driver if I'm buy
+//=============================================================
 void GarageState::Update(float )
 {
 
@@ -100,6 +85,8 @@ void GarageState::Update(float )
     blockingMyPlayers();
 }
 
+//draw thw object
+//=============================================================
 void GarageState::Draw()
 {
     m_data->window->draw(m_background);
@@ -121,6 +108,8 @@ void GarageState::Draw()
 
 }
 
+//reset the buttons
+//=============================================================
 void GarageState::resetButtons(Options option)
 {
     for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
@@ -130,6 +119,8 @@ void GarageState::resetButtons(Options option)
     }
 }
 
+//create object in map of price , sprite and bool if i buy the drivers
+//=============================================================
 void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
 {
 
@@ -154,6 +145,8 @@ void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
 
 }
 
+//take the pictures of the drivers
+//=============================================================
 void GarageState::initDriver(driver& dr,const int i , const int j)
 {
     dr.sprite.setTextureInRect(360, j, 33, 33);
@@ -164,6 +157,7 @@ void GarageState::initDriver(driver& dr,const int i , const int j)
     dr.price.setPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 300));
 
 }
+//=============================================================
 
 void GarageState::blockingMyPlayers()
 {
@@ -174,6 +168,35 @@ void GarageState::blockingMyPlayers()
     }
 }
 
+
+//=============================================================
+void GarageState::createText(const sf::Vector2u windowSize)
+{
+    m_msg.emplace_back(std::pair(sf::Text("Press Enter if you want to buy", Fonts::instance().Fonts::getFontMario()), false));
+    m_msg.back().first.setColor(sf::Color::Blue);
+    m_msg.emplace_back(std::pair(sf::Text("The car was successfully purchased", Fonts::instance().Fonts::getFontMario()), false));
+    m_msg.back().first.setColor(sf::Color::Green);
+    m_msg.emplace_back(std::pair(sf::Text("you do not have enough money", Fonts::instance().Fonts::getFontMario()), false));
+    m_msg.back().first.setColor(sf::Color::Red);
+
+    for (auto& msg : m_msg)
+    {
+        msg.first.setOutlineThickness(5.f);
+        msg.first.setPosition(windowSize.x / (unsigned)2.5, 500);
+        msg.first.setOrigin(msg.first.getLocalBounds().width / 2,
+            msg.first.getLocalBounds().height / 2);
+        msg.first.setScale(2, 2);
+    }
+
+    m_numberCoins = sf::Text("my coins:" + std::to_string(m_data->user.getCoins()), Fonts::instance().Fonts::getFontMario(),50);
+    m_numberCoins.setPosition(1000, 100);
+    m_numberCoins.setColor(sf::Color::White);
+    m_numberCoins.setOutlineThickness(5.f);
+
+}
+
+//update color in the dreviers if i put the mouse
+//=============================================================
 void GarageState::updateColors(const sf::Vector2f loc)
 {
     for (auto& button : m_drivers)
@@ -202,6 +225,8 @@ void GarageState::updateColors(const sf::Vector2f loc)
     }
 }
 
+//check if i can buy 
+//=============================================================
 void GarageState::buyingTest(std::string car)
 {
    std::string price =(m_drivers.at(car).price.getString());

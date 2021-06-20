@@ -110,6 +110,18 @@ void MenuState::updateColors(const sf::Vector2f& loc)
         if(it->second->validGlobalBound(loc))
             it->second->setFillInColor(255, 255, 255, 130);
     }
+
+    m_button_carer->setFillInColor(255, 255, 255, 250);
+    m_button_online->setFillInColor(255, 255, 255, 250);
+
+    if (m_button_online->validGlobalBound(loc))
+    {
+        m_button_online->setFillInColor(255, 255, 255, 130);
+    }
+    else if(m_button_carer->validGlobalBound(loc))
+    {
+        m_button_carer->setFillInColor(255, 255, 255, 130);
+    }
 }
 
 void MenuState::Update(float dt)

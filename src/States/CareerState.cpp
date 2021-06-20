@@ -58,6 +58,13 @@ void CareerState::HandleEvent(const sf::Event& event)
             }
         }
     }
+    if (sf::Event::MouseMoved == event.type)
+    {
+        auto location = m_data->window->mapPixelToCoords(
+            { event.mouseMove.x, event.mouseMove.y });
+
+        updateColors(location);
+    }
 }
 
 void CareerState::resetButtons(Options option)
@@ -150,4 +157,17 @@ bool CareerState::openLoadFile()
     }
     m_buttons[Options::LoadGame]->resetIfSelected();
     return false;
+}
+
+
+
+void CareerState::updateColors(const sf::Vector2f& loc)
+{
+    for (auto &it : m_buttons)
+    {
+        
+        it.second->setFillInColor(255, 255, 255, 250);
+        if (it.second->validGlobalBound(loc))
+            it.second->setFillInColor(255, 255, 255, 130);
+    }
 }
