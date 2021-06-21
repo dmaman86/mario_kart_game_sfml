@@ -97,6 +97,7 @@ void RaceStatesBase::Update(float deltatime) {
 	m_sky.Update();
     UpdateMap();
     HandleCollision(deltatime);
+    this->updateAnimation(deltatime);
 }
 
 
@@ -189,6 +190,11 @@ void RaceStatesBase::startRaceScreen() {
 
     }
 	m_clock.restart();
+
+}
+
+void RaceStatesBase::updateAnimation(float time) {
+    m_board.updateAnimation(time);
 
 }
 

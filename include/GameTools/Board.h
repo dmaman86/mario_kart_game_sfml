@@ -16,6 +16,7 @@ public:
 	void fillObjectMap(const std::string);
 	Floor& operator()(unsigned int, unsigned int);
 	sf::Vector2f transferPixelToCords(sf::Vector2f);
+    void updateAnimation(float time);
     int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
 	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
 	void addObjects(float x, float y, PlayerOnline* obj)

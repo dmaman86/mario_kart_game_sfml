@@ -19,7 +19,7 @@ public:
 	void Update(const float, const int);
 	void updateDir();
 	void CheckLap(const int);
-	void updateAnimation(float time);
+	void updateAnimation(float time) override;
 
 	void driveBack();
 	void spindriver();

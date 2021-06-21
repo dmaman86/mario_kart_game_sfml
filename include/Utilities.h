@@ -19,7 +19,7 @@ std::vector<std::vector<T>> readFromFile(std::string str,const int sizex = 128, 
     std::ifstream m_file(str);
     T input;
     if (!m_file.is_open())
-        throw std::range_error("cannot open m_file");
+        throw std::range_error("cannot open "+str+"file");
     for (int i = 0; i < sizex; ++i)
     {
         std::vector<T> row;

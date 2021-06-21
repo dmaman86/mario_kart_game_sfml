@@ -1,7 +1,7 @@
 #pragma once
 #include "StaticObject.h"
 #include <iostream>
-
+#include "Animation.h"
 class Coin : public StaticObject {
 
 public:
@@ -13,10 +13,14 @@ public:
 	// static function
 	static const int getCount();
 	static const int getCollected();
+    void updateAnimation(float time) override;
+
 
 private:
 	static int m_num_coins; // all coin in the level
 	static int m_num_collected; // coin that collected
+    Animation m_animation;
 };
+
 
 

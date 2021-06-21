@@ -10,6 +10,7 @@ DriftKingRace::DriftKingRace(MarioKart::GameDataRef& data) :
 //=============================================================================
 DriftKingRace::~DriftKingRace()
 {
+
 }
 
 //================================= Update =====================================

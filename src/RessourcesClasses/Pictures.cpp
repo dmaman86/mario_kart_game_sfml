@@ -90,7 +90,6 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::MenuButtons1);
     if (!(m_pics[Pictures::helpStateback] = sf::Texture()).loadFromFile(Pictures::helpStateback))
         throw std::runtime_error("Cant Open " + Pictures::helpStateback);
-
 	if (!(m_pics[Pictures::game_boy] = sf::Texture()).loadFromFile(Pictures::game_boy))
 		throw std::runtime_error("Cant Open " + Pictures::game_boy);
 
@@ -107,6 +106,11 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
     m_startCloud.emplace_back(5,1,36,32);
     m_startCloud.emplace_back(47,1,36,32);
     m_startCloud.emplace_back(89,1,36,32);
+
+    m_coin.emplace_back(5, 161, 15, 25);
+    m_coin.emplace_back(22, 161, 15, 25);
+    m_coin.emplace_back(37, 160, 15, 25);
+
 
 }
 
@@ -184,6 +188,10 @@ const std::vector<sf::IntRect>&Pictures::getTraffic() const{
 
 const std::vector<sf::IntRect> &Pictures::getCloud()const {
     return m_startCloud;
+}
+
+const std::vector<sf::IntRect> &Pictures::getCoinAnim() const {
+    return m_coin;
 }
 
 

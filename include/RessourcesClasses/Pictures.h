@@ -60,7 +60,7 @@ public:
 
     const std::vector<sf::IntRect>& getTraffic()const;
     const std::vector<sf::IntRect>& getCloud()const;
-
+    const std::vector<sf::IntRect>& getCoinAnim()const;
 
 private:
     Pictures();
@@ -71,6 +71,7 @@ private:
     std::vector<sf::IntRect> m_trafficLight;
     std::vector<sf::IntRect> m_startCloud;
     std::vector <std::vector<sf::IntRect >> m_drivers;
+    std::vector <sf::IntRect > m_coin;
 
 
 };
