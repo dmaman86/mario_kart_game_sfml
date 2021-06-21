@@ -152,7 +152,10 @@ void HostState::Draw()
     if(!m_errorShow)
     {
         for(auto map : m_maps)
+        {
             window.draw(map->m_rect);
+            window.draw(map->map_name_tex);
+        }
 
         if(m_selected)
             window.draw(m_createGame);
@@ -179,8 +182,8 @@ void HostState::initTitlesTexts()
     m_title.setFont(Fonts::instance().getFont());
     m_title.setString("Select Map");
     m_title.setFillColor(sf::Color(76, 0, 153));
-    m_title.setCharacterSize(100);
-    m_title.setPosition((m_windowSize.x / 2) - 500, 100);
+    m_title.setCharacterSize(70);
+    m_title.setPosition((m_windowSize.x / 2) - 300, (m_windowSize.y / 2) - 300);
 
     m_createGame.setFont(Fonts::instance().getFont());
     m_createGame.setString("Press Enter to continue");
@@ -219,19 +222,31 @@ void HostState::createMaps(HostState::VectorMaps & maps)
 {
     maps[0] = std::make_shared<Map>();
     maps[0]->map_name = Pictures::mario_circuit_2;
+    maps[0]->map_name_tex = sf::Text();
+    maps[0]->map_name_tex.setString("Mario Circuit");
     maps[1] = std::make_shared<Map>();
     maps[1]->map_name = Pictures::donut_plains_1;
+    maps[1]->map_name_tex = sf::Text();
+    maps[1]->map_name_tex.setString("Donut Circuit");
     maps[2] = std::make_shared<Map>();
     maps[2]->map_name = Pictures::ghost_valley;
+    maps[2]->map_name_tex = sf::Text();
+    maps[2]->map_name_tex.setString("Ghost Circuit");
 
     for(size_t i{0}, j{0}; i < maps.size(); i++, j += 5)
     {
         maps[i]->tex = sf::Texture();
         maps[i]->tex.loadFromImage(Pictures::instance().getMapTex(maps[i]->map_name));
         maps[i]->m_rect = sf::RectangleShape();
-        maps[i]->m_rect.setSize(sf::Vector2f(200, 200));
+        maps[i]->m_rect.setSize(sf::Vector2f(250, 250));
         maps[i]->m_rect.setTexture(&maps[i]->tex);
-        maps[i]->m_rect.setPosition(300 + ( j * 80 ), (maps[i]->m_rect.getGlobalBounds().height / 2) + 100);
+        maps[i]->m_rect.setPosition(200 + ( j * 80 ), (maps[i]->m_rect.getGlobalBounds().height / 2) + 100);
+        maps[i]->m_rect.setOutlineThickness(5.f);
         maps[i]->selected = false;
+        maps[i]->map_name_tex.setCharacterSize(40);
+        maps[i]->map_name_tex.setFont(Fonts::instance().getFont());
+        maps[i]->map_name_tex.setFillColor(sf::Color::Red);
+        maps[i]->map_name_tex.setOutlineThickness(5.f);
+        maps[i]->map_name_tex.setPosition(160 + ( j * 90 ), (maps[i]->m_rect.getGlobalBounds().height / 2) + 400);
     }
 }

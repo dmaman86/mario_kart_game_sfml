@@ -34,6 +34,7 @@ private:
         std::string map_name;
         sf::RectangleShape m_rect;
         sf::Texture tex;
+        sf::Text map_name_tex;
         bool selected;
     };
     using VectorMaps = std::vector<std::shared_ptr<Map>>;
