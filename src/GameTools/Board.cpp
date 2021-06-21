@@ -92,3 +92,9 @@ void Board::fillObjectMap(std::string str) {
 	}
 }
 
+void Board::updateAnimation(float time) {
+    for(auto & vec:m_vec_obj)
+        vec.second->updateAnimation(time);
+
+}
+

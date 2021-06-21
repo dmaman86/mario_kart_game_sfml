@@ -16,6 +16,7 @@ CoinRace::~CoinRace()
 //================================= Update =====================================
 void CoinRace::Update(float deltatime) {
 
+
 	RaceStatesBase::Update(deltatime);
 	m_player.updateAnimation(deltatime);
 	if (isFinish())

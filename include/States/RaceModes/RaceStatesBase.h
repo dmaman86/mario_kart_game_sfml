@@ -33,6 +33,7 @@ public:
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    void updateAnimation(float time);
 
 protected:
     //================ Private functions =========================

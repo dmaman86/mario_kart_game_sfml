@@ -25,7 +25,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
                                                                               m_data->user.getSprite()),
                                                                      m_map_race( m_data->user.getMapGame()),
 	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
-	m_sky(), m_speed_scr(), m_first(false)// 1000.f, 600.f));
+	m_sky(), m_speed_scr()// 1000.f, 600.f));
 {
 
 }
@@ -93,14 +93,11 @@ void RaceStatesBase::HandleEvent(const sf::Event&)
 //================================= Update =====================================
 void RaceStatesBase::Update(float deltatime) {
 
-	if (m_first)
-		m_first = false;
-	else {
-		UpdatePlayer(deltatime);
-		m_sky.Update();
-		UpdateMap();
-		HandleCollision(deltatime);
-	}
+    UpdatePlayer(deltatime);
+	m_sky.Update();
+    UpdateMap();
+    HandleCollision(deltatime);
+    this->updateAnimation(deltatime);
 }
 
 
@@ -190,8 +187,14 @@ void RaceStatesBase::startRaceScreen() {
         trafficlight.draw(*m_data->window);
         m_data->window->display();
 		m_data->window->setView(v);
-		
+
     }
 	m_clock.restart();
-	m_first = true;
+
 }
+
+void RaceStatesBase::updateAnimation(float time) {
+    m_board.updateAnimation(time);
+
+}
+

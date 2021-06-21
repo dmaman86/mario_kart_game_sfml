@@ -47,7 +47,7 @@ void Player::updateDir()
 //=============================================================================
 void Player::CheckLap(const int fs)
 {
-	if (fs - getLastScorePos() >= 400 && !m_is_lock)
+	if (fs - getLastScorePos() >= 370 && !m_is_lock)
 		addLap();
 	// std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
 }
@@ -56,6 +56,7 @@ void Player::CheckLap(const int fs)
 void Player::updateAnimation(float time) {
       //  auto delta = time - m_timepasses;
     //    m_timepasses = time;
+
 	if (!m_is_spin)
 		m_animation.update(time, m_is_pressed);
 	else
