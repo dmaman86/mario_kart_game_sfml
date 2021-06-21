@@ -223,15 +223,15 @@ void HostState::createMaps(HostState::VectorMaps & maps)
     maps[0] = std::make_shared<Map>();
     maps[0]->map_name = Pictures::mario_circuit_2;
     maps[0]->map_name_tex = sf::Text();
-    maps[0]->map_name_tex.setString("Mario Circuit");
+    maps[0]->map_name_tex.setString(maps[0]->map_name);
     maps[1] = std::make_shared<Map>();
     maps[1]->map_name = Pictures::donut_plains_1;
     maps[1]->map_name_tex = sf::Text();
-    maps[1]->map_name_tex.setString("Donut Circuit");
+    maps[1]->map_name_tex.setString(maps[1]->map_name);
     maps[2] = std::make_shared<Map>();
     maps[2]->map_name = Pictures::ghost_valley;
     maps[2]->map_name_tex = sf::Text();
-    maps[2]->map_name_tex.setString("Ghost Circuit");
+    maps[2]->map_name_tex.setString(maps[2]->map_name);
 
     for(size_t i{0}, j{0}; i < maps.size(); i++, j += 5)
     {

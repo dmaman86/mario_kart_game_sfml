@@ -29,6 +29,7 @@ const std::string Pictures::MenuButtons1 = "menuButtons1.png";
 const std::string Pictures::GameStartGui = "gameStartGui.png";
 const std::string Pictures::helpStateback = "helpStateback.png";
 const std::string Pictures::game_boy = "gameBoy.png";
+const std::string Pictures::about_picture = "about.png";
 
 
 Pictures &Pictures::instance() {
@@ -40,6 +41,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 {
     if(!(m_pics[Pictures::MarioDriver] = sf::Texture()).loadFromFile(Pictures::MarioDriver))
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
+    if(!(m_pics[Pictures::about_picture] = sf::Texture()).loadFromFile(Pictures::about_picture))
+        throw std::runtime_error("Can't open " + Pictures::about_picture);
     if(!(m_maps[Pictures::mario_circuit_2] = sf::Image()).loadFromFile(Pictures::mario_circuit_2))
         throw std::runtime_error("Cant Open " + Pictures::mario_circuit_2);
     if(!(m_maps[Pictures::donut_plains_1] = sf::Image()).loadFromFile(Pictures::donut_plains_1))
