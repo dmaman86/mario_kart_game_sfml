@@ -32,6 +32,7 @@ private:
     std::shared_ptr<Button> m_button_online;
     std::shared_ptr<Button> m_button_carer;
     sf::Sprite m_background;
+    sf::RectangleShape m_rect_logo;
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;

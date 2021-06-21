@@ -53,4 +53,5 @@ private:
     void initVectorSpritesOffline(const sf::Vector2u&);
     void setVolume();
     void resetOtherDrivers(size_t);
+    void initTexts(const sf::Vector2u&);
 };
