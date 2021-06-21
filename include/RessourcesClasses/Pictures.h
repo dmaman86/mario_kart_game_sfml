@@ -52,6 +52,7 @@ public:
     static const std::string GameStartGui;
     static const std::string helpStateback;
 	static const std::string game_boy;
+	static const std::string about_picture;
 
     const sf::Texture& getTexture(const std::string &) const;
     const sf::Image& getMapTex(const std::string &)const ;
