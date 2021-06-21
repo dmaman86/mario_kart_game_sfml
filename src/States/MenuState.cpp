@@ -10,7 +10,8 @@
 
 MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_buttons(),
-                                                    m_showExtra(false)
+                                                    m_showExtra(false),
+                                                    m_rect_logo()
 {
 }
 
@@ -24,34 +25,46 @@ void MenuState::Init()
     m_background.setScale((float)windowSize.x / textureSize.x,
                           (float)windowSize.y / textureSize.y);
 
-    auto buttonAbout = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonAbout->setTextureInRect(0, 640, 255, 60);
-    buttonAbout->setInPosition(sf::Vector2f(100, 440));
-    auto buttonHelp = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonHelp->setTextureInRect(0, 330, 187, 62);
-    buttonHelp->setInPosition(sf::Vector2f(100, 300));
-    buttonHelp->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
-    });
+    auto sprite = sf::Sprite();
+    sprite.setTexture(Pictures::instance().getTexture(Pictures::marioLogo));
+    m_rect_logo.setTexture(sprite.getTexture());
+    m_rect_logo.setSize(sf::Vector2f(450, 250));
+    m_rect_logo.setOrigin(m_rect_logo.getGlobalBounds().width / 2,
+                          m_rect_logo.getGlobalBounds().height / 2);
+    m_rect_logo.setPosition(sf::Vector2f(windowSize.x /2, (windowSize.y /2) - 250) );
+
+
     auto buttonLetPlay = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonLetPlay->setTextureInRect(0, 250, 414, 64);
-    buttonLetPlay->setInPosition(sf::Vector2f(100, 200));
+    buttonLetPlay->setInPosition(sf::Vector2f(100, 350));
+
     auto buttonSettings = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonSettings->setTextureInRect(0, 717, 360, 65);
-    buttonSettings->setInPosition(sf::Vector2f(100, 370));
+    buttonSettings->setInPosition(sf::Vector2f(100, 450));
     buttonSettings->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
     });
+
+    auto buttonAbout = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonAbout->setTextureInRect(0, 640, 255, 60);
+    buttonAbout->setInPosition(sf::Vector2f(100, 540));
+
+    auto buttonHelp = std::make_shared<Button>(Pictures::MenuButtons1);
+    buttonHelp->setTextureInRect(0, 330, 187, 62);
+    buttonHelp->setInPosition(sf::Vector2f(100, 640));
+    buttonHelp->setCallback([this](){
+        m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
+    });
     m_button_online = std::make_shared<Button>(Pictures::MenuButtons1);
     m_button_online->setTextureInRect(0, 0, 265, 55);
-    m_button_online->setInPosition(sf::Vector2f(800, 220));
+    m_button_online->setInPosition(sf::Vector2f(800, 350));
     m_button_online->setCallback([this](){
         m_data->user.setOnline(true);
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
     });
     m_button_carer = std::make_shared<Button>(Pictures::MenuButtons1);
     m_button_carer->setTextureInRect(0, 485, 265, 70);
-    m_button_carer->setInPosition(sf::Vector2f(1100, 220));
+    m_button_carer->setInPosition(sf::Vector2f(1100, 350));
     m_button_carer->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
     });
@@ -81,16 +94,21 @@ void MenuState::HandleEvent(const sf::Event& event)
 
         if(m_showExtra)
         {
-            if(auto res = m_button_online->validGlobalBound(location); res)
-                m_button_online->updateIfSelected(res);
-            if(auto res = m_button_carer->validGlobalBound(location); res)
-                m_button_carer->updateIfSelected(res);
+            if(m_button_online->validGlobalBound(location))
+                m_button_online->initCallback();
+            if(m_button_carer->validGlobalBound(location))
+                m_button_carer->initCallback();
         }
 
         for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         {
-            if(auto res = it->second->validGlobalBound(location); res)
-                it->second->updateIfSelected(res);
+            if(it->second->validGlobalBound(location))
+            {
+                if(it->first == Options::LetPlay)
+                    m_showExtra = true;
+                else
+                    it->second->initCallback();
+            }
         }
     }
     if (sf::Event::MouseMoved == event.type)
@@ -126,36 +144,13 @@ void MenuState::updateColors(const sf::Vector2f& loc)
 
 void MenuState::Update(float dt)
 {
-    for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
-    {
-		switch (it->first)
-		{
-		    case Options::About:
-			    // state about
-			    break;
-		    case Options::Help:
-			    if (it->second->getIfSelected())
-                    it->second->initCallback();
-			    break;
-		    case Options::LetPlay:
-			    if (it->second->getIfSelected())
-				    m_showExtra = true;
-			    break;
-		    case Options::Settings:
-			    if (it->second->getIfSelected())
-                    it->second->initCallback();
-			    break;
-        }
-    }
-    if(m_button_online->getIfSelected())
-        m_button_online->initCallback();
-    if(m_button_carer->getIfSelected())
-        m_button_carer->initCallback();
+
 }
 
 void MenuState::Draw()
 {
 	m_data->window->draw(m_background);
+	m_data->window->draw(m_rect_logo);
 
 	for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
         m_data->window->draw(*it->second.get());
@@ -169,10 +164,6 @@ void MenuState::Draw()
 
 void MenuState::Resume()
 {
-	for (auto& button : m_buttons)
-        button.second->resetIfSelected();
-	m_button_carer->resetIfSelected();
-	m_button_online->resetIfSelected();
     setVolume();
     m_showExtra = false;
 }

@@ -37,24 +37,7 @@ void GetDataState::Init()
     m_background.setScale((float)windowSize.x / textureSize.x,
                           (float)windowSize.y / textureSize.y);
 
-    m_title_get_name.setFont(Fonts::instance().getFont());
-    m_title_get_name.setString("Please enter your name");
-    m_title_get_name.setFillColor(sf::Color::White);
-    m_title_get_name.setCharacterSize(50);
-    m_title_get_name.setOrigin(m_title_get_name.getLocalBounds().width / 2,
-                               m_title_get_name.getLocalBounds().height / 2);
-    m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
-                                       (windowSize.y / 2u) + (unsigned)20));
-
-    m_error.setFont(Fonts::instance().getFont());
-    m_error.setString("Error to connect with serve");
-    m_error.setFillColor(sf::Color::Red);
-    m_error.setCharacterSize(50);
-    m_error.setOrigin(m_error.getLocalBounds().width / 2,
-                      m_error.getLocalBounds().height / 2);
-    m_error.setPosition(sf::Vector2f(windowSize.x / 2,
-                                              windowSize.y / 2));
-
+    initTexts(windowSize);
 
     m_save.setTextureInRect(500, 0, 212, 54);
     m_save.setInOrigin();
@@ -223,18 +206,13 @@ void GetDataState::Update(float dt)
             else if(m_joinGame.getIfSelected())
             {
                 m_data->user.setHost(false);
+                m_nextState = (m_data->user.getId().size() < 1 ) ?
+                                m_data->services.createUser(&m_data->user) :
+                                m_data->services.updateUser(&m_data->user);
 
-                if(m_data->user.getId().size() > 0)
-                {
-                    m_nextState = m_data->services.updateUser(&m_data->user);
-                    if(!m_nextState) m_errorShow = true;
-                }
+                if(!m_nextState)
+                    m_errorShow = true;
                 else
-                {
-                    m_nextState = m_data->services.createUser(&m_data->user);
-                    if(!m_nextState) m_errorShow = true;
-                }
-                if(m_nextState)
                     m_joinGame.initCallback();
             }
         }
@@ -342,4 +320,25 @@ void GetDataState::setVolume()
     else
         m_click.setVolume(0);
 
+}
+
+void GetDataState::initTexts(const sf::Vector2u& windowSize)
+{
+    m_title_get_name.setFont(Fonts::instance().getFont());
+    m_title_get_name.setString("Please enter your name");
+    m_title_get_name.setFillColor(sf::Color::White);
+    m_title_get_name.setCharacterSize(50);
+    m_title_get_name.setOrigin(m_title_get_name.getLocalBounds().width / 2,
+                               m_title_get_name.getLocalBounds().height / 2);
+    m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
+                                              (windowSize.y / 2u) + (unsigned)20));
+
+    m_error.setFont(Fonts::instance().getFont());
+    m_error.setString("Error to connect with serve");
+    m_error.setFillColor(sf::Color::Red);
+    m_error.setCharacterSize(50);
+    m_error.setOrigin(m_error.getLocalBounds().width / 2,
+                      m_error.getLocalBounds().height / 2);
+    m_error.setPosition(sf::Vector2f(windowSize.x / 2,
+                                     windowSize.y / 2));
 }
