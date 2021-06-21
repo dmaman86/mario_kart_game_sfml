@@ -30,6 +30,7 @@ void MarioKart::run()
 
 	while (m_window.isOpen())
 	{
+
 		m_dataGame->stateStack.ProcessStateChanges();
 
 		auto dt = m_clock.getElapsedTime().asSeconds();
