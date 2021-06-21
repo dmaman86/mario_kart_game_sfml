@@ -62,5 +62,6 @@ protected:
 	sf::Sprite m_background;
 	sf::Sprite m_game_boy;
 	sf::View m_view;
+	bool m_first;
 
 }; //end RaceStateBase
