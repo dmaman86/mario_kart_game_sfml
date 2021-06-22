@@ -144,7 +144,7 @@ void RaceStatesBase::UpdatePlayer(float deltatime)
 
 //=============================================================================
 void RaceStatesBase::Draw() {
-	
+
 	m_data->window->draw(m_background);
 	m_data->window->draw(m_game_boy);
 	auto v = m_data->window->getView();

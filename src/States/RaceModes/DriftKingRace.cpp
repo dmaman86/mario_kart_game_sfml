@@ -31,10 +31,17 @@ void DriftKingRace::Update(float deltatime) {
 //=============================================================================
 void DriftKingRace::Draw()
 {
+	try {
+	
 	RaceStatesBase::Draw();
 	m_status.printGameStatus
 	(sf::seconds(m_clock.getElapsedTime().asSeconds()),
 		m_player.getLap(), 0, 0, correctDirection());
+	}
+	catch (...)
+	{
+		finishRase(false);
+	}
 }
 
 //=============================================================================
