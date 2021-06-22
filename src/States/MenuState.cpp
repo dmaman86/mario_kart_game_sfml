@@ -82,7 +82,7 @@ void MenuState::Init()
 
     m_startMusic.openFromFile(Sounds::menu);
     m_startMusic.setLoop(true);
-    //m_startMusic.play();
+    m_startMusic.play();
 	
     setVolume();
 }
@@ -147,7 +147,8 @@ void MenuState::updateColors(const sf::Vector2f& loc)
 
 void MenuState::Update(float dt)
 {
-
+    setVolume();
+    stopMusic();
 }
 
 void MenuState::Draw()

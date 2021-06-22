@@ -149,8 +149,14 @@ void RaceStatesBase::drawStaticObjects() {
 void RaceStatesBase::HandleCollision(float deltatime)
 {
     for (auto& obj : m_board.getObjData())
-        if(obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
+        if (obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
+        {
+            if(obj.second->getIsActive() && m_data->user.getIfSound())
+            obj.second->playSound();
+
             processCollision(m_player, *obj.second);
+        }
+
     processCollision(m_player, m_board(m_player.getIntLocation().y, m_player.getIntLocation().x));
 }
 
@@ -173,7 +179,7 @@ void RaceStatesBase::startRaceScreen() {
     sf::Time delta {};;
     sf::Clock lira;
 	UpdateMap();
-
+    trafficlight.playSound();
     while(m_clock.getElapsedTime().asSeconds() < 4)
     {
         m_data->window->clear();

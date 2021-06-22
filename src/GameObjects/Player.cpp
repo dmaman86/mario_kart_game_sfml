@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Pictures.h"
 #include "Utilities.h"
-
+#include "Sounds.h"
 
 const auto AnimationTime = 0.1f;
 //========================== Constructor / Destructor =========================
@@ -24,6 +24,8 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
+	m_backSound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::pipe));
+	m_sound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::sand));
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite) {
@@ -69,6 +71,7 @@ void Player::driveBack()
 {
 	if (!m_is_lock) {
 		m_last_pos = *m_location;
+		m_backSound.play();
 	}
 	m_is_lock = true;
 }

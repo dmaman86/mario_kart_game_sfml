@@ -58,5 +58,7 @@ protected:
     int m_lap;
 	float m_smaller_time;
 	sf::Time m_timepasses;
+	sf::Sound m_backSound;
+	sf::Sound m_sandSound;
 };
 

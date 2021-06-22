@@ -1,4 +1,11 @@
 configure_file ("click.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("menu.ogg" ${CMAKE_BINARY_DIR} COPYONLY)
-
-
+configure_file ("coin.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("boost.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("banana.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("pipe.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("startGame.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("ghost.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("sand.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("lose.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("win.wav" ${CMAKE_BINARY_DIR} COPYONLY)

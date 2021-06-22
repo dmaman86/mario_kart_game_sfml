@@ -38,6 +38,7 @@ void AboutState::HandleEvent(const sf::Event& event)
 
 void AboutState::Update(float)
 {
+    setVolume(m_data->user.getIfSound());
 
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <SFML/Audio.hpp>
 #include "SFML/Graphics.hpp"
 #include "Object.h"
 
@@ -22,10 +22,13 @@ public:
     void setIsActive(bool boo){m_is_active = boo;}
     sf::Sprite& getSprite(){return m_sprite;};
     virtual void updateAnimation(float time){};
+	void playSound();
 protected:
 	sf::Sprite m_sprite;
 	sf::Vector2f *m_location;
 	bool m_is_in_angle;
 	bool m_is_active;
+	sf::Sound m_sound;
+
 };
 

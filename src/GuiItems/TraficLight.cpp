@@ -1,5 +1,6 @@
 #include "Pictures.h"
 #include "TraficLight.h"
+#include "Sounds.h"
 const auto AnimationTime = 1.f;
 const auto TRAFTTLIGHTSCALE = 7.f;
 
@@ -8,6 +9,7 @@ TraficLight::TraficLight():m_animation(Pictures::instance().getTraffic(),m_sprit
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::GameStartGui));
     m_sprite.setPosition(150,150);
     m_sprite.scale(TRAFTTLIGHTSCALE,TRAFTTLIGHTSCALE);
+    m_sound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::startGame));
 
 
 }

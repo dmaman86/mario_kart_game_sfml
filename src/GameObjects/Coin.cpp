@@ -1,6 +1,6 @@
 #include "Coin.h"
 #include "Pictures.h"
-
+#include "Sounds.h"
 // static definition
 int Coin::m_num_coins = 0;
 int Coin::m_num_collected = 0;
@@ -12,6 +12,8 @@ Coin::Coin(sf::Vector2f loc, const sf::Vector2f pos) :
 	m_sprite.setTextureRect(sf::Rect(5, 160, 15, 25));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2,
 		m_sprite.getTextureRect().height / 2);
+
+	m_sound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::coin));
 
 	++m_num_coins;
 }

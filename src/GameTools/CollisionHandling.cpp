@@ -120,6 +120,7 @@ void PlayerFloorSand(Object& player,
 	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
 	Pl.setCoefficientOfFriction(2);
+
 }
 
 using HitFunctionPtr = void (*)(Object&, Object&);
