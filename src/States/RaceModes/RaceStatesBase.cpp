@@ -113,7 +113,7 @@ void RaceStatesBase::Update(float deltatime) {
 			m_first = false;
 		else {
 			UpdatePlayer(deltatime);
-			m_sky.Update();
+			m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
 			UpdateMap();
 			HandleCollision(deltatime);
 			this->updateAnimation(deltatime);

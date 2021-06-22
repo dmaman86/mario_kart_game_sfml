@@ -19,28 +19,31 @@
 	 m_front.setPosition(0, HIGHT / 10);
 }
 
- void SkyLine::Update()
+ void SkyLine::Update(const bool lock,const float force)
  {
-	 auto x = m_front.getTextureRect();
-	 auto y = m_back.getTextureRect();
+	 if (!lock && force) {
 
-	 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	 {
-		 x.left += 2;
-		 y.left += 1;
-	 }
-	 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		 if (x.left <= 10)
+		 auto x = m_front.getTextureRect();
+		 auto y = m_back.getTextureRect();
+
+		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		 {
-			 x.left = 1040;
-			 y.left = 485;
+			 x.left += 2;
+			 y.left += 1;
 		 }
-		 x.left -= 2;
-		 y.left -= 1;
-	 }
-	 x.left %= 2560;
-	 y.left %= 1536;
+		 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			 if (x.left <= 10)
+			 {
+				 x.left = 1040;
+				 y.left = 485;
+			 }
+			 x.left -= 2;
+			 y.left -= 1;
+		 }
+		 x.left %= 2560;
+		 y.left %= 1536;
 
-	 m_front.setTextureRect(x);
-	 m_back.setTextureRect(y);
+		 m_front.setTextureRect(x);
+		 m_back.setTextureRect(y);
+	 }
  }
