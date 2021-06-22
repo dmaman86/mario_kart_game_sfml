@@ -215,7 +215,7 @@ void Player::updateLocation(const float delta)
 //=============================================================================
 void Player::handleLock(const float dt)
 {
-	if (calcLength(*m_location, m_last_pos) >= 4.5)
+	if (calcLength(*m_location, m_last_pos) >= 2)
 	{
 		m_is_lock = false;
 		m_force = 0;

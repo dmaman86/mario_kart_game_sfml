@@ -17,7 +17,11 @@ public:
 	Floor& operator()(unsigned int, unsigned int);
 	sf::Vector2f transferPixelToCords(sf::Vector2f);
     void updateAnimation(float time);
-    int getFloorScore(int x,int y){return m_map[x][y]->getScore();}
+    int getFloorScore(int x,int y){
+		if (x < m_map.size() && y < m_map[0].size())
+			return m_map[x][y]->getScore();
+		throw std::range_error("m_map cannot get " + std::to_string(x) + " or " + std::to_string(y));
+	}
 	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
 	void addObjects(float x, float y, PlayerOnline* obj)
 	{

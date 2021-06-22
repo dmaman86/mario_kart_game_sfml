@@ -107,14 +107,21 @@ void RaceStatesBase::HandleEvent(const sf::Event&)
 //================================= Update =====================================
 void RaceStatesBase::Update(float deltatime) {
 
-	if (m_first)
-		m_first = false;
-	else	{
-		UpdatePlayer(deltatime);
-		m_sky.Update();
-		UpdateMap();
-		HandleCollision(deltatime);
-		this->updateAnimation(deltatime);
+	try {
+
+		if (m_first)
+			m_first = false;
+		else {
+			UpdatePlayer(deltatime);
+			m_sky.Update();
+			UpdateMap();
+			HandleCollision(deltatime);
+			this->updateAnimation(deltatime);
+		}
+	}
+	catch (...)
+	{
+		finishRase(false);
 	}
 }
 
@@ -130,9 +137,9 @@ void RaceStatesBase::UpdateMap()
 //=============================================================================
 void RaceStatesBase::UpdatePlayer(float deltatime)
 {
-    m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
-    m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
-    m_player.updateAnimation(deltatime);
+	m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+	m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+	m_player.updateAnimation(deltatime);
 }
 
 //=============================================================================
@@ -160,22 +167,21 @@ void RaceStatesBase::drawStaticObjects() {
             x.second->draw(*m_data->window);
             x.second->setInAngle(false);
         }
-
 }
 
 //=============================================================================
 void RaceStatesBase::HandleCollision(float deltatime)
 {
-    for (auto& obj : m_board.getObjData())
-        if (obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
-        {
-            if(obj.second->getIsActive() && m_data->user.getIfSound())
-            obj.second->playSound();
+	for (auto& obj : m_board.getObjData())
+		if (obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
+		{
+			if (obj.second->getIsActive() && m_data->user.getIfSound())
+				obj.second->playSound();
 
-            processCollision(m_player, *obj.second);
-        }
+			processCollision(m_player, *obj.second);
+		}
 
-    processCollision(m_player, m_board(m_player.getIntLocation().y, m_player.getIntLocation().x));
+	processCollision(m_player, m_board(m_player.getIntLocation().y, m_player.getIntLocation().x));
 }
 
 //=============================================================================
@@ -183,12 +189,12 @@ bool RaceStatesBase::correctDirection()
 {
     bool currect = false;
 
-    if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
-        currect = false;
-    else if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
-        currect = true;
-
-    return currect;
+	if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
+		currect = false;
+	else if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
+		currect = true;
+    
+	return currect;
 }
 //=============================================================================
 void RaceStatesBase::startRaceScreen() {

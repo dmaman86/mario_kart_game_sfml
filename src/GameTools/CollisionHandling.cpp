@@ -51,7 +51,10 @@ namespace // anonymous namespace — the standard way to make function "static"
 	void PlayerGhost(Object& player, Object& ghost)
 	{
 		Player& Pl = dynamic_cast<Player&>(player);
-		Pl.driveSmaller();
+		Ghost& gh = dynamic_cast<Ghost&>(ghost);
+		if (gh.getIsActive())
+			Pl.driveSmaller();
+		gh.setIsActive(false);
 	}
 
 	void GhostPlayer(Object& Ghost,
@@ -112,6 +115,7 @@ void PlayerFloorBrick(Object& player,
 {
 	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
+	Pl.setCoefficientOfFriction(2);
 	Pl.driveBack();
 }
 void PlayerFloorSand(Object& player,
