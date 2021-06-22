@@ -7,6 +7,8 @@
 #include "TraficLight.h"
 #include "StartCloud.h"
 #include "Sounds.h"
+#include "Fonts.h"
+
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data) : m_data(data),
                                                     m_status(*data->window),
@@ -29,7 +31,8 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
 	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
 	m_sky(map), m_speed_scr(),m_first(true)// 1000.f, 600.f));
 {
-
+	m_win_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::win));
+	m_lose_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::lose));
 }
 
 //=============================================================================
@@ -215,6 +218,32 @@ void RaceStatesBase::startRaceScreen() {
     if (m_data->user.getIfMusic())
         m_musicMap.play();
 
+}
+
+void RaceStatesBase::finishRase(const bool w_or_l)
+{
+	m_data->user.updateInGame(false);
+	m_data->stateStack.RemoveState();
+	sf::Text txt;
+	txt.setFont(Fonts::instance().Fonts::getFontMario());
+	txt.setPosition(50, 50);
+	(w_or_l) ? txt.setString("Win") :
+		txt.setString("Lose");
+
+	if (m_data->user.getIfSound())
+		(w_or_l) ? m_win_s.play() :
+		m_lose_s.play();
+
+	auto cur_t = m_clock.getElapsedTime().asSeconds();
+	while (cur_t + 3.f > m_clock.getElapsedTime().asSeconds())
+	{
+		m_data->window->clear();
+		m_cameraY -= 3;
+		RaceStatesBase::Draw();
+		RaceStatesBase::UpdateMap();
+		m_data->window->draw(txt);
+		m_data->window->display();
+	}
 }
 
 void RaceStatesBase::updateAnimation(float time) {

@@ -97,7 +97,7 @@ void OnlineRace::Update(float deltatime) {
         m_thread_up.detach();
         m_data->services.updateWin(&m_data->user, &m_player);
         std::cout << "Player one wins\n";
-        m_data->stateStack.RemoveState();
+		finishRase(true);
     }
     if(m_player2.getLap() == 3)
     {
@@ -105,8 +105,8 @@ void OnlineRace::Update(float deltatime) {
         m_thread_get.detach();
         m_thread_up.detach();
         std::cout << "Player two wins\n";
-        m_data->stateStack.RemoveState();
-    }
+		finishRase(false);
+	}
 }
 
 //=============================================================================

@@ -17,7 +17,6 @@ public:
 
 private:
 	//================ Private functions =========================
-	void finishRase(const bool);
 	const bool isFinish();
 
 	//================ Private members ==========================

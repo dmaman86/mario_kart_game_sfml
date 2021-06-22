@@ -47,6 +47,7 @@ protected:
     void HandleCollision(float deltatime);
     bool correctDirection();
     void startRaceScreen();
+	void finishRase(const bool);
     //================ Private members ==========================
     Mode7 m_map;
 	Camera m_camera;
@@ -65,4 +66,6 @@ protected:
 	sf::View m_view;
 	bool m_first;
     sf::Music m_musicMap;
+	sf::Sound m_win_s;
+	sf::Sound m_lose_s;
 }; //end RaceStateBase
