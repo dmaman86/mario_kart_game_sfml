@@ -6,7 +6,9 @@
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window), services(), user()
 {
-
+	
+	menuMusic.openFromFile(Sounds::menu);
+	menuMusic.setLoop(true);
 }
 
 MarioKart::MarioKart()

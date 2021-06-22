@@ -36,7 +36,6 @@ private:
 
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
-    sf::Music m_startMusic;
     bool m_showExtra;
 
     void setVolume();

@@ -57,6 +57,7 @@ protected:
 	float m_smaller_time;
 	sf::Time m_timepasses;
 	float m_finish_line;
+	sf::Sound m_engine;
 	sf::Sound m_backSound;
 	bool m_soundOn;
 };

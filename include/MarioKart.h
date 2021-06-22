@@ -26,6 +26,7 @@ public:
         StateStack stateStack;
         Services services;
         User user;
+        sf::Music menuMusic;
     };
     typedef std::shared_ptr<DataGame> GameDataRef;
 

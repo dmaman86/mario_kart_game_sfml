@@ -20,6 +20,7 @@ public:
     static  const std::string lose;
     static  const std::string win;
     static  const std::string vanillaLakeMap;
+    static  const std::string engine;
 
 
 

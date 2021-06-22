@@ -9,7 +9,7 @@
 class SettingsState : public StateOfMenu
 {
 public:
-    SettingsState(MarioKart::GameDataRef&, sf::Music&);
+    SettingsState(MarioKart::GameDataRef&);
     ~SettingsState() = default;
 
 
@@ -28,7 +28,6 @@ private:
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;
     sf::Text m_messageSound;
-    sf::Music &m_menuMusic;
     bool onSound = true;
 };
 

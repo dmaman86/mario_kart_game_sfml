@@ -50,7 +50,7 @@ void RaceStatesBase::Init()
 
     m_musicMap.openFromFile(Sounds::vanillaLakeMap);
     m_musicMap.setLoop(true);
-
+    m_data->menuMusic.stop();
 
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_board.m_vec_obj);

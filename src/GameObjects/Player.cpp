@@ -25,6 +25,8 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string sprit
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
 	m_backSound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::pipe));
+	m_engine = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::engine));
+
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite) {

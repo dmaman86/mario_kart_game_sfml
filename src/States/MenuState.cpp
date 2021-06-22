@@ -44,7 +44,7 @@ void MenuState::Init()
     buttonSettings->setTextureInRect(0, 717, 360, 65);
     buttonSettings->setInPosition(sf::Vector2f(100, 450));
     buttonSettings->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data, m_startMusic)), false);
+        m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
     });
 
     auto buttonAbout = std::make_shared<Button>(Pictures::MenuButtons1);
@@ -82,9 +82,6 @@ void MenuState::Init()
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
-    m_startMusic.openFromFile(Sounds::menu);
-    m_startMusic.setLoop(true);
-    m_startMusic.play();
 	
     setVolume();
     stopMusic();
@@ -178,9 +175,9 @@ void MenuState::Resume()
 void MenuState::stopMusic()
 {
     if(m_data->user.getIfMusic())
-        m_startMusic.play();
+        m_data->menuMusic.play();
     else
-        m_startMusic.stop();
+        m_data->menuMusic.stop();
     
 }
 

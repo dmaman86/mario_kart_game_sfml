@@ -3,11 +3,10 @@
 #include "MenuState.h"
 #include "Fonts.h"
 
-SettingsState::SettingsState(MarioKart::GameDataRef& data, sf::Music& menuMusic):
+SettingsState::SettingsState(MarioKart::GameDataRef& data):
     m_data(data),
     m_shapeSound(30),
     m_shapeMusic(30),
-    m_menuMusic(menuMusic),
     StateOfMenu(data)
 {
 
@@ -118,7 +117,7 @@ void SettingsState::setColorShape(sf::CircleShape &circle)
             m_data->user.setIfSound(false);
         else
         {
-            m_menuMusic.stop();
+            m_data->menuMusic.stop();
             m_data->user.setIfMusic(false);
         }
 
@@ -131,7 +130,7 @@ void SettingsState::setColorShape(sf::CircleShape &circle)
         else
         {
             m_data->user.setIfMusic(true);
-            m_menuMusic.play();
+            m_data->menuMusic.play();
         }
 
         circle.setFillColor(sf::Color::Green);
