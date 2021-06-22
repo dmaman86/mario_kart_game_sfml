@@ -25,8 +25,14 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string sprit
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
 	m_backSound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::pipe));
-	m_engine = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::engine));
+	//m_engine = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::engine));
+	//m_engine.setVolume(0);
+
+	m_engine.openFromFile(Sounds::engine);
+	m_engine.setLoop(true);
 	m_engine.setVolume(0);
+	m_engine.play();
+
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite) {
@@ -127,6 +133,11 @@ const int Player::getLastScorePos() const { return m_last_pos_score; }
 //=============================================================================
 void Player::updateSpeed(float delta) {
 
+	if (m_soundOn && m_force != 0)
+	{
+		m_engine.setVolume(m_force * 2);
+	}
+
 	if (m_is_smaller && m_playerClock.getElapsedTime().asSeconds() > m_smaller_time + 3.f)
 	{
 		m_is_smaller = false;
@@ -194,12 +205,6 @@ void Player::updateSpeed(float delta) {
 		this->m_is_pressed = false;
 
 	}
-
-	if (m_soundOn && m_force != 0)
-	{
-		m_engine.setVolume(m_force * 2);
-		m_engine.play();
-	}
 }
 
 //=============================================================================s
@@ -210,6 +215,16 @@ void Player::updateLocation(const float delta)
 		m_location->x += calcSinDegree(m_angle) * delta * m_force / m_coefficient_of_friction;
 		m_location->y -= calcCosDegree(m_angle)* delta * m_force / m_coefficient_of_friction;
 	}
+}
+
+void Player::stopEngineMusic()
+{
+	m_engine.stop();
+}
+
+const bool Player::getIsLock() const
+{
+	return m_is_lock;
 }
 
 //=============================================================================

@@ -14,7 +14,7 @@ const std::string Sounds::ghost = "ghost.wav";
 const std::string Sounds::sand = "sand.wav";
 const std::string Sounds::lose = "lose.wav";
 const std::string Sounds::win = "win.wav";
-const std::string Sounds::engine = "engine.wav";
+const std::string Sounds::engine = "engine.ogg";
 
 Sounds &Sounds::instance() {
     static Sounds  inst;
@@ -30,9 +30,6 @@ Sounds::Sounds() {
 
     if (!(m_sound[Sounds::click] = sf::SoundBuffer()).loadFromFile(Sounds::click))
         throw std::runtime_error("Cant Open " + Sounds::click);
-
-   /* if (!(m_sound[Sounds::menu] = sf::SoundBuffer()).loadFromFile(Sounds::menu))
-        throw std::runtime_error("Cant Open " + Sounds::menu);*/
 
     if (!(m_sound[Sounds::coin] = sf::SoundBuffer()).loadFromFile(Sounds::coin))
         throw std::runtime_error("Cant Open " + Sounds::coin);
@@ -61,6 +58,5 @@ Sounds::Sounds() {
     if (!(m_sound[Sounds::win] = sf::SoundBuffer()).loadFromFile(Sounds::win))
         throw std::runtime_error("Cant Open " + Sounds::win);
 
-    if (!(m_sound[Sounds::engine] = sf::SoundBuffer()).loadFromFile(Sounds::engine))
-        throw std::runtime_error("Cant Open " + Sounds::engine);
+    
 }

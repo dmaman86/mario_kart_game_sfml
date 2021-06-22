@@ -35,7 +35,8 @@ public:
 	const bool getIsLoc()const { return m_is_lock; };
 	const float getCoefficient()const { return m_coefficient_of_friction; }
 	void setFinishLine(float line){m_finish_line = line;}
-
+	void stopEngineMusic();
+	const bool getIsLock()const;
 protected:
 	//================ Private functions =========================
 	void handleLock(const float);
@@ -57,7 +58,7 @@ protected:
 	float m_smaller_time;
 	sf::Time m_timepasses;
 	float m_finish_line;
-	sf::Sound m_engine;
+	sf::Music m_engine;
 	sf::Sound m_backSound;
 	bool m_soundOn;
 };
