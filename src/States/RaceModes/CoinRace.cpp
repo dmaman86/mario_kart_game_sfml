@@ -21,7 +21,7 @@ void CoinRace::Update(float deltatime) {
 	m_player.updateAnimation(deltatime);
 	if (isFinish())
 	{
-		auto add_points = Coin::getCount()*50 / m_clock.getElapsedTime().asSeconds();
+		auto add_points = Coin::getCount()*1000 / m_clock.getElapsedTime().asSeconds();
 		m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
 		finishRase(true);
 	}

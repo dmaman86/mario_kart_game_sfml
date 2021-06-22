@@ -4,7 +4,7 @@
 //========================== Constructor / Destructor =========================
 TimeRace::TimeRace(MarioKart::GameDataRef& data) : 
 	RaceStatesBase(data, data->user.getMapGame())
-	, m_time_level(sf::seconds(50))
+	, m_time_level(sf::seconds(60))
 {
 }
 
@@ -25,7 +25,7 @@ void TimeRace::Update(float deltatime) {
 
 	if (m_player.getLap() == 2)
 	{
-		auto add_points = m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds();
+		auto add_points = (m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds()) * 100.f;
 		m_data->user.setCoins(int(add_points)+ m_data->user.getCoins());
 		finishRase(true);
 	}

@@ -176,10 +176,7 @@ void GetDataState::resetOtherDrivers(size_t index)
     for(size_t i{0}; i < m_drivers.size(); i++)
     {
         if( i != index)
-        {
-            auto& driver = m_drivers[ i ];
-            driver.get()->setTextureInRect(62, 0, 33, 30);
-        }
+            m_drivers[i]->setTextureInRect(62, 0, 33, 30);
     }
 }
 
