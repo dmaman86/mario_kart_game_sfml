@@ -14,6 +14,8 @@ public:
 	}
     const int  getLap() const { return m_lap; }
     void addLap() { ++m_lap; }
+	void decLap() { --m_lap; }
+
     void set_lap(const int lap){ m_lap = lap; }
 protected:
 	sf::Vector2f m_last_location;

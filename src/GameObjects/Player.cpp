@@ -50,6 +50,8 @@ void Player::CheckLap(const int fs)
 {
 	if (fs - getLastScorePos() >= m_finish_line && !m_is_lock)
 		addLap();
+	if (getLastScorePos() - fs  >= m_finish_line)
+		decLap();
 	// std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
 }
 
