@@ -43,5 +43,4 @@ private:
     sf::Clock m_clock;
     sf::RenderWindow m_window;
     GameDataRef m_dataGame;
-    sf::Sprite m_mousecur;
 };

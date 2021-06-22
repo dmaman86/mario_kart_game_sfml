@@ -34,7 +34,7 @@ public:
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
 	const float getCoefficient()const { return m_coefficient_of_friction; }
-	void setFinishLine(int line){m_finish_line = line;}
+	void setFinishLine(float line){m_finish_line = line;}
 
 protected:
 	//================ Private functions =========================
@@ -56,7 +56,7 @@ protected:
     int m_last_pos_score;
 	float m_smaller_time;
 	sf::Time m_timepasses;
-	int m_finish_line;
+	float m_finish_line;
 	sf::Sound m_backSound;
 	bool m_soundOn;
 };
