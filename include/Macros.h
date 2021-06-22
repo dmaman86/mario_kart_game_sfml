@@ -17,7 +17,6 @@ const float EPSILON_SPEED = 3;
 
 const int MAPSIZE = 1024;
 const int PIPE = 7;
-
 const int SCALEPLAYER = 3;
 
 namespace HttpNetwork

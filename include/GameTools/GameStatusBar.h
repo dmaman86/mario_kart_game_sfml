@@ -6,7 +6,8 @@ class GameStatusBar {
 
 public:
     GameStatusBar(sf::RenderWindow& data);
-    void printGameStatus(const sf::Time&, int , int, int, bool);
+    void printGameStatus(const sf::Time &time, int lap, int coins,
+                         int coinsfrom, int racelaps);
 
 private:
     //=========private members======================

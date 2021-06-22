@@ -1,5 +1,6 @@
 #include "DriftKingRace.h"
 #include "Fonts.h"
+#include "Coin.h"
 
 //========================== Constructor / Destructor =========================
 DriftKingRace::DriftKingRace(MarioKart::GameDataRef& data) :
@@ -34,9 +35,9 @@ void DriftKingRace::Draw()
 	try {
 	
 	RaceStatesBase::Draw();
-	m_status.printGameStatus
-	(sf::seconds(m_clock.getElapsedTime().asSeconds()),
-		m_player.getLap(), 0, 0, correctDirection());
+        m_status.printGameStatus
+                (sf::seconds(m_clock.getElapsedTime().asSeconds()),
+                 m_player.getLap(), Coin::getCollected(), Coin::getCount(), 1);
 	}
 	catch (...)
 	{

@@ -6,29 +6,28 @@ GameStatusBar::GameStatusBar(sf::RenderWindow& windows) :m_windows(windows){
     m_raceLoc.setFont(Fonts::instance().getFontMario());
     m_lap.setFont(Fonts::instance().getFontMario());
     m_timeGame.setFont(Fonts::instance().getFontMario());
-    m_coins.setFont(Fonts::instance().getFontMario());
     m_lap.setCharacterSize(50);
     m_raceLoc.setCharacterSize(50);
     m_timeGame.setCharacterSize(50);
-    m_coins.setCharacterSize(50);
 }
 
 //====================================================
-void GameStatusBar::printGameStatus(const sf::Time& time, int lap, int raceLoc, int coins, bool correctDirection) {
+void GameStatusBar::printGameStatus(const sf::Time &time, int lap, int coins,
+                                    int coinsfrom, int racelaps) {
 
 
-    m_lap.setString("Lap:" + std::to_string(lap));
+    if(racelaps > 0)
+        m_lap.setString("Lap:" + std::to_string(lap) +"/" +std::to_string(racelaps));
+    else
+        m_lap.setString("Lap:" + std::to_string(lap) +"/" +std::to_string(racelaps));
 
     m_timeGame.setString(timeCalculation(time));
 
-    m_raceLoc.setString("Race:" + std::to_string(raceLoc));
-    
-    m_coins.setString(std::to_string(correctDirection));
+    m_raceLoc.setString("Coins:" + std::to_string(coins) + "/" +std::to_string(coinsfrom));
 
     m_lap.setPosition(360, 50);
     m_raceLoc.setPosition(m_lap.getPosition().x + m_lap.getGlobalBounds().width + 30.f, 50);
     m_timeGame.setPosition(m_raceLoc.getPosition().x + m_raceLoc.getGlobalBounds().width + 30.f, 50);
-    m_coins.setPosition(m_timeGame.getPosition().x + m_timeGame.getGlobalBounds().width + 30.f, 50);
 
     printboard();
 
