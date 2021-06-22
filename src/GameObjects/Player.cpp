@@ -6,26 +6,26 @@
 
 const auto AnimationTime = 0.1f;
 //========================== Constructor / Destructor =========================
-Player::Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) :
-        m_animation(Pictures::instance().getDriveAnimationData(sprite),m_sprite,AnimationTime,
-                    false,DRIVER_SIDE_LEN),
-        PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
-        m_angle(0.0),
-        m_force(0),
-        m_acceleration(0),
-        m_is_lock(0),
-        m_last_pos(0,0),
-        m_coefficient_of_friction(1),
-        m_is_spin(false),
-		m_is_smaller(false),
-		m_smaller_time(0.f),
-        m_lap(0)
+Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string sprite, bool sound) :
+	m_animation(Pictures::instance().getDriveAnimationData(sprite), m_sprite, AnimationTime,
+		false, DRIVER_SIDE_LEN),
+	PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
+	m_angle(0.0),
+	m_force(0),
+	m_acceleration(0),
+	m_is_lock(0),
+	m_last_pos(0, 0),
+	m_coefficient_of_friction(1),
+	m_is_spin(false),
+	m_is_smaller(false),
+	m_smaller_time(0.f),
+	m_lap(0),
+	m_soundOn(sound)
 {
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
 	m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
 	m_sprite.scale(3, 3);
 	m_backSound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::pipe));
-	m_sound = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::sand));
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite) {
@@ -71,7 +71,8 @@ void Player::driveBack()
 {
 	if (!m_is_lock) {
 		m_last_pos = *m_location;
-		m_backSound.play();
+		if (m_soundOn)
+			m_backSound.play();
 	}
 	m_is_lock = true;
 }

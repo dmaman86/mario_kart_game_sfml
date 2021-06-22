@@ -76,7 +76,7 @@ void SeconedPlayer::updateSpeed(const float delta) {
 
 }
 
-SeconedPlayer::SeconedPlayer(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) : Player(loc, pos, sprite) {
+SeconedPlayer::SeconedPlayer(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite) : Player(loc, pos, sprite, false) {
     m_sprite.setTextureRect(sf::Rect(0, 0, 33, 33));
     m_sprite.setOrigin(m_sprite.getTextureRect().width / 2, m_sprite.getTextureRect().height / 2);
     m_sprite.scale(3, 3);

@@ -6,12 +6,13 @@
 #include "mode7.h"
 #include "TraficLight.h"
 #include "StartCloud.h"
+#include "Sounds.h"
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data) : m_data(data),
                                                     m_status(*data->window),
                                                     m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                              sf::Vector2f(112,56),
-                                                             m_data->user.getSprite()),
+                                                             m_data->user.getSprite(), m_data->user.getIfSound()),
                                                     m_map_race( m_data->user.getMapGame())
 	, m_sky("can we delete this constructor ?? !! please! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 {
@@ -23,7 +24,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
                                                                      m_status(*data->window),
                                                                      m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
                                                                               sf::Vector2f(112, 56),
-                                                                              m_data->user.getSprite()),
+                                                                              m_data->user.getSprite(), m_data->user.getIfSound()),
                                                                      m_map_race( m_data->user.getMapGame()),
 	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
 	m_sky(map), m_speed_scr()// 1000.f, 600.f));
@@ -45,6 +46,11 @@ void RaceStatesBase::Init()
     m_player.setLastScorePos(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
     m_clock.restart();
 	m_view.setViewport(sf::FloatRect(0.25f, 0.05, 0.5f, 0.5f));
+
+
+    m_musicMap.openFromFile(Sounds::vanillaLakeMap);
+    m_musicMap.setLoop(true);
+
 
    // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
     //m_map.initThread(m_board.m_vec_obj);
@@ -181,26 +187,29 @@ bool RaceStatesBase::correctDirection()
 void RaceStatesBase::startRaceScreen() {
     auto trafficlight = TraficLight();
     auto cloud = StartCloud();
-    sf::Time delta {};;
+    sf::Time delta{};;
     sf::Clock lira;
-	UpdateMap();
-    trafficlight.playSound();
-    while(m_clock.getElapsedTime().asSeconds() < 4)
+    UpdateMap();
+    if (m_data->user.getIfSound())
+        trafficlight.playSound();
+    while (m_clock.getElapsedTime().asSeconds() < 4)
     {
         m_data->window->clear();
-		RaceStatesBase::Draw();
+        RaceStatesBase::Draw();
         delta = lira.restart();
-		auto v = m_data->window->getView();
-		m_data->window->setView(m_view);
+        auto v = m_data->window->getView();
+        m_data->window->setView(m_view);
         trafficlight.updateAnimation(delta.asSeconds());
         cloud.updateAnimation(delta.asSeconds());
         cloud.draw(*m_data->window);
         trafficlight.draw(*m_data->window);
         m_data->window->display();
-		m_data->window->setView(v);
+        m_data->window->setView(v);
 
     }
-	m_clock.restart();
+    m_clock.restart();
+    if (m_data->user.getIfMusic())
+        m_musicMap.play();
 
 }
 

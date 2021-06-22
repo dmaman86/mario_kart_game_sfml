@@ -13,6 +13,8 @@ MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_showExtra(false),
                                                     m_rect_logo()
 {
+
+
 }
 
 void MenuState::Init()
@@ -85,6 +87,8 @@ void MenuState::Init()
     m_startMusic.play();
 	
     setVolume();
+    stopMusic();
+
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
@@ -148,7 +152,6 @@ void MenuState::updateColors(const sf::Vector2f& loc)
 void MenuState::Update(float dt)
 {
     setVolume();
-    stopMusic();
 }
 
 void MenuState::Draw()

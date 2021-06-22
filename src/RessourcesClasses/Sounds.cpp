@@ -4,6 +4,7 @@
 
 const std::string Sounds::click = "click.wav";
 const std::string Sounds::menu = "menu.ogg";
+const std::string Sounds::vanillaLakeMap = "vanillaLakeMap.ogg";
 const std::string Sounds::coin = "coin.wav";
 const std::string Sounds::boost = "boost.wav";
 const std::string Sounds::banana = "banana.wav";
@@ -30,8 +31,8 @@ Sounds::Sounds() {
     if (!(m_sound[Sounds::click] = sf::SoundBuffer()).loadFromFile(Sounds::click))
         throw std::runtime_error("Cant Open " + Sounds::click);
 
-    if (!(m_sound[Sounds::menu] = sf::SoundBuffer()).loadFromFile(Sounds::menu))
-        throw std::runtime_error("Cant Open " + Sounds::menu);
+   /* if (!(m_sound[Sounds::menu] = sf::SoundBuffer()).loadFromFile(Sounds::menu))
+        throw std::runtime_error("Cant Open " + Sounds::menu);*/
 
     if (!(m_sound[Sounds::coin] = sf::SoundBuffer()).loadFromFile(Sounds::coin))
         throw std::runtime_error("Cant Open " + Sounds::coin);

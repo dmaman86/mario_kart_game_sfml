@@ -12,7 +12,7 @@ class Player : public PlayerBase {
 public:
 	//================ Constructor / Destructor =================
 	Player();
-	Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite);
+	Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite, bool);
 	~Player() = default;
 
 	//================ Virtual public functions =================
@@ -62,6 +62,6 @@ protected:
 	sf::Time m_timepasses;
 	int m_finish_line;
 	sf::Sound m_backSound;
-	sf::Sound m_sandSound;
+	bool m_soundOn;
 };
 
