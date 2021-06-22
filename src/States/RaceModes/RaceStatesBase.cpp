@@ -154,7 +154,7 @@ void RaceStatesBase::Draw() {
 	m_data->window->draw(m_sky.getFront());
 	drawStaticObjects();
 	m_speed_scr.Draw(*m_data->window, m_player.getSpeed(), m_player.getCoefficient());
-	m_player.draw(*m_data->window);
+	m_data->window->draw(m_player);
 	m_data->window->setView(v);
 }
 
@@ -164,7 +164,7 @@ void RaceStatesBase::drawStaticObjects() {
     for (auto& x : m_board.getObjData())
         if (x.second->getIsInAngle())
         {
-            x.second->draw(*m_data->window);
+            m_data->window->draw(*x.second);
             x.second->setInAngle(false);
         }
 }

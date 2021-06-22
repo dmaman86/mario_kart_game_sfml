@@ -1,15 +1,19 @@
 #pragma once
 #include <SFML/Audio.hpp>
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 #include "Object.h"
 
-class GameObj : public Object {
+class GameObj : public Object, public sf::Drawable, public sf::Transformable {
 
 public:
 	GameObj();
 	GameObj(const sf::Texture& tex, const sf::Vector2f, const sf::Vector2f);
 	sf::Vector2f getIntLocation();
-	virtual void draw(sf::RenderWindow& m_window) {if(m_is_active) m_window.draw(m_sprite); }
+	// virtual void draw(sf::RenderWindow& m_window) {if(m_is_active) m_window.draw(m_sprite); }
 	void setScale(float x, float y) { m_sprite.setScale(x, y); }
 	void setPosition(sf::Vector2f);
 	void setInAngle(bool b) { m_is_in_angle = b; }
@@ -23,6 +27,13 @@ public:
     sf::Sprite& getSprite(){return m_sprite;};
     virtual void updateAnimation(float time){};
 	void playSound();
+
+private:
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const{
+        states.transform *= getTransform();
+        if(m_is_active)
+            target.draw(m_sprite);
+    }
 protected:
 	sf::Sprite m_sprite;
 	sf::Vector2f *m_location;
