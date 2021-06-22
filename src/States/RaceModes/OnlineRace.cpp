@@ -47,8 +47,8 @@ void OnlineRace::InitNetwork()
 		{
             m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
             m_player2 = PlayerOnline(m_userJoin->getSprite(),
-				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[1][0], locations[1][0]));
-            m_board.addObjects(locations[1][0]*8, locations[1][0]*8, &m_player2);
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[1][0], locations[1][1]));
+            m_board.addObjects(locations[1][0]*8, locations[1][1]*8, &m_player2);
 
         }
 
@@ -57,8 +57,8 @@ void OnlineRace::InitNetwork()
             m_player.setLocation(sf::Vector2f(locations[1][0],locations[1][1]));
 
             m_player2 = PlayerOnline(m_userJoin->getSprite(),
-				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[0][0], locations[0][0]));
-            m_board.addObjects(locations[0][0]*8, locations[0][0]*8, &m_player2);
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[0][0], locations[0][1]));
+            m_board.addObjects(locations[0][1]*8, locations[0][1]*8, &m_player2);
 
         }
 		
