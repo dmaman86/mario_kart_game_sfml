@@ -5,8 +5,8 @@
 
 GameObj::GameObj(const sf::Texture& tex, const sf::Vector2f loc, const sf::Vector2f pos) :
     m_location(new sf::Vector2f(pos)),
-    m_is_in_angle(false)
-    //m_is_active (true)
+    m_is_in_angle(false),
+    m_is_active (true)
 {
 	m_sprite.setTexture(tex);
 	m_sprite.setPosition(loc);
