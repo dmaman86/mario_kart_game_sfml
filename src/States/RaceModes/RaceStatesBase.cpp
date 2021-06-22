@@ -143,8 +143,8 @@ void RaceStatesBase::Draw() {
 	m_data->window->draw(m_sky.getBack());
 	m_data->window->draw(m_sky.getFront());
 	drawStaticObjects();
-	m_player.draw(*m_data->window);
 	m_speed_scr.Draw(*m_data->window, m_player.getSpeed(), m_player.getCoefficient());
+	m_player.draw(*m_data->window);
 	m_data->window->setView(v);
 }
 
