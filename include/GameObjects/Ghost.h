@@ -4,7 +4,7 @@
 class Ghost : public StaticObject {
 
 public:
-	Ghost(sf::Vector2f, const sf::Vector2f pos);
+	Ghost( const sf::Vector2f &, const sf::Vector2f& pos);
 private:
 };
 

@@ -4,7 +4,7 @@
 class Banana : public StaticObject {
 
 public:
-	Banana(sf::Vector2f, const sf::Vector2f pos);
+	Banana(const sf::Vector2f& , const sf::Vector2f& pos);
 private:
 };
 

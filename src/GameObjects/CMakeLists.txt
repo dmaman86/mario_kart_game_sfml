@@ -7,6 +7,5 @@ target_sources(test_mario_kart PRIVATE
 		"PlayerBase.cpp"
 		"Banana.cpp"
 		"Ghost.cpp"
-		"SeconedPlayer.cpp"
 		"Coin.cpp"
 		"SpeedMultiplier.cpp")

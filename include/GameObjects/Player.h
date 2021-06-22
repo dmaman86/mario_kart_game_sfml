@@ -12,7 +12,7 @@ class Player : public PlayerBase {
 public:
 	//================ Constructor / Destructor =================
 	Player();
-	Player(const sf::Vector2f loc, const sf::Vector2f pos,std::string sprite, bool);
+	Player(const sf::Vector2f &loc, const sf::Vector2f & pos,const std::string& sprite, bool);
 	~Player() = default;
 
 	//================ Virtual public functions =================

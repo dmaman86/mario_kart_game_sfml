@@ -6,7 +6,7 @@
 
 const auto AnimationTime = 0.1f;
 //========================== Constructor / Destructor =========================
-Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string sprite, bool sound) :
+Player::Player(const sf::Vector2f &loc, const sf::Vector2f& pos,const std::string& sprite, bool sound) :
 	m_animation(Pictures::instance().getDriveAnimationData(sprite), m_sprite, AnimationTime,
 		false, DRIVER_SIDE_LEN),
 	PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),

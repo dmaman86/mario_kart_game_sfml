@@ -1,9 +1,9 @@
 #include "PlayerOnline.h"
 #include "Pictures.h"
 
-PlayerOnline::PlayerOnline(const std::string sprite,
-                           const sf::Vector2f loc,
-                           const sf::Vector2f pos)
+PlayerOnline::PlayerOnline(const std::string& sprite,
+                           const sf::Vector2f& loc,
+                           const sf::Vector2f& pos)
 	: PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos)
 
 {

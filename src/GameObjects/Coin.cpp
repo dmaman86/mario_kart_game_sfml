@@ -5,7 +5,7 @@
 int Coin::m_num_coins = 0;
 int Coin::m_num_collected = 0;
 const auto AnimationTime = 0.2f;
-Coin::Coin(sf::Vector2f loc, const sf::Vector2f pos) : 
+Coin::Coin(const sf::Vector2f& loc, const sf::Vector2f& pos) :
 	StaticObject(Pictures::instance().getTexture(Pictures::misc), loc, pos) ,
     m_animation(Pictures::instance().getCoinAnim(),m_sprite,AnimationTime,true,Pictures::instance().getCoinAnim().size())
 {

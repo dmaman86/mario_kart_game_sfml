@@ -4,7 +4,7 @@
 class Pipe : public StaticObject{
 
 public:
-    Pipe(sf::Vector2f,const sf::Vector2f pos);
+    Pipe(const sf::Vector2f &,const sf::Vector2f& pos);
 private:
 };
 

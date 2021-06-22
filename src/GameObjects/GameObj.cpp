@@ -3,7 +3,7 @@
 #include "GameObj.h"
 #include "Utilities.h"
 
-GameObj::GameObj(const sf::Texture& tex, const sf::Vector2f loc, const sf::Vector2f pos) :
+GameObj::GameObj(const sf::Texture& tex, const sf::Vector2f& loc, const sf::Vector2f& pos) :
     m_location(new sf::Vector2f(pos)),
     m_is_in_angle(false),
     m_is_active (true)
@@ -17,7 +17,7 @@ GameObj::GameObj() {
 
 }
 
-void GameObj::setPosition(sf::Vector2f loc) {
+void GameObj::setPosition(const sf::Vector2f& loc) {
 	m_sprite.setPosition(loc);
 }
 const bool GameObj::collisionWith(const GameObj& obj) const

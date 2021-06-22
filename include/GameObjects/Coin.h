@@ -5,7 +5,7 @@
 class Coin : public StaticObject {
 
 public:
-	Coin(sf::Vector2f, const sf::Vector2f pos);
+	Coin(const sf::Vector2f &, const sf::Vector2f& pos);
 	~Coin();
 
 	void addCollected() { m_num_collected++; }
