@@ -38,7 +38,7 @@ void OnlineRace::InitNetwork()
 {
 
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
-    auto locations = readFromFile<int>(name+"_start_position.txt",3,3);
+    auto locations = readFromFile<int>(name+"_start_position.txt",3,2);
     m_player.setFinishLine(locations[2][0]);
 
 	if (m_userJoin)
