@@ -1,0 +1,7 @@
+configure_file ("donut_plains.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains_sky_back.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains_sky_front.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains_scores.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains_start_position.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("donut_plains_objects.txt" ${CMAKE_BINARY_DIR} COPYONLY)

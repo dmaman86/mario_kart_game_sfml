@@ -35,6 +35,7 @@ public:
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
 	const float getCoefficient()const { return m_coefficient_of_friction; }
+	void setFinishLine(int line){m_finish_line = line;}
 
 protected:
 	//================ Private functions =========================
@@ -42,7 +43,8 @@ protected:
 	virtual void updateSpeed(const float);
 	void updateLocation(const float);
 	void addLap() { ++m_lap; }
-	
+
+
 	//================ Private members ==========================
     Animation m_animation;
     sf::Clock m_playerClock;
@@ -58,6 +60,7 @@ protected:
     int m_lap;
 	float m_smaller_time;
 	sf::Time m_timepasses;
+	int m_finish_line;
 	sf::Sound m_backSound;
 	sf::Sound m_sandSound;
 };

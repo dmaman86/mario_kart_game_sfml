@@ -37,3 +37,4 @@ namespace SpecialKeyboard
     const int ESCAPE_KEY = 27;
     const int MAX = 128;
 }
+

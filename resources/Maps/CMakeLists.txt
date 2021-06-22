@@ -1,3 +1,4 @@
 add_subdirectory(mario_circuit_2)
-add_subdirectory(donut_plains_1)
+add_subdirectory(donut_plains)
 add_subdirectory(ghost_valley)
+add_subdirectory(rainbow_road)

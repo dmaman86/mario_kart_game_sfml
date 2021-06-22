@@ -49,7 +49,7 @@ void Player::updateDir()
 //=============================================================================
 void Player::CheckLap(const int fs)
 {
-	if (fs - getLastScorePos() >= 370 && !m_is_lock)
+	if (fs - getLastScorePos() >= m_finish_line && !m_is_lock)
 		addLap();
 	// std::cout << getLastScorePos() << "  ::   " << fs << " " << getLap() << " \n";
 }

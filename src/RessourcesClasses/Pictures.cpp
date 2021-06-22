@@ -3,8 +3,8 @@
 #include <exception>
 
 const std::string Pictures::MarioDriver = "mario.png";
-const std::string Pictures::mario_circuit_2 = "mario_circuit_2.png";
-const std::string Pictures::donut_plains_1 = "base.png";
+const std::string Pictures::rainbow_road = "rainbow_road.png";
+const std::string Pictures::donut_plains_1 = "donut_plains.png";
 const std::string Pictures::ghost_valley = "ghost_valley.png";
 const std::string Pictures::misc = "misc.png";
 const std::string Pictures::menuBackground = "menuBackground.png";
@@ -19,10 +19,14 @@ const std::string Pictures::YoshiDriver = "yoshi.png";
 const std::string Pictures::rectangle = "rectangle.jpg";
 const std::string Pictures::drivers = "drivers.png";
 
-const std::string Pictures::base_sky_back = "base_sky_back.png";
-const std::string Pictures::base_sky_front = "base_sky_front.png";
+const std::string Pictures::donut_plains_sky_back = "donut_plains_sky_back.png";
+const std::string Pictures::donut_plains_sky_front = "donut_plains_sky_front.png";
 const std::string Pictures::ghost_valley_sky_back = "ghost_valley_sky_back.png";
 const std::string Pictures::ghost_valley_sky_front = "ghost_valley_sky_front.png";
+
+const std::string Pictures::rainbow_road_sky_back = "rainbow_road_sky_back.png";
+const std::string Pictures::rainbow_road_sky_front = "rainbow_road_sky_front.png";
+
 
 const std::string Pictures::speed0 = "speed0.png";
 const std::string Pictures::speed1 = "speed1.png";
@@ -36,6 +40,8 @@ const std::string Pictures::game_boy = "gameBoy.png";
 const std::string Pictures::about_picture = "about.png";
 
 
+
+
 Pictures &Pictures::instance() {
     static Pictures inst;
     return inst;
@@ -47,8 +53,8 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::MarioDriver);
     if(!(m_pics[Pictures::about_picture] = sf::Texture()).loadFromFile(Pictures::about_picture))
         throw std::runtime_error("Can't open " + Pictures::about_picture);
-    if(!(m_maps[Pictures::mario_circuit_2] = sf::Image()).loadFromFile(Pictures::mario_circuit_2))
-        throw std::runtime_error("Cant Open " + Pictures::mario_circuit_2);
+    if(!(m_maps[Pictures::rainbow_road] = sf::Image()).loadFromFile(Pictures::rainbow_road))
+        throw std::runtime_error("Cant Open " + Pictures::rainbow_road);
     if(!(m_maps[Pictures::donut_plains_1] = sf::Image()).loadFromFile(Pictures::donut_plains_1))
         throw std::runtime_error("Can't Open " + Pictures::donut_plains_1);
 	if (!(m_maps[Pictures::ghost_valley] = sf::Image()).loadFromFile(Pictures::ghost_valley))
@@ -77,10 +83,10 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::rectangle);
     if (!(m_pics[Pictures::drivers] = sf::Texture()).loadFromFile(Pictures::drivers))
         throw std::runtime_error("Cant Open " + Pictures::drivers);
-	if (!(m_pics[Pictures::base_sky_back] = sf::Texture()).loadFromFile(Pictures::base_sky_back))
-		throw std::runtime_error("Cant Open " + Pictures::base_sky_back);
-	if (!(m_pics[Pictures::base_sky_front] = sf::Texture()).loadFromFile(Pictures::base_sky_front))
-		throw std::runtime_error("Cant Open " + Pictures::base_sky_front);
+	if (!(m_pics[Pictures::donut_plains_sky_back] = sf::Texture()).loadFromFile(Pictures::donut_plains_sky_back))
+		throw std::runtime_error("Cant Open " + Pictures::donut_plains_sky_back);
+	if (!(m_pics[Pictures::donut_plains_sky_front] = sf::Texture()).loadFromFile(Pictures::donut_plains_sky_front))
+		throw std::runtime_error("Cant Open " + Pictures::donut_plains_sky_front);
 	if (!(m_pics[Pictures::ghost_valley_sky_back] = sf::Texture()).loadFromFile(Pictures::ghost_valley_sky_back))
 		throw std::runtime_error("Cant Open " + Pictures::ghost_valley_sky_back);
 	if (!(m_pics[Pictures::ghost_valley_sky_front] = sf::Texture()).loadFromFile(Pictures::ghost_valley_sky_front))
@@ -104,6 +110,10 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
 	if (!(m_pics[Pictures::game_boy] = sf::Texture()).loadFromFile(Pictures::game_boy))
 		throw std::runtime_error("Cant Open " + Pictures::game_boy);
 
+    if (!(m_pics[Pictures::rainbow_road_sky_front] = sf::Texture()).loadFromFile(Pictures::rainbow_road_sky_front))
+        throw std::runtime_error("Cant Open " + Pictures::rainbow_road_sky_front);
+    if (!(m_pics[Pictures::rainbow_road_sky_back] = sf::Texture()).loadFromFile(Pictures::rainbow_road_sky_back))
+        throw std::runtime_error("Cant Open " + Pictures::rainbow_road_sky_back);
 
     for (int i = 0; i < NUMBER_OF_DRIVERS; ++i) {
         m_drivers[i] = (setDriverData(i));

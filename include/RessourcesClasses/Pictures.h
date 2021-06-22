@@ -24,7 +24,7 @@ public:
     static Pictures& instance();
     static  const std::string drivers;
     static  const std::string MarioDriver;
-    static  const std::string mario_circuit_2;
+    static  const std::string rainbow_road;
     static const std::string donut_plains_1;
 	static const std::string ghost_valley;
     static  const std::string misc;
@@ -41,10 +41,13 @@ public:
     static const std::string ToadDriver;
     static const std::string YoshiDriver;
     static const std::string rectangle;
-	static const std::string base_sky_back;
-	static const std::string base_sky_front;
+	static const std::string donut_plains_sky_back;
+	static const std::string donut_plains_sky_front;
 	static const std::string ghost_valley_sky_front;
 	static const std::string ghost_valley_sky_back;
+    static const std::string rainbow_road_sky_front;
+    static const std::string rainbow_road_sky_back;
+
 	static const std::string speed0;
 	static const std::string speed1;
 	static const std::string speed2;

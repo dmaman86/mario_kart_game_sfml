@@ -66,10 +66,14 @@ void RaceStatesBase::InitMap()
 }
 void RaceStatesBase::InitPlayerLoc()
 {
-	if (m_data->user.getMapGame() == "base.png")
-		m_player.setLocation(sf::Vector2f(140 / 8, 550 / 8));
-	else if (m_data->user.getMapGame() == "ghost_valley.png")
-		m_player.setLocation(sf::Vector2f(950 / 8, 600 / 8));
+    std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
+    auto locations = readFromFile<int>(name+"_start_position.txt",3,3);
+    m_player.setFinishLine(locations[2][0]);
+		m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
+
+
+//	else if (m_data->user.getMapGame() == "ghost_valley.png")
+//		m_player.setLocation(sf::Vector2f(950 / 8, 600 / 8));
 }
 //=============================================================================
 void RaceStatesBase::InitSky()

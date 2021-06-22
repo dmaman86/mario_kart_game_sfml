@@ -36,23 +36,29 @@ void OnlineRace::Init()
 //=============================================================================
 void OnlineRace::InitNetwork()
 {
+
+    std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
+    auto locations = readFromFile<int>(name+"_start_position.txt",3,3);
+    m_player.setFinishLine(locations[2][0]);
+
 	if (m_userJoin)
 	{
 		if (m_data->user.getIfHost())
 		{
-			m_player.setLocation(sf::Vector2f(112, 56));
-			m_player2 = PlayerOnline(m_userJoin->getSprite(),
-				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(117, 59));
-            m_board.addObjects(117 * 8, 59 * 8, &m_player2);
+            m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
+            m_player2 = PlayerOnline(m_userJoin->getSprite(),
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[1][0], locations[1][0]));
+            m_board.addObjects(locations[1][0]*8, locations[1][0]*8, &m_player2);
 
         }
-	
+
 		else
-		{	
-			m_player.setLocation(sf::Vector2f(117, 59));
-			m_player2 = PlayerOnline(m_userJoin->getSprite(),
-				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(112, 56));
-            m_board.addObjects(112*8, 56 * 8, &m_player2);
+		{
+            m_player.setLocation(sf::Vector2f(locations[1][0],locations[1][1]));
+
+            m_player2 = PlayerOnline(m_userJoin->getSprite(),
+				sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[0][0], locations[0][0]));
+            m_board.addObjects(locations[0][0]*8, locations[0][0]*8, &m_player2);
 
         }
 		

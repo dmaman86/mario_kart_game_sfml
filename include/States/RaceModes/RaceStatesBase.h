@@ -35,6 +35,7 @@ public:
     void Draw() override;
     void updateAnimation(float time);
 
+
 protected:
     //================ Private functions =========================
     void InitMap();
