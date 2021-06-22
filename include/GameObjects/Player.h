@@ -31,7 +31,6 @@ public:
 	const float getAngle() const { return m_angle; };
 	void setLastScorePos(const unsigned int score);
 	const int  getLastScorePos()const;
-	const int  getLap() const { return m_lap; }
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
 	const float getCoefficient()const { return m_coefficient_of_friction; }
@@ -42,8 +41,6 @@ protected:
 	void handleLock(const float);
 	virtual void updateSpeed(const float);
 	void updateLocation(const float);
-	void addLap() { ++m_lap; }
-
 
 	//================ Private members ==========================
     Animation m_animation;
@@ -57,7 +54,6 @@ protected:
     bool m_is_spin;
 	bool m_is_smaller;
     int m_last_pos_score;
-    int m_lap;
 	float m_smaller_time;
 	sf::Time m_timepasses;
 	int m_finish_line;

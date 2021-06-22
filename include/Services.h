@@ -33,6 +33,7 @@ public:
     bool createRace(User* );
     bool getUsers(std::vector<User>&, const std::string );
     void updatePosition(User*, PlayerBase*, std::mutex*, bool* );
+    void updateWin(User*, PlayerBase*);
     void getPosition(User*, PlayerBase*, std::mutex*, bool* );
 
 

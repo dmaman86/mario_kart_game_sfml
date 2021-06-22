@@ -19,7 +19,6 @@ Player::Player(const sf::Vector2f loc, const sf::Vector2f pos, std::string sprit
 	m_is_spin(false),
 	m_is_smaller(false),
 	m_smaller_time(0.f),
-	m_lap(0),
 	m_soundOn(sound)
 {
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));

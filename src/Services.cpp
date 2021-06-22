@@ -196,10 +196,6 @@ void Services::buildVecUsers(std::vector<User>& users, const std::string id, boo
     if( values[0] != id )
     {
         User user(values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
-        std::stringstream ss(values[4]);
-        bool game = false;
-        ss >> game;
-        user.updateInGame(game);
         users.emplace_back( user );
     }
 }
@@ -218,7 +214,8 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex,
         m_ostream.clear();
 
         m_ostream << "positionX=" << player->getLocation().x
-                  << "&positionY=" << player->getLocation().y;
+                  << "&positionY=" << player->getLocation().y
+                  << "&position=" << player->getLap();
         request_put.setBody(m_ostream.str());
         local_response = http.sendRequest( request_put );
        // std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -229,6 +226,25 @@ void Services::updatePosition(User* user, PlayerBase* player, std::mutex* mutex,
             user->setOnline(false);
         mutex->unlock();
     }
+}
+
+void Services::updateWin(User* user, PlayerBase* player)
+{
+    sf::Http::Response local_response;
+    sf::Http::Request request_put(HttpNetwork::path_player + "/" + user->getId(), sf::Http::Request::Put);
+    sf::Http http(HttpNetwork::url);
+    request_put.setField("Content-Type", "application/x-www-form-urlencoded");
+
+    m_ostream.str("");
+    m_ostream.clear();
+
+    m_ostream << "positionX=" << player->getLocation().x
+              << "&positionY=" << player->getLocation().y
+              << "&position=" << player->getLap();
+    request_put.setBody(m_ostream.str());
+    local_response = http.sendRequest( request_put );
+    if(local_response.getStatus() != sf::Http::Response::Ok )
+        user->setOnline(false);
 }
 
 void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mutex, bool* finish )
@@ -255,9 +271,10 @@ void Services::getPosition(User* otherUser, PlayerBase* player, std::mutex* mute
             m_stream << local_response.getBody();
             boost::property_tree::ptree pt;
             boost::property_tree::read_json(m_stream, pt);
-            auto x = pt.get<float>("positionX");
-            auto y = pt.get<float>("positionY");
-            player->setLocation(sf::Vector2f(x, y));
+            player->setLocation(sf::Vector2f(pt.get<float>("positionX"),
+                            pt.get<float>("positionY")));
+            player->set_lap(pt.get<int>("position"));
+
         }
         mutex->unlock();
     }

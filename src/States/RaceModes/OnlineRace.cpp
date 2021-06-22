@@ -90,6 +90,23 @@ void OnlineRace::Update(float deltatime) {
 	
     RaceStatesBase::Update(deltatime);
 	UpdateNetwork(deltatime);
+    if(m_player.getLap() == 3)
+    {
+        m_finish = true;
+        m_thread_get.detach();
+        m_thread_up.detach();
+        m_data->services.updateWin(&m_data->user, &m_player);
+        std::cout << "Player one wins\n";
+        m_data->stateStack.RemoveState();
+    }
+    if(m_player2.getLap() == 3)
+    {
+        m_finish = true;
+        m_thread_get.detach();
+        m_thread_up.detach();
+        std::cout << "Player two wins\n";
+        m_data->stateStack.RemoveState();
+    }
 }
 
 //=============================================================================
