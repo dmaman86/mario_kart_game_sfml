@@ -5,7 +5,6 @@ target_sources(test_mario_kart PRIVATE
 		"StaticObject.cpp"
 		"PlayerOnline.cpp"
 		"PlayerBase.cpp"
-		"SkyLine.cpp"
 		"Banana.cpp"
 		"Ghost.cpp"
 		"SeconedPlayer.cpp"

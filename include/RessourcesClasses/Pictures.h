@@ -41,8 +41,10 @@ public:
     static const std::string ToadDriver;
     static const std::string YoshiDriver;
     static const std::string rectangle;
-	static const std::string sky_back;
-	static const std::string sky_front;
+	static const std::string base_sky_back;
+	static const std::string base_sky_front;
+	static const std::string ghost_valley_sky_front;
+	static const std::string ghost_valley_sky_back;
 	static const std::string speed0;
 	static const std::string speed1;
 	static const std::string speed2;

@@ -3,4 +3,6 @@ target_sources(test_mario_kart PRIVATE "Animation.cpp"
 	                              	   "CollisionHandling.cpp"
 			                           "GameStatusBar.cpp"  
                                        "mode7.cpp"
-		                               "SpeedScreen.cpp")
+		                               "SpeedScreen.cpp"
+		                               "SkyLine.cpp"
+									   )

@@ -13,6 +13,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data) : m_data(data),
                                                              sf::Vector2f(112,56),
                                                              m_data->user.getSprite()),
                                                     m_map_race( m_data->user.getMapGame())
+	, m_sky("can we delete this constructor ?? !! please! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 {
 
 }
@@ -25,7 +26,7 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
                                                                               m_data->user.getSprite()),
                                                                      m_map_race( m_data->user.getMapGame()),
 	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
-	m_sky(), m_speed_scr()// 1000.f, 600.f));
+	m_sky(map), m_speed_scr()// 1000.f, 600.f));
 {
 
 }

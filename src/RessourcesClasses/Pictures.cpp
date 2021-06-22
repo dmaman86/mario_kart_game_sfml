@@ -18,8 +18,12 @@ const std::string Pictures::ToadDriver = "toad.png";
 const std::string Pictures::YoshiDriver = "yoshi.png";
 const std::string Pictures::rectangle = "rectangle.jpg";
 const std::string Pictures::drivers = "drivers.png";
-const std::string Pictures::sky_back = "sky_back.png";
-const std::string Pictures::sky_front = "sky_front.png";
+
+const std::string Pictures::base_sky_back = "base_sky_back.png";
+const std::string Pictures::base_sky_front = "base_sky_front.png";
+const std::string Pictures::ghost_valley_sky_back = "ghost_valley_sky_back.png";
+const std::string Pictures::ghost_valley_sky_front = "ghost_valley_sky_front.png";
+
 const std::string Pictures::speed0 = "speed0.png";
 const std::string Pictures::speed1 = "speed1.png";
 const std::string Pictures::speed2 = "speed2.png";
@@ -73,10 +77,14 @@ Pictures::Pictures():m_drivers(DRIVER_VECTOR_LEN)
         throw std::runtime_error("Cant Open " + Pictures::rectangle);
     if (!(m_pics[Pictures::drivers] = sf::Texture()).loadFromFile(Pictures::drivers))
         throw std::runtime_error("Cant Open " + Pictures::drivers);
-	if (!(m_pics[Pictures::sky_back] = sf::Texture()).loadFromFile(Pictures::sky_back))
-		throw std::runtime_error("Cant Open " + Pictures::sky_back);
-	if (!(m_pics[Pictures::sky_front] = sf::Texture()).loadFromFile(Pictures::sky_front))
-		throw std::runtime_error("Cant Open " + Pictures::sky_front);
+	if (!(m_pics[Pictures::base_sky_back] = sf::Texture()).loadFromFile(Pictures::base_sky_back))
+		throw std::runtime_error("Cant Open " + Pictures::base_sky_back);
+	if (!(m_pics[Pictures::base_sky_front] = sf::Texture()).loadFromFile(Pictures::base_sky_front))
+		throw std::runtime_error("Cant Open " + Pictures::base_sky_front);
+	if (!(m_pics[Pictures::ghost_valley_sky_back] = sf::Texture()).loadFromFile(Pictures::ghost_valley_sky_back))
+		throw std::runtime_error("Cant Open " + Pictures::ghost_valley_sky_back);
+	if (!(m_pics[Pictures::ghost_valley_sky_front] = sf::Texture()).loadFromFile(Pictures::ghost_valley_sky_front))
+		throw std::runtime_error("Cant Open " + Pictures::ghost_valley_sky_front);
 	if (!(m_pics[Pictures::speed0] = sf::Texture()).loadFromFile(Pictures::speed0))
 		throw std::runtime_error("Cant Open " + Pictures::speed0);
 	if (!(m_pics[Pictures::speed1] = sf::Texture()).loadFromFile(Pictures::speed1))
