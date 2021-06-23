@@ -7,7 +7,7 @@
 #include <thread>
 #include <chrono>
 
-
+//========================== Constructor =========================
 HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
                                                      m_background(),
                                                      m_selected(false),
@@ -25,6 +25,7 @@ HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),
     initOptionsOffline();
 }
 
+//========================== Constructor =========================
 HostState::HostState(MarioKart::GameDataRef & data, const std::string& state): m_data( data ),
                                                                                m_background(),
                                                                                m_selected(false),
@@ -42,6 +43,7 @@ HostState::HostState(MarioKart::GameDataRef & data, const std::string& state): m
     initOptionsOffline();
 }
 
+//========================= Init section ======================================
 void HostState::Init()
 {
     sf::Vector2u textureSize;
@@ -53,7 +55,7 @@ void HostState::Init()
                           (float)m_windowSize.y / textureSize.y);
 
     m_back = std::make_shared<Button>(Pictures::MenuButtons1);
-    m_back->setTextureInRect(0, 563, 180, 63);
+    m_back->setTextureInRect(PositionButtons::back);
     m_back->setCallback([this](){
         m_data->stateStack.RemoveState();
     });
@@ -62,6 +64,7 @@ void HostState::Init()
     initErrorsTexts();
 }
 
+//============================== Handle Event ==================================
 void HostState::HandleEvent(const sf::Event & event)
 {
     if(sf::Event::MouseButtonPressed == event.type)
@@ -91,6 +94,7 @@ void HostState::HandleEvent(const sf::Event & event)
         m_pressEnter = true;
 }
 
+//================================= Update =====================================
 void HostState::Update(float dt)
 {
     for( auto & map : m_maps )
@@ -133,13 +137,15 @@ void HostState::Update(float dt)
             }
             else if( m_data->user.getOtherId().size() > 1 )
             {
-                m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
+                m_data->stateStack.AddState(StateStack::StateRef( new
+                                        OnlineRace(m_data)), false);
                 break;
             }
         }
     }
 }
 
+//================================= Draw =====================================
 void HostState::Draw()
 {
     sf::RenderWindow& window = *m_data->window;
@@ -163,6 +169,7 @@ void HostState::Draw()
         window.draw(m_error);
 }
 
+//================================= Resume =====================================
 void HostState::Resume()
 {
     m_validConnection = false;
@@ -176,6 +183,7 @@ void HostState::Resume()
         m_data->services.resetUser(&m_data->user);
 }
 
+//========================= Private Functions ================================
 void HostState::initTitlesTexts()
 {
     m_title.setFont(Fonts::instance().getFont());
@@ -196,6 +204,7 @@ void HostState::initTitlesTexts()
     m_createGame.setOutlineThickness(5.f);
 }
 
+//=============================================================================
 void HostState::initErrorsTexts()
 {
     m_error.setFont(Fonts::instance().getFont());
@@ -217,22 +226,26 @@ void HostState::initErrorsTexts()
                                           m_windowSize.y / 2));
 }
 
+//=============================================================================
 void HostState::createMaps()
 {
     auto rainbow = std::make_shared<Map>();
     rainbow->map_name = Pictures::rainbow_road;
     rainbow->map_name_tex = sf::Text();
-    rainbow->map_name_tex.setString(rainbow->map_name.substr(0,rainbow->map_name.find('.')));
+    rainbow->map_name_tex.setString(rainbow->map_name.substr(0,
+                                               rainbow->map_name.find('.')));
 
     auto donut = std::make_shared<Map>();
     donut->map_name = Pictures::donut_plains_1;
     donut->map_name_tex = sf::Text();
-    donut->map_name_tex.setString(donut->map_name.substr(0,donut->map_name.find('.')));
+    donut->map_name_tex.setString(donut->map_name.substr(0,
+                                               donut->map_name.find('.')));
 
     auto ghost = std::make_shared<Map>();
     ghost->map_name = Pictures::ghost_valley;
     ghost->map_name_tex = sf::Text();
-    ghost->map_name_tex.setString(ghost->map_name.substr(0,ghost->map_name.find('.')));
+    ghost->map_name_tex.setString(ghost->map_name.substr(0,
+                                               ghost->map_name.find('.')));
 
     m_maps[MapNames::RainBow] = rainbow;
     m_maps[MapNames::Donut] = donut;
@@ -248,12 +261,14 @@ void HostState::createMaps()
     }
 }
 
+//=============================================================================
 void HostState::initTexture(sf::Texture& tex, const std::string& map_name)
 {
     tex = sf::Texture();
     tex.loadFromImage(Pictures::instance().getMapTex(map_name));
 }
 
+//=============================================================================
 void HostState::initRectangleShape(sf::RectangleShape& rect, sf::Texture& tex, size_t pos)
 {
     rect = sf::RectangleShape();
@@ -263,6 +278,7 @@ void HostState::initRectangleShape(sf::RectangleShape& rect, sf::Texture& tex, s
     rect.setOutlineThickness(5.f);
 }
 
+//=============================================================================
 void HostState::initText(sf::Text& text, size_t pos, const sf::RectangleShape& rect)
 {
     text.setCharacterSize(40);
@@ -272,6 +288,7 @@ void HostState::initText(sf::Text& text, size_t pos, const sf::RectangleShape& r
     text.setPosition(160 + ( pos * 90 ), (rect.getGlobalBounds().height / 2) + 400);
 }
 
+//=============================================================================
 void HostState::resetOutLineColor(MapNames index)
 {
     for(auto it = m_maps.begin(); it != m_maps.end(); it++)
@@ -281,15 +298,19 @@ void HostState::resetOutLineColor(MapNames index)
     }
 }
 
+//=============================================================================
 void HostState::initOptionsOffline()
 {
     m_options_offline["CoinRace"] = [this](){
-        m_data->stateStack.AddState(StateStack::StateRef( new CoinRace(m_data)), false);
+        m_data->stateStack.AddState(StateStack::StateRef( new CoinRace(m_data)),
+                                    false);
     };
     m_options_offline["DriftKingRace"] = [this](){
-        m_data->stateStack.AddState(StateStack::StateRef( new DriftKingRace(m_data)), false);
+        m_data->stateStack.AddState(StateStack::StateRef( new DriftKingRace(m_data)),
+                                    false);
     };
     m_options_offline["TimeRace"] = [this](){
-        m_data->stateStack.AddState(StateStack::StateRef( new TimeRace(m_data)), false);
+        m_data->stateStack.AddState(StateStack::StateRef( new TimeRace(m_data)),
+                                    false);
     };
 }

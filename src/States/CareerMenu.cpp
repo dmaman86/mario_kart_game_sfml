@@ -29,28 +29,28 @@ void CareerMenu::Init()
 {
     // carrer title
     auto buttonCarer = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonCarer->setTextureInRect( 0, 485, 270, 60);
+    buttonCarer->setTextureInRect(PositionButtons::carerTitle);
     buttonCarer->setInPosition(sf::Vector2f(150, 150));
     buttonCarer->setInScale(1.25, 1.5);
 
     // time title
     auto buttonTime = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonTime->setTextureInRect(0, 875, 453, 60);
+    buttonTime->setTextureInRect(PositionButtons::timeRace);
     buttonTime->setInPosition(sf::Vector2f(150, 325));
 
     //collect coins
     auto buttonCollectionCoins = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonCollectionCoins->setTextureInRect(0, 955, 562, 57);
+    buttonCollectionCoins->setTextureInRect(PositionButtons::collectionCoinsRace);
     buttonCollectionCoins->setInPosition(sf::Vector2f(150, 400));
 
     //dk
     auto buttonDK = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonDK->setTextureInRect(0, 795, 522, 66);
+    buttonDK->setTextureInRect(PositionButtons::dkRace);
     buttonDK->setInPosition(sf::Vector2f(150, 475));
 
     //garage
     auto buttonGarage = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonGarage->setTextureInRect(520, 80, 280, 62);
+    buttonGarage->setTextureInRect(PositionButtons::garage);
     buttonGarage->setInPosition(sf::Vector2f(150, 550));
     buttonGarage->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GarageState(m_data)), false);
@@ -58,7 +58,7 @@ void CareerMenu::Init()
 
     //save
     auto buttonSave = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonSave->setTextureInRect(500, 0, 212, 54);
+    buttonSave->setTextureInRect(PositionButtons::save);
     buttonSave->setInPosition(sf::Vector2f(150, 625));
     buttonSave->setCallback(std::bind(&CareerMenu::saveUser, this));
 

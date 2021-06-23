@@ -18,7 +18,7 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
         (float)m_windowSize.y / textureSize.y);
 
     m_back = std::make_shared<Button>(Pictures::MenuButtons1);
-    m_back->setTextureInRect(0, 563, 180, 63);
+    m_back->setTextureInRect(PositionButtons::back);
 
     //sound
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));

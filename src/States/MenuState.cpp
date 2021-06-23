@@ -13,8 +13,7 @@ MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
                                                     m_showExtra(false),
                                                     m_rect_logo()
 {
-
-
+    setVolume();
 }
 
 void MenuState::Init()
@@ -37,38 +36,38 @@ void MenuState::Init()
 
 
     auto buttonLetPlay = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonLetPlay->setTextureInRect(0, 250, 414, 64);
+    buttonLetPlay->setTextureInRect(PositionButtons::letPlay);
     buttonLetPlay->setInPosition(sf::Vector2f(100, 350));
 
     auto buttonSettings = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonSettings->setTextureInRect(0, 717, 360, 65);
+    buttonSettings->setTextureInRect(PositionButtons::settings);
     buttonSettings->setInPosition(sf::Vector2f(100, 450));
     buttonSettings->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
     });
 
     auto buttonAbout = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonAbout->setTextureInRect(0, 640, 255, 60);
+    buttonAbout->setTextureInRect(PositionButtons::about);
     buttonAbout->setInPosition(sf::Vector2f(100, 540));
     buttonAbout->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new AboutState(m_data)), false);
     });
 
     auto buttonHelp = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonHelp->setTextureInRect(0, 330, 187, 62);
+    buttonHelp->setTextureInRect(PositionButtons::help);
     buttonHelp->setInPosition(sf::Vector2f(100, 640));
     buttonHelp->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
     });
     m_button_online = std::make_shared<Button>(Pictures::MenuButtons1);
-    m_button_online->setTextureInRect(0, 0, 265, 55);
+    m_button_online->setTextureInRect(PositionButtons::online);
     m_button_online->setInPosition(sf::Vector2f(800, 350));
     m_button_online->setCallback([this](){
         m_data->user.setOnline(true);
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
     });
     m_button_carer = std::make_shared<Button>(Pictures::MenuButtons1);
-    m_button_carer->setTextureInRect(0, 485, 265, 70);
+    m_button_carer->setTextureInRect(PositionButtons::carer);
     m_button_carer->setInPosition(sf::Vector2f(1100, 350));
     m_button_carer->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
@@ -81,16 +80,15 @@ void MenuState::Init()
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
-    setVolume();
     stopMusic();
-
 }
 
 void MenuState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type)
     {
-        m_click.play();
+        if(m_onSound)
+            m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
 
@@ -181,9 +179,5 @@ void MenuState::stopMusic()
 
 void MenuState::setVolume()
 {
-    if (m_data->user.getIfSound())
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
-
+    m_onSound = m_data->user.getIfSound();
 }

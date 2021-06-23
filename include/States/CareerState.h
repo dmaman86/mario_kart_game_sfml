@@ -31,9 +31,8 @@ private:
     std::map<Options, std::shared_ptr<Button>> m_buttons;
 	MarioKart::GameDataRef m_data;
 
-    bool openLoadFile();
+    const bool openLoadFile();
     void resetButtons(Options);
     void updateColors(const sf::Vector2f& loc);
-
 };
 

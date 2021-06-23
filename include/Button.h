@@ -10,41 +10,61 @@
 #include <functional>
 
 // class button with multiple ingeritance
-class Button : public sf::Drawable, public sf::Transformable
-{
+class Button : public sf::Drawable, public sf::Transformable {
 public:
     // button can have function like member
     typedef std::function<void()> Callback;
 public:
     // constructor & destructor
-	Button( const std::string& );
-	Button(const std::string&, const std::string&);
-	~Button() = default;
+    Button(const std::string &);
 
-	// public functions
-	bool validGlobalBound(const sf::Vector2f& );
-	void updateIfSelected(bool);
-	void resetIfSelected();
-	void setTextureInRect( int, int, int, int );
+    Button(const std::string &, const std::string &);
+
+    ~Button() = default;
+
+    // public functions
+    bool validGlobalBound(const sf::Vector2f &);
+
+    void updateIfSelected(bool);
+
+    void resetIfSelected();
+
+    void setTextureInRect(const std::vector<int>&);
+    void setTextureInRect(int, int, int, int);
+
     void setInScale(float, float);
+
     void setIntoScale(float, float);
-    void setInPosition( const sf::Vector2f& );
-    const sf::Vector2f& getInPosition();
+
+    void setInPosition(const sf::Vector2f &);
+
+    const sf::Vector2f &getInPosition();
+
     void setInOrigin();
+
     float getWidth();
+
     float getHeight();
-    const std::string& getName();
-    void setId(const std::string&);
-    const std::string& getId();
-    const bool& getIfSelected();
+
+    const std::string &getName();
+
+    void setId(const std::string &);
+
+    const std::string &getId();
+
+    const bool &getIfSelected();
+
     void setFillInColor(int, int, int, int);
+
     void setCallback(Callback);
+
     void initCallback();
-    const sf::Sprite& getSprite();
+
+    const sf::Sprite &getSprite();
 
 private:
     // private function to draw in window
-    void draw(sf::RenderTarget&, sf::RenderStates) const;
+    void draw(sf::RenderTarget &, sf::RenderStates) const;
 
 private:
     // private members

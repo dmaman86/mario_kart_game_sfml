@@ -19,13 +19,13 @@ CareerState::CareerState(MarioKart::GameDataRef& data):
 void CareerState::Init()
 {
     auto buttonNewGame = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonNewGame->setTextureInRect(0, 75, 405, 66);
+    buttonNewGame->setTextureInRect(PositionButtons::newGame);
     buttonNewGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
     buttonNewGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);
     });
     auto buttonLoadGame = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonLoadGame->setTextureInRect(0, 160, 428, 67);
+    buttonLoadGame->setTextureInRect(PositionButtons::loadGame);
     buttonLoadGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5, m_windowSize.y / 2.5 + 100));
     buttonLoadGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
@@ -124,7 +124,7 @@ void CareerState::Draw()
         m_data->window->draw(*it.second.get());
 }
 
-bool CareerState::openLoadFile()
+const bool CareerState::openLoadFile()
 {
     if (std::filesystem::exists("save.txt"))
     {
@@ -132,11 +132,13 @@ bool CareerState::openLoadFile()
         std::string line;
 
         std::ifstream loadGame;
-       
+        try{
             loadGame.open("save.txt");
             if (loadGame.fail())
                 throw std::runtime_error("Error: file not found/exist\n");
-
+        }catch(...){
+            return false;
+        }
 
         std::getline(loadGame, line_text);
         m_data->user.setName(line_text);

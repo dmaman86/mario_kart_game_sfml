@@ -39,12 +39,12 @@ void GetDataState::Init()
 
     initTexts(windowSize);
 
-    m_save.setTextureInRect(500, 0, 212, 54);
+    m_save.setTextureInRect(PositionButtons::save);
     m_save.setInOrigin();
     m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,
                                       (windowSize.y / 2) + 300));
 
-    m_createGame.setTextureInRect(500, 155, 600, 60);
+    m_createGame.setTextureInRect(PositionButtons::createGame);
     m_createGame.setInOrigin();
     m_createGame.setInPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
                                             (windowSize.y / 3) + 100));
@@ -53,7 +53,7 @@ void GetDataState::Init()
         m_data->stateStack.AddState(StateStack::StateRef( new HostState(m_data)), false);
     });
 
-    m_joinGame.setTextureInRect(500, 238, 600, 60);
+    m_joinGame.setTextureInRect(PositionButtons::joinGame);
     m_joinGame.setInOrigin();
     m_joinGame.setInPosition(sf::Vector2f((windowSize.x / m_createGame.getInPosition().x) + 1000,
                                           (windowSize.y / 3 ) + 200));
@@ -80,7 +80,7 @@ void GetDataState::Init()
 
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
     setVolume();
-    m_back.setTextureInRect(0,563,180,63);
+    m_back.setTextureInRect(PositionButtons::back);
 }
 
 void GetDataState::initVectorSpritesOnline( const sf::Vector2u& windowSize )
@@ -97,7 +97,7 @@ void GetDataState::initVectorSpritesOnline( const sf::Vector2u& windowSize )
     size_t i = 0;
     for( auto it = m_drivers.begin(); it != m_drivers.end(); it++, i+=5 )
     {
-        it->get()->setTextureInRect(62, 0, 33, 30);
+        it->get()->setTextureInRect(PositionDrive::start);
         it->get()->setInScale(5, 5);
         it->get()->setInPosition(sf::Vector2f(120 + ( i * 30 ), (windowSize.y / 2 ) - 200));
     }
@@ -109,7 +109,7 @@ void GetDataState::initVectorSpritesOffline(const sf::Vector2u & windowSize)
     for(size_t i{0}; i < m_data->user.getMaxDrivers(); i++, j += 5)
     {
         auto button = std::make_shared<Button>(m_data->user.getDrive(i));
-        button->setTextureInRect(62, 0, 33, 30);
+        button->setTextureInRect(PositionDrive::start);
         button->setIntoScale(5, 5);
         button->setInPosition(sf::Vector2f(120 + ( j * 30 ), (windowSize.y / 2 ) - 200));
         m_drivers.emplace_back(button);
@@ -149,7 +149,7 @@ void GetDataState::HandleEvent(const sf::Event & event)
                 {
                     driver->updateIfSelected(res);
                     m_user_sprite = driver->getName();
-                    driver->setTextureInRect(95, 0, 33, 30);
+                    driver->setTextureInRect(PositionDrive::select);
                     resetOtherDrivers(i);
                 }
             }
@@ -176,7 +176,7 @@ void GetDataState::resetOtherDrivers(size_t index)
     for(size_t i{0}; i < m_drivers.size(); i++)
     {
         if( i != index)
-            m_drivers[i]->setTextureInRect(62, 0, 33, 30);
+            m_drivers[i]->setTextureInRect(PositionDrive::start);
     }
 }
 

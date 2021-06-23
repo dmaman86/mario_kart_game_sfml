@@ -126,29 +126,43 @@ void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
 
     int i = -5;
     m_drivers.emplace(std::make_pair(Pictures::BowserDriver, driver(true, (Pictures::drivers), sf::Text("1000", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::BowserDriver), i+=5, 5);
+    m_drivers.at(Pictures::BowserDriver).sprite.setTextureInRect(PositionDrivers::bowser);
+    initDriver(m_drivers.at(Pictures::BowserDriver), i+=5);
+
     m_drivers.emplace(std::make_pair(Pictures::DKDriver, driver(true, (Pictures::drivers), sf::Text("1200", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::DKDriver), i += 5, 45);
+    m_drivers.at(Pictures::DKDriver).sprite.setTextureInRect(PositionDrivers::dk);
+    initDriver(m_drivers.at(Pictures::DKDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::MarioDriver,  driver(true, (Pictures::drivers), sf::Text("1300", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::MarioDriver), i += 5, 80);
+    m_drivers.at(Pictures::MarioDriver).sprite.setTextureInRect(PositionDrivers::mario);
+    initDriver(m_drivers.at(Pictures::MarioDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::KoopaDriver,  driver(true, (Pictures::drivers), sf::Text("1400", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::KoopaDriver), i += 5, 115);
+    m_drivers.at(Pictures::KoopaDriver).sprite.setTextureInRect(PositionDrivers::koopa);
+    initDriver(m_drivers.at(Pictures::KoopaDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::LuigiDriver,  driver(true, (Pictures::drivers), sf::Text("1500", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::LuigiDriver), i += 5, 150);
+    m_drivers.at(Pictures::LuigiDriver).sprite.setTextureInRect(PositionDrivers::luigi);
+    initDriver(m_drivers.at(Pictures::LuigiDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::PeachDriver,  driver(true, (Pictures::drivers), sf::Text("1600", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::PeachDriver), i += 5, 190);
+    m_drivers.at(Pictures::PeachDriver).sprite.setTextureInRect(PositionDrivers::peach);
+    initDriver(m_drivers.at(Pictures::PeachDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::ToadDriver,   driver(true, (Pictures::drivers), sf::Text("1700", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::ToadDriver), i += 5, 225);
+    m_drivers.at(Pictures::ToadDriver).sprite.setTextureInRect(PositionDrivers::toad);
+    initDriver(m_drivers.at(Pictures::ToadDriver), i += 5);
+
     m_drivers.emplace(std::make_pair(Pictures::YoshiDriver,  driver(true, (Pictures::drivers), sf::Text("1800", Fonts::instance().Fonts::getFontMario()))));
-    initDriver(m_drivers.at(Pictures::YoshiDriver), i += 5, 260);
+    m_drivers.at(Pictures::YoshiDriver).sprite.setTextureInRect(PositionDrivers::yoshi);
+    initDriver(m_drivers.at(Pictures::YoshiDriver), i += 5);
 
 }
 
 //take the pictures of the drivers
 //=============================================================
-void GarageState::initDriver(driver& dr,const int i , const int j)
+void GarageState::initDriver(driver& dr,const int i)
 {
-    dr.sprite.setTextureInRect(360, j, 33, 33);
     dr.sprite.setInScale(3, 4);
     dr.sprite.setInPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 150));
 

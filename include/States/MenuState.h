@@ -7,6 +7,7 @@
 #include "MarioKart.h"
 #include "Sounds.h"
 #include "Button.h"
+#include "Macros.h"
 
 class MenuState : public State
 {
@@ -41,6 +42,7 @@ private:
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
     bool m_showExtra;
+    bool m_onSound;
     // private functions
     void setVolume();
     void updateColors(const sf::Vector2f&);

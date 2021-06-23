@@ -22,6 +22,11 @@ bool Button::validGlobalBound(const sf::Vector2f& location)
     return m_button.getGlobalBounds().contains(location);
 }
 
+void Button::setTextureInRect( const std::vector<int>& var )
+{
+    m_button.setTextureRect(sf::Rect(var[0], var[1], var[2], var[3]));
+}
+
 void Button::setTextureInRect( int x, int y, int z, int w )
 {
     m_button.setTextureRect(sf::Rect(x, y, z, w));

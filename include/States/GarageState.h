@@ -19,11 +19,7 @@ public:
 	void Update(float) override;
 	void Draw() override;
 
-	
-
 private:
-	
-
 	//===================private members=================
 	struct driver
 	{
@@ -43,14 +39,12 @@ private:
 
     };
 
-
-
 	//===================private function=================
 	void resetButtons(Options);
 	void initVectorSprites(const sf::Vector2u&);
 	void updateColors(const sf::Vector2f);
 	void buyingTest(std::string);
-	void initDriver(driver&, const int i, const int j);
+	void initDriver(driver&, const int i);
 	void blockingMyPlayers();
 	void createText(const sf::Vector2u);
 
