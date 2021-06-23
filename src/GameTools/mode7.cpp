@@ -13,8 +13,6 @@ Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, f
 }
 
 //========================== Public functions =================================
-
-//=============================================================================
 void Mode7::setTheta(float theta)
 {
 	m_cosinus = float(std::cos(theta * 3.1415 / 180.0));
@@ -22,7 +20,7 @@ void Mode7::setTheta(float theta)
 }
 //=============================================================================
 bool Mode7::calcInAngle
-	(sf::Vector2f & world_c, const sf::Vector2u screen_c,const Camera& camera)
+	(sf::Vector2f & world_c, const sf::Vector2u& screen_c,const Camera& camera)
 {
 	auto dis_y = ((float)m_H_helf - (float)screen_c.y);
 	auto dis_x = ((float)screen_c.x - (float)m_W_half);
@@ -38,6 +36,9 @@ bool Mode7::calcInAngle
 }
 
 //=============================================================================
+
+//this function build the new image and check witch objects are in fov
+//if the object is in the fov the function set their position and size
 void Mode7::UpdateImg
 	(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec
 	, const Camera& camera)
@@ -93,8 +94,6 @@ sf::Sprite Mode7::getSprite()
 }
 
 //========================== Public functions =================================
-
-//=============================================================================
 void Mode7::setScreen(unsigned int width, unsigned int height)
 {
 	m_screenWidth = width;

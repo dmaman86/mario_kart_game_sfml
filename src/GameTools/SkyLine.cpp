@@ -2,7 +2,7 @@
 #include "Pictures.h"
 #include "Macros.h"
 
- SkyLine::SkyLine(const std::string str) {
+ SkyLine::SkyLine(const std::string& str) {
 
 	 std::string name = str.substr(0, str.find('.'));
 	 auto sb  = name + "_sky_back.png";
@@ -18,6 +18,7 @@
 	 m_front.setScale(4, 4);
 	 m_front.setPosition(0, HIGHT / 10);
 }
+//=============================================================================
 
  void SkyLine::Update(const bool lock,const float force)
  {
@@ -47,3 +48,4 @@
 		 m_back.setTextureRect(y);
 	 }
  }
+//=============================================================================

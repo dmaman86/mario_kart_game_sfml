@@ -11,26 +11,27 @@ Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& m_sprit
                                         m_animationTime(animationtime),
                                         m_elapsed()
 {
-    // TODO: לירן למה זה? אם אתה שם בהערה את השורה זה מסתדר באונליין
     update();
 }
 
 
 
 void Animation::update(float delta, bool is_pressed) {
-
+    //add the the count time
     m_elapsed +=delta;
+    //check if it is time to change animation
     if(m_elapsed > m_animationTime){
        m_elapsed -= m_animationTime;
+       //if the forward key is not press take one animation back
         if (!is_pressed){
             m_index -- ;
         if(m_index < 0) m_index = 0;
     }
     else
-
          if ( m_index < m_vector_len - 1) {
                 ++m_index;
          }
+         //if the animation is not cyclit the animation stay on the last one
          else if(m_is_cyclic)m_index++;
         }
     m_index %= m_vector_len;
@@ -47,16 +48,14 @@ void Animation::update()
 
 void Animation::spin(float dt) {
 
-
     if(m_index == m_data.size()-1)
         m_sprite.setScale(-SCALEPLAYER,SCALEPLAYER);
     else if  (m_index == 0)
         m_sprite.setScale(SCALEPLAYER,SCALEPLAYER);
-
+    //check in witch side the sprite is and spin the the other side
     (m_sprite.getScale().x > 0 )? m_index+=2:m_index--;
 
     m_index %= m_data.size();
-
 
     update();
 }

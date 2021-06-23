@@ -11,6 +11,7 @@ SpeedScreen::SpeedScreen()
 		m_speeds_s.push_back(spr);
 	}
 }
+//=============================================================================
 
 void SpeedScreen::Draw(sf::RenderWindow& win , const float force, const float cof)
 {

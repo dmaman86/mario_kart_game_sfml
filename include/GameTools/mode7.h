@@ -24,7 +24,7 @@ public:
 		, float , float);
 	//===========  Public functions  ============
 	void setTheta(float theta);
-	bool calcInAngle(sf::Vector2f&, const sf::Vector2u, const Camera& camera);//
+	bool calcInAngle(sf::Vector2f&, const sf::Vector2u &, const Camera& camera);//
 	void UpdateImg(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>&,const Camera&);
 	sf::Sprite getSprite();
 

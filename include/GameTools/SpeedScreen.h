@@ -11,4 +11,4 @@ public:
 private:
 	std::vector<sf::Sprite> m_speeds_s;
 
-}; //end SpeedScreen 
+};

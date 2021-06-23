@@ -4,7 +4,7 @@
 class SkyLine {
 
 public:
-    SkyLine(const std::string);
+    SkyLine(const std::string &);
 	void Update(const bool, const float);
 	const sf::Sprite& getBack() const { return m_back; }
 	const sf::Sprite& getFront() const { return m_front; }

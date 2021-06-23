@@ -25,6 +25,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 			Pl.SpeedMultiplier();
 		Bn.setIsActive(false);
 	}
+//=============================================================================
 
 	void SpeedMultiplierPlayer(Object& Multiplier, Object& Player)
 	{
@@ -32,6 +33,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 	}
 
 
+//=============================================================================
 
 	void PlayerBanana(Object& player, Object& banana)
 	{
@@ -41,12 +43,14 @@ namespace // anonymous namespace — the standard way to make function "static"
             Pl.spindriver();
         Bn.setIsActive(false);
 	}
+//=============================================================================
 
 	void BananaPlayer(Object& Banana,
 		Object& Player)
 	{
 		PlayerBanana(Player, Banana);
 	}
+//=============================================================================
 
 	void PlayerGhost(Object& player, Object& ghost)
 	{
@@ -56,12 +60,14 @@ namespace // anonymous namespace — the standard way to make function "static"
 			Pl.driveSmaller();
 		gh.setIsActive(false);
 	}
+//=============================================================================
 
 	void GhostPlayer(Object& Ghost,
 		Object& Player)
 	{
 		PlayerGhost(Player, Ghost);
 	}
+//=============================================================================
 
 	void PlayerCoin(Object& player, Object& coin)
 	{
@@ -71,11 +77,13 @@ namespace // anonymous namespace — the standard way to make function "static"
 			co.addCollected();
 		co.setIsActive(false);
 	}
+//=============================================================================
 
 	void CoinPlayer(Object& coin, Object& Player)
 	{
 		PlayerCoin(Player, coin);
 	}
+//=============================================================================
 
 	// primary collision-processing functions
 	void PlayerPipe(Object& player,Object& pipe)
@@ -85,6 +93,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 
 		Pl.driveBack();
 	}
+//=============================================================================
 
 	void PlayerPlayerOnline(Object& player,Object& player2)
     {
@@ -92,17 +101,14 @@ namespace // anonymous namespace — the standard way to make function "static"
     }
 
 
-//...
 
-// secondary collision-processing functions that just
-// implement symmetry: swap the parameters and call a
-// primary function
 void PipePlayer(Object& Pipe,
 	Object& Player)
 {
 	PlayerPipe(Player,Pipe);
 }
-//...
+//=============================================================================
+
 void PlayerFloorAsphalt(Object& player,
 	Object& floor_asphalt)
 {
@@ -110,6 +116,8 @@ void PlayerFloorAsphalt(Object& player,
 	Player& Pl = dynamic_cast<Player&>(player);
 	Pl.setCoefficientOfFriction(1);
 }
+//=============================================================================
+
 void PlayerFloorBrick(Object& player,
 	Object& floorbrick)
 {
@@ -118,6 +126,8 @@ void PlayerFloorBrick(Object& player,
 	Pl.setCoefficientOfFriction(2);
 	Pl.driveBack();
 }
+//=============================================================================
+
 void PlayerFloorSand(Object& player,
 	Object& floorsand)
 {
@@ -126,11 +136,13 @@ void PlayerFloorSand(Object& player,
 	Pl.setCoefficientOfFriction(2);
 
 }
+//=============================================================================
 
 using HitFunctionPtr = void (*)(Object&, Object&);
 // typedef void (*HitFunctionPtr)(GameObject&, GameObject&);
 using Key = std::pair<std::type_index, std::type_index>;
 using HitMap = std::map<Key, HitFunctionPtr>;
+//=============================================================================
 
 HitMap initializeCollisionMap()
 {
@@ -159,6 +171,7 @@ HitMap initializeCollisionMap()
     //...
     return phm;
 }
+//=============================================================================
 
 HitFunctionPtr lookup(const std::type_index& class1, const std::type_index& class2)
 {
@@ -172,6 +185,7 @@ HitFunctionPtr lookup(const std::type_index& class1, const std::type_index& clas
 }
 
 } // end namespace
+//=============================================================================
 
 void processCollision(Object& object1, Object& object2)
 {
@@ -182,3 +196,4 @@ void processCollision(Object& object1, Object& object2)
     }
     phf(object1, object2);
 }
+//=============================================================================

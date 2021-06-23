@@ -14,8 +14,9 @@
 Board::Board() {
 
 }
+//=============================================================================
 
-void Board::fillMap(const std::string str) {
+void Board::fillMap(const std::string& str) {
 
     std::string name = str.substr(0,str.find('.'));
 	auto map_int = readFromFile<char>(name+".txt");
@@ -45,24 +46,17 @@ void Board::fillMap(const std::string str) {
     }
 
 }
+//=============================================================================
 
-Floor& Board::operator()(unsigned int i, unsigned int j) {
+Floor& Board::operator()(unsigned int i, unsigned int j)const {
 	if (i < m_map.size() && j < m_map[0].size())
 		return *m_map[i][j].get();
 	throw std::range_error("m_map cannot get " + std::to_string(i) + " or "  +std::to_string(j));
 }
 
-sf::Vector2f Board::transferPixelToCords(sf::Vector2f loc) {
+//=============================================================================
 
-	return sf::Vector2f(loc / 8.f);
-}
-
-void Board::fillMap(const std::vector<std::vector<char>>&  map_int)
-{
-
-}
-
-void Board::fillObjectMap(std::string str) {
+void Board::fillObjectMap(const std::string& str) {
 
 	std::string name = str.substr(0, str.find('.'));
 	auto map_int = readFromFile<int>(name + "_objects.txt",17,3);
@@ -91,10 +85,35 @@ void Board::fillObjectMap(std::string str) {
 		}
 	}
 }
+//=============================================================================
 
 void Board::updateAnimation(float time) {
     for(auto & vec:m_vec_obj)
         vec.second->updateAnimation(time);
 
 }
+//=============================================================================
 
+int Board::getFloorScore(int x, int y)const {
+    if (x < m_map.size() && y < m_map[0].size())
+        return m_map[x][y]->getScore();
+    throw std::range_error("m_map cannot get " + std::to_string(x) + " or " + std::to_string(y));
+}
+//=============================================================================
+
+void Board::addObjects(float x, float y, PlayerOnline *obj) {
+    m_vec_obj[std::pair(x, y)] = std::make_shared
+            <PlayerOnline>(*obj);
+}
+//=============================================================================
+
+void Board::updateObjects(float x, float y, float z, float w) {
+    if (auto it = m_vec_obj.find(std::pair(x, y));it != m_vec_obj.cend()) {
+        auto nodeHandler = m_vec_obj.extract(std::pair(x, y));
+        nodeHandler.key() = std::pair(z, w);
+        m_vec_obj.insert(std::move(nodeHandler));
+
+    }
+}
+
+//=============================================================================
