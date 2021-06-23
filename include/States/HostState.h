@@ -19,16 +19,18 @@
 class HostState : public State
 {
 public:
+    // constructor & destructor
     HostState(MarioKart::GameDataRef&);
     HostState(MarioKart::GameDataRef&, const std::string&);
     ~HostState() = default;
-
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
     void Resume() override;
 private:
+    // private members
     struct Map
     {
         std::string map_name;
@@ -58,6 +60,7 @@ private:
     bool m_errorShow;
     float m_effectTime;
 
+    // private functions
     void initTitlesTexts();
     void initErrorsTexts();
     void createMaps(VectorMaps&);

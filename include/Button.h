@@ -9,16 +9,19 @@
 #include <memory>
 #include <functional>
 
+// class button with multiple ingeritance
 class Button : public sf::Drawable, public sf::Transformable
 {
 public:
+    // button can have function like member
     typedef std::function<void()> Callback;
 public:
-
+    // constructor & destructor
 	Button( const std::string& );
 	Button(const std::string&, const std::string&);
 	~Button() = default;
 
+	// public functions
 	bool validGlobalBound(const sf::Vector2f& );
 	void updateIfSelected(bool);
 	void resetIfSelected();
@@ -40,12 +43,15 @@ public:
     const sf::Sprite& getSprite();
 
 private:
+    // private function to draw in window
     void draw(sf::RenderTarget&, sf::RenderStates) const;
 
 private:
+    // private members
 	sf::Sprite m_button;
 	std::string m_name;
 	std::string m_id;
 	bool m_selected;
+	// function member
 	Callback m_callBack;
 };

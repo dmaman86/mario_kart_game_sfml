@@ -79,10 +79,8 @@ void MenuState::Init()
     m_buttons[Options::Settings] = buttonSettings;
     m_buttons[Options::LetPlay] = buttonLetPlay;
 
-
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
 
-	
     setVolume();
     stopMusic();
 

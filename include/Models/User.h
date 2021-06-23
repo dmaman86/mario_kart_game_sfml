@@ -6,10 +6,12 @@
 class User
 {
 public:
+    /* constructor & destructor*/
     User();
     User(std::string id, std::string name, std::string sprite, std::string map);
     ~User() = default;
 
+    // public functions
     void setId( std::string );
     void setIdOther( std::string );
     const std::string& getId();
@@ -37,6 +39,7 @@ public:
     const int getMaxDrivers();
 
 private:
+    // privates members
     std::string m_id;
     std::string m_idOther;
     std::string m_name;
@@ -50,6 +53,6 @@ private:
 	bool m_online;
 	int m_numberCoins;
 	int m_max_drivers;
-
+	// private function
 	void initDrivers();
 };

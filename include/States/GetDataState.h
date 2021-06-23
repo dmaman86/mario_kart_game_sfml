@@ -15,15 +15,17 @@
 class GetDataState : public State
 {
 public:
+    // constructor & destructor
     GetDataState(MarioKart::GameDataRef&);
     ~GetDataState() = default;
-
+    // virtul functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
     void Resume() override;
 private:
+    // private members
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
     sf::String m_playerInput;
@@ -46,6 +48,7 @@ private:
     std::string m_user_name;
     std::string m_user_sprite;
 
+    // private functions
     void centerOrigin(sf::Text&);
     void inputLogic(int charTyped);
     void deleteLastChar();

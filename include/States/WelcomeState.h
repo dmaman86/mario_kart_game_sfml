@@ -7,15 +7,16 @@
 class WelcomeState : public State
 {
 public:
+    // constructor & destructor
     WelcomeState(MarioKart::GameDataRef);
     ~WelcomeState() = default;
-
-
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
 private:
+    // privates members
     sf::Sprite m_background;
     sf::Sprite m_logoSuper;
     sf::Sprite m_logoMario;

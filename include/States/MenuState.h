@@ -11,16 +11,20 @@
 class MenuState : public State
 {
 public:
+    // constructor & destructor
     MenuState(MarioKart::GameDataRef&);
     ~MenuState() = default;
-
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    // return to this state
     void Resume() override;
+    // local function
     void stopMusic();
 private:
+    // private members
     enum class Options
     {
         About,
@@ -37,7 +41,7 @@ private:
     MarioKart::GameDataRef m_data;
     sf::Sound m_click;
     bool m_showExtra;
-
+    // private functions
     void setVolume();
     void updateColors(const sf::Vector2f&);
 };

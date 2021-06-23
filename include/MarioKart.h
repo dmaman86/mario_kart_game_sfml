@@ -31,17 +31,21 @@ public:
     typedef std::shared_ptr<DataGame> GameDataRef;
 
 public:
+    // constructor & destructor
     MarioKart();
     ~MarioKart() = default;
+    // public function
     void run();
 
 private:
-    void processInput();
-    void update( double );
-    void render();
-
+    // private members
     const float m_dt = 1.0f / 60.0f;
     sf::Clock m_clock;
     sf::RenderWindow m_window;
     GameDataRef m_dataGame;
+
+    // private functions
+    void processInput();
+    void update( double );
+    void render();
 };

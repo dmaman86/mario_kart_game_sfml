@@ -75,9 +75,6 @@ void CareerMenu::Init()
     m_buttons[Options::Save] = buttonSave;
     m_buttons[Options::Back] = m_back;
 
-
-
-
     m_name = sf::Text(m_data->user.getName(),(Fonts::instance().Fonts::getFontMario()), 50);
     m_moneys = sf::Text((std::to_string(m_data->user.getCoins()) + "$"), (Fonts::instance().Fonts::getFontMario()), 50);
     std::string name = m_data->user.getSprite().substr(0, m_data->user.getSprite().find(".png"));
@@ -88,8 +85,6 @@ void CareerMenu::Init()
     m_moneys.setOutlineThickness(5.f);
     m_car.setPosition(1000,300);
     m_car.setOutlineThickness(5.f);
-
-
 
     m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
     m_driverUser.setTextureRect(sf::Rect(355, 33, 30, 30));

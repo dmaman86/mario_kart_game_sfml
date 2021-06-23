@@ -1,7 +1,10 @@
 #include "GarageState.h"
 #include "Pictures.h"
 #include "Fonts.h"
-GarageState::GarageState(MarioKart::GameDataRef& data):m_data(data), StateOfMenu(data), m_selectCar()
+
+GarageState::GarageState(MarioKart::GameDataRef& data): m_data(data),
+                                                        StateOfMenu(data),
+                                                        m_selectCar()
 {
     
 }
@@ -9,14 +12,11 @@ GarageState::GarageState(MarioKart::GameDataRef& data):m_data(data), StateOfMenu
 //=============================================================
 void GarageState::Init()
 {
-
     sf::Vector2u windowSize;
     windowSize = m_data->window->getSize();
     initVectorSprites(windowSize);
 
-
     createText(windowSize);
-
 
     m_back->setCallback([this](){
         m_data->stateStack.RemoveState();
@@ -47,8 +47,7 @@ void GarageState::HandleEvent(const sf::Event& event)
 
         for (auto& it : m_drivers)
         {
-            updateColors(location);       
-            
+            updateColors(location);
         }
     }
     if (event.type == sf::Event::TextEntered)

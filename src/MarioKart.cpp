@@ -3,6 +3,8 @@
 #include "Macros.h"
 #include "WelcomeState.h"
 #include "Pictures.h"
+
+// init struct
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window), services(), user()
 {
@@ -13,7 +15,8 @@ MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 
 MarioKart::MarioKart()
 	: m_window(sf::VideoMode(WITDH, HIGHT), "Mario Kart", sf::Style::Close+sf::Style::Resize),
-	m_dataGame(new DataGame(m_window)) {
+	  m_dataGame(new DataGame(m_window))
+{
     m_window.setFramerateLimit(60);
 
     m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));

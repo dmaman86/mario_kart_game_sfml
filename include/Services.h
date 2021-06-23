@@ -16,14 +16,18 @@
 #include "User.h"
 #include "PlayerBase.h"
 
+// boost library help to read JSON from server
 namespace pt = boost::property_tree;
 
+/* this class connect a game with firebase serve */
 class Services
 {
 public:
+    // constructor & destructor
     Services();
     ~Services();
 
+    // public functions
     bool createUser(User* );
     bool updateUser(User* );
     bool getUser(User*, const std::string );
@@ -38,9 +42,10 @@ public:
 
 
 private:
+    // private members
     std::stringstream m_stream;
     std::ostringstream m_ostream;
-
+    // private functions
     void buildVecUsers( std::vector<User>&,
                         const std::string,
                         boost::property_tree::ptree const& );

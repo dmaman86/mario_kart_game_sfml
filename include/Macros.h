@@ -21,6 +21,7 @@ const int SCALEPLAYER = 3;
 
 namespace HttpNetwork
 {
+    // url path server
     const std::string url = "http://us-central1-fb-api-server-mario.cloudfunctions.net";
     const std::string path_user = "/app/api/users";
     const std::string path_player = "/app/api/player";
@@ -29,6 +30,7 @@ namespace HttpNetwork
     const std::string path_createRace = "/app/api/create_race/";
 }
 
+// to read from keyboard
 namespace SpecialKeyboard
 {
     const int DELETE_KEY = 8;

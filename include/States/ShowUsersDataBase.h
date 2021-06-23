@@ -10,20 +10,21 @@
 #include "User.h"
 #include "Button.h"
 
-namespace pt = boost::property_tree;
-
 class ShowUsersDataBase : public State
 {
 public:
+    // constructor & destructor
     ShowUsersDataBase(MarioKart::GameDataRef&);
     ~ShowUsersDataBase() = default;
-
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
+    //return to this state
     void Resume() override;
 private:
+    // privates members
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
     sf::Sprite m_back;
@@ -39,7 +40,7 @@ private:
     ListUsers m_users_rectangle;
     std::vector< sf::Text > m_list_text;
     std::vector< sf::Sprite > m_list_sprites;
-
+    // private functions
     void centerOrigin(sf::Text&);
     void buildList( const sf::Vector2u& );
 };

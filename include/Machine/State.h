@@ -3,6 +3,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
+/* Abstract class State */
 class State
 {
 public:
@@ -13,4 +14,4 @@ public:
 
     virtual void Pause(){ }
     virtual void Resume(){ }
-};
+}; // end class
