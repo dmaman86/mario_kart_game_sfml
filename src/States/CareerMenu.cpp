@@ -208,6 +208,7 @@ void CareerMenu::Draw()
     m_data->window->draw(m_car);
     m_data->window->draw(m_rect);
     m_data->window->draw(m_driverUser);
+    m_data->window->draw(m_logo);
 
     for (auto it : m_buttons)
         m_data->window->draw(*it.second.get());

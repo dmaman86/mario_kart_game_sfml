@@ -99,7 +99,7 @@ void SettingsState::Draw()
     m_data->window->draw(m_background);
     m_data->window->draw(m_rectangle);
     m_data->window->draw(m_title);
-    // m_back.draw(m_data->window);
+    m_data->window->draw(m_logo);
     m_data->window->draw(*m_back.get());
     m_data->window->draw(m_shapeSound);
     m_data->window->draw(m_shapeMusic);

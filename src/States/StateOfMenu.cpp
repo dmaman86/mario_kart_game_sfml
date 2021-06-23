@@ -22,7 +22,11 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
 
     //sound
     m_click.setBuffer(Sounds::instance().getSoundBuffer(Sounds::click));
-
+    m_logo = sf::Sprite();
+    m_logo.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
+    m_logo.setTextureRect(sf::Rect(0, 410, 250, 63));
+    m_logo.setOrigin(m_logo.getGlobalBounds().width / 2, m_logo.getGlobalBounds().height /2 );
+    m_logo.setPosition(m_windowSize.x / 2, (m_windowSize.y / 2) + 370);
 }
 
 void StateOfMenu::setVolume(bool data)

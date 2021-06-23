@@ -36,6 +36,7 @@ void helpState::Update(float)
 void helpState::Draw()
 {
 	m_data->window->draw(m_background);
+    m_data->window->draw(m_logo);
 	m_data->window->draw(*m_back.get());
     m_data->window->draw(m_keyboard);
 

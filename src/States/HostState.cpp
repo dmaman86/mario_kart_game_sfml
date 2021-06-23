@@ -174,7 +174,7 @@ void HostState::Resume()
     for(auto& map : m_maps)
         map->selected = false;
     if(m_data->user.getId().size() > 1)
-        m_data->services.deleteUser(&m_data->user);
+        m_data->services.resetUser(&m_data->user);
 }
 
 void HostState::initTitlesTexts()

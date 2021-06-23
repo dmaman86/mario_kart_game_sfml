@@ -47,7 +47,7 @@ void AboutState::Draw()
     m_data->window->draw(m_background);
     m_data->window->draw(*m_back.get());
     m_data->window->draw(m_about);
-
+    m_data->window->draw(m_logo);
 }
 
 

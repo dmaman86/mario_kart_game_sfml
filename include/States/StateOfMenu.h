@@ -17,6 +17,6 @@ protected:
     std::shared_ptr<Button> m_back;
     sf::Vector2u m_windowSize;
     sf::Sound m_click;
-
+    sf::Sprite m_logo;
 };
 

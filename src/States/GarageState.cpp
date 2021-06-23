@@ -89,6 +89,7 @@ void GarageState::Update(float )
 void GarageState::Draw()
 {
     m_data->window->draw(m_background);
+    m_data->window->draw(m_logo);
     for (auto it : m_buttons)
         m_data->window->draw(*it.second.get());
 
