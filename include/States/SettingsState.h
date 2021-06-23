@@ -24,10 +24,11 @@ private:
     void setColorShape(sf::CircleShape&);
 
     // privates members
-    sf::Text createFont(const std::string, const sf::Color, const int);
+    sf::Text createFont(const std::string&, const sf::Color&, const int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
-    sf::Sprite m_rectangle;
+    sf::RectangleShape m_rectangle;
+    // sf::Sprite m_rectangle;
     sf::CircleShape m_shapeSound;
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;

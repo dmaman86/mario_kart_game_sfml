@@ -1,32 +1,23 @@
 #include "SettingsState.h"
 #include "Pictures.h"
-#include "MenuState.h"
-#include "Fonts.h"
-
-
-#include "SettingsState.h"
-#include "Pictures.h"
-#include "MenuState.h"
 #include "Fonts.h"
 
 const size_t SIZE_SHAPE = 30;
 const size_t NORMAL_COLOR = 255;
 const size_t TRANSPARENT_COLOR = 120;
 
-const float POSITON_TITLE = 100;
-const size_t POSITON_RECTANGLE = 500;
+const float POSITION_TITLE = 300.f;
+const float POSITION_RECTANGLE = 50.f;
 
-const int REC_TIELE2 = 717;
-const int REC_TIELE3 = 360;
-const int REC_TIELE4 = 65;
-const unsigned WINDOW_CENTER = 2.5;
+const int RECT_LEFT = 0;
+const int RECT_TOP = 717;
+const int RECT_WIDTH = 360;
+const int RECT_HEIGHT = 65;
+const float WINDOW_CENTER = 2.f;
 
-const size_t SZIE_TEXT = 50;
-const unsigned POSITION_SOUND_TEXT = 100;
-const unsigned POSITION_MUSIC_TEXT = 25;
-
-
-
+const size_t SIZE_TEXT = 50;
+const float POSITION_SOUND_TEXT = 100.f;
+const float POSITION_MUSIC_TEXT = 25.f;
 
 
 SettingsState::SettingsState(MarioKart::GameDataRef& data):
@@ -40,59 +31,52 @@ SettingsState::SettingsState(MarioKart::GameDataRef& data):
 
 void SettingsState::Init()
 {
-
     m_title.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
-    m_title.setTextureRect(sf::Rect(0, REC_TIELE2, REC_TIELE3, REC_TIELE4));
-    m_title.setPosition( float(m_windowSize.x / (unsigned)WINDOW_CENTER), POSITON_TITLE);
+    m_title.setTextureRect(sf::Rect(RECT_LEFT, RECT_TOP, RECT_WIDTH, RECT_HEIGHT));
+    m_title.setPosition( m_windowSize.x / WINDOW_CENTER, (m_windowSize.y / WINDOW_CENTER) - POSITION_TITLE);
     m_title.setOrigin(m_title.getLocalBounds().width / 2,
         m_title.getLocalBounds().height / 2);
 
 
-    m_rectangle.setTexture(Pictures::instance().getTexture(Pictures::rectangle));
-    m_rectangle.setPosition(float(m_windowSize.x / (unsigned)WINDOW_CENTER), POSITON_RECTANGLE);
-    m_rectangle.setOrigin(m_rectangle.getLocalBounds().width / 2,
-        m_rectangle.getLocalBounds().height / 2);
-    m_rectangle.setColor(sf::Color(NORMAL_COLOR, NORMAL_COLOR, NORMAL_COLOR, TRANSPARENT_COLOR));
-    
+    m_rectangle.setTexture(&Pictures::instance().getTexture(Pictures::rectangle));
+    m_rectangle.setPosition((m_windowSize.x / WINDOW_CENTER) - 300.f,
+                            (m_windowSize.y / WINDOW_CENTER) - 200.f);
+    m_rectangle.setFillColor(sf::Color(NORMAL_COLOR, NORMAL_COLOR, NORMAL_COLOR, TRANSPARENT_COLOR));
+    m_rectangle.setSize(sf::Vector2f(600, 400));
 
     //shapeSound
     if(m_data->user.getIfSound())
         m_shapeSound.setFillColor(sf::Color::Green);
     else
         m_shapeSound.setFillColor(sf::Color::Red);
-    m_shapeSound.setPosition(float(m_windowSize.x / 1.6), float((m_windowSize.y / 2u) + POSITION_SOUND_TEXT));
     m_shapeSound.setOrigin(m_shapeSound.getLocalBounds().width / 2,
                            m_shapeSound.getLocalBounds().height / 2);
+    m_shapeSound.setPosition(m_windowSize.x / 1.6f,
+                             (m_windowSize.y / WINDOW_CENTER) - POSITION_SOUND_TEXT);
 
     //shape Meusic
     if (m_data->user.getIfMusic())
         m_shapeMusic.setFillColor(sf::Color::Green);
     else
         m_shapeMusic.setFillColor(sf::Color::Red);
-    m_shapeMusic.setPosition(float(m_windowSize.x / 1.6), float((m_windowSize.y / 2u) + POSITION_MUSIC_TEXT));
     m_shapeMusic.setOrigin(m_shapeMusic.getLocalBounds().width / 2,
                            m_shapeMusic.getLocalBounds().height / 2);
-
-
-
-    //msg Music
-    m_messageMusic = createFont("Music:", sf::Color::Black, SZIE_TEXT);
-    m_messageMusic.setOrigin(m_messageMusic.getLocalBounds().width / 2,
-                             m_messageMusic.getLocalBounds().height / 2);
-    m_messageMusic.setPosition(sf::Vector2f(float(m_windowSize.x / (unsigned)WINDOW_CENTER),
-                                            float((m_windowSize.y / 2u) + POSITION_MUSIC_TEXT)));
+    m_shapeMusic.setPosition(m_windowSize.x / 1.6f,
+                             (m_windowSize.y / WINDOW_CENTER) + POSITION_MUSIC_TEXT);
 
     //msg Sound
-    m_messageSound = createFont("SoundFX:", sf::Color::Black, SZIE_TEXT);
+    m_messageSound = createFont("SoundFX:", sf::Color::Black, SIZE_TEXT);
     m_messageSound.setOrigin(m_messageSound.getLocalBounds().width / 2,
                              m_messageSound.getLocalBounds().height / 2);
-    m_messageSound.setPosition(sf::Vector2f(float(m_windowSize.x / (unsigned)WINDOW_CENTER),
-                                            float((m_windowSize.y / 2u) + POSITION_SOUND_TEXT)));
+    m_messageSound.setPosition(sf::Vector2f((m_windowSize.x / 1.6f) - 250,
+                                            (m_windowSize.y / WINDOW_CENTER) - POSITION_SOUND_TEXT));
 
-
-
-
-
+    //msg Music
+    m_messageMusic = createFont("Music:", sf::Color::Black, SIZE_TEXT);
+    m_messageMusic.setOrigin(m_messageMusic.getLocalBounds().width / 2,
+                             m_messageMusic.getLocalBounds().height / 2);
+    m_messageMusic.setPosition(sf::Vector2f((m_windowSize.x / 1.6f) - 250,
+                                            (m_windowSize.y / WINDOW_CENTER) + POSITION_MUSIC_TEXT));
 }
 
 void SettingsState::HandleEvent(const sf::Event& event)
@@ -167,7 +151,7 @@ void SettingsState::setColorShape(sf::CircleShape &circle)
     }
 }
 
-sf::Text SettingsState::createFont(const std::string str, const sf::Color color, const int size)
+sf::Text SettingsState::createFont(const std::string& str, const sf::Color& color, const int size)
 {
     sf::Text text;
     text.setFont(Fonts::instance().getFont());
