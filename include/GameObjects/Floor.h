@@ -1,23 +1,32 @@
 #pragma once
-#include "Player.h"
 #include "Object.h"
+
+/*
+	Floor 
+	Holds : friction(Brick,Sand,Asphalt) 
+		and position(score) on the map by the floor
+*/
 class Floor : public Object {
-public: Floor(int score) :Object::Object(),m_score(score) {};
-    int getScore()const{return m_score;}
-protected: int m_score;
+public: Floor(const int score) :Object::Object(),m_score(score) {};
+	 const int getScore()const{return m_score;}
+protected: 
+	int m_score;
 };
 
+//================ Floor Brick : Drive you back ===========
 class FloorBrick : public Floor {
 public: 
-	FloorBrick(int score):Floor::Floor(score) {};
+	FloorBrick(const int score):Floor::Floor(score) {};
 };
 
+//================ Floor Sand : slows down ================
 class FloorSand : public Floor {
 public: 
-	FloorSand(int score) :Floor::Floor(score) {};
+	FloorSand(const int score) :Floor::Floor(score) {};
 };
 
+//================ Floor Asphalt : Normal road ============
 class FloorAsphalt : public Floor {
 public: 
-	FloorAsphalt(int score) :Floor::Floor(score) {};
+	FloorAsphalt(const int score) :Floor::Floor(score) {};
 };

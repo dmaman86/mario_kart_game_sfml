@@ -1,11 +1,14 @@
 #pragma once
 #include "StaticObject.h"
 
+// Banana 
 class Banana : public StaticObject {
 
 public:
-	Banana(const sf::Vector2f& , const sf::Vector2f& pos);
+	// Constructor
+	Banana(const sf::Vector2f&);
 private:
-};
+
+};//end Banana
 
 

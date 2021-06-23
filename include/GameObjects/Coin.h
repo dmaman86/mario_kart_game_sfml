@@ -2,25 +2,30 @@
 #include "StaticObject.h"
 #include <iostream>
 #include "Animation.h"
+
+//Coin
 class Coin : public StaticObject {
 
 public:
-	Coin(const sf::Vector2f &, const sf::Vector2f& pos);
+	//================ Constructor / Destructor ==================
+	Coin(const sf::Vector2f& pos);
 	~Coin();
 
+	//================= Public functions =========================
 	void addCollected() { m_num_collected++; }
-
-	// static function
-	static const int getCount();
-	static const int getCollected();
-    void updateAnimation(float time) override;
-
+	void UpdateAnimation(const float time) override 
+		{ m_animation.update(time, true); }
+	
+	//================= static get functions =====================
+	static const int getCount() { return m_num_coins; }
+	static const int getCollected() { return m_num_collected; }
 
 private:
 	static int m_num_coins; // all coin in the level
 	static int m_num_collected; // coin that collected
     Animation m_animation;
-};
+
+};//end Coin 
 
 
 

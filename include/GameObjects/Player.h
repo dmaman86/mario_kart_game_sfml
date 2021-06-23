@@ -1,65 +1,76 @@
 #pragma once
+#include <string>
 #include "Animation.h"
 #include "PlayerBase.h"
-#include <string>
+#include "Macros.h"
 
+// Forward declaration
 class FloorAsphalt;
 class FloorBrick;
 class FloorSand;
 
+/*
+	Player : 
+		manages the image and animation of the driver
+		and Player position's in the world
+*/
 class Player : public PlayerBase {
 
 public:
-	//================ Constructor / Destructor =================
+	//================ Constructor / Destructor ===================
 	Player();
-	Player(const sf::Vector2f &loc, const sf::Vector2f & pos,const std::string& sprite, bool);
+	Player(const sf::Vector2f &,const sf::Vector2f & 
+			,const std::string& ,const bool);
 	~Player() = default;
 
-	//================ Virtual public functions =================
+	//====================== public functions =====================
+	void DriveBack();
+	void SpinDriver();
+	void DriveSmaller();
+	void DriveFast() { m_force = MAX_SPEED; }
+	void StopEngineMusic() { m_engine.stop(); }
+
+	//================ Virtual public functions ===================
 	void Update(const float, const int);
-	void updateDir();
+	void UpdateBreaks();
 	void CheckLap(const int);
-	void updateAnimation(float time) override;
+	void UpdateAnimation(const float time) override;
 
-	void driveBack();
-	void spindriver();
-	void driveSmaller();
-	void SpeedMultiplier();
-
-	void setCoefficientOfFriction(const float cof);
+	// =================== set & get functions ====================
+	void setCoefficientOfFriction(const float cof) { m_cof = cof; };
 	void setAngle(const float);
 	const float getAngle() const { return m_angle; };
-	void setLastScorePos(const unsigned int score);
-	const int  getLastScorePos()const;
+	void setLastScorePos(const unsigned int sc) { m_last_pos_score = sc; }
+	const int  getLastScorePos()const { return m_last_pos_score; }
 	const float getSpeed()const { return m_force; };
 	const bool getIsLoc()const { return m_is_lock; };
-	const float getCoefficient()const { return m_coefficient_of_friction; }
-	void setFinishLine(float line){m_finish_line = line;}
-	void stopEngineMusic();
-	const bool getIsLock()const;
-protected:
-	//================ Private functions =========================
-	void handleLock(const float);
-	virtual void updateSpeed(const float);
-	void updateLocation(const float);
+	const float getCoefficient()const { return m_cof; }
+	void setFinishLine(const float line){m_finish_line = line;}
+	const bool getIsLock()const { return m_is_lock; }
 
-	//================ Private members ==========================
-    Animation m_animation;
-    sf::Clock m_playerClock;
+protected:
+
+	//================ Protected functions =========================
+	void HandleLock(const float);
+	virtual void UpdateSpeed(const float);
+	void UpdateLocation(const float);
+	void UpdateDirection(const float);
+	void UpdateAcceleration();
+	void UpdateSpecialSituations();
+
+	//================ Protected members ===========================
+	int m_last_pos_score;
+	bool m_is_lock, m_is_pressed, m_is_spin, m_is_smaller, m_soundOn;
+	float m_angle, m_force, m_acceleration, m_smaller_time, m_finish_line
+		, m_cof; // coefficient of friction
+    
+	sf::Clock m_playerClock;
     sf::Vector2f m_last_pos;
-    float m_angle;
-    float m_coefficient_of_friction;
-    float m_force, m_acceleration;
-    bool m_is_lock;
-    bool m_is_pressed;
-    bool m_is_spin;
-	bool m_is_smaller;
-    int m_last_pos_score;
-	float m_smaller_time;
 	sf::Time m_timepasses;
-	float m_finish_line;
 	sf::Music m_engine;
 	sf::Sound m_backSound;
-	bool m_soundOn;
-};
+
+	Animation m_animation;
+
+};//end Player
 

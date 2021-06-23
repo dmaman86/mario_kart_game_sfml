@@ -15,7 +15,7 @@ public:
 	void fillMap(const std::string &);
 	void fillObjectMap(const std::string &);
 	Floor& operator()(unsigned int, unsigned int)const;
-    void updateAnimation(float time);
+    void UpdateAnimation(const float time);
     int getFloorScore(int x,int y)const;
 	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
 	void addObjects(float x, float y, PlayerOnline* obj);;

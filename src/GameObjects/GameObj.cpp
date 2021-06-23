@@ -1,37 +1,43 @@
-
 #include <iostream>
 #include "GameObj.h"
 #include "Utilities.h"
 
+//================================= Constructors ==============================
 GameObj::GameObj(const sf::Texture& tex, const sf::Vector2f& loc, const sf::Vector2f& pos) :
-    m_location(new sf::Vector2f(pos)),
+    m_location(pos),
     m_is_in_angle(false),
     m_is_active (true)
 {
 	m_sprite.setTexture(tex);
 	m_sprite.setPosition(loc);
-
 }
 
-GameObj::GameObj() {
-
+//=============================================================================
+GameObj::GameObj():
+m_is_in_angle(false),
+m_is_active(true)
+{
 }
 
-void GameObj::setPosition(const sf::Vector2f& loc) {
-	m_sprite.setPosition(loc);
-}
+//=============================================================================
 const bool GameObj::collisionWith(const GameObj& obj) const
 {
 	return obj.m_sprite.getGlobalBounds().intersects(this->m_sprite.getGlobalBounds())
-		&& (calcLength(obj.m_sprite.getPosition(), this->m_sprite.getPosition()) < 70);
+		&& (calcLength( obj.m_sprite.getPosition(), this->m_sprite.getPosition()) 
+				< COLLISION_DIS );
 }
 
-void GameObj::playSound()
+//=============================================================================
+void GameObj::setLocation(const float x, const float y)
 {
-	this->m_sound.play();
+	m_location.x = x; 
+	m_location.y = y;
 }
 
-sf::Vector2f GameObj::getIntLocation() {
-	return *m_location;
+//=============================================================================
+void GameObj::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	states.transform *= getTransform();
+	if (m_is_active)
+		target.draw(m_sprite);
 }
-

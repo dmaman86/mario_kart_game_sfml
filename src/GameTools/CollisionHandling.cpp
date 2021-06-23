@@ -8,7 +8,7 @@
 #include "Floor.h"
 #include "Pipe.h"
 #include "Banana.h"
-#include "SpeedMultiplier.h"
+#include "Mushroom.h"
 #include "Ghost.h"
 #include "Coin.h"
 #include "Player.h"
@@ -20,9 +20,9 @@ namespace // anonymous namespace — the standard way to make function "static"
 	void PlayerSpeedMultiplier(Object& player, Object& speedMultiplier)
 	{
 		Player& Pl = dynamic_cast<Player&>(player);
-		SpeedMultiplier& Bn = dynamic_cast<SpeedMultiplier&>(speedMultiplier);
+		Mushroom& Bn = dynamic_cast<Mushroom&>(speedMultiplier);
 		if (Bn.getIsActive())
-			Pl.SpeedMultiplier();
+			Pl.DriveFast();
 		Bn.setIsActive(false);
 	}
 //=============================================================================
@@ -40,7 +40,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 		Player& Pl = dynamic_cast<Player&>(player);
         Banana& Bn = dynamic_cast<Banana&>(banana);
         if(Bn.getIsActive())
-            Pl.spindriver();
+            Pl.SpinDriver();
         Bn.setIsActive(false);
 	}
 //=============================================================================
@@ -57,7 +57,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 		Player& Pl = dynamic_cast<Player&>(player);
 		Ghost& gh = dynamic_cast<Ghost&>(ghost);
 		if (gh.getIsActive())
-			Pl.driveSmaller();
+			Pl.DriveSmaller();
 		gh.setIsActive(false);
 	}
 //=============================================================================
@@ -91,7 +91,7 @@ namespace // anonymous namespace — the standard way to make function "static"
 		// To get the actual types and use them:
 		Player& Pl = dynamic_cast<Player&>(player);
 
-		Pl.driveBack();
+		Pl.DriveBack();
 	}
 //=============================================================================
 
@@ -124,7 +124,7 @@ void PlayerFloorBrick(Object& player,
 	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
 	Pl.setCoefficientOfFriction(2);
-	Pl.driveBack();
+	Pl.DriveBack();
 }
 //=============================================================================
 
@@ -159,8 +159,8 @@ HitMap initializeCollisionMap()
 	phm[Key(typeid(Player), typeid(Coin))] = &PlayerCoin;
 	phm[Key(typeid(Coin), typeid(Player))] = &CoinPlayer;
 	
-	phm[Key(typeid(Player), typeid(SpeedMultiplier))] = &PlayerSpeedMultiplier;
-	phm[Key(typeid(SpeedMultiplier), typeid(Player))] = &SpeedMultiplierPlayer;
+	phm[Key(typeid(Player), typeid(Mushroom))] = &PlayerSpeedMultiplier;
+	phm[Key(typeid(Mushroom), typeid(Player))] = &SpeedMultiplierPlayer;
 
     phm[Key(typeid(Player), typeid(PlayerOnline))] = &PlayerPlayerOnline;
     phm[Key(typeid(PlayerOnline), typeid(Player))] = &PlayerPlayerOnline;

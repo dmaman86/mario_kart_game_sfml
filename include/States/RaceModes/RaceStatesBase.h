@@ -31,9 +31,9 @@ public:
     //================ Virtual public functions =================
     void Init() override;
     void HandleEvent(const sf::Event&) override;
-    void Update(float) override;
+    void Update(const float) override;
     void Draw() override;
-    void updateAnimation(float time);
+    void UpdateAnimation(const float time);
 
 
 protected:

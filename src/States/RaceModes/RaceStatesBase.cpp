@@ -101,11 +101,11 @@ void RaceStatesBase::InitSky()
 //============================== Handle Event ==================================
 void RaceStatesBase::HandleEvent(const sf::Event&)
 {
-    m_player.updateDir();
+    m_player.UpdateBreaks();
 }
 
 //================================= Update =====================================
-void RaceStatesBase::Update(float deltatime) {
+void RaceStatesBase::Update(const float deltatime) {
 
 	try {
 
@@ -116,7 +116,7 @@ void RaceStatesBase::Update(float deltatime) {
 			m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
 			UpdateMap();
 			HandleCollision(deltatime);
-			this->updateAnimation(deltatime);
+			this->UpdateAnimation(deltatime);
 		}
 	}
 	catch (...)
@@ -135,11 +135,11 @@ void RaceStatesBase::UpdateMap()
 }
 
 //=============================================================================
-void RaceStatesBase::UpdatePlayer(float deltatime)
+void RaceStatesBase::UpdatePlayer(const float deltatime)
 {
 	m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
 	m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
-	m_player.updateAnimation(deltatime);
+	m_player.UpdateAnimation(deltatime);
 }
 
 //=============================================================================
@@ -212,8 +212,8 @@ void RaceStatesBase::startRaceScreen() {
         delta = lira.restart();
         auto v = m_data->window->getView();
         m_data->window->setView(m_view);
-        trafficlight.updateAnimation(delta.asSeconds());
-        cloud.updateAnimation(delta.asSeconds());
+        trafficlight.UpdateAnimation(delta.asSeconds());
+        cloud.UpdateAnimation(delta.asSeconds());
         cloud.draw(*m_data->window);
         trafficlight.draw(*m_data->window);
         m_data->window->display();
@@ -252,8 +252,8 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 	}
 }
 
-void RaceStatesBase::updateAnimation(float time) {
-    m_board.updateAnimation(time);
+void RaceStatesBase::UpdateAnimation(const float time) {
+    m_board.UpdateAnimation(time);
 
 }
 

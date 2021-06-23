@@ -14,11 +14,11 @@ CoinRace::~CoinRace()
 }
 
 //================================= Update =====================================
-void CoinRace::Update(float deltatime) {
+void CoinRace::Update(const float deltatime) {
 
 
 	RaceStatesBase::Update(deltatime);
-	m_player.updateAnimation(deltatime);
+	m_player.UpdateAnimation(deltatime);
 	if (isFinish())
 	{
 		auto add_points = Coin::getCount()*1000 / m_clock.getElapsedTime().asSeconds();

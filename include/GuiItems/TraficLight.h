@@ -7,7 +7,7 @@ class TraficLight {
 public:
     TraficLight();
     void draw(sf::RenderWindow&);
-    void updateAnimation(float time);
+    void UpdateAnimation(const float time);
     void playSound() { m_sound.play(); };
 
 private:

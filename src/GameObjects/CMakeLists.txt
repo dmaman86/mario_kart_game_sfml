@@ -4,8 +4,7 @@ target_sources(test_mario_kart PRIVATE
 		"Pipe.cpp"
 		"StaticObject.cpp"
 		"PlayerOnline.cpp"
-		"PlayerBase.cpp"
 		"Banana.cpp"
 		"Ghost.cpp"
 		"Coin.cpp"
-		"SpeedMultiplier.cpp")
+		"Mushroom.cpp")

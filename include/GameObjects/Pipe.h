@@ -1,11 +1,15 @@
 #pragma once
 #include "StaticObject.h"
 
+// Pipe
 class Pipe : public StaticObject{
 
 public:
-    Pipe(const sf::Vector2f &,const sf::Vector2f& pos);
+	// Constructor
+    Pipe(const sf::Vector2f& pos);
+
 private:
-};
+
+};//Pipe
 
 

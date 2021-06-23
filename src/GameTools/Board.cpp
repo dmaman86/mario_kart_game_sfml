@@ -4,7 +4,7 @@
 #include "Macros.h"
 #include "Pipe.h"
 #include "Banana.h"
-#include "SpeedMultiplier.h"
+#include "Mushroom.h"
 #include "Pictures.h"
 #include "PlayerOnline.h"
 #include "Utilities.h"
@@ -66,19 +66,19 @@ void Board::fillObjectMap(const std::string& str) {
 		switch (map_int[i][0])
 		{
 		case 1:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Pipe>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Pipe>(sf::Vector2f(0, 0));
 			break;
 		case 2:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Ghost>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Ghost>(sf::Vector2f(0, 0));
 			break;
 		case 3:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Banana>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Banana>(sf::Vector2f(0, 0));
 			break;
 		case 4:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0, 0));
 			break;
 		case 5:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<SpeedMultiplier>(sf::Vector2f(0.0, 0.0), sf::Vector2f(0, 0));
+			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Mushroom>(sf::Vector2f(0, 0));
 			break;
 		default:
 			break;
@@ -87,9 +87,9 @@ void Board::fillObjectMap(const std::string& str) {
 }
 //=============================================================================
 
-void Board::updateAnimation(float time) {
+void Board::UpdateAnimation(const float time) {
     for(auto & vec:m_vec_obj)
-        vec.second->updateAnimation(time);
+        vec.second->UpdateAnimation(time);
 
 }
 //=============================================================================

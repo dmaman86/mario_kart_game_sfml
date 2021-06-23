@@ -7,7 +7,7 @@ class StartCloud {
 public:
     StartCloud();
     void draw(sf::RenderWindow&);
-    void updateAnimation(float time);
+    void UpdateAnimation(const float time);
 
 private:
     sf::Sprite m_sprite;
