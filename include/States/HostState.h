@@ -6,6 +6,9 @@
 #include <thread>
 #include <mutex>
 #include <string>
+#include <map>
+#include <memory>
+#include <functional>
 
 #include "State.h"
 #include "MarioKart.h"
@@ -31,6 +34,13 @@ public:
     void Resume() override;
 private:
     // private members
+    typedef std::function<void()> NextState;
+    enum class MapNames
+    {
+        RainBow,
+        Donut,
+        Ghost
+    };
     struct Map
     {
         std::string map_name;
@@ -39,9 +49,11 @@ private:
         sf::Text map_name_tex;
         bool selected;
     };
-    using VectorMaps = std::vector<std::shared_ptr<Map>>;
+    using Maps = std::map<MapNames, std::shared_ptr<Map>>;
+    using OptionOffline = std::map<std::string, NextState>;
 
-    VectorMaps m_maps;
+    Maps m_maps;
+    OptionOffline m_options_offline;
     sf::Sprite m_background;
     MarioKart::GameDataRef m_data;
     std::shared_ptr<Button> m_back;
@@ -63,5 +75,10 @@ private:
     // private functions
     void initTitlesTexts();
     void initErrorsTexts();
-    void createMaps(VectorMaps&);
+    void createMaps();
+    void initTexture(sf::Texture&, const std::string&);
+    void initRectangleShape(sf::RectangleShape&, sf::Texture&, size_t);
+    void initText(sf::Text&, size_t, const sf::RectangleShape&);
+    void resetOutLineColor(MapNames);
+    void initOptionsOffline();
 };
