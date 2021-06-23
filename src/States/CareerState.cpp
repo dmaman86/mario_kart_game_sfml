@@ -20,13 +20,15 @@ void CareerState::Init()
 {
     auto buttonNewGame = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonNewGame->setTextureInRect(PositionButtons::newGame);
-    buttonNewGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5f, m_windowSize.y / 2.5));
+    buttonNewGame->setInOrigin();
+    buttonNewGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.f, m_windowSize.y / 2.f));
     buttonNewGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)),false);
     });
     auto buttonLoadGame = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonLoadGame->setTextureInRect(PositionButtons::loadGame);
-    buttonLoadGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.5, m_windowSize.y / 2.5 + 100));
+    buttonLoadGame->setInOrigin();
+    buttonLoadGame->setInPosition(sf::Vector2f(m_windowSize.x / 2.f, (m_windowSize.y / 2.f) + 100));
     buttonLoadGame->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerMenu(m_data)),false);
     });
