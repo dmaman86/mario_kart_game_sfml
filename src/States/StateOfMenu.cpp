@@ -29,10 +29,7 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
     m_logo.setPosition(m_windowSize.x / 2, (m_windowSize.y / 2) + 370);
 }
 
-void StateOfMenu::setVolume(bool data)
+void StateOfMenu::setVolume(bool sound)
 {
-    if (data)
-        m_click.setVolume(100);
-    else
-        m_click.setVolume(0);
+    m_soundOn = sound;
 }

@@ -35,7 +35,7 @@ const std::string Pictures::speed3 = "speed3.png";
 const std::string Pictures::speed4 = "speed4.png";
 const std::string Pictures::MenuButtons1 = "menuButtons1.png";
 const std::string Pictures::GameStartGui = "gameStartGui.png";
-const std::string Pictures::helpStateback = "helpStateback.png";
+const std::string Pictures::helpStateback = "helpStateback.jpeg";
 const std::string Pictures::game_boy = "gameBoy.png";
 const std::string Pictures::about_picture = "about.png";
 

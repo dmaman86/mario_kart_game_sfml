@@ -9,18 +9,22 @@
 class SettingsState : public StateOfMenu
 {
 public:
+    // constructor & destructor
     SettingsState(MarioKart::GameDataRef&);
     ~SettingsState() = default;
 
-
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
     void Draw() override;
 
 private:
+    // privates functions
     void setColorShape(sf::CircleShape&);
-    sf::Text createFont(std::string, sf::Color, int);
+
+    // privates members
+    sf::Text createFont(const std::string, const sf::Color, const int);
     MarioKart::GameDataRef m_data;
     sf::Sprite m_title;
     sf::Sprite m_rectangle;
@@ -28,6 +32,7 @@ private:
     sf::CircleShape m_shapeMusic;
     sf::Text m_messageMusic;
     sf::Text m_messageSound;
-    bool onSound = true;
+    bool onSound;
+
 };
 

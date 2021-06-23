@@ -13,7 +13,7 @@ CareerState::CareerState(MarioKart::GameDataRef& data):
     StateOfMenu(data),
     m_buttons()
 {
-
+    m_soundOn = m_data->user.getIfSound();
 }
 
 void CareerState::Init()
@@ -43,6 +43,7 @@ void CareerState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type)
     {
+        if(m_soundOn)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });

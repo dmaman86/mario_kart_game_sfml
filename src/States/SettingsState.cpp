@@ -3,30 +3,56 @@
 #include "MenuState.h"
 #include "Fonts.h"
 
+
+#include "SettingsState.h"
+#include "Pictures.h"
+#include "MenuState.h"
+#include "Fonts.h"
+
+const size_t SIZE_SHAPE = 30;
+const size_t NORMAL_COLOR = 255;
+const size_t TRANSPARENT_COLOR = 120;
+
+const float POSITON_TITLE = 100;
+const size_t POSITON_RECTANGLE = 500;
+
+const int REC_TIELE2 = 717;
+const int REC_TIELE3 = 360;
+const int REC_TIELE4 = 65;
+const unsigned WINDOW_CENTER = 2.5;
+
+const size_t SZIE_TEXT = 50;
+const unsigned POSITION_SOUND_TEXT = 100;
+const unsigned POSITION_MUSIC_TEXT = 25;
+
+
+
+
+
 SettingsState::SettingsState(MarioKart::GameDataRef& data):
     m_data(data),
-    m_shapeSound(30),
-    m_shapeMusic(30),
+    m_shapeSound(SIZE_SHAPE),
+    m_shapeMusic(SIZE_SHAPE),
     StateOfMenu(data)
 {
-
+    onSound = m_data->user.getIfSound();
 }
 
 void SettingsState::Init()
 {
 
     m_title.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1), false);//settings
-    m_title.setTextureRect(sf::Rect(0, 717, 360, 65));
-    m_title.setPosition(m_windowSize.x / (unsigned)2.5, 100);
+    m_title.setTextureRect(sf::Rect(0, REC_TIELE2, REC_TIELE3, REC_TIELE4));
+    m_title.setPosition( float(m_windowSize.x / (unsigned)WINDOW_CENTER), POSITON_TITLE);
     m_title.setOrigin(m_title.getLocalBounds().width / 2,
         m_title.getLocalBounds().height / 2);
 
 
     m_rectangle.setTexture(Pictures::instance().getTexture(Pictures::rectangle));
-    m_rectangle.setPosition(m_windowSize.x / (unsigned)2.5, 500);
+    m_rectangle.setPosition(float(m_windowSize.x / (unsigned)WINDOW_CENTER), POSITON_RECTANGLE);
     m_rectangle.setOrigin(m_rectangle.getLocalBounds().width / 2,
         m_rectangle.getLocalBounds().height / 2);
-    m_rectangle.setColor(sf::Color(255, 255, 255, 120));
+    m_rectangle.setColor(sf::Color(NORMAL_COLOR, NORMAL_COLOR, NORMAL_COLOR, TRANSPARENT_COLOR));
     
 
     //shapeSound
@@ -34,7 +60,7 @@ void SettingsState::Init()
         m_shapeSound.setFillColor(sf::Color::Green);
     else
         m_shapeSound.setFillColor(sf::Color::Red);
-    m_shapeSound.setPosition(m_windowSize.x / 1.6, ((m_windowSize.y / 2u) + 100));
+    m_shapeSound.setPosition(float(m_windowSize.x / 1.6), float((m_windowSize.y / 2u) + POSITION_SOUND_TEXT));
     m_shapeSound.setOrigin(m_shapeSound.getLocalBounds().width / 2,
                            m_shapeSound.getLocalBounds().height / 2);
 
@@ -43,25 +69,25 @@ void SettingsState::Init()
         m_shapeMusic.setFillColor(sf::Color::Green);
     else
         m_shapeMusic.setFillColor(sf::Color::Red);
-    m_shapeMusic.setPosition(m_windowSize.x / 1.6, ((m_windowSize.y / 2u) + 25));
+    m_shapeMusic.setPosition(float(m_windowSize.x / 1.6), float((m_windowSize.y / 2u) + POSITION_MUSIC_TEXT));
     m_shapeMusic.setOrigin(m_shapeMusic.getLocalBounds().width / 2,
                            m_shapeMusic.getLocalBounds().height / 2);
 
 
 
     //msg Music
-    m_messageMusic = createFont("Music:", sf::Color::Black, 50);
+    m_messageMusic = createFont("Music:", sf::Color::Black, SZIE_TEXT);
     m_messageMusic.setOrigin(m_messageMusic.getLocalBounds().width / 2,
                              m_messageMusic.getLocalBounds().height / 2);
-    m_messageMusic.setPosition(sf::Vector2f(m_windowSize.x / (unsigned)2.5,
-                                            (m_windowSize.y / 2u) + 25));
+    m_messageMusic.setPosition(sf::Vector2f(float(m_windowSize.x / (unsigned)WINDOW_CENTER),
+                                            float((m_windowSize.y / 2u) + POSITION_MUSIC_TEXT)));
 
     //msg Sound
-    m_messageSound = createFont("SoundFX:", sf::Color::Black, 50);
+    m_messageSound = createFont("SoundFX:", sf::Color::Black, SZIE_TEXT);
     m_messageSound.setOrigin(m_messageSound.getLocalBounds().width / 2,
                              m_messageSound.getLocalBounds().height / 2);
-    m_messageSound.setPosition(sf::Vector2f(m_windowSize.x / (unsigned)2.5,
-                                            (m_windowSize.y / 2u) + 100));
+    m_messageSound.setPosition(sf::Vector2f(float(m_windowSize.x / (unsigned)WINDOW_CENTER),
+                                            float((m_windowSize.y / 2u) + POSITION_SOUND_TEXT)));
 
 
 
@@ -74,6 +100,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
     if (sf::Event::MouseButtonPressed == event.type) {
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
+        if(onSound)
         m_click.play();
         if (m_back->validGlobalBound(location)) {
             m_data->stateStack.RemoveState();
@@ -91,7 +118,8 @@ void SettingsState::HandleEvent(const sf::Event& event)
 
 void SettingsState::Update(float)
 {
-    setVolume(m_data->user.getIfSound());
+    //save if sound on
+    onSound = m_data->user.getIfSound();
 }
 
 void SettingsState::Draw()
@@ -108,6 +136,8 @@ void SettingsState::Draw()
 
 }
 
+
+//Puts color in a circle according to the music and sound mode
 void SettingsState::setColorShape(sf::CircleShape &circle)
 {
     if (circle.getFillColor() == sf::Color::Green)
@@ -137,7 +167,7 @@ void SettingsState::setColorShape(sf::CircleShape &circle)
     }
 }
 
-sf::Text SettingsState::createFont(std::string str, sf::Color color, int size)
+sf::Text SettingsState::createFont(const std::string str, const sf::Color color, const int size)
 {
     sf::Text text;
     text.setFont(Fonts::instance().getFont());

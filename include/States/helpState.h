@@ -9,15 +9,17 @@
 class helpState : public StateOfMenu
 {
 public:
+    // constructor & destructor
     helpState(MarioKart::GameDataRef&);
     ~helpState() = default;
 
-
+    // virtual functions
     void Init()override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override ;
     void Draw() override;
 private:
+    // privates members
     MarioKart::GameDataRef m_data;
     sf::Sprite m_keyboard;
 };
