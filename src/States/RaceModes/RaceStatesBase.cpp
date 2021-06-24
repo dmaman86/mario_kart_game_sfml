@@ -57,8 +57,12 @@ void RaceStatesBase::InitPlayerLoc()
 {
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
     auto locations = readFromFile<float>(name+ START_POS_TXT, OBJ_DATA_SIZE.x, OBJ_DATA_SIZE.y);
-    m_player.setFinishLine(locations[2][0]);
+	m_player.setFinishLine(locations[2][0]);
+
+	if(!m_data->user.getOnline() || (m_data->user.getOnline() && m_data->user.getIfHost()))
 		m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
+	else if((m_data->user.getOnline() && !m_data->user.getIfHost()))
+		m_player.setLocation(sf::Vector2f(locations[1][0], locations[1][1]));
 }
 
 //=============================================================================
