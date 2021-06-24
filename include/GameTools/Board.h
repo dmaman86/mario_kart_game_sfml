@@ -11,10 +11,9 @@ typedef std::shared_ptr<GameObj> ptr;
 /*
 	Board
 */
-class Board {
-
+class Board
+{
 public:
-
 	Board();
 	void fillMap(const std::string &);
 	void fillObjectMap(const std::string &);
@@ -27,7 +26,20 @@ public:
 
 private:
 	//private members
+	enum class FloorType
+    {
+        Asphalt,
+        Brick,
+        Sand
+    };
+	enum class ObjectType
+    {
+	    ObjPipe,
+	    ObjGhost,
+	    ObjBanana,
+	    ObjCoin,
+	    ObjMushroom
+    };
 	std::map<std::pair<float, float >, ptr> m_vec_obj;
 	std::vector<std::vector<std::unique_ptr<Floor>>> m_map;
-
 };//end Board

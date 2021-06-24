@@ -11,13 +11,14 @@
 #include "Ghost.h"
 #include "Coin.h"
 
-Board::Board() {
+Board::Board()
+{
 
 }
+
 //=============================================================================
-
-void Board::fillMap(const std::string& str) {
-
+void Board::fillMap(const std::string& str)
+{
     std::string name = str.substr(0,str.find('.'));
 	auto map_int = readFromFile<char>(name+".txt");
     auto score_map = readFromFile<int>(name + "_scores.txt");
@@ -29,13 +30,13 @@ void Board::fillMap(const std::string& str) {
         {
             switch (map_int[i][j]-48)
             {
-                case 0:
+                case (int)FloorType::Asphalt:
                     m_map[i].push_back(std::make_unique<FloorAsphalt>(score_map[i][j]));
                     break;
-                case 1:
+                case (int)FloorType::Brick:
                     m_map[i].push_back(std::make_unique<FloorBrick>(score_map[i][j]));
                     break;
-                case 2:
+                case (int)FloorType::Sand:
                     m_map[i].push_back(std::make_unique<FloorSand>(score_map[i][j]));
                     break;
                 default:
@@ -56,8 +57,8 @@ Floor& Board::operator()(unsigned int i, unsigned int j)const {
 
 //=============================================================================
 
-void Board::fillObjectMap(const std::string& str) {
-
+void Board::fillObjectMap(const std::string& str)
+{
 	std::string name = str.substr(0, str.find('.'));
 	auto map_int = readFromFile<int>(name + "_objects.txt",17,3);
 
@@ -65,54 +66,62 @@ void Board::fillObjectMap(const std::string& str) {
 	{
 		switch (map_int[i][0])
 		{
-		case 1:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Pipe>(sf::Vector2f(0, 0));
-			break;
-		case 2:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Ghost>(sf::Vector2f(0, 0));
-			break;
-		case 3:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Banana>(sf::Vector2f(0, 0));
-			break;
-		case 4:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0, 0));
-			break;
-		case 5:
-			m_vec_obj[std::pair(map_int[i][1], map_int[i][2])] = std::make_unique<Mushroom>(sf::Vector2f(0, 0));
-			break;
-		default:
-			break;
+		    case (int)ObjectType::ObjPipe:
+			    m_vec_obj[std::pair(map_int[i][1],
+                                    map_int[i][2])] = std::make_unique<Pipe>(sf::Vector2f(0, 0));
+			    break;
+		    case (int)ObjectType::ObjGhost:
+			    m_vec_obj[std::pair(map_int[i][1],
+                                    map_int[i][2])] = std::make_unique<Ghost>(sf::Vector2f(0, 0));
+			    break;
+		    case (int)ObjectType::ObjBanana:
+			    m_vec_obj[std::pair(map_int[i][1],
+                                    map_int[i][2])] = std::make_unique<Banana>(sf::Vector2f(0, 0));
+			    break;
+		    case (int)ObjectType::ObjCoin:
+			    m_vec_obj[std::pair(map_int[i][1],
+                                    map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0, 0));
+			    break;
+		    case (int)ObjectType::ObjMushroom:
+			    m_vec_obj[std::pair(map_int[i][1],
+                                    map_int[i][2])] = std::make_unique<Mushroom>(sf::Vector2f(0, 0));
+			    break;
+		    default:
+			    break;
 		}
 	}
 }
-//=============================================================================
 
-void Board::UpdateAnimation(const float time) {
+//=============================================================================
+void Board::UpdateAnimation(const float time)
+{
     for(auto & vec:m_vec_obj)
         vec.second->UpdateAnimation(time);
-
 }
-//=============================================================================
 
-int Board::getFloorScore(int x, int y)const {
+//=============================================================================
+int Board::getFloorScore(int x, int y) const
+{
     if (x < m_map.size() && y < m_map[0].size())
         return m_map[x][y]->getScore();
     throw std::range_error("m_map cannot get " + std::to_string(x) + " or " + std::to_string(y));
 }
-//=============================================================================
 
-void Board::addObjects(float x, float y, PlayerOnline *obj) {
+//=============================================================================
+void Board::addObjects(float x, float y, PlayerOnline *obj)
+{
     m_vec_obj[std::pair(x, y)] = std::make_shared
             <PlayerOnline>(*obj);
 }
-//=============================================================================
 
-void Board::updateObjects(float x, float y, float z, float w) {
-    if (auto it = m_vec_obj.find(std::pair(x, y));it != m_vec_obj.cend()) {
+//=============================================================================
+void Board::updateObjects(float x, float y, float z, float w)
+{
+    if (auto it = m_vec_obj.find(std::pair(x, y)); it != m_vec_obj.cend())
+    {
         auto nodeHandler = m_vec_obj.extract(std::pair(x, y));
         nodeHandler.key() = std::pair(z, w);
         m_vec_obj.insert(std::move(nodeHandler));
-
     }
 }
 

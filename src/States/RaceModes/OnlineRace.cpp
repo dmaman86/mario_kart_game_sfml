@@ -32,7 +32,6 @@ void OnlineRace::Init()
 //=============================================================================
 void OnlineRace::InitNetwork()
 {
-
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
     auto locations = readFromFile<int>(name+"_start_position.txt",3,2);
     m_player.setFinishLine(float(locations[2][0]));
@@ -42,8 +41,10 @@ void OnlineRace::InitNetwork()
     else
         initPositionLikeJoin(locations);
 
-    m_thread_up = std::thread(&Services::updatePosition, &m_data->services, &m_data->user, &m_player, &m_mutex_player1, &m_finish);
-    m_thread_get = std::thread(&Services::getPosition, &m_data->services, m_userJoin, &m_player2, &m_mutex_player2, &m_finish);
+    m_thread_up = std::thread(&Services::updatePosition, &m_data->services,
+                              &m_data->user, &m_player, &m_mutex_player1, &m_finish);
+    m_thread_get = std::thread(&Services::getPosition, &m_data->services,
+                               m_userJoin, &m_player2, &m_mutex_player2, &m_finish);
 }
 
 //============================== Handle Event ==================================
