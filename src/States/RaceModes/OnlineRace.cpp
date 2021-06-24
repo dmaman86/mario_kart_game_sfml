@@ -113,7 +113,7 @@ void OnlineRace::initPositionLikeJoin( const std::vector<std::vector<int>>& loca
                              sf::Vector2f(DimensionGame::WIDTH_G / 2.f + HUNDRED,
                                           DimensionGame::HEIGHT_G - FIFTHY),
 		sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
-    m_board.addObjects(float(locations[0][1])* EIGHT, float(locations[0][1])* EIGHT, &m_player2);
+    m_board.addObjects(float(locations[0][0])* EIGHT, float(locations[0][1])* EIGHT, &m_player2);
 }
 
 //=============================================================================
