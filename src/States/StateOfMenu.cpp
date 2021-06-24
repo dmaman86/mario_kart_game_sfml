@@ -25,8 +25,8 @@ void StateOfMenu::InitOfMenu(MarioKart::GameDataRef data)
     m_logo = sf::Sprite();
     m_logo.setTexture(Pictures::instance().getTexture(Pictures::MenuButtons1));
     m_logo.setTextureRect(sf::Rect(0, 410, 250, 63));
-    m_logo.setOrigin(m_logo.getGlobalBounds().width / 2, m_logo.getGlobalBounds().height /2 );
-    m_logo.setPosition(m_windowSize.x / 2, (m_windowSize.y / 2) + 370);
+    m_logo.setOrigin(m_logo.getGlobalBounds().width / 2.f, m_logo.getGlobalBounds().height /2.f );
+    m_logo.setPosition(float(m_windowSize.x / 2), float(m_windowSize.y / 2) + 370.f);
 }
 
 void StateOfMenu::setVolume(bool sound)

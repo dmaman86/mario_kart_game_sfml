@@ -3,10 +3,11 @@
 #include "Sounds.h"
 const auto ANIMATION_TIME = 1.f;
 const auto TRAFTTLIGHTSCALE = 7.f;
-const auto XPOSITION = 100;
-const auto YPOSITION = 100;
+const auto XPOSITION = 100.f;
+const auto YPOSITION = 100.f;
 
-TraficLight::TraficLight():m_animation(Pictures::instance().getTraffic(),m_sprite,ANIMATION_TIME,false,Pictures::instance().getTraffic().size()){
+TraficLight::TraficLight():m_animation(Pictures::instance().getTraffic(),
+	m_sprite,ANIMATION_TIME,false, unsigned int(Pictures::instance().getTraffic().size())){
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::GameStartGui));
     m_sprite.setPosition(XPOSITION,YPOSITION);
     m_sprite.scale(TRAFTTLIGHTSCALE,TRAFTTLIGHTSCALE);

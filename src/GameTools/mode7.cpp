@@ -3,6 +3,10 @@
 #include <cmath>
 #include "Utilities.h"
 #include "Macros.h"
+Mode7::Mode7():m_D(0),m_FOV(0),m_H_helf(0),m_W_half(0),m_sinus(0),m_cosinus(0)
+	,m_imageHeight(0),m_imageWidth(0),m_screenHeight(0),m_screenWidth(0)
+{
+}
 //============================ Constructor ====================================
 Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, float theta, float FOV)
 {
@@ -43,7 +47,7 @@ void Mode7::UpdateImg
 	(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec
 	, const Camera& camera)
 {
-	float obj_length, camera_length;
+	float camera_length;
 	sf::Vector2u screen_c;
 	sf::Vector2f world_c;
 	for (screen_c.y =  m_H_helf + 1 ;screen_c.y < m_screenHeight; screen_c.y++)

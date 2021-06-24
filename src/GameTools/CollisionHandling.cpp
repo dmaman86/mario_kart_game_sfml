@@ -69,9 +69,8 @@ namespace // anonymous namespace — the standard way to make function "static"
 	}
 //=============================================================================
 
-	void PlayerCoin(Object& player, Object& coin)
+	void PlayerCoin(Object& , Object& coin)
 	{
-		Player& Pl = dynamic_cast<Player&>(player);
 		Coin& co = dynamic_cast<Coin&>(coin);
 		if (co.getIsActive())
 			co.addCollected();
@@ -86,16 +85,14 @@ namespace // anonymous namespace — the standard way to make function "static"
 //=============================================================================
 
 	// primary collision-processing functions
-	void PlayerPipe(Object& player,Object& pipe)
+	void PlayerPipe(Object& player,Object&)
 	{
-		// To get the actual types and use them:
 		Player& Pl = dynamic_cast<Player&>(player);
-
 		Pl.DriveBack();
 	}
 //=============================================================================
 
-	void PlayerPlayerOnline(Object& player,Object& player2)
+	void PlayerPlayerOnline(Object& ,Object& )
     {
 
     }
@@ -109,27 +106,22 @@ void PipePlayer(Object& Pipe,
 }
 //=============================================================================
 
-void PlayerFloorAsphalt(Object& player,
-	Object& floor_asphalt)
+void PlayerFloorAsphalt(Object& player, Object& )
 {
-	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
 	Pl.setCoefficientOfFriction(1);
 }
 //=============================================================================
 
-void PlayerFloorBrick(Object& player,
-	Object& floorbrick)
+void PlayerFloorBrick(Object& player, Object& )
 {
-	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);
 	Pl.setCoefficientOfFriction(2);
 	Pl.DriveBack();
 }
 //=============================================================================
 
-void PlayerFloorSand(Object& player,
-	Object& floorsand)
+void PlayerFloorSand(Object& player, Object& )
 {
 	// To get the actual types and use them:
 	Player& Pl = dynamic_cast<Player&>(player);

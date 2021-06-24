@@ -35,7 +35,7 @@ void OnlineRace::InitNetwork()
 
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
     auto locations = readFromFile<int>(name+"_start_position.txt",3,2);
-    m_player.setFinishLine(locations[2][0]);
+    m_player.setFinishLine(float(locations[2][0]));
 
     if (m_data->user.getIfHost())
         initPositionLikeHost(locations);
@@ -89,20 +89,22 @@ void OnlineRace::updateDynamic()
 //=============================================================================
 void OnlineRace::initPositionLikeHost( const std::vector<std::vector<int>>& locations )
 {
-    m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
+    m_player.setLocation(sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[1][0], locations[1][1]));
-    m_board.addObjects(locations[1][0]*8, locations[1][1]*8, &m_player2);
+                             sf::Vector2f(WITDH_G / 2.f + 100.f, HIGHT_G - 50.f),
+							 sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
+    m_board.addObjects(float(locations[1][0]*8), float(locations[1][1]*8), &m_player2);
 }
 
 //=============================================================================
 void OnlineRace::initPositionLikeJoin( const std::vector<std::vector<int>>& locations )
 {
-    m_player.setLocation(sf::Vector2f(locations[1][0],locations[1][1]));
+    m_player.setLocation(sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
 
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(WITDH_G / 2.f + 100, HIGHT_G - 50), sf::Vector2f(locations[0][0], locations[0][1]));
-    m_board.addObjects(locations[0][1]*8, locations[0][1]*8, &m_player2);
+                             sf::Vector2f(WITDH_G / 2.f + 100.f, HIGHT_G - 50.f),
+		sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
+    m_board.addObjects(float(locations[0][1]*8), float(locations[0][1]*8), &m_player2);
 }
 
 //=============================================================================

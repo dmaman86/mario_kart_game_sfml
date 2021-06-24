@@ -31,8 +31,8 @@ void WelcomeState::Init()
     m_text.setFillColor(sf::Color(76, 0, 153));
     m_text.setOrigin(m_text.getLocalBounds().width / 2,
                      m_text.getLocalBounds().height / 2);
-    m_text.setPosition(sf::Vector2f(windowSize.x * 0.5f,
-                                   (windowSize.y / 2) + 300));
+    m_text.setPosition(sf::Vector2f(float(windowSize.x) * 0.5f,
+                                   (float(windowSize.y / 2.f)) + 300.f));
     m_text.setOutlineColor(sf::Color::White);
     m_text.setOutlineThickness(5.f);
 
@@ -41,17 +41,17 @@ void WelcomeState::Init()
     m_logoMario.setTexture(Pictures::instance().getTexture(Pictures::marioLogo));
     m_logoMario.setOrigin(m_logoMario.getGlobalBounds().width / 2,
                           m_logoMario.getGlobalBounds().height / 2);
-    m_logoMario.setPosition(sf::Vector2f(windowSize.x /2, (windowSize.y /2) - 100) );
+    m_logoMario.setPosition(sf::Vector2f(float(windowSize.x /2), float(windowSize.y /2) - 100.f) );
 }
 
 //take handle event
 //=============================================================
-void WelcomeState::HandleEvent(const sf::Event& event)
+void WelcomeState::HandleEvent(const sf::Event&)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         m_nextState = true;
-    
 }
+
 //=============================================================
 void WelcomeState::Update(float dt)
 {

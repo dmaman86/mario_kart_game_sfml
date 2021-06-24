@@ -23,7 +23,7 @@ public:
 	//================= Public functions =========================
 	const bool collisionWith(const GameObj& b)const;
 	void playSound() { this->m_sound.play(); }
-	virtual void UpdateAnimation(const float time) {};
+	virtual void UpdateAnimation(const float) {};
 
 	//================= get & set functions ======================
 	void setScale(float x, float y) { m_sprite.setScale(x, y); }

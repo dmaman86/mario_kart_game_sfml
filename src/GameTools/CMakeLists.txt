@@ -5,4 +5,5 @@ target_sources(test_mario_kart PRIVATE "Animation.cpp"
                                        "mode7.cpp"
 		                               "SpeedScreen.cpp"
 		                               "SkyLine.cpp"
+									   "Camera.cpp"
 									   )

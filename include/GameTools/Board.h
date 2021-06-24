@@ -8,7 +8,11 @@
 #include "Floor.h"
 typedef std::shared_ptr<GameObj> ptr;
 
+/*
+	Board
+*/
 class Board {
+
 public:
 
 	Board();
@@ -22,8 +26,8 @@ public:
 	void updateObjects(float x, float y, float z, float w);
 
 private:
-
+	//private members
 	std::map<std::pair<float, float >, ptr> m_vec_obj;
 	std::vector<std::vector<std::unique_ptr<Floor>>> m_map;
 
-};
+};//end Board

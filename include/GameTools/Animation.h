@@ -5,12 +5,12 @@
 class Animation
 {
 public:
-    Animation(sf::Sprite& sprite):m_sprite(sprite){};
+    Animation(sf::Sprite& sprite):m_sprite(sprite),m_animationTime(0),m_is_cyclic(false),m_vector_len(0){};
     Animation(const std::vector <sf::IntRect >&, sf::Sprite& m_sprite, float, bool is_cyclic,
               unsigned int spinlen );
 
     void update(float delta, bool is_pressed);
-    void spin(float dt);
+    void spin();
     void setIndex(int i){m_index = i;}
 private:
     void update();

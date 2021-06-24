@@ -3,23 +3,25 @@
 #include <cmath>
 #include "iostream"
 #include "fstream"
+#include "Macros.h"
 
-const float calcLength(const sf::Vector2f a, const  sf::Vector2f b);
+const float calcLength(const sf::Vector2f, const sf::Vector2f);
 
 // calc the sinus of the number and return the value in degrees
-float calcSinDegree(float m_angle );
+const float calcSinDegree(const float);
 
 // calc the cosinus of the number and return the value in degrees
-float calcCosDegree(float m_angle );
+const float calcCosDegree(const float);
 
 template <class T>
-std::vector<std::vector<T>> readFromFile(std::string str,const int sizex = 128, const int sizey = 128){
-
+std::vector<std::vector<T>> readFromFile
+	(const std::string str,const int sizex = DEF_SIZE, const int sizey = DEF_SIZE)
+{
     std::vector<std::vector <T>> map_int;
     std::ifstream m_file(str);
     T input;
     if (!m_file.is_open())
-        throw std::range_error("cannot open "+str+"file");
+        throw std::range_error("cannot open "+ str +"file");
     for (int i = 0; i < sizex; ++i)
     {
         std::vector<T> row;

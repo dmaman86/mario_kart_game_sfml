@@ -72,7 +72,7 @@ void Player::UpdateAnimation(const float time)
 	if (!m_is_spin)
 		m_animation.update(time, m_is_pressed);
 	else
-		m_animation.spin(time);
+		m_animation.spin();
 }
 
 //=============================================================================

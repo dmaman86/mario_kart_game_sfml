@@ -28,7 +28,7 @@ void Animation::update(float delta, bool is_pressed) {
         if(m_index < 0) m_index = 0;
     }
     else
-         if ( m_index < m_vector_len - 1) {
+         if ( m_index < int(m_vector_len) - 1) {
                 ++m_index;
          }
          //if the animation is not cyclit the animation stay on the last one
@@ -46,7 +46,7 @@ void Animation::update()
     m_sprite.setTextureRect(m_data[m_index]);
 }
 
-void Animation::spin(float dt) {
+void Animation::spin() {
 
     if(m_index == m_data.size()-1)
         m_sprite.setScale(-SCALEPLAYER,SCALEPLAYER);

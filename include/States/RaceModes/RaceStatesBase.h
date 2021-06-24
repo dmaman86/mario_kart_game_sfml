@@ -23,9 +23,7 @@ class RaceStatesBase : public State
 {
 public:
     //================ Constructor / Destructor =================
-    RaceStatesBase(MarioKart::GameDataRef&);
     RaceStatesBase(MarioKart::GameDataRef&,const std::string& );
-
     ~RaceStatesBase();
 
     //================ Virtual public functions =================
@@ -44,7 +42,7 @@ protected:
     void UpdateMap();
     void UpdatePlayer(float);
     void drawStaticObjects();
-    void HandleCollision(float deltatime);
+    void HandleCollision();
     bool correctDirection();
     void startRaceScreen();
 	void finishRase(const bool);
@@ -68,4 +66,5 @@ protected:
     sf::Music m_musicMap;
 	sf::Sound m_win_s;
 	sf::Sound m_lose_s;
+
 }; //end RaceStateBase

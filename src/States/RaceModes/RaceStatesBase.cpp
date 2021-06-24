@@ -10,18 +10,6 @@
 #include "Fonts.h"
 
 //========================== Constructor / Destructor =========================
-RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data) : m_data(data),
-                                                    m_status(*data->window),
-                                                    m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
-                                                             sf::Vector2f(112,56),
-                                                             m_data->user.getSprite(), m_data->user.getIfSound()),
-                                                    m_map_race( m_data->user.getMapGame())
-	, m_sky("can we delete this constructor ?? !! please! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-{
-
-}
-
-
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& map): m_data(data),
                                                                      m_status(*data->window),
                                                                      m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
@@ -46,9 +34,10 @@ void RaceStatesBase::Init()
 	RaceStatesBase::InitPlayerLoc();
     InitMap();
     InitSky();
-    m_player.setLastScorePos(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+    m_player.setLastScorePos(m_board.getFloorScore
+		(int(m_player.getLocation().y), int(m_player.getLocation().x)));
     m_clock.restart();
-	m_view.setViewport(sf::FloatRect(0.25f, 0.05, 0.5f, 0.5f));
+	m_view.setViewport(sf::FloatRect(0.25f, 0.05f, 0.5f, 0.5f));
 
 
     m_musicMap.openFromFile(Sounds::vanillaLakeMap);
@@ -115,7 +104,7 @@ void RaceStatesBase::Update(const float deltatime) {
 			UpdatePlayer(deltatime);
 			m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
 			UpdateMap();
-			HandleCollision(deltatime);
+			HandleCollision();
 			this->UpdateAnimation(deltatime);
 		}
 	}
@@ -137,8 +126,9 @@ void RaceStatesBase::UpdateMap()
 //=============================================================================
 void RaceStatesBase::UpdatePlayer(const float deltatime)
 {
-	m_player.Update(deltatime, m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
-	m_player.CheckLap(m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x));
+	m_player.Update(deltatime, 
+		m_board.getFloorScore(int(m_player.getLocation().y), int(m_player.getLocation().x)));
+	m_player.CheckLap(m_board.getFloorScore(int(m_player.getLocation().y), int(m_player.getLocation().x)));
 	m_player.UpdateAnimation(deltatime);
 }
 
@@ -170,7 +160,7 @@ void RaceStatesBase::drawStaticObjects() {
 }
 
 //=============================================================================
-void RaceStatesBase::HandleCollision(float deltatime)
+void RaceStatesBase::HandleCollision()
 {
 	for (auto& obj : m_board.getObjData())
 		if (obj.second.get()->getIsInAngle() && m_player.collisionWith(*obj.second))
@@ -181,7 +171,8 @@ void RaceStatesBase::HandleCollision(float deltatime)
 			processCollision(m_player, *obj.second);
 		}
 
-	processCollision(m_player, m_board(m_player.getIntLocation().y, m_player.getIntLocation().x));
+	processCollision(m_player, m_board(unsigned int(m_player.getIntLocation().y),
+		unsigned int(m_player.getIntLocation().x)));
 }
 
 //=============================================================================
@@ -189,9 +180,13 @@ bool RaceStatesBase::correctDirection()
 {
     bool currect = false;
 
-	if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) <= m_player.getLastScorePos())
+	if (m_player.getLastScorePos() >= 
+			m_board.getFloorScore(int(m_player.getLocation().y),
+			int(m_player.getLocation().x)) )
 		currect = false;
-	else if (m_board.getFloorScore(m_player.getLocation().y, m_player.getLocation().x) >= m_player.getLastScorePos())
+	else if (m_player.getLastScorePos() <= 
+			m_board.getFloorScore(int(m_player.getLocation().y),
+			int(m_player.getLocation().x)))
 		currect = true;
     
 	return currect;

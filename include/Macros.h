@@ -12,9 +12,10 @@ const int HIGHT_G = 200;
 
 const int ROADW = 2000;
 const int SEGMENT_LENGTH = 200; 
-const float CAMERA_DEPTH = 0.84;
-const float MAX_SPEED = 15 ;
-const float EPSILON_SPEED = 3;
+const int DEF_SIZE = 128;
+const auto CAMERA_DEPTH = 0.84f;
+const auto MAX_SPEED = 15.f ;
+const auto EPSILON_SPEED = 3.f;
 
 const int MAPSIZE = 1024;
 const int PIPE = 7;
