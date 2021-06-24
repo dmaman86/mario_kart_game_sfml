@@ -4,6 +4,7 @@
 #include "WelcomeState.h"
 #include "Pictures.h"
 
+//=======================================================================
 // init struct
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window), services(), user()
@@ -12,6 +13,7 @@ MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	menuMusic.setLoop(true);
 }
 
+//======================== Constructor =============================
 MarioKart::MarioKart()
 	: m_window(sf::VideoMode(DimensionWindow::WIDTH, DimensionWindow::HEIGHT),
                "Mario Kart",
@@ -20,42 +22,25 @@ MarioKart::MarioKart()
 {
     m_window.setFramerateLimit(60);
 
-    m_dataGame->stateStack.AddState(StateStack::StateRef(new WelcomeState(m_dataGame)));
+    m_dataGame->stateStack.AddState(StateStack::StateRef(new
+                                        WelcomeState(m_dataGame)));
 }
 
+//=======================================================================
 void MarioKart::run()
 {
-	float newTime, frameTime;
-
-	float currentTime = m_clock.getElapsedTime().asSeconds();
-	float accumulator = 0.0f;
-
 	while (m_window.isOpen())
 	{
-
 		m_dataGame->stateStack.ProcessStateChanges();
-
 		auto dt = m_clock.getElapsedTime().asSeconds();
 		m_clock.restart();
-		/*  newTime = m_clock.getElapsedTime().asSeconds();
-		  frameTime = newTime - currentTime;
-
-		  if (frameTime > 0.25f)
-			  frameTime = 0.25f;
-
-		  currentTime = newTime;
-		  accumulator += frameTime;
-
-		  while (accumulator >= m_dt)
-		  {*/
 		processInput();
 		update(dt);
-		//    accumulator -= m_dt;
-	   // }
 		render();
 	}
 }
 
+//=======================================================================
 void MarioKart::processInput()
 {
 	sf::Event event;
@@ -73,11 +58,13 @@ void MarioKart::processInput()
 	}
 }
 
+//=======================================================================
 void MarioKart::update(double dt)
 {
 	m_dataGame->stateStack.GetActiveState()->Update(dt);
 }
 
+//=======================================================================
 void MarioKart::render()
 {
 	m_window.clear();
