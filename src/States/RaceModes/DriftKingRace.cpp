@@ -11,16 +11,22 @@ DriftKingRace::DriftKingRace(MarioKart::GameDataRef& data) :
 //================================= Update =====================================
 void DriftKingRace::Update(const float deltatime) {
 
-	RaceStatesBase::Update(deltatime);
+	try {
 
-	if (isFinish())
-	{
-		auto add_points = 1000 - m_clock.getElapsedTime().asSeconds();
-		m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
-		finishRase(true);
+		RaceStatesBase::Update(deltatime);
+
+		if (isFinish())
+		{
+			auto add_points = 1000 - m_clock.getElapsedTime().asSeconds();
+			m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
+			finishRase(true);
+		}
+		else if (m_player.getCoefficient() != 1)
+			finishRase(false);
 	}
-	else if(m_player.getCoefficient() != 1)
+	catch (...) {
 		finishRase(false);
+	}
 }
 
 //=============================================================================

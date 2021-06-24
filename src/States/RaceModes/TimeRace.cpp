@@ -12,18 +12,24 @@ TimeRace::TimeRace(MarioKart::GameDataRef& data) :
 //================================= Update =====================================
 void TimeRace::Update(const float deltatime) {
 
-	RaceStatesBase::Update(deltatime);
-	
-	if (isFinishTime())
-	{
-		finishRase(false);
-	}
+	try {
+		RaceStatesBase::Update(deltatime);
 
-	if (m_player.getLap() == 2)
-	{
-		auto add_points = (m_time_level.asSeconds() - m_clock.getElapsedTime().asSeconds()) * 100.f;
-		m_data->user.setCoins(int(add_points)+ m_data->user.getCoins());
-		finishRase(true);
+		if (isFinishTime())
+		{
+			finishRase(false);
+		}
+
+		if (m_player.getLap() == 2)
+		{
+			auto add_points = (m_time_level.asSeconds() - 
+				m_clock.getElapsedTime().asSeconds()) * 100.f;
+			m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
+			finishRase(true);
+		}
+	}
+	catch (...) {
+		finishRase(false);
 	}
 }
 

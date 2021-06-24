@@ -10,15 +10,19 @@ CoinRace::CoinRace(MarioKart::GameDataRef& data) :
 
 //================================= Update =====================================
 void CoinRace::Update(const float deltatime) {
-
-
-	RaceStatesBase::Update(deltatime);
-	m_player.UpdateAnimation(deltatime);
-	if (isFinish())
-	{
-		auto add_points = Coin::getCount()*1000 / m_clock.getElapsedTime().asSeconds();
-		m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
-		finishRase(true);
+	
+	try {
+		RaceStatesBase::Update(deltatime);
+		m_player.UpdateAnimation(deltatime);
+		if (isFinish())
+		{
+			auto add_points = Coin::getCount() * 1000 / m_clock.getElapsedTime().asSeconds();
+			m_data->user.setCoins(int(add_points) + m_data->user.getCoins());
+			finishRase(true);
+		}
+	}
+	catch (...) {
+		finishRase(false);
 	}
 }
 

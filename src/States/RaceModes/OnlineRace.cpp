@@ -57,12 +57,17 @@ void OnlineRace::HandleEvent(const sf::Event& ev)
 //================================= Update =====================================
 void OnlineRace::Update(const float deltatime)
 {
-    RaceStatesBase::Update(deltatime);
-    UpdateNetwork(deltatime);
-    if(m_player.getLap() == max_lap)
-        finishOnline(true);
-    if(m_player2.getLap() == max_lap)
-        finishOnline(false);
+	try {
+		RaceStatesBase::Update(deltatime);
+		UpdateNetwork(deltatime);
+		if (m_player.getLap() == max_lap)
+			finishOnline(true);
+		if (m_player2.getLap() == max_lap)
+			finishOnline(false);
+	}
+	catch (...) {
+		finishOnline(false);
+	}
 }
 
 //=============================================================================

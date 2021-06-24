@@ -94,20 +94,15 @@ void RaceStatesBase::HandleEvent(const sf::Event&)
 //================================= Update =====================================
 void RaceStatesBase::Update(const float deltatime)
 {
-	try {
-		if (m_first)
-			m_first = false;
-		else
-		{
-			UpdatePlayer(deltatime);
-			m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
-			UpdateMap();
-			HandleCollision();
-			this->UpdateAnimation(deltatime);
-		}
-	}
-	catch (...){
-		finishRase(false);
+	if (m_first)
+		m_first = false;
+	else
+	{
+		UpdatePlayer(deltatime);
+		m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
+		UpdateMap();
+		HandleCollision();
+		this->UpdateAnimation(deltatime);
 	}
 }
 
