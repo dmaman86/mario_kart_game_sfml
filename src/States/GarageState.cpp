@@ -7,7 +7,7 @@ GarageState::GarageState(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
                                                         m_selectCar()
 {
-    
+    m_soundOn = m_data->user.getIfSound();
 }
 //init the state 
 //=============================================================
@@ -32,6 +32,7 @@ void GarageState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type)
     {
+        if(m_soundOn)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
             { event.mouseButton.x, event.mouseButton.y });
