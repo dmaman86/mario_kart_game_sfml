@@ -5,7 +5,7 @@ User::User():
         m_id(""),
         m_name(""),
         m_sprite(""),
-        m_music(false),
+        m_music(true),
         m_sound(true),
         m_host(false),
         m_inGame(false),

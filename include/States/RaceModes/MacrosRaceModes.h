@@ -15,7 +15,7 @@ const auto TEXT_FINISH_SIZE = 75u;
 
 const auto TEXT_FINISH_OUT_LINE_SIZE = 5.f;
 const auto FOUR = 4.f;
-const auto HIGHT_Y_UPDATE = -3.f;
+const auto HIGHT_Y_UPDATE = 3.f;
 const auto HIGHT_Y = -17.f;
 const auto FOV = 300.f;
 const auto HUNDRED = 100.f;
