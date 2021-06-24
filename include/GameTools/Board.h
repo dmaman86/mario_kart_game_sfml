@@ -6,13 +6,14 @@
 #include <algorithm>
 #include "PlayerOnline.h"
 #include "Floor.h"
-typedef std::shared_ptr<GameObj> ptr;
 
 /*
 	Board
 */
 class Board
 {
+public:
+    typedef std::shared_ptr<GameObj> ptr;
 public:
 	Board();
 	void fillMap(const std::string &);
@@ -34,7 +35,7 @@ private:
     };
 	enum class ObjectType
     {
-	    ObjPipe,
+	    ObjPipe = 1,
 	    ObjGhost,
 	    ObjBanana,
 	    ObjCoin,
