@@ -18,7 +18,7 @@ public:
     // constructor & destructor
     GetDataState(MarioKart::GameDataRef&);
     ~GetDataState() = default;
-    // virtul functions
+    // virtual functions
     void Init() override;
     void HandleEvent(const sf::Event&) override;
     void Update(float) override;
@@ -31,6 +31,7 @@ private:
     sf::String m_playerInput;
     sf::Text m_playerText;
     sf::Text m_title_get_name;
+    sf::Text m_choose_drive;
     sf::Text m_error;
     std::vector< std::shared_ptr<Button> > m_drivers;
     sf::Sound m_click;
@@ -57,4 +58,5 @@ private:
     void setVolume();
     void resetOtherDrivers(size_t);
     void initTexts(const sf::Vector2u&);
+    void initText(sf::Text&, const std::string&, const sf::Color&);
 };

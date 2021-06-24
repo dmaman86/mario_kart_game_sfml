@@ -22,7 +22,8 @@ GetDataState::GetDataState(MarioKart::GameDataRef& data): m_data( data ),
                                                          m_save(Pictures::MenuButtons1),
                                                          m_joinGame(Pictures::MenuButtons1),
                                                          m_createGame(Pictures::MenuButtons1),
-                                                         m_errorShow(false)
+                                                         m_errorShow(false),
+                                                         m_choose_drive()
 {
 
 }
@@ -65,7 +66,7 @@ void GetDataState::Init()
     m_playerText.setCharacterSize(50);
     m_playerText.setFillColor(sf::Color::Red);
     centerOrigin(m_playerText);
-    m_playerText.setPosition(sf::Vector2f(windowSize.x / 2.5, (windowSize.y / 2) + 200));
+    m_playerText.setPosition(sf::Vector2f(windowSize.x / 2.5, (windowSize.y / 2) + 100));
 
     m_back.setCallback([this](){
         m_data->user.setOnline(false);
@@ -234,6 +235,7 @@ void GetDataState::Draw()
     {
         if(!m_send_data)
         {
+            window.draw(m_choose_drive);
             window.draw(m_title_get_name);
             window.draw(m_playerText);
 
@@ -321,21 +323,27 @@ void GetDataState::setVolume()
 
 void GetDataState::initTexts(const sf::Vector2u& windowSize)
 {
-    m_title_get_name.setFont(Fonts::instance().getFont());
-    m_title_get_name.setString("Please enter your name");
-    m_title_get_name.setFillColor(sf::Color::White);
-    m_title_get_name.setCharacterSize(50);
-    m_title_get_name.setOrigin(m_title_get_name.getLocalBounds().width / 2,
-                               m_title_get_name.getLocalBounds().height / 2);
+    initText(m_title_get_name, "Please enter your name",
+             sf::Color(76, 0, 153));
     m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
                                               (windowSize.y / 2u) + (unsigned)20));
 
-    m_error.setFont(Fonts::instance().getFont());
-    m_error.setString("Error to connect with serve");
-    m_error.setFillColor(sf::Color::Red);
-    m_error.setCharacterSize(50);
-    m_error.setOrigin(m_error.getLocalBounds().width / 2,
-                      m_error.getLocalBounds().height / 2);
+    initText(m_error, "Error to connect with server", sf::Color::Red);
     m_error.setPosition(sf::Vector2f(windowSize.x / 2,
                                      windowSize.y / 2));
+
+    initText(m_choose_drive, "Select Drive", sf::Color(76, 0, 153));
+    m_choose_drive.setPosition(sf::Vector2f(windowSize.x / 2.f,
+                                            (windowSize.y / 2.f) - 300));
+}
+
+void GetDataState::initText(sf::Text & text, const std::string& name_text, const sf::Color& color)
+{
+    text.setFont(Fonts::instance().getFont());
+    text.setString(name_text);
+    text.setFillColor(color);
+    text.setOutlineColor(sf::Color::White);
+    text.setCharacterSize(50);
+    text.setOrigin(text.getLocalBounds().width / 2,
+                               text.getLocalBounds().height / 2);
 }
