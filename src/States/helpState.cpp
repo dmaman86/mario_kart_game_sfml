@@ -35,7 +35,7 @@ void helpState::HandleEvent(const sf::Event& event)
     }
 }
 
-void helpState::Update(float)
+void helpState::Update(const float)
 {
 }
 

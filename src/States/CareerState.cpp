@@ -79,7 +79,7 @@ void CareerState::resetButtons(Options option)
     }
 }
 
-void CareerState::Update(float)
+void CareerState::Update(const float)
 {
     setVolume(m_data->user.getIfSound());
 

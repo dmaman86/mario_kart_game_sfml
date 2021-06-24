@@ -54,9 +54,8 @@ void OnlineRace::HandleEvent(const sf::Event& ev)
 }
 
 //================================= Update =====================================
-void OnlineRace::Update(float deltatime)
+void OnlineRace::Update(const float deltatime)
 {
-
     RaceStatesBase::Update(deltatime);
     UpdateNetwork(deltatime);
     if(m_player.getLap() == max_lap)

@@ -54,7 +54,7 @@ public:
 
     const bool &getIfSelected();
 
-    void setFillInColor(sf::Uint32 , sf::Uint32, sf::Uint32, sf::Uint32);
+    void setFillInColor(sf::Uint8 , sf::Uint8, sf::Uint8, sf::Uint8);
 
     void setCallback(Callback);
 

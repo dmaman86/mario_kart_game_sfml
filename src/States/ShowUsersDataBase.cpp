@@ -65,7 +65,7 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
     }
 }
 
-void ShowUsersDataBase::Update(float dt)
+void ShowUsersDataBase::Update(const float )
 {
     if (m_backMenu)
     {
@@ -133,18 +133,18 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
         text.setCharacterSize(60);
         text.setStyle(sf::Text::Bold);
         text.setString( (*itr).getName() );
-        text.setPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
-                                      (windowSize.y / 3) + (i * 100)));
+        text.setPosition(sf::Vector2f(float((windowSize.x / 2.5) - 100),
+                                      (float(windowSize.y / 3) + (i * 100))));
         m_list_text.push_back(text);
         sprite.setTexture(Pictures::instance().getTexture(itr->getSprite()));
-        sprite.setTextureRect((sf::Rect(95, 0, 33,30 )));
+        sprite.setTextureRect(sf::Rect(95, 0, 33,30 ));
         sprite.scale(2, 2);
-        sprite.setPosition(sf::Vector2f((windowSize.x / text.getPosition().x) + 1200,
-                                        (windowSize.y / 3 ) + (i * 100)));
+        sprite.setPosition(sf::Vector2f(float((windowSize.x / text.getPosition().x) + 1200),
+                                        float((windowSize.y / 3 ) + (i * 100))));
         m_list_sprites.push_back(sprite);
 
-        button.setInPosition(sf::Vector2f((windowSize.x / 3) - 150,
-                                          (windowSize.y / 3) + (i * 100)));
+        button.setInPosition(sf::Vector2f(float((windowSize.x / 3) - 150),
+                                          float((windowSize.y / 3) + (i * 100))));
         button.setInScale(1.2f, 0.2f);
         button.setFillInColor(0, 0, 0, 120);
         m_users_rectangle.emplace_back(button);

@@ -14,7 +14,7 @@ TimeRace::~TimeRace()
 }
 
 //================================= Update =====================================
-void TimeRace::Update(float deltatime) {
+void TimeRace::Update(const float deltatime) {
 
 	RaceStatesBase::Update(deltatime);
 	

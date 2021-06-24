@@ -42,13 +42,13 @@ void GetDataState::Init()
 
     m_save.setTextureInRect(PositionButtons::save);
     m_save.setInOrigin();
-    m_save.setInPosition(sf::Vector2f(windowSize.x * 0.5f,
-                                      (windowSize.y / 2) + 300));
+    m_save.setInPosition(sf::Vector2f(float(windowSize.x) * 0.5f,
+                                      (float(windowSize.y / 2.f)) + 300.f));
 
     m_createGame.setTextureInRect(PositionButtons::createGame);
     m_createGame.setInOrigin();
-    m_createGame.setInPosition(sf::Vector2f((windowSize.x / 2.5) - 100,
-                                            (windowSize.y / 3) + 100));
+    m_createGame.setInPosition(sf::Vector2f((float(windowSize.x / 2.5f)) - 100.f,
+                                            (float(windowSize.y / 3.f)) + 100.f));
     m_createGame.setCallback([this](){
         m_data->user.setHost(true);
         m_data->stateStack.AddState(StateStack::StateRef( new HostState(m_data)), false);
@@ -56,8 +56,8 @@ void GetDataState::Init()
 
     m_joinGame.setTextureInRect(PositionButtons::joinGame);
     m_joinGame.setInOrigin();
-    m_joinGame.setInPosition(sf::Vector2f((windowSize.x / m_createGame.getInPosition().x) + 1000,
-                                          (windowSize.y / 3 ) + 200));
+    m_joinGame.setInPosition(sf::Vector2f((float(windowSize.x) / m_createGame.getInPosition().x) + 1000.f,
+                                          (float(windowSize.y) / 3.f ) + 200.f));
     m_joinGame.setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef( new ShowUsersDataBase(m_data)), false);
     });
@@ -66,7 +66,7 @@ void GetDataState::Init()
     m_playerText.setCharacterSize(50);
     m_playerText.setFillColor(sf::Color::Red);
     centerOrigin(m_playerText);
-    m_playerText.setPosition(sf::Vector2f(windowSize.x / 2.5, (windowSize.y / 2) + 100));
+    m_playerText.setPosition(sf::Vector2f(float(windowSize.x) / 2.5f, (float(windowSize.y / 2.f)) + 100.f));
 
     m_back.setCallback([this](){
         m_data->user.setOnline(false);
@@ -100,7 +100,7 @@ void GetDataState::initVectorSpritesOnline( const sf::Vector2u& windowSize )
     {
         it->get()->setTextureInRect(PositionDrive::start);
         it->get()->setInScale(5, 5);
-        it->get()->setInPosition(sf::Vector2f(120 + ( i * 30 ), (windowSize.y / 2 ) - 200));
+        it->get()->setInPosition(sf::Vector2f(float(120 + ( i * 30 )), float((windowSize.y / 2 ) - 200)));
     }
 }
 
@@ -112,7 +112,7 @@ void GetDataState::initVectorSpritesOffline(const sf::Vector2u & windowSize)
         auto button = std::make_shared<Button>(m_data->user.getDrive(i));
         button->setTextureInRect(PositionDrive::start);
         button->setIntoScale(5, 5);
-        button->setInPosition(sf::Vector2f(120 + ( j * 30 ), (windowSize.y / 2 ) - 200));
+        button->setInPosition(sf::Vector2f(float(120 + ( j * 30 )), float((windowSize.y / 2 ) - 200)));
         m_drivers.emplace_back(button);
     }
 }
@@ -137,18 +137,18 @@ void GetDataState::HandleEvent(const sf::Event & event)
         if (auto res = m_back.validGlobalBound(location); res)
             m_back.updateIfSelected(res);
 
-        else if(auto res = m_createGame.validGlobalBound(location); res)
-            m_createGame.updateIfSelected(res);
-        else if(auto res = m_joinGame.validGlobalBound(location); res)
-            m_joinGame.updateIfSelected(res);
+        else if(auto resCre = m_createGame.validGlobalBound(location); resCre)
+            m_createGame.updateIfSelected(resCre);
+        else if(auto resJoi = m_joinGame.validGlobalBound(location); resJoi)
+            m_joinGame.updateIfSelected(resJoi);
         else
         {
             for(size_t i{0}; i < m_drivers.size(); i++)
             {
                 auto& driver = m_drivers[i];
-                if(auto res = driver->validGlobalBound(location); res)
+                if(auto resDriv = driver->validGlobalBound(location); resDriv)
                 {
-                    driver->updateIfSelected(res);
+                    driver->updateIfSelected(resDriv);
                     m_user_sprite = driver->getName();
                     driver->setTextureInRect(PositionDrive::select);
                     resetOtherDrivers(i);
@@ -181,7 +181,7 @@ void GetDataState::resetOtherDrivers(size_t index)
     }
 }
 
-void GetDataState::Update(float dt)
+void GetDataState::Update(const float dt)
 {
     if(!m_playerInput.toAnsiString().empty() && !m_user_sprite.empty())
         m_save_data = true;
@@ -325,12 +325,12 @@ void GetDataState::initTexts(const sf::Vector2u& windowSize)
 {
     initText(m_title_get_name, "Please enter your name",
              sf::Color(76, 0, 153));
-    m_title_get_name.setPosition(sf::Vector2f(windowSize.x / (unsigned)2.5,
-                                              (windowSize.y / 2u) + (unsigned)20));
+    m_title_get_name.setPosition(sf::Vector2f(float(windowSize.x / (unsigned)2.5),
+                                              float((windowSize.y / 2u) + (unsigned)20)));
 
     initText(m_error, "Error to connect with server", sf::Color::Red);
-    m_error.setPosition(sf::Vector2f(windowSize.x / 2,
-                                     windowSize.y / 2));
+    m_error.setPosition(sf::Vector2f(float(windowSize.x / 2),
+                                     float(windowSize.y / 2)));
 
     initText(m_choose_drive, "Select Drive", sf::Color(76, 0, 153));
     m_choose_drive.setPosition(sf::Vector2f(windowSize.x / 2.f,

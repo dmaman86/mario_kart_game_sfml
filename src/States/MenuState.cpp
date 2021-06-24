@@ -32,7 +32,7 @@ void MenuState::Init()
     m_rect_logo.setSize(sf::Vector2f(450, 250));
     m_rect_logo.setOrigin(m_rect_logo.getGlobalBounds().width / 2,
                           m_rect_logo.getGlobalBounds().height / 2);
-    m_rect_logo.setPosition(sf::Vector2f(windowSize.x /2, (windowSize.y /2) - 250) );
+    m_rect_logo.setPosition(sf::Vector2f(float(windowSize.x /2), float((windowSize.y /2) - 250)) );
 
 
     auto buttonLetPlay = std::make_shared<Button>(Pictures::MenuButtons1);
@@ -142,7 +142,7 @@ void MenuState::updateColors(const sf::Vector2f& loc)
     }
 }
 
-void MenuState::Update(float dt)
+void MenuState::Update(const float)
 {
     setVolume();
 }

@@ -15,7 +15,7 @@ DriftKingRace::~DriftKingRace()
 }
 
 //================================= Update =====================================
-void DriftKingRace::Update(float deltatime) {
+void DriftKingRace::Update(const float deltatime) {
 
 	RaceStatesBase::Update(deltatime);
 

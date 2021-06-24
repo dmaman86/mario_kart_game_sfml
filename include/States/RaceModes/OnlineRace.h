@@ -18,7 +18,7 @@ public:
     //================ Virtual public functions =================
     void Init() override;
     void HandleEvent(const sf::Event&) override;
-    void Update(float) override;
+    void Update(const float) override;
 
 private:
     //================ Private functions =========================

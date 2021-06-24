@@ -95,7 +95,7 @@ void HostState::HandleEvent(const sf::Event & event)
 }
 
 //================================= Update =====================================
-void HostState::Update(float dt)
+void HostState::Update(const float dt)
 {
     for( auto & map : m_maps )
     {
@@ -190,7 +190,7 @@ void HostState::initTitlesTexts()
     m_title.setString("Select Map");
     m_title.setFillColor(sf::Color(76, 0, 153));
     m_title.setCharacterSize(70);
-    m_title.setPosition((m_windowSize.x / 2) - 300, (m_windowSize.y / 2) - 300);
+    m_title.setPosition(float((m_windowSize.x / 2) - 300), float((m_windowSize.y / 2) - 300));
 
     m_createGame.setFont(Fonts::instance().getFont());
     m_createGame.setString("Press Enter to continue");
@@ -198,8 +198,8 @@ void HostState::initTitlesTexts()
     m_createGame.setCharacterSize(50);
     m_createGame.setOrigin(m_createGame.getLocalBounds().width / 2,
                            m_createGame.getLocalBounds().height / 2);
-    m_createGame.setPosition(sf::Vector2f(m_windowSize.x * 0.5f,
-                                          (m_windowSize.y / 2) + 300));
+    m_createGame.setPosition(sf::Vector2f(float(m_windowSize.x * 0.5f),
+                                          float((m_windowSize.y / 2) + 300)));
     m_createGame.setOutlineColor(sf::Color::White);
     m_createGame.setOutlineThickness(5.f);
 }
@@ -213,8 +213,8 @@ void HostState::initErrorsTexts()
     m_error.setCharacterSize(70);
     m_error.setOrigin(m_error.getLocalBounds().width / 2,
                       m_error.getLocalBounds().height / 2);
-    m_error.setPosition(sf::Vector2f(m_windowSize.x / 2,
-                                     m_windowSize.y / 2));
+    m_error.setPosition(sf::Vector2f(float(m_windowSize.x / 2),
+                                     float(m_windowSize.y / 2)));
 
     m_back_state.setFont(Fonts::instance().getFont());
     m_back_state.setString("Sorry, please try again later.");
@@ -222,8 +222,8 @@ void HostState::initErrorsTexts()
     m_back_state.setCharacterSize(70);
     m_back_state.setOrigin(m_error.getLocalBounds().width / 2,
                            m_error.getLocalBounds().height / 2);
-    m_back_state.setPosition(sf::Vector2f(m_windowSize.x / 2,
-                                          m_windowSize.y / 2));
+    m_back_state.setPosition(sf::Vector2f(float(m_windowSize.x / 2),
+                                          float(m_windowSize.y / 2)));
 }
 
 //=============================================================================
@@ -274,7 +274,7 @@ void HostState::initRectangleShape(sf::RectangleShape& rect, sf::Texture& tex, s
     rect = sf::RectangleShape();
     rect.setSize(sf::Vector2f(250, 250));
     rect.setTexture(&tex);
-    rect.setPosition(200 + ( pos * 80 ), (rect.getGlobalBounds().height / 2) + 100);
+    rect.setPosition(float(200 + ( pos * 80 )), float((rect.getGlobalBounds().height / 2) + 100));
     rect.setOutlineThickness(5.f);
 }
 
@@ -285,7 +285,7 @@ void HostState::initText(sf::Text& text, size_t pos, const sf::RectangleShape& r
     text.setFont(Fonts::instance().getFont());
     text.setFillColor(sf::Color::Red);
     text.setOutlineThickness(5.f);
-    text.setPosition(160 + ( pos * 90 ), (rect.getGlobalBounds().height / 2) + 400);
+    text.setPosition(float(160 + ( pos * 90 )), float((rect.getGlobalBounds().height / 2) + 400));
 }
 
 //=============================================================================

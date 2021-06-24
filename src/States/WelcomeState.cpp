@@ -53,7 +53,7 @@ void WelcomeState::HandleEvent(const sf::Event&)
 }
 
 //=============================================================
-void WelcomeState::Update(float dt)
+void WelcomeState::Update(const float dt)
 {
     if(m_nextState)
         m_data->stateStack.AddState(StateStack::StateRef(new MenuState(m_data)));

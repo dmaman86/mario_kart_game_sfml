@@ -9,7 +9,7 @@ class State
 public:
     virtual void Init() = 0;
     virtual void HandleEvent( const sf::Event& ) = 0;
-    virtual void Update( float ) = 0;
+    virtual void Update(const float ) = 0;
     virtual void Draw() = 0;
 
     virtual void Pause(){ }

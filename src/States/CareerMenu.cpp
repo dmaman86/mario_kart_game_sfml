@@ -148,7 +148,7 @@ void CareerMenu::resetButtons(Options option)
     }
 }
 
-void CareerMenu::Update(float)
+void CareerMenu::Update(const float)
 {
     setVolume(m_data->user.getIfSound());
     m_moneys.setString(std::to_string(m_data->user.getCoins()) + '$');

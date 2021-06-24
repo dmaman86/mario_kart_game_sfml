@@ -46,6 +46,6 @@ private:
 
     // private functions
     void processInput();
-    void update( double );
+    void update(const float);
     void render();
 };

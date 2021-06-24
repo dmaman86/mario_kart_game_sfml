@@ -100,7 +100,7 @@ void SettingsState::HandleEvent(const sf::Event& event)
     }
 }
 
-void SettingsState::Update(float)
+void SettingsState::Update(const float)
 {
     //save if sound on
     onSound = m_data->user.getIfSound();

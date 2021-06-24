@@ -61,7 +61,7 @@ void GarageState::HandleEvent(const sf::Event& event)
 //update the state 
 //update my coins and the driver if I'm buy
 //=============================================================
-void GarageState::Update(float )
+void GarageState::Update(const float )
 {
 
     setVolume(m_data->user.getIfSound());

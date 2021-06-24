@@ -12,7 +12,7 @@ public:
 
 	//================ Virtual public functions =================
 
-	void Update(float) override;
+	void Update(const float) override;
 	void Draw() override;
 
 private:

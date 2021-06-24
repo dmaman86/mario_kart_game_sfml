@@ -59,7 +59,7 @@ void MarioKart::processInput()
 }
 
 //=======================================================================
-void MarioKart::update(double dt)
+void MarioKart::update(const float dt)
 {
 	m_dataGame->stateStack.GetActiveState()->Update(dt);
 }
