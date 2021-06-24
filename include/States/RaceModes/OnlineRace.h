@@ -18,6 +18,7 @@ public:
     //================ Virtual public functions =================
     void Init() override;
     void HandleEvent(const sf::Event&) override;
+	void Draw() override;
     void Update(const float) override;
 
 private:

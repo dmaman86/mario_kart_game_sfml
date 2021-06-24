@@ -24,7 +24,7 @@ class RaceStatesBase : public State
 public:
     //================ Constructor / Destructor =================
     RaceStatesBase(MarioKart::GameDataRef&,const std::string& );
-    ~RaceStatesBase();
+    ~RaceStatesBase() = default;
 
     //================ Virtual public functions =================
     void Init() override;

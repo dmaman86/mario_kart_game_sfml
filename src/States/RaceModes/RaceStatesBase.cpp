@@ -29,11 +29,6 @@ RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& 
 	m_lose_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::lose));
 }
 
-//=============================================================================
-RaceStatesBase::~RaceStatesBase()
-{
-}
-
 //========================= Init section ======================================
 void RaceStatesBase::Init()
 {

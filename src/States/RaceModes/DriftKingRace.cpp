@@ -8,12 +8,6 @@ DriftKingRace::DriftKingRace(MarioKart::GameDataRef& data) :
 {
 }
 
-//=============================================================================
-DriftKingRace::~DriftKingRace()
-{
-
-}
-
 //================================= Update =====================================
 void DriftKingRace::Update(const float deltatime) {
 

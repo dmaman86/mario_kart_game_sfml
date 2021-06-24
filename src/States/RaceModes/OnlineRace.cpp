@@ -3,6 +3,7 @@
 #include <cmath>
 #include "CollisionHandling.h"
 #include "Utilities.h"
+#include "Coin.h"
 
 //========================== Constructor / Destructor =========================
 OnlineRace::OnlineRace(MarioKart::GameDataRef& data) : RaceStatesBase(data ,data->user.getMapGame() ),
@@ -107,6 +108,15 @@ void OnlineRace::initPositionLikeJoin( const std::vector<std::vector<int>>& loca
                                           DimensionGame::HEIGHT_G - 50.f),
 		sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
     m_board.addObjects(float(locations[0][1]*8), float(locations[0][1]*8), &m_player2);
+}
+
+//=============================================================================
+void OnlineRace::Draw()
+{
+	RaceStatesBase::Draw();
+	m_status.printGameStatus
+	(sf::seconds(m_clock.getElapsedTime().asSeconds()),
+		m_player.getLap(), Coin::getCollected(), Coin::getCount(), 1);
 }
 
 //=============================================================================

@@ -1,15 +1,11 @@
 #include "TimeRace.h"
 #include "Fonts.h"
 #include "Coin.h"
+
 //========================== Constructor / Destructor =========================
 TimeRace::TimeRace(MarioKart::GameDataRef& data) : 
 	RaceStatesBase(data, data->user.getMapGame())
 	, m_time_level(sf::seconds(60))
-{
-}
-
-//=============================================================================
-TimeRace::~TimeRace()
 {
 }
 

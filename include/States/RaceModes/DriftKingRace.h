@@ -8,7 +8,7 @@ class DriftKingRace : public RaceStatesBase
 public:
 	//================ Constructor / Destructor =================
 	DriftKingRace(MarioKart::GameDataRef&);
-	~DriftKingRace();
+	~DriftKingRace() = default;
 
 	//================ Virtual public functions =================
 

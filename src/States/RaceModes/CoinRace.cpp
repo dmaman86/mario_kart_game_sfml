@@ -8,11 +8,6 @@ CoinRace::CoinRace(MarioKart::GameDataRef& data) :
 {
 }
 
-//=============================================================================
-CoinRace::~CoinRace()
-{
-}
-
 //================================= Update =====================================
 void CoinRace::Update(const float deltatime) {
 
