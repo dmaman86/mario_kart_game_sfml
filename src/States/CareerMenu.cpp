@@ -256,7 +256,6 @@ void CareerMenu::saveUser()
 
     file << m_data->user.getName() << "\n";
     file << m_data->user.getCoins() << "\n";
-    file << m_data->user.getMapGame() << "\n";
     for (int i = 0; i < m_data->user.getMaxDrivers(); ++i)
         file << m_data->user.getDrive(i) << "\n";
 
