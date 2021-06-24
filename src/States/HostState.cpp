@@ -3,9 +3,8 @@
 #include "Fonts.h"
 #include "OnlineRace.h"
 #include "CareerMenu.h"
+#include "Services.h"
 #include <iostream>
-#include <thread>
-#include <chrono>
 
 //========================== Constructor =========================
 HostState::HostState(MarioKart::GameDataRef & data): m_data( data ),

@@ -15,6 +15,7 @@ public:
     void setId( std::string );
     void setIdOther( std::string );
     const std::string& getId();
+    bool compareId(const std::string&);
     const std::string& getName();
     const std::string& getOtherId();
     void setName( std::string );

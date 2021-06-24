@@ -192,51 +192,61 @@ bool Services::getIdOtherUser(User * user)
 }
 
 //=======================================================================
-bool Services::getUsers(std::vector<User> & users, const std::string id)
+void Services::getUsers(std::vector<User>* users, bool* finish, std::mutex* mutex)
 {
+    static int i = 0;
     // create request
-    m_stream.str("");
-    m_stream.clear();
     sf::Http http(HttpNetwork::url);
     sf::Http::Response response;
     sf::Http::Request request_get( HttpNetwork::path_user,
                                    sf::Http::Request::Get);
 
-    users.clear();
-    // get response from server
-    response = http.sendRequest( request_get );
-    // valid response
-    if( response.getStatus() != sf::Http::Response::Ok )
-        return false;
-    // create vector of users from response
-    m_stream << response.getBody();
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_json(m_stream, pt);
+    while( i < 1 )
+    {
+        m_stream.str("");
+        m_stream.clear();
+        // get response from server
+        response = http.sendRequest( request_get );
+        if(*finish)
+            return;
+        mutex->lock();
+        // valid response
+        if( response.getStatus() == sf::Http::Response::Ok )
+        {
+            // create vector of users from response
+            m_stream << response.getBody();
+            boost::property_tree::ptree pt;
+            boost::property_tree::read_json(m_stream, pt);
 
-    BOOST_FOREACH(boost::property_tree::ptree::value_type &v, pt.get_child("users"))
-                {
-                    assert(v.first.empty()); // array elements have no names
-                    buildVecUsers(users, id, v.second);
-                }
-    return true;
+            BOOST_FOREACH(boost::property_tree::ptree::value_type &v, pt.get_child("users"))
+                        {
+                            assert(v.first.empty()); // array elements have no names
+                            buildVecUsers(users, v.second);
+                        }
+        }
+        mutex->unlock();
+    }
 }
 
 //=======================================================================
 // create user from response and insert into vector
-void Services::buildVecUsers(std::vector<User>& users, const std::string id,
-                             boost::property_tree::ptree const& pt)
+void Services::buildVecUsers(std::vector<User>* users, boost::property_tree::ptree const& pt)
 {
     using boost::property_tree::ptree;
-    std::vector< std::string > values;
+    std::vector<std::string> values;
     for (ptree::const_iterator it = pt.begin(); it != pt.end(); ++it)
     {
         values.emplace_back( it->second.get_value<std::string>() );
     }
-    if( values[0] != id )
+    std::string otherId = values[0];
+    auto it = find_if(users->begin(), users->end(), [&otherId](User& user) {
+        return user.compareId(otherId);
+    });
+    if( it == users->end())
     {
         User user(values[ 0 ], values[ 1 ],
                   values[ 2 ], values[ 3 ] );
-        users.emplace_back( user );
+        users->emplace_back(user);
     }
 }
 
@@ -263,6 +273,7 @@ void Services::updatePosition(User* user, PlayerBase* player,
                   << "&position=" << player->getLap();
         request_put.setBody(m_ostream.str());
         local_response = http.sendRequest( request_put );
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
             return;
         mutex->lock();
@@ -311,6 +322,7 @@ void Services::getPosition(User* otherUser, PlayerBase* player,
         m_stream.clear();
 
         local_response = http.sendRequest( request );
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
             return;
         mutex->lock();

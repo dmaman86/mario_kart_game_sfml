@@ -2,19 +2,27 @@
 #include "Pictures.h"
 #include "Fonts.h"
 #include "OnlineRace.h"
+#include "Services.h"
 #include <iostream>
 
+//========================== Constructor ===========================
 ShowUsersDataBase::ShowUsersDataBase(MarioKart::GameDataRef& data):
                                                          m_data( data ),
                                                          m_background(),
                                                          m_backMenu(false),
                                                          m_back(),
                                                          m_users(),
-                                                         m_selectedUser(false)
+                                                         m_selectedUser(false),
+                                                         m_get_users(false),
+                                                         m_thread_get_users(),
+                                                         m_mutex(),
+                                                         m_time_refresh(0.f)
 {
-
+    m_thread_get_users = std::thread(&Services::getUsers, &m_data->services,
+                                     &m_users, &m_get_users, &m_mutex);
 }
 
+//========================== Init ===========================
 void ShowUsersDataBase::Init()
 {
     sf::Vector2u textureSize;
@@ -32,12 +40,12 @@ void ShowUsersDataBase::Init()
     m_title.setString("Online Drivers");
     m_title.setFillColor(sf::Color(76, 0, 153));
     m_title.setCharacterSize(70);
-    m_title.setPosition((m_windowSize.x / 2.f) - 500, 100);
+    m_title.setPosition(float((m_windowSize.x / 2) - 300), float((m_windowSize.y / 2) - 300));
 
-    m_data->services.getUsers( m_users, m_data->user.getId() );
-    buildList( m_windowSize );
+    buildList(m_windowSize);
 }
 
+//========================== Handle Event ===========================
 void ShowUsersDataBase::HandleEvent(const sf::Event & event)
 {
     if(sf::Event::MouseButtonPressed == event.type)
@@ -55,7 +63,6 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
                 auto rec = m_users_rectangle[ i ];
                 if( rec.validGlobalBound(location))
                 {
-                    //std::cout << m_users.at( i ).getId() << " " << m_users.at( i ).getName() << std::endl;
                     m_data->user.setIdOther(rec.getId());
                     m_selectedUser = true;
                     break;
@@ -65,23 +72,30 @@ void ShowUsersDataBase::HandleEvent(const sf::Event & event)
     }
 }
 
-void ShowUsersDataBase::Update(const float )
+//========================== Update ===========================
+void ShowUsersDataBase::Update(const float dt)
 {
     if (m_backMenu)
     {
+        finishThread();
         m_data->stateStack.RemoveState();
-        m_backMenu = false;
     }
     if(m_selectedUser)
     {
         std::cout << "go to race state\n";
+        finishThread();
         if(m_data->services.createRace(&m_data->user))
             m_data->stateStack.AddState(StateStack::StateRef( new OnlineRace(m_data)), false);
     }
-    m_data->services.getUsers( m_users, m_data->user.getId() );
-    buildList( m_windowSize );
+    m_time_refresh += dt;
+    if (m_time_refresh > 1.5f)
+    {
+        buildList( m_windowSize );
+        m_time_refresh = 0.f;
+    }
 }
 
+//========================== Draw ===========================
 void ShowUsersDataBase::Draw()
 {
     sf::RenderWindow& window = *m_data->window;
@@ -100,14 +114,19 @@ void ShowUsersDataBase::Draw()
         window.draw( spt );
 }
 
+//========================== Resume ===========================
 void ShowUsersDataBase::Resume()
 {
     m_selectedUser = false;
+    m_get_users = false;
+    deleteUser(m_data->user.getOtherId());
     if(m_data->user.getId().size() > 1)
         m_data->services.resetUser(&m_data->user);
+    m_thread_get_users = std::thread(&Services::getUsers, &m_data->services, &m_users,
+                                     &m_get_users, &m_mutex);
 }
 
-// private functions
+//========================== Private Functions ===========================
 void ShowUsersDataBase::centerOrigin(sf::Text& text)
 {
     sf::FloatRect bounds = text.getLocalBounds();
@@ -115,13 +134,14 @@ void ShowUsersDataBase::centerOrigin(sf::Text& text)
                    std::floor(bounds.top + bounds.height / 2.f));
 }
 
+//==================================================================
 void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
 {
     size_t i = 0;
+    m_mutex.lock();
     m_list_text.clear();
     m_list_sprites.clear();
     m_users_rectangle.clear();
-
     for( auto itr = m_users.begin(); itr != m_users.end(); itr++, i++ )
     {
         auto button = Button( itr->getId(), Pictures::rectangle);
@@ -132,7 +152,7 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
         text.setFillColor(sf::Color(76, 0, 153));
         text.setCharacterSize(60);
         text.setStyle(sf::Text::Bold);
-        text.setString( (*itr).getName() );
+        text.setString( itr->getName() );
         text.setPosition(sf::Vector2f(float((windowSize.x / 2.5) - 100),
                                       (float(windowSize.y / 3) + (i * 100))));
         m_list_text.push_back(text);
@@ -146,7 +166,24 @@ void ShowUsersDataBase::buildList( const sf::Vector2u& windowSize )
         button.setInPosition(sf::Vector2f(float((windowSize.x / 3) - 150),
                                           float((windowSize.y / 3) + (i * 100))));
         button.setInScale(1.2f, 0.2f);
-        button.setFillInColor(0, 0, 0, 120);
+        button.setFillInColor(Color::GRAYCOLOR);
         m_users_rectangle.emplace_back(button);
     }
+    m_mutex.unlock();
+}
+
+//==================================================================
+void ShowUsersDataBase::finishThread()
+{
+    m_get_users = true;
+    m_thread_get_users.detach();
+}
+
+//==================================================================
+void ShowUsersDataBase::deleteUser(const std::string & otherId)
+{
+    m_users.erase(std::remove_if(m_users.begin(), m_users.end(),
+                                 [&otherId](User& user) {
+                                     return user.compareId(otherId);
+                                 }));
 }

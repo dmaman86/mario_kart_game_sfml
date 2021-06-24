@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "State.h"
 #include "MarioKart.h"
@@ -35,12 +37,20 @@ private:
     bool m_backMenu;
     bool m_selectedUser;
     std::vector<User> m_users;
+    float m_time_refresh;
 
     using ListUsers = std::vector< Button >;
     ListUsers m_users_rectangle;
     std::vector< sf::Text > m_list_text;
     std::vector< sf::Sprite > m_list_sprites;
+
+    std::thread m_thread_get_users;
+    std::mutex m_mutex;
+    bool m_get_users;
+
     // private functions
     void centerOrigin(sf::Text&);
     void buildList( const sf::Vector2u& );
+    void finishThread();
+    void deleteUser(const std::string&);
 };

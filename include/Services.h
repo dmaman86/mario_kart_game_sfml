@@ -33,9 +33,9 @@ public:
     bool getUser(User*, const std::string );
     bool deleteUser(User*);
     bool resetUser(User*);
-    bool getIdOtherUser(User* );
+    bool getIdOtherUser(User*);
     bool createRace(User* );
-    bool getUsers(std::vector<User>&, const std::string );
+    void getUsers(std::vector<User>*, bool*, std::mutex* );
     void updatePosition(User*, PlayerBase*, std::mutex*, bool* );
     void updateWin(User*, PlayerBase*);
     void getPosition(User*, PlayerBase*, std::mutex*, bool* );
@@ -46,8 +46,7 @@ private:
     std::stringstream m_stream;
     std::ostringstream m_ostream;
     // private functions
-    void buildVecUsers( std::vector<User>&,
-                        const std::string,
+    void buildVecUsers( std::vector<User>*,
                         boost::property_tree::ptree const& );
 };
 
