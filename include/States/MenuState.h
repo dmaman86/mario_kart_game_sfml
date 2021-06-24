@@ -28,7 +28,6 @@ private:
     // private members
     enum class Options
     {
-        About,
         Help,
         Settings,
         LetPlay

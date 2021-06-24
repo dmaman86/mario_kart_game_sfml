@@ -4,7 +4,6 @@
 #include "GetDataState.h"
 #include "SettingsState.h"
 #include "CareerState.h"
-#include "AboutState.h"
 #include <iostream>
 
 
@@ -46,16 +45,9 @@ void MenuState::Init()
         m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
     });
 
-    auto buttonAbout = std::make_shared<Button>(Pictures::MenuButtons1);
-    buttonAbout->setTextureInRect(PositionButtons::about);
-    buttonAbout->setInPosition(sf::Vector2f(100, 540));
-    buttonAbout->setCallback([this](){
-        m_data->stateStack.AddState(StateStack::StateRef(new AboutState(m_data)), false);
-    });
-
     auto buttonHelp = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonHelp->setTextureInRect(PositionButtons::help);
-    buttonHelp->setInPosition(sf::Vector2f(100, 640));
+    buttonHelp->setInPosition(sf::Vector2f(100, 540));
     buttonHelp->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
     });
@@ -74,7 +66,6 @@ void MenuState::Init()
     });
 
     m_buttons[Options::Help] = buttonHelp;
-    m_buttons[Options::About] = buttonAbout;
     m_buttons[Options::Settings] = buttonSettings;
     m_buttons[Options::LetPlay] = buttonLetPlay;
 

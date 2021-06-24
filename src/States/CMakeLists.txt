@@ -8,7 +8,6 @@ target_sources(test_mario_kart PRIVATE "CareerMenu.cpp"
 		                               "SettingsState.cpp"
 									   "ShowUsersDataBase.cpp"
                                        "StateOfMenu.cpp"
-							           "WelcomeState.cpp"
-			                           "AboutState.cpp")
+							           "WelcomeState.cpp")
 
 add_subdirectory(RaceModes)
