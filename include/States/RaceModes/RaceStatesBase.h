@@ -55,15 +55,14 @@ protected:
 	SkyLine m_sky;
 	SpeedScreen m_speed_scr;
 	float m_cameraY;
+	bool m_first;
 	std::string m_map_race;
 	std::thread m_build_map_thread;
 	sf::Clock m_clock;
 	sf::Sprite m_background;
 	sf::Sprite m_game_boy;
 	sf::View m_view;
-	bool m_first;
     sf::Music m_musicMap;
-	sf::Sound m_win_s;
-	sf::Sound m_lose_s;
+	sf::Sound m_win_s, m_lose_s;
 
 }; //end RaceStateBase

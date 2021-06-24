@@ -190,6 +190,7 @@ void RaceStatesBase::startRaceScreen()
 //=============================================================================
 void RaceStatesBase::finishRase(const bool w_or_l)
 {
+	m_musicMap.stop();
 	m_data->user.updateInGame(false);
 	m_data->stateStack.RemoveState();
 	sf::Text txt;
@@ -220,6 +221,7 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 		m_data->window->draw(txt);
 		m_data->window->display();
 	}
+	m_data->menuMusic.play();
 }
 
 //=============================================================================
