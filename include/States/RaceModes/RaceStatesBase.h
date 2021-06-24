@@ -38,12 +38,11 @@ protected:
     //================ Private functions =========================
     void InitMap();
 	void InitPlayerLoc();
-    void InitSky();
+    void InitBackground();
     void UpdateMap();
-    void UpdatePlayer(float);
+    void UpdatePlayer(const float);
     void drawStaticObjects();
     void HandleCollision();
-    bool correctDirection();
     void startRaceScreen();
 	void finishRase(const bool);
     //================ Private members ==========================

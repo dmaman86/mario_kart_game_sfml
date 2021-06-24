@@ -4,6 +4,7 @@
 #include "CollisionHandling.h"
 #include "Utilities.h"
 #include "Coin.h"
+#include "MacrosRaceModes.h"
 
 //========================== Constructor / Destructor =========================
 OnlineRace::OnlineRace(MarioKart::GameDataRef& data) : RaceStatesBase(data ,data->user.getMapGame() ),
@@ -34,7 +35,7 @@ void OnlineRace::Init()
 void OnlineRace::InitNetwork()
 {
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
-    auto locations = readFromFile<int>(name+"_start_position.txt",3,2);
+    auto locations = readFromFile<int>(name + START_POS_TXT, OBJ_DATA_SIZE.x, OBJ_DATA_SIZE.y);
     m_player.setFinishLine(float(locations[2][0]));
 
     if (m_data->user.getIfHost())
@@ -74,7 +75,7 @@ void OnlineRace::Update(const float deltatime)
 void OnlineRace::UpdateNetwork(float deltatime)
 {
     m_time_update += deltatime;
-    if (m_time_update > 0.1f)
+    if (m_time_update > TENTH)
     {
         m_mutex_player2.lock();
         updateDynamic();
@@ -86,10 +87,10 @@ void OnlineRace::UpdateNetwork(float deltatime)
 //=============================================================================
 void OnlineRace::updateDynamic()
 {
-    m_board.updateObjects(m_player2.getLastLocation().x*8,
-                          m_player2.getLastLocation().y*8,
-                          (m_player2.getLocation().x * 8),
-                          (m_player2.getLocation().y * 8));
+    m_board.updateObjects(m_player2.getLastLocation().x* EIGHT,
+                          m_player2.getLastLocation().y* EIGHT,
+                          (m_player2.getLocation().x * EIGHT),
+                          (m_player2.getLocation().y * EIGHT));
 }
 
 //=============================================================================
@@ -97,10 +98,10 @@ void OnlineRace::initPositionLikeHost( const std::vector<std::vector<int>>& loca
 {
     m_player.setLocation(sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + 100.f,
-                                          DimensionGame::HEIGHT_G - 50.f),
+                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + HUNDRED,
+                                          DimensionGame::HEIGHT_G - FIFTHY),
 							 sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
-    m_board.addObjects(float(locations[1][0]*8), float(locations[1][1]*8), &m_player2);
+    m_board.addObjects(float(locations[1][0])* EIGHT, float(locations[1][1])* EIGHT, &m_player2);
 }
 
 //=============================================================================
@@ -109,10 +110,10 @@ void OnlineRace::initPositionLikeJoin( const std::vector<std::vector<int>>& loca
     m_player.setLocation(sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
 
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + 100.f,
-                                          DimensionGame::HEIGHT_G - 50.f),
+                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + HUNDRED,
+                                          DimensionGame::HEIGHT_G - FIFTHY),
 		sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
-    m_board.addObjects(float(locations[0][1]*8), float(locations[0][1]*8), &m_player2);
+    m_board.addObjects(float(locations[0][1])* EIGHT, float(locations[0][1])* EIGHT, &m_player2);
 }
 
 //=============================================================================

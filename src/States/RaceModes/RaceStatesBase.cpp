@@ -9,21 +9,16 @@
 #include "Sounds.h"
 #include "Fonts.h"
 #include "Macros.h"
+#include "MacrosRaceModes.h"
 
 //========================== Constructor / Destructor =========================
 RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& map):
     m_data(data),
     m_status(*data->window),
-    m_player(sf::Vector2f(DimensionGame::WIDTH_G, (DimensionGame::HEIGHT_G * 2) - 50),
-             sf::Vector2f(112, 56),
-             m_data->user.getSprite(), m_data->user.getIfSound()),
-    m_map_race( m_data->user.getMapGame()),
-	m_view(sf::FloatRect(0.f, 0.f,
-                         DimensionGame::WIDTH_G * 2,
-                         DimensionGame::HEIGHT_G * 2)),
-	m_sky(map),
-	m_speed_scr(),
-	m_first(true)// 1000.f, 600.f));
+    m_player(sf::Vector2f(DimensionGame::WIDTH_G, (DimensionGame::HEIGHT_G * 2) - FIFTHY),
+		DEF_POS, m_data->user.getSprite(), m_data->user.getIfSound()),
+	m_view(sf::FloatRect(0.f, 0.f,DimensionGame::WIDTH_G * 2,DimensionGame::HEIGHT_G * 2)),
+	m_sky(map),m_speed_scr(),m_first(true), m_map_race(m_data->user.getMapGame())
 {
 	m_win_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::win));
 	m_lose_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::lose));
@@ -34,20 +29,16 @@ void RaceStatesBase::Init()
 {
 	RaceStatesBase::InitPlayerLoc();
     InitMap();
-    InitSky();
+    InitBackground();
     m_player.setLastScorePos(m_board.getFloorScore
 		(int(m_player.getLocation().y), int(m_player.getLocation().x)));
     m_clock.restart();
-	m_view.setViewport(sf::FloatRect(0.25f, 0.05f, 0.5f, 0.5f));
-
+	m_view.setViewport(VIEW_RECT);
 
     m_musicMap.openFromFile(Sounds::vanillaLakeMap);
     m_musicMap.setLoop(true);
     m_data->menuMusic.stop();
 
-   // m_status.printGameStatus(m_clock, m_player.getLap(), 0, 0, correctDirection());
-    //m_map.initThread(m_board.m_vec_obj);
-    //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
     startRaceScreen();
 }
 
@@ -55,24 +46,23 @@ void RaceStatesBase::Init()
 void RaceStatesBase::InitMap()
 {
 	m_camera.InitCamera(m_player.getLocation());
-	m_cameraY = -17;
-    m_map = Mode7(m_map_race, DimensionGame::WIDTH_G, DimensionGame::HEIGHT_G, m_player.getAngle(), 300.0);
+	m_cameraY = HIGHT_Y;
+    m_map = Mode7(m_map_race, DimensionGame::WIDTH_G, DimensionGame::HEIGHT_G, m_player.getAngle(), FOV);
     m_board.fillMap(m_map_race);
 	m_board.fillObjectMap(m_map_race);
 }
+
+//=============================================================================
 void RaceStatesBase::InitPlayerLoc()
 {
     std::string name = m_data->user.getMapGame().substr(0,m_data->user.getMapGame().find('.'));
-    auto locations = readFromFile<float>(name+"_start_position.txt",3,2);
+    auto locations = readFromFile<float>(name+ START_POS_TXT, OBJ_DATA_SIZE.x, OBJ_DATA_SIZE.y);
     m_player.setFinishLine(locations[2][0]);
 		m_player.setLocation(sf::Vector2f(locations[0][0],locations[0][1]));
-
-
-//	else if (m_data->user.getMapGame() == "ghost_valley.png")
-//		m_player.setLocation(sf::Vector2f(950 / 8, 600 / 8));
 }
+
 //=============================================================================
-void RaceStatesBase::InitSky()
+void RaceStatesBase::InitBackground()
 {
 	auto textureSize = Pictures::instance().getTexture(Pictures::menuBackground).getSize();
 	m_background.setTexture(Pictures::instance().getTexture(Pictures::menuBackground));
@@ -80,8 +70,8 @@ void RaceStatesBase::InitSky()
 		(float)m_data->window->getSize().y / textureSize.y);
 
 	m_game_boy.setTexture(Pictures::instance().getTexture(Pictures::game_boy));
-	m_game_boy.setScale(1.5, 1);
-	m_game_boy.setPosition(150,0);
+	m_game_boy.setScale(GAME_BOY_SCALE);
+	m_game_boy.setPosition(GAME_BOY_POS);
 }
 
 
@@ -105,7 +95,6 @@ void RaceStatesBase::Update(const float deltatime)
 		this->UpdateAnimation(deltatime);
 	}
 }
-
 
 //=============================================================================
 void RaceStatesBase::UpdateMap()
@@ -162,27 +151,12 @@ void RaceStatesBase::HandleCollision()
 
 			processCollision(m_player, *obj.second);
 		}
-
+	// Collision with floor
 	processCollision(m_player, m_board((unsigned int)(m_player.getLocation().y),
                                               (unsigned int)(m_player.getLocation().x)));
 }
 
-//=============================================================================
-bool RaceStatesBase::correctDirection()
-{
-    bool currect = false;
-
-	if (m_player.getLastScorePos() >= 
-			m_board.getFloorScore(int(m_player.getLocation().y),
-			int(m_player.getLocation().x)) )
-		currect = false;
-	else if (m_player.getLastScorePos() <= 
-			m_board.getFloorScore(int(m_player.getLocation().y),
-			int(m_player.getLocation().x)))
-		currect = true;
-    
-	return currect;
-}
+// Start screen with the bird and the traffic light
 //=============================================================================
 void RaceStatesBase::startRaceScreen()
 {
@@ -193,7 +167,7 @@ void RaceStatesBase::startRaceScreen()
     UpdateMap();
     if (m_data->user.getIfSound())
         trafficlight.playSound();
-    while (m_clock.getElapsedTime().asSeconds() < 4)
+    while (m_clock.getElapsedTime().asSeconds() < FOUR)
     {
         m_data->window->clear();
         RaceStatesBase::Draw();
@@ -213,17 +187,18 @@ void RaceStatesBase::startRaceScreen()
 
 }
 
+//=============================================================================
 void RaceStatesBase::finishRase(const bool w_or_l)
 {
 	m_data->user.updateInGame(false);
 	m_data->stateStack.RemoveState();
 	sf::Text txt;
 	txt.setFont(Fonts::instance().Fonts::getFontMario());
-	txt.setPosition(500, 40);
-	txt.setCharacterSize(75);
+	txt.setPosition(TEXT_FINISH_POS);
+	txt.setCharacterSize(TEXT_FINISH_SIZE);
 	txt.setFillColor(sf::Color::Red);
 	txt.setOutlineColor(sf::Color::White);
-	txt.setOutlineThickness(5);
+	txt.setOutlineThickness(TEXT_FINISH_OUT_LINE_SIZE);
 
 	(w_or_l) ? txt.setString("You Win!") :
 		txt.setString("You Lose!");
@@ -239,7 +214,7 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 			txt.setFillColor(sf::Color::Blue) : txt.setFillColor(sf::Color::Red);
 		
 		m_data->window->clear();
-		m_cameraY -= 3;
+		m_cameraY -= HIGHT_Y_UPDATE;
 		RaceStatesBase::Draw();
 		RaceStatesBase::UpdateMap();
 		m_data->window->draw(txt);
@@ -247,8 +222,8 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 	}
 }
 
+//=============================================================================
 void RaceStatesBase::UpdateAnimation(const float time)
 {
     m_board.UpdateAnimation(time);
 }
-

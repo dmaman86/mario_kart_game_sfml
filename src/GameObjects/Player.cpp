@@ -28,6 +28,7 @@ Player::Player
 	m_engine.setVolume(0);
 	m_engine.play();
 
+	m_objClock.restart();
 }
 //=============================================================================
 Player::Player(): m_animation(m_sprite),
@@ -101,7 +102,7 @@ void Player::DriveSmaller()
 	if (!m_is_smaller)
 	{
 		m_is_smaller = true;
-		m_smaller_time = m_playerClock.getElapsedTime().asSeconds();
+		m_smaller_time = m_objClock.getElapsedTime().asSeconds();
 		this->m_sprite.setScale(m_sprite.getScale() / 2.f);
 	}
 }
@@ -222,7 +223,7 @@ void Player::UpdateAcceleration()
 //=============================================================================
 void Player::UpdateSpecialSituations()
 {
-	if (m_is_smaller && m_playerClock.getElapsedTime().asSeconds() > 
+	if (m_is_smaller && m_objClock.getElapsedTime().asSeconds() >
 						m_smaller_time + THREE_F)
 	{
 		m_is_smaller = false;

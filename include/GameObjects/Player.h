@@ -64,7 +64,7 @@ protected:
 	float m_angle, m_force, m_acceleration, m_smaller_time, m_finish_line
 		, m_cof; // coefficient of friction
     
-	sf::Clock m_playerClock;
+	sf::Clock m_playerClock,m_objClock;
     sf::Vector2f m_last_pos;
 	sf::Time m_timepasses;
 	sf::Music m_engine;
