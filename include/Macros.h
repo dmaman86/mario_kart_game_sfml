@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 namespace DimensionWindow
 {
@@ -46,41 +47,41 @@ namespace SpecialKeyboard
 
 namespace PositionButtons
 {
-    const std::vector<int> letPlay = { 0, 250, 414, 64};
-    const std::vector<int> settings = { 0, 717, 360, 65};
-    const std::vector<int> about = { 0, 640, 255, 60};
-    const std::vector<int> help = { 0, 330, 187, 62};
-    const std::vector<int> online = { 0, 0, 265, 55};
-    const std::vector<int> carer = { 0, 485, 265, 70};
-    const std::vector<int> logo = { 0, 410, 250, 63};
-    const std::vector<int> back = { 0, 563, 180, 63};
-    const std::vector<int> newGame = { 0, 75, 405, 66};
-    const std::vector<int> loadGame = { 0, 160, 428, 67};
-    const std::vector<int> save = { 500, 0, 212, 54};
-    const std::vector<int> createGame = { 500, 155, 600, 60};
-    const std::vector<int> joinGame = { 500, 238, 600, 60};
-    const std::vector<int> carerTitle = { 0, 485, 270, 60};
-    const std::vector<int> timeRace = { 0, 875, 453, 60};
-    const std::vector<int> collectionCoinsRace = { 0, 955, 562, 57};
-    const std::vector<int> dkRace = { 0, 795, 522, 66};
-    const std::vector<int> garage = { 520, 80, 280, 62};
+    const sf::IntRect letPlay(0, 250, 414, 64);
+    const sf::IntRect settings( 0, 717, 360, 65);
+    const sf::IntRect about( 0, 640, 255, 60);
+    const sf::IntRect help( 0, 330, 187, 62);
+    const sf::IntRect online( 0, 0, 265, 55);
+    const sf::IntRect carer( 0, 485, 265, 70);
+    const sf::IntRect logo( 0, 410, 250, 63);
+    const sf::IntRect back( 0, 563, 180, 63);
+    const sf::IntRect newGame( 0, 75, 405, 66);
+    const sf::IntRect loadGame( 0, 160, 428, 67);
+    const sf::IntRect save( 500, 0, 212, 54);
+    const sf::IntRect createGame( 500, 155, 600, 60);
+    const sf::IntRect joinGame( 500, 238, 600, 60);
+    const sf::IntRect carerTitle( 0, 485, 270, 60);
+    const sf::IntRect timeRace( 0, 875, 453, 60);
+    const sf::IntRect collectionCoinsRace( 0, 955, 562, 57);
+    const sf::IntRect dkRace( 0, 795, 522, 66);
+    const sf::IntRect garage( 520, 80, 280, 62);
 }
 
 namespace PositionDrive
 {
-    const std::vector<int> start = { 62, 0, 33, 30};
-    const std::vector<int> select = { 95, 0, 33, 30};
+    const sf::IntRect start(62, 0, 33, 30);
+    const sf::IntRect select( 95, 0, 33, 30);
 }
 
 namespace PositionDrivers
 {
-    const std::vector<int> bowser = { 360, 5, 33, 33};
-    const std::vector<int> dk = { 360, 45, 33, 33};
-    const std::vector<int> mario = { 360, 80, 33, 33};
-    const std::vector<int> koopa = { 360, 115, 33, 33};
-    const std::vector<int> luigi = { 360, 150, 33, 33};
-    const std::vector<int> peach = { 360, 190, 33, 33};
-    const std::vector<int> toad = { 360, 225, 33, 33};
-    const std::vector<int> yoshi = { 360, 260, 33, 33};
+    const sf::IntRect bowser( 360, 5, 33, 33);
+    const sf::IntRect dk( 360, 45, 33, 33);
+    const sf::IntRect mario( 360, 80, 33, 33);
+    const sf::IntRect koopa( 360, 115, 33, 33);
+    const sf::IntRect luigi( 360, 150, 33, 33);
+    const sf::IntRect peach( 360, 190, 33, 33);
+    const sf::IntRect toad( 360, 225, 33, 33);
+    const sf::IntRect yoshi( 360, 260, 33, 33);
 }
 

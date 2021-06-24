@@ -29,7 +29,7 @@ public:
 
     void resetIfSelected();
 
-    void setTextureInRect(const std::vector<int>&);
+    void setTextureInRect(const sf::IntRect&);
     void setTextureInRect(int, int, int, int);
 
     void setInScale(float, float);
