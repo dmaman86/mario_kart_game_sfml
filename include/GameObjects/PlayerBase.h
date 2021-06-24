@@ -17,7 +17,7 @@ public:
 	
 	//========================== Public Functions =============================
 	void setMove(){ m_start_move = true; }
-	bool getMove(){ return m_start_move; }
+	const bool getMove()const{ return m_start_move; }
 	void updateLastLocation() { m_last_location = m_location; }
     const int  getLap() const { return m_lap; }
     void addLap() { ++m_lap; }

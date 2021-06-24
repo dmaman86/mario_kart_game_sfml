@@ -10,9 +10,11 @@ public:
     Animation(sf::Sprite& sprite) : 
 		m_sprite(sprite),m_animationTime(0),
 		m_is_cyclic(false),m_vector_len(0){};
-    Animation(const std::vector <sf::IntRect >&,
-		sf::Sprite& , const  float, const bool ,
+    
+	Animation(const std::vector <sf::IntRect >&,
+		sf::Sprite& , const float, const bool ,
 		const unsigned int spinlen );
+	
 	~Animation() = default;
 	//public functions
     void update(float delta, bool is_pressed);

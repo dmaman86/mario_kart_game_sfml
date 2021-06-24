@@ -21,12 +21,12 @@ public:
 	//Public Functions
 	void fillMap(const std::string &);
 	void fillObjectMap(const std::string &);
-	Floor& operator()(unsigned int, unsigned int)const;
+	Floor& operator()(const unsigned int, const unsigned int)const;
     void UpdateAnimation(const float time);
-    int getFloorScore(int x,int y)const;
+    int getFloorScore(const int x, const int y)const;
 	std::map<std::pair<float, float >, ptr>& getObjData() { return m_vec_obj; }
-	void addObjects(float x, float y, PlayerOnline* obj);;
-	void updateObjects(float x, float y, float z, float w);
+	void addObjects(const float x, const float y, PlayerOnline* obj);;
+	void updateObjects(const float x, const float y, const float z, const float w);
 
 private:
 

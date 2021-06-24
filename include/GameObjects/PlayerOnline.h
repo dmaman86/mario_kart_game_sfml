@@ -13,7 +13,7 @@ public:
 	PlayerOnline(const std::string & ,const sf::Vector2f&, const sf::Vector2f&);
 	
 	// public get function
-	const sf::Vector2f getLastLocation() { return m_last_location; }
+	const sf::Vector2f getLastLocation()const { return m_last_location; }
 
 }; // end PlayerOnline
 

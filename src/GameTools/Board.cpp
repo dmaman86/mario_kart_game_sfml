@@ -45,7 +45,7 @@ void Board::fillMap(const std::string& str)
 }
 
 //=============================================================================
-Floor& Board::operator()(unsigned int i, unsigned int j)const {
+Floor& Board::operator()(const unsigned int i, const unsigned int j)const {
 	if (i < m_map.size() && j < m_map[0].size())
 		return *m_map[i][j].get();
 	throw std::range_error("m_map cannot get " + std::to_string(i)
@@ -96,7 +96,7 @@ void Board::UpdateAnimation(const float time)
 }
 
 //=============================================================================
-int Board::getFloorScore(int x, int y) const
+int Board::getFloorScore(const int x, const int y) const
 {
     if (x < m_map.size() && y < m_map[0].size())
         return m_map[x][y]->getScore();
@@ -106,14 +106,14 @@ int Board::getFloorScore(int x, int y) const
 }
 
 //=============================================================================
-void Board::addObjects(float x, float y, PlayerOnline *obj)
+void Board::addObjects(const float x, const float y, PlayerOnline *obj)
 {
     m_vec_obj[std::pair(x, y)] = std::make_shared
             <PlayerOnline>(*obj);
 }
 
 //=============================================================================
-void Board::updateObjects(float x, float y, float z, float w)
+void Board::updateObjects(const float x, const float y, const float z, const float w)
 {
     if (auto it = m_vec_obj.find(std::pair(x, y)); it != m_vec_obj.cend())
     {

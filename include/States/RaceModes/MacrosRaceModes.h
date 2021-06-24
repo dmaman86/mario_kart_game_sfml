@@ -11,9 +11,9 @@ const sf::Vector2f TEXT_FINISH_POS(500, 40);
 const sf::FloatRect VIEW_RECT(0.25f, 0.05f, 0.5f, 0.5f);
 
 const auto THOUSAND = 1000;
+const auto TEXT_FINISH_SIZE = 75u;
 
 const auto TEXT_FINISH_OUT_LINE_SIZE = 5.f;
-const auto TEXT_FINISH_SIZE = 75.f;
 const auto FOUR = 4.f;
 const auto HIGHT_Y_UPDATE = -3.f;
 const auto HIGHT_Y = -17.f;
