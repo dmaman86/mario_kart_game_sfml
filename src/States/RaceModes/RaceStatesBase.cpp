@@ -215,7 +215,6 @@ void RaceStatesBase::startRaceScreen()
         trafficlight.draw(*m_data->window);
         m_data->window->display();
         m_data->window->setView(v);
-
     }
     m_clock.restart();
     if (m_data->user.getIfMusic())
@@ -229,17 +228,22 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 	m_data->stateStack.RemoveState();
 	sf::Text txt;
 	txt.setFont(Fonts::instance().Fonts::getFontMario());
-	txt.setPosition(50, 50);
-	(w_or_l) ? txt.setString("Win") :
-		txt.setString("Lose");
+	txt.setPosition(500, 40);
+	txt.setCharacterSize(75);
+	txt.setFillColor(sf::Color::Red);
+	(w_or_l) ? txt.setString("You Win!") :
+		txt.setString("You Lose!");
 
 	if (m_data->user.getIfSound())
-		(w_or_l) ? m_win_s.play() :
-		m_lose_s.play();
+		(w_or_l) ? m_win_s.play() : m_lose_s.play();
 
 	auto cur_t = m_clock.getElapsedTime().asSeconds();
 	while (cur_t + 3.f > m_clock.getElapsedTime().asSeconds())
 	{
+		(cur_t + 1.f < m_clock.getElapsedTime().asSeconds()
+			&& cur_t + 2.f > m_clock.getElapsedTime().asSeconds()) ?
+			txt.setFillColor(sf::Color::Blue) : txt.setFillColor(sf::Color::Red);
+		
 		m_data->window->clear();
 		m_cameraY -= 3;
 		RaceStatesBase::Draw();
