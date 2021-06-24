@@ -3,8 +3,8 @@
 #include "Sounds.h"
 
 //================================ Constructor ================================
-Banana::Banana(const sf::Vector2f& pos) : 
-	StaticObject(Pictures::instance().getTexture(Pictures::misc), pos)
+Banana::Banana() : 
+	StaticObject(Pictures::instance().getTexture(Pictures::misc))
 {
 	m_sprite.setTextureRect(BANANA_RECT);
 	m_sprite.setOrigin(float(m_sprite.getTextureRect().width / 2),

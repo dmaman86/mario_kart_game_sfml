@@ -41,7 +41,7 @@ private:
 
 	//===================private function=================
 	void resetButtons(Options);
-	void initVectorSprites(const sf::Vector2u&);
+	void initVectorSprites();
 	void updateColors(const sf::Vector2f);
 	void buyingTest(std::string);
 	void initDriver(driver&, const int i);

@@ -59,7 +59,7 @@ void RaceStatesBase::Init()
 //=============================================================================
 void RaceStatesBase::InitMap()
 {
-	m_camera.InitCamera(m_player.getIntLocation());
+	m_camera.InitCamera(m_player.getLocation());
 	m_cameraY = -17;
     m_map = Mode7(m_map_race, DimensionGame::WIDTH_G, DimensionGame::HEIGHT_G, m_player.getAngle(), 300.0);
     m_board.fillMap(m_map_race);
@@ -172,8 +172,8 @@ void RaceStatesBase::HandleCollision()
 			processCollision(m_player, *obj.second);
 		}
 
-	processCollision(m_player, m_board((unsigned int)(m_player.getIntLocation().y),
-                                              (unsigned int)(m_player.getIntLocation().x)));
+	processCollision(m_player, m_board((unsigned int)(m_player.getLocation().y),
+                                              (unsigned int)(m_player.getLocation().x)));
 }
 
 //=============================================================================

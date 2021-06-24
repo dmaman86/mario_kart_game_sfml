@@ -6,7 +6,7 @@ class Ghost : public StaticObject {
 
 public:
 	// Constructor
-	Ghost(const sf::Vector2f& pos);
+	Ghost();
 private:
 
 };//end Ghost

@@ -6,7 +6,7 @@ class Mushroom : public StaticObject {
 
 public:
 	//constructor
-	Mushroom(const sf::Vector2f & pos);
+	Mushroom();
 private:
 
 };// end Mushroom

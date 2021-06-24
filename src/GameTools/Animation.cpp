@@ -3,7 +3,9 @@
 #include "Pictures.h"
 #include "Macros.h"
 
-Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& m_sprite, float animationtime, bool is_cyclic,
+//============================= Constructor ======================================
+Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& m_sprite,
+	const float animationtime, const  bool is_cyclic,
                      unsigned int len): m_is_cyclic(is_cyclic), m_vector_len(len),
                                         m_sprite(m_sprite),
                                         m_data(data),
@@ -14,8 +16,7 @@ Animation::Animation(const std::vector <sf::IntRect >& data, sf::Sprite& m_sprit
     update();
 }
 
-
-
+//================================ Public functions ===========================
 void Animation::update(float delta, bool is_pressed) {
     //add the the count time
     m_elapsed +=delta;
@@ -36,16 +37,10 @@ void Animation::update(float delta, bool is_pressed) {
         }
     m_index %= m_vector_len;
 
-
-
     update();
 }
 
-void Animation::update()
-{
-    m_sprite.setTextureRect(m_data[m_index]);
-}
-
+//=============================================================================
 void Animation::spin()
 {
     if(m_index == m_data.size()-1)
@@ -58,4 +53,10 @@ void Animation::spin()
     m_index %= m_data.size();
 
     update();
+}
+
+//=============================== private functions ===========================
+void Animation::update()
+{
+	m_sprite.setTextureRect(m_data[m_index]);
 }

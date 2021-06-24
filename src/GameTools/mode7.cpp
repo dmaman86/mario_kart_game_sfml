@@ -3,12 +3,17 @@
 #include <cmath>
 #include "Utilities.h"
 #include "Macros.h"
+#include "MacrosGameTools.h"
+
+//============================ Constructors ===================================
 Mode7::Mode7():m_D(0),m_FOV(0),m_H_helf(0),m_W_half(0),m_sinus(0),m_cosinus(0)
 	,m_imageHeight(0),m_imageWidth(0),m_screenHeight(0),m_screenWidth(0)
 {
 }
-//============================ Constructor ====================================
-Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, float theta, float FOV)
+
+//=============================================================================
+Mode7::Mode7(std::string const& file,
+	unsigned int width, unsigned int height, float theta, float FOV)
 {
 	setScreen(width, height);
 	loadImage(file);
@@ -19,12 +24,16 @@ Mode7::Mode7(std::string const& file, unsigned int width, unsigned int height, f
 //========================== Public functions =================================
 void Mode7::setTheta(float theta)
 {
-	m_cosinus = float(std::cos(theta * 3.1415 / 180.0));
-	m_sinus = float(std::sin(theta * 3.1415 / 180.0));
+	m_cosinus = calcCosDegree(theta);
+	m_sinus = calcSinDegree(theta);
 }
+
+// Returns true in case the pixel is on the screen
+// Calculates the vector coordinates of the pixel in the world(in the matrix)
 //=============================================================================
-bool Mode7::calcInAngle
+const bool Mode7::calcInAngle
 	(sf::Vector2f & world_c, const sf::Vector2u& screen_c,const Camera& camera)
+	const
 {
 	auto dis_y = ((float)m_H_helf - (float)screen_c.y);
 	auto dis_x = ((float)screen_c.x - (float)m_W_half);
@@ -39,18 +48,17 @@ bool Mode7::calcInAngle
 	
 }
 
-//=============================================================================
-
 //this function build the new image and check witch objects are in fov
 //if the object is in the fov the function set their position and size
+//=============================================================================
 void Mode7::UpdateImg
-	(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec
+(std::map<std::pair<float, float>, std::shared_ptr<GameObj>>& vec
 	, const Camera& camera)
 {
 	float camera_length;
 	sf::Vector2u screen_c;
 	sf::Vector2f world_c;
-	for (screen_c.y =  m_H_helf + 1 ;screen_c.y < m_screenHeight; screen_c.y++)
+	for (screen_c.y = m_H_helf + 1;screen_c.y < m_screenHeight; screen_c.y++)
 		for (screen_c.x = 0; screen_c.x < m_screenWidth; screen_c.x++)
 		{
 			if (this->calcInAngle(world_c, screen_c, camera))
@@ -64,20 +72,23 @@ void Mode7::UpdateImg
 
 				for (auto& d : vec)
 				{
-	
 					auto abz = abs(d.first.second - world_c.y);
 					auto abx = abs(d.first.first - world_c.x);
-					if (abz <= 4 && abx <= 4)
+
+					if (abz <= FOUR_F && abx <= FOUR_F)
 					{
 						camera_length = (calcLength(sf::Vector2f(d.first.second, d.first.first),
-							sf::Vector2f(camera.getZ(), camera.getX()))) / 8.f;
-						if (camera_length >= 12.5|| (camera_length < 12.5 && abz <= 1 && abx <= 1)) {
+							sf::Vector2f(camera.getZ(), camera.getX()))) / SCREEN_TO_2D;
+						if (camera_length >= HALF_DIS ||
+							(camera_length < HALF_DIS && abz <= 1 && abx <= 1))
+						{
 							d.second->setInAngle(true);
-							d.second->setPosition(sf::Vector2f(float(screen_c.x) * 2, float(screen_c.y) * 2));
+							d.second->setPosition(sf::Vector2f(float(screen_c.x) * MODE7_SCALE.x,
+								float(screen_c.y) * MODE7_SCALE.y));
 
-							d.second->setScale(30 / camera_length, 30 / camera_length);
+							d.second->setScale(THIRTY / camera_length, THIRTY / camera_length);
 
-							if (camera_length < 0.5 || camera_length > 25)
+							if (camera_length < HALF || camera_length > MAX_OBJ_DIS)
 								d.second->setInAngle(false);
 						}
 					}
@@ -86,19 +97,18 @@ void Mode7::UpdateImg
 		}
 }
 
-
 //=============================================================================
-sf::Sprite Mode7::getSprite()
+const sf::Sprite& Mode7::getSprite()
 {
 	m_texture.update(m_imageTransformed);
 	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);
-	m_sprite.setScale(2,2);
+	m_sprite.setScale(MODE7_SCALE);
 	return m_sprite;
 }
 
 //========================== Public functions =================================
-void Mode7::setScreen(unsigned int width, unsigned int height)
+void Mode7::setScreen(const unsigned int width, const unsigned int height)
 {
 	m_screenWidth = width;
 	m_screenHeight = height;
@@ -109,18 +119,18 @@ void Mode7::setScreen(unsigned int width, unsigned int height)
 }
 
 //=============================================================================
-void Mode7::loadImage(std::string const& file)
+void Mode7::loadImage(const std::string & str)
 {
 	sf::Vector2u vec;
-	m_image = Pictures::instance().getMapTex(file);
+	m_image = Pictures::instance().getMapTex(str);
 	vec = m_image.getSize();
 	m_imageWidth = vec.x;
 	m_imageHeight = vec.y;
 }
 
 //=============================================================================
-void Mode7::setFOVangle(float angle)
+void Mode7::setFOVangle(const float angle)
 {
 	m_FOV = angle;
-	m_D = m_H_helf / float(std::tan(m_FOV * 3.1415 / 360.0));
+	m_D = m_H_helf / float(std::tan(m_FOV * PIE / DEG_360));
 }

@@ -3,8 +3,8 @@
 #include "Sounds.h"
 
 //================================ Constructor ================================
-Ghost::Ghost(const sf::Vector2f& pos) : 
-	StaticObject(Pictures::instance().getTexture(Pictures::misc), pos) 
+Ghost::Ghost() : 
+	StaticObject(Pictures::instance().getTexture(Pictures::misc)) 
 {
 	m_sprite.setTextureRect(sf::Rect(182, 70, 20, 15));
 	m_sprite.setOrigin(float(m_sprite.getTextureRect().width / 2),

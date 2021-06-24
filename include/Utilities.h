@@ -5,6 +5,10 @@
 #include "fstream"
 #include "Macros.h"
 
+const auto PIE = 3.141592f;
+const auto DEG_180 = 180.f;
+const auto DEG_360 = 360.0;
+
 const float calcLength(const sf::Vector2f, const sf::Vector2f);
 
 // calc the sinus of the number and return the value in degrees

@@ -6,7 +6,7 @@ class Banana : public StaticObject {
 
 public:
 	// Constructor
-	Banana(const sf::Vector2f&);
+	Banana();
 private:
 
 };//end Banana

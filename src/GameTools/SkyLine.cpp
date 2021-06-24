@@ -1,51 +1,53 @@
 #include "SkyLine.h"
 #include "Pictures.h"
 #include "Macros.h"
+#include "MacrosGameTools.h"
 
+//================== Conctructor =======================
 SkyLine::SkyLine(const std::string& str)
 {
 	 std::string name = str.substr(0, str.find('.'));
-	 auto sb  = name + "_sky_back.png";
-	 auto sf = name + "_sky_front.png";
+	 auto sb  = name + SKY_B_PNG;
+	 auto sf = name + SKY_F_PNG;
 
 	 m_back.setTexture(Pictures::instance().getTexture(sb));
-	 m_back.setTextureRect(sf::Rect(0, 0, 300, 32));
-	 m_back.setScale(4, 4);
-	 m_back.setPosition(0, DimensionWindow::HEIGHT / 10);
+	 m_back.setTextureRect(SKY_LINE_RECT);
+	 m_back.setScale(SKY_LINE_SCALE);
+	 m_back.setPosition(0, DimensionWindow::HEIGHT / TEN);
 
 	 m_front.setTexture(Pictures::instance().getTexture(sf));
-	 m_front.setTextureRect(sf::Rect(0, 0, 300, 32));
-	 m_front.setScale(4, 4);
-	 m_front.setPosition(0, DimensionWindow::HEIGHT / 10);
+	 m_front.setTextureRect(SKY_LINE_RECT);
+	 m_front.setScale(SKY_LINE_SCALE);
+	 m_front.setPosition(0, DimensionWindow::HEIGHT / TEN);
 }
-//=============================================================================
 
+//=============================================================================
  void SkyLine::Update(const bool lock,const float force)
  {
 	 if (!lock && force) {
 
-		 auto x = m_front.getTextureRect();
-		 auto y = m_back.getTextureRect();
+		 auto s_f = m_front.getTextureRect();
+		 auto s_b = m_back.getTextureRect();
 
 		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		 {
-			 x.left += 2;
-			 y.left += 1;
+			 s_f.left += TWO;
+			 s_b.left += ONE;
 		 }
 		 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-			 if (x.left <= 10)
+			 if (s_f.left <= TEN)
 			 {
-				 x.left = 1040;
-				 y.left = 485;
+				 s_f.left = MIDDLE_SKY_FRONT;
+				 s_b.left = MIDDLE_SKY_BACK;
 			 }
-			 x.left -= 2;
-			 y.left -= 1;
+			 s_f.left -= TWO;
+			 s_b.left -= ONE;
 		 }
-		 x.left %= 2560;
-		 y.left %= 1536;
+		 s_f.left %= SIZE_SKY_FRONT;
+		 s_b.left %= SIZE_SKY_BACK;
 
-		 m_front.setTextureRect(x);
-		 m_back.setTextureRect(y);
+		 m_front.setTextureRect(s_f);
+		 m_back.setTextureRect(s_b);
 	 }
  }
 //=============================================================================

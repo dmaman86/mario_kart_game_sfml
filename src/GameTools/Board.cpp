@@ -10,25 +10,21 @@
 #include "Utilities.h"
 #include "Ghost.h"
 #include "Coin.h"
+#include "MacrosGameTools.h"
 
-Board::Board()
-{
-
-}
-
-//=============================================================================
+//============================ Public Functions ===============================
 void Board::fillMap(const std::string& str)
 {
     std::string name = str.substr(0,str.find('.'));
-	auto map_int = readFromFile<char>(name+".txt");
-    auto score_map = readFromFile<int>(name + "_scores.txt");
+	auto map_int = readFromFile<char>(name + TXT);
+    auto score_map = readFromFile<int>(name + SCORE_TXT);
     m_map.resize(map_int.size());
 
     for (size_t i = 0;i < map_int.size();i++)
     {
         for (size_t j = 0;j < map_int[i].size();j++)
         {
-            switch (map_int[i][j]-48)
+            switch (map_int[i][j]- CHAR_TO_INT)
             {
                 case (int)FloorType::Asphalt:
                     m_map[i].push_back(std::make_unique<FloorAsphalt>(score_map[i][j]));
@@ -47,20 +43,20 @@ void Board::fillMap(const std::string& str)
     }
 
 }
-//=============================================================================
 
+//=============================================================================
 Floor& Board::operator()(unsigned int i, unsigned int j)const {
 	if (i < m_map.size() && j < m_map[0].size())
 		return *m_map[i][j].get();
-	throw std::range_error("m_map cannot get " + std::to_string(i) + " or "  +std::to_string(j));
+	throw std::range_error("m_map cannot get " + std::to_string(i)
+							+ " or "  +std::to_string(j));
 }
 
 //=============================================================================
-
 void Board::fillObjectMap(const std::string& str)
 {
 	std::string name = str.substr(0, str.find('.'));
-	auto map_int = readFromFile<int>(name + "_objects.txt",17,3);
+	auto map_int = readFromFile<int>(name + OBJ_TXT, OBJ_SIZE.x, OBJ_SIZE.y);
 
 	for (size_t i = 0;i < map_int.size();i++)
 	{
@@ -68,23 +64,23 @@ void Board::fillObjectMap(const std::string& str)
 		{
 		    case (int)ObjectType::ObjPipe:
 			    m_vec_obj[std::pair(map_int[i][1],
-                                    map_int[i][2])] = std::make_unique<Pipe>(sf::Vector2f(0, 0));
+                                    map_int[i][2])] = std::make_unique<Pipe>();
 			    break;
 		    case (int)ObjectType::ObjGhost:
 			    m_vec_obj[std::pair(map_int[i][1],
-                                    map_int[i][2])] = std::make_unique<Ghost>(sf::Vector2f(0, 0));
+                                    map_int[i][2])] = std::make_unique<Ghost>();
 			    break;
 		    case (int)ObjectType::ObjBanana:
 			    m_vec_obj[std::pair(map_int[i][1],
-                                    map_int[i][2])] = std::make_unique<Banana>(sf::Vector2f(0, 0));
+                                    map_int[i][2])] = std::make_unique<Banana>();
 			    break;
 		    case (int)ObjectType::ObjCoin:
 			    m_vec_obj[std::pair(map_int[i][1],
-                                    map_int[i][2])] = std::make_unique<Coin>(sf::Vector2f(0, 0));
+                                    map_int[i][2])] = std::make_unique<Coin>();
 			    break;
 		    case (int)ObjectType::ObjMushroom:
 			    m_vec_obj[std::pair(map_int[i][1],
-                                    map_int[i][2])] = std::make_unique<Mushroom>(sf::Vector2f(0, 0));
+                                    map_int[i][2])] = std::make_unique<Mushroom>();
 			    break;
 		    default:
 			    break;
@@ -104,7 +100,9 @@ int Board::getFloorScore(int x, int y) const
 {
     if (x < m_map.size() && y < m_map[0].size())
         return m_map[x][y]->getScore();
-    throw std::range_error("m_map cannot get " + std::to_string(x) + " or " + std::to_string(y));
+    throw std::range_error("m_map cannot get " +
+							 std::to_string(x) +
+						" or " + std::to_string(y));
 }
 
 //=============================================================================
@@ -124,5 +122,4 @@ void Board::updateObjects(float x, float y, float z, float w)
         m_vec_obj.insert(std::move(nodeHandler));
     }
 }
-
 //=============================================================================

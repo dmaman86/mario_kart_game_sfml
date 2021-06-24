@@ -14,7 +14,7 @@ void GarageState::Init()
 {
     sf::Vector2u windowSize;
     windowSize = m_data->window->getSize();
-    initVectorSprites(windowSize);
+    initVectorSprites();
 
     createText(windowSize);
 
@@ -45,10 +45,7 @@ void GarageState::HandleEvent(const sf::Event& event)
             }
         }
 
-        for (auto& it : m_drivers)
-        {
-            updateColors(location);
-        }
+        updateColors(location);
     }
     if (event.type == sf::Event::TextEntered)
     {
@@ -121,7 +118,7 @@ void GarageState::resetButtons(Options option)
 
 //create object in map of price , sprite and bool if i buy the drivers
 //=============================================================
-void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
+void GarageState::initVectorSprites()
 {
 
     int i = -5;
@@ -164,10 +161,10 @@ void GarageState::initVectorSprites(const sf::Vector2u& windowSize)
 void GarageState::initDriver(driver& dr,const int i)
 {
     dr.sprite.setInScale(3, 4);
-    dr.sprite.setInPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 150));
+    dr.sprite.setInPosition(sf::Vector2f(120.f + (float(i) * 30.f), (dr.sprite.getWidth() / 2.f) + 150.f));
 
     dr.price.setFillColor(sf::Color::Blue);
-    dr.price.setPosition(sf::Vector2f(120 + (i * 30), (dr.sprite.getWidth() / 2) + 300));
+    dr.price.setPosition(sf::Vector2f(120.f + (float(i) * 30.f), (dr.sprite.getWidth() / 2.f) + 300.f));
 
 }
 //=============================================================
@@ -195,9 +192,9 @@ void GarageState::createText(const sf::Vector2u windowSize)
     for (auto& msg : m_msg)
     {
         msg.first.setOutlineThickness(5.f);
-        msg.first.setPosition(windowSize.x / (unsigned)2.5, 500);
+        msg.first.setPosition(float(windowSize.x) / 2.5f, 500.f);
         msg.first.setOrigin(msg.first.getLocalBounds().width / 2,
-            msg.first.getLocalBounds().height / 2);
+            msg.first.getLocalBounds().height / 2.f);
         msg.first.setScale(2, 2);
     }
 

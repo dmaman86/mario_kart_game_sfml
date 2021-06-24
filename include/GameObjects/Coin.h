@@ -8,7 +8,7 @@ class Coin : public StaticObject {
 
 public:
 	//================ Constructor / Destructor ==================
-	Coin(const sf::Vector2f& pos);
+	Coin();
 	~Coin();
 
 	//================= Public functions =========================

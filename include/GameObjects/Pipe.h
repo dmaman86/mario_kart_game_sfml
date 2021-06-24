@@ -6,7 +6,7 @@ class Pipe : public StaticObject{
 
 public:
 	// Constructor
-    Pipe(const sf::Vector2f& pos);
+    Pipe();
 
 private:
 

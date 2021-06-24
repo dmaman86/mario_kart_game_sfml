@@ -3,8 +3,8 @@
 #include "Sounds.h"
 
 //=========================== Constructor ===================================
-Mushroom::Mushroom(const sf::Vector2f& pos) 
-	: StaticObject(Pictures::instance().getTexture(Pictures::misc), pos) 
+Mushroom::Mushroom() 
+	: StaticObject(Pictures::instance().getTexture(Pictures::misc)) 
 {
 	m_sprite.setTextureRect(MUSHROOM_RECT);
 	m_sprite.setOrigin(float(m_sprite.getTextureRect().width / 2),

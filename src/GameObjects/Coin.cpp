@@ -9,8 +9,8 @@ int Coin::m_num_collected = 0;
 const auto ANIMATION_TIME = 0.2f;
 
 //========================== Constructor / Destructor =========================
-Coin::Coin(const sf::Vector2f& pos) :
-	StaticObject(Pictures::instance().getTexture(Pictures::misc), pos)
+Coin::Coin() :
+	StaticObject(Pictures::instance().getTexture(Pictures::misc))
 	,m_animation(Pictures::instance().getCoinAnim(),
                  m_sprite,
                  ANIMATION_TIME,

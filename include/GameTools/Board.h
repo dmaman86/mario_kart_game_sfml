@@ -8,14 +8,17 @@
 #include "Floor.h"
 
 /*
-	Board
+	Board:
+	Holds the objects of the game and the entire floor
 */
 class Board
 {
 public:
     typedef std::shared_ptr<GameObj> ptr;
 public:
-	Board();
+	//Constuctor
+	Board() {};
+	//Public Functions
 	void fillMap(const std::string &);
 	void fillObjectMap(const std::string &);
 	Floor& operator()(unsigned int, unsigned int)const;
@@ -26,7 +29,8 @@ public:
 	void updateObjects(float x, float y, float z, float w);
 
 private:
-	//private members
+
+	//private enum class 
 	enum class FloorType
     {
         Asphalt,
@@ -41,6 +45,9 @@ private:
 	    ObjCoin,
 	    ObjMushroom
     };
+
+	//private members
 	std::map<std::pair<float, float >, ptr> m_vec_obj;
 	std::vector<std::vector<std::unique_ptr<Floor>>> m_map;
+
 };//end Board

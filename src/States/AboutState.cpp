@@ -16,9 +16,9 @@ void AboutState::Init()
     auto sprite = sf::Sprite();
     sprite.setTexture(Pictures::instance().getTexture(Pictures::about_picture));
     m_about.setTexture(sprite.getTexture());
-    m_about.setOrigin(sprite.getGlobalBounds().width / 2,
-                      sprite.getGlobalBounds().height / 2);
-    m_about.setPosition(windowSize.x /2, windowSize.y /2 );
+    m_about.setOrigin(sprite.getGlobalBounds().width / 2.f,
+                      sprite.getGlobalBounds().height / 2.f);
+    m_about.setPosition(float(windowSize.x) /2.f, float(windowSize.y) /2.f );
     m_about.setSize(sf::Vector2f(400, 400));
     m_about.setOutlineThickness(5.f);
 }

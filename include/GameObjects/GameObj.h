@@ -30,13 +30,12 @@ public:
 	void setPosition(const sf::Vector2f& pos) { m_sprite.setPosition(pos); }
 	void setInAngle(bool b) { m_is_in_angle = b; }
 	const bool getIsInAngle()const { return m_is_in_angle; }
-    sf::Vector2f& getLocation(){ return m_location; }
+	const sf::Vector2f getLocation()const { return m_location; }
 	void setLocation(const float x, const float y);
-	const sf::Vector2f getIntLocation() { return m_location; }
     void setLocation(const sf::Vector2f&  loc){ m_location = loc; }
-    bool getIsActive(){return m_is_active;}
+	const bool getIsActive()const {return m_is_active;}
     void setIsActive(bool boo){m_is_active = boo;}
-    const sf::Sprite& getSprite(){return m_sprite;};
+    const sf::Sprite& getSprite()const{return m_sprite;};
 
 protected:
 
