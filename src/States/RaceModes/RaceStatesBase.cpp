@@ -221,7 +221,8 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 		m_data->window->draw(txt);
 		m_data->window->display();
 	}
-	m_data->menuMusic.play();
+	if(m_data->user.getIfMusic())
+		m_data->menuMusic.play();
 }
 
 //=============================================================================
