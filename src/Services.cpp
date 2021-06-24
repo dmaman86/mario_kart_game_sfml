@@ -273,7 +273,6 @@ void Services::updatePosition(User* user, PlayerBase* player,
                   << "&position=" << player->getLap();
         request_put.setBody(m_ostream.str());
         local_response = http.sendRequest( request_put );
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
             return;
         mutex->lock();
@@ -322,7 +321,6 @@ void Services::getPosition(User* otherUser, PlayerBase* player,
         m_stream.clear();
 
         local_response = http.sendRequest( request );
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(*finish)
             return;
         mutex->lock();
