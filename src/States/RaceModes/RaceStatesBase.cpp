@@ -110,7 +110,8 @@ void RaceStatesBase::Update(const float deltatime)
 			HandleCollision();
 			this->UpdateAnimation(deltatime);
 		}
-	}catch (...){
+	}
+	catch (...){
 		finishRase(false);
 	}
 }
@@ -231,6 +232,9 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 	txt.setPosition(500, 40);
 	txt.setCharacterSize(75);
 	txt.setFillColor(sf::Color::Red);
+	txt.setOutlineColor(sf::Color::White);
+	txt.setOutlineThickness(5);
+
 	(w_or_l) ? txt.setString("You Win!") :
 		txt.setString("You Lose!");
 

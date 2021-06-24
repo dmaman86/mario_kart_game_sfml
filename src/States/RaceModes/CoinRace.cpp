@@ -30,17 +30,10 @@ void CoinRace::Update(const float deltatime) {
 //=============================================================================
 void CoinRace::Draw()
 {
-	try {
-
-		RaceStatesBase::Draw();
-        m_status.printGameStatus
-                (sf::seconds(m_clock.getElapsedTime().asSeconds()),
-                 m_player.getLap(), Coin::getCollected(), Coin::getCount(), 0);
-	}
-	catch (...)
-	{
-		finishRase(false);
-	}
+	RaceStatesBase::Draw();
+	m_status.printGameStatus
+	(sf::seconds(m_clock.getElapsedTime().asSeconds()),
+		m_player.getLap(), Coin::getCollected(), Coin::getCount(), 0);
 }
 
 //=============================================================================

@@ -34,17 +34,11 @@ void TimeRace::Update(const float deltatime) {
 //=============================================================================
 void TimeRace::Draw()
 {
-	try{
-		RaceStatesBase::Draw();
-        m_status.printGameStatus
-                (sf::seconds(m_time_level.asSeconds() -
-                             m_clock.getElapsedTime().asSeconds()),
-                 m_player.getLap(), Coin::getCollected(), Coin::getCount(), 2);
-	}
-	catch (...)
-	{
-		finishRase(false);
-	}
+	RaceStatesBase::Draw();
+	m_status.printGameStatus
+	(sf::seconds(m_time_level.asSeconds() -
+		m_clock.getElapsedTime().asSeconds()),
+		m_player.getLap(), Coin::getCollected(), Coin::getCount(), 2);
 }
 
 //=============================================================================
