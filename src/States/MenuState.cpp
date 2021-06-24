@@ -5,6 +5,17 @@
 #include "SettingsState.h"
 #include "CareerState.h"
 #include <iostream>
+#include "Macros.h"
+
+
+const sf::Vector2f SIZELOGO(450, 250);
+const sf::Vector2f PLAYPOS(100, 350);
+const sf::Vector2f HELPPOS(100, 550);
+const sf::Vector2f SETTINGSPOS(100, 450);
+const sf::Vector2f ONLINEPOS(800, 350);
+const sf::Vector2f CARERPOS(1100, 350);
+const int TWOHUNDREDANDFIFTY = 250;
+
 
 
 MenuState::MenuState(MarioKart::GameDataRef& data) :m_data(data),
@@ -28,39 +39,39 @@ void MenuState::Init()
     auto sprite = sf::Sprite();
     sprite.setTexture(Pictures::instance().getTexture(Pictures::marioLogo));
     m_rect_logo.setTexture(sprite.getTexture());
-    m_rect_logo.setSize(sf::Vector2f(450, 250));
+    m_rect_logo.setSize(SIZELOGO);
     m_rect_logo.setOrigin(m_rect_logo.getGlobalBounds().width / 2,
                           m_rect_logo.getGlobalBounds().height / 2);
-    m_rect_logo.setPosition(sf::Vector2f(float(windowSize.x /2), float((windowSize.y /2) - 250)) );
+    m_rect_logo.setPosition(sf::Vector2f(float(windowSize.x /2), float((windowSize.y /2) - TWOHUNDREDANDFIFTY)) );
 
 
     auto buttonLetPlay = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonLetPlay->setTextureInRect(PositionButtons::letPlay);
-    buttonLetPlay->setInPosition(sf::Vector2f(100, 350));
+    buttonLetPlay->setInPosition(PLAYPOS);
 
     auto buttonSettings = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonSettings->setTextureInRect(PositionButtons::settings);
-    buttonSettings->setInPosition(sf::Vector2f(100, 450));
+    buttonSettings->setInPosition(SETTINGSPOS);
     buttonSettings->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new SettingsState(m_data)), false);
     });
 
     auto buttonHelp = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonHelp->setTextureInRect(PositionButtons::help);
-    buttonHelp->setInPosition(sf::Vector2f(100, 540));
+    buttonHelp->setInPosition(HELPPOS);
     buttonHelp->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new helpState(m_data)), false);
     });
     m_button_online = std::make_shared<Button>(Pictures::MenuButtons1);
     m_button_online->setTextureInRect(PositionButtons::online);
-    m_button_online->setInPosition(sf::Vector2f(800, 350));
+    m_button_online->setInPosition(ONLINEPOS);
     m_button_online->setCallback([this](){
         m_data->user.setOnline(true);
         m_data->stateStack.AddState(StateStack::StateRef(new GetDataState(m_data)), false);
     });
     m_button_carer = std::make_shared<Button>(Pictures::MenuButtons1);
     m_button_carer->setTextureInRect(PositionButtons::carer);
-    m_button_carer->setInPosition(sf::Vector2f(1100, 350));
+    m_button_carer->setInPosition(CARERPOS);
     m_button_carer->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new CareerState(m_data)), false);
     });
@@ -115,21 +126,21 @@ void MenuState::updateColors(const sf::Vector2f& loc)
 {
     for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
     {
-        it->second->setFillInColor(255, 255, 255, 250);
+        it->second->setFillInColor(Color::REGULARCOLOR);
         if(it->second->validGlobalBound(loc))
-            it->second->setFillInColor(255, 255, 255, 130);
+            it->second->setFillInColor(Color::TRANSPARENCYCOLOR);
     }
 
-    m_button_carer->setFillInColor(255, 255, 255, 250);
-    m_button_online->setFillInColor(255, 255, 255, 250);
+    m_button_carer->setFillInColor(Color::REGULARCOLOR);
+    m_button_online->setFillInColor(Color::REGULARCOLOR);
 
     if (m_button_online->validGlobalBound(loc))
     {
-        m_button_online->setFillInColor(255, 255, 255, 130);
+        m_button_online->setFillInColor(Color::TRANSPARENCYCOLOR);
     }
     else if(m_button_carer->validGlobalBound(loc))
     {
-        m_button_carer->setFillInColor(255, 255, 255, 130);
+        m_button_carer->setFillInColor(Color::TRANSPARENCYCOLOR);
     }
 }
 

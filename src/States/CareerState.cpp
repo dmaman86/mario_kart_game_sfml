@@ -3,11 +3,12 @@
 #include "Pictures.h"
 #include "MenuState.h"
 #include "GetDataState.h"
+#include "Macros.h"
 #include <iostream>
 #include <fstream>
 #include <filesystem>
 
-
+//========================== Constructor / Destructor =========================
 CareerState::CareerState(MarioKart::GameDataRef& data):
     m_data(data),
     StateOfMenu(data),
@@ -15,7 +16,7 @@ CareerState::CareerState(MarioKart::GameDataRef& data):
 {
     m_soundOn = m_data->user.getIfSound();
 }
-
+//=============================================================================
 void CareerState::Init()
 {
     auto buttonNewGame = std::make_shared<Button>(Pictures::MenuButtons1);
@@ -40,7 +41,7 @@ void CareerState::Init()
     m_buttons[Options::LoadGame] = buttonLoadGame;
     m_buttons[Options::Back] = m_back;
 }
-
+//=============================================================================
 void CareerState::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type)
@@ -69,7 +70,7 @@ void CareerState::HandleEvent(const sf::Event& event)
         updateColors(location);
     }
 }
-
+//=============================================================================
 void CareerState::resetButtons(Options option)
 {
     for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
@@ -78,7 +79,7 @@ void CareerState::resetButtons(Options option)
             it->second->resetIfSelected();
     }
 }
-
+//=============================================================================
 void CareerState::Update(const float)
 {
     setVolume(m_data->user.getIfSound());
@@ -98,10 +99,6 @@ void CareerState::Update(const float)
                     {
                         it->second->initCallback();
                     }
-                /*    catch (const std::exception& a)
-                    {
-                        std::cout << a.what();
-                    }*/
                 }
                 break;
             case Options::Back:
@@ -111,7 +108,7 @@ void CareerState::Update(const float)
         }
     }
 }
-
+//=============================================================================
 void CareerState::Resume()
 {
     for (auto& button : m_buttons)
@@ -127,12 +124,13 @@ void CareerState::Draw()
         m_data->window->draw(*it.second.get());
 }
 
+//=============================================================================
 const bool CareerState::openLoadFile()
 {
+    //If the file does not exist
     if (std::filesystem::exists("save.txt"))
     {
         std::string line_text;
-        std::string line;
 
         std::ifstream loadGame;
         try{
@@ -143,19 +141,21 @@ const bool CareerState::openLoadFile()
             return false;
         }
 
+        //get name
         std::getline(loadGame, line_text);
         m_data->user.setName(line_text);
+        //get number coins
         std::getline(loadGame, line_text);
         m_data->user.setCoins(std::stoi(line_text));
-        std::getline(loadGame, line_text);
-        m_data->user.setMapGame(line_text);
 
+        //take all the cars
         while (loadGame.peek() != std::ifstream::traits_type::eof())
         {
             std::getline(loadGame, line_text);
             m_data->user.setDrive(line_text);
         }
 
+        //get first driver 
         m_data->user.setSprite(m_data->user.getDrive(0));
 
         loadGame.close();
@@ -165,15 +165,15 @@ const bool CareerState::openLoadFile()
     return false;
 }
 
-
-
+//Color change when you move the mouse with the button
+//=============================================================================
 void CareerState::updateColors(const sf::Vector2f& loc)
 {
     for (auto &it : m_buttons)
     {
         
-        it.second->setFillInColor(255, 255, 255, 250);
+        it.second->setFillInColor(Color::REGULARCOLOR);
         if (it.second->validGlobalBound(loc))
-            it.second->setFillInColor(255, 255, 255, 130);
+            it.second->setFillInColor(Color::TRANSPARENCYCOLOR);
     }
 }

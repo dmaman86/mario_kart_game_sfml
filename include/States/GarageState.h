@@ -56,6 +56,7 @@ private:
 	std::vector<std::pair<sf::Text, bool >> m_msg;
 	std::string m_selectCar;
 	sf::Text m_numberCoins;
+	sf::Text m_title;
 
 
 

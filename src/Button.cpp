@@ -137,9 +137,9 @@ const bool& Button::getIfSelected()
 }
 
 //=======================================================================
-void Button::setFillInColor(sf::Uint8 x, sf::Uint8 y, sf::Uint8 z, sf::Uint8 w)
+void Button::setFillInColor(sf::Color color)
 {
-    m_button.setColor(sf::Color(x, y, z, w));
+    m_button.setColor(color);
 }
 
 //=======================================================================

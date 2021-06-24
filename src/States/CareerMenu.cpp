@@ -13,7 +13,28 @@
 #include "CoinRace.h"
 #include "DriftKingRace.h"
 #include "HostState.h"
+#include "Macros.h"
 
+const sf::Vector2f CARERPOS(150, 150);
+const sf::Vector2f TIMEPOS(150, 325);
+const sf::Vector2f COLLECTPOS(150, 400);
+const sf::Vector2f DKPOS(150, 475);
+const sf::Vector2f GARAGEPOS(150,550);
+const sf::Vector2f SAVEPOS(150, 625);
+const sf::Vector2f NAMEPOS(1000, 100);
+const sf::Vector2f MONEYSPOS(1000, 200);
+const sf::Vector2f CARPOS(1000, 300);
+const sf::Vector2f DRIVERUSER(1000,500);
+const sf::Vector2f RECPOS(990, 450);
+
+
+
+const sf::Vector2f SCALECAR(10, 8);
+const sf::Vector2f SIZEREC(300, 300);
+const sf::Rect SIZEDRAIVER(355, 33, 30, 30);
+
+
+//========================== Constructor / Destructor =========================
 CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         StateOfMenu(data),
                                                         m_buttons(),
@@ -22,36 +43,36 @@ CareerMenu::CareerMenu(MarioKart::GameDataRef& data): m_data(data),
                                                         m_title()
 {
     
-
+    m_soundOn = m_data->user.getIfSound();
 }
-
+//=============================================================================
 void CareerMenu::Init()
 {
     // carrer title
     auto buttonCarer = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonCarer->setTextureInRect(PositionButtons::carerTitle);
-    buttonCarer->setInPosition(sf::Vector2f(150, 150));
+    buttonCarer->setInPosition(CARERPOS);
     buttonCarer->setInScale(1.25, 1.5);
 
     // time title
     auto buttonTime = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonTime->setTextureInRect(PositionButtons::timeRace);
-    buttonTime->setInPosition(sf::Vector2f(150, 325));
+    buttonTime->setInPosition(TIMEPOS);
 
     //collect coins
     auto buttonCollectionCoins = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonCollectionCoins->setTextureInRect(PositionButtons::collectionCoinsRace);
-    buttonCollectionCoins->setInPosition(sf::Vector2f(150, 400));
+    buttonCollectionCoins->setInPosition(COLLECTPOS);
 
     //dk
     auto buttonDK = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonDK->setTextureInRect(PositionButtons::dkRace);
-    buttonDK->setInPosition(sf::Vector2f(150, 475));
+    buttonDK->setInPosition(DKPOS);
 
     //garage
     auto buttonGarage = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonGarage->setTextureInRect(PositionButtons::garage);
-    buttonGarage->setInPosition(sf::Vector2f(150, 550));
+    buttonGarage->setInPosition(GARAGEPOS);
     buttonGarage->setCallback([this](){
         m_data->stateStack.AddState(StateStack::StateRef(new GarageState(m_data)), false);
     });
@@ -59,7 +80,7 @@ void CareerMenu::Init()
     //save
     auto buttonSave = std::make_shared<Button>(Pictures::MenuButtons1);
     buttonSave->setTextureInRect(PositionButtons::save);
-    buttonSave->setInPosition(sf::Vector2f(150, 625));
+    buttonSave->setInPosition(SAVEPOS);
     buttonSave->setCallback(std::bind(&CareerMenu::saveUser, this));
 
     //back
@@ -75,32 +96,33 @@ void CareerMenu::Init()
     m_buttons[Options::Save] = buttonSave;
     m_buttons[Options::Back] = m_back;
 
-    m_name = sf::Text(m_data->user.getName(),(Fonts::instance().Fonts::getFontMario()), 50);
-    m_moneys = sf::Text((std::to_string(m_data->user.getCoins()) + "$"), (Fonts::instance().Fonts::getFontMario()), 50);
+    m_name = sf::Text(m_data->user.getName(),(Fonts::instance().Fonts::getFontMario()), SIZETEXT);
+    m_moneys = sf::Text((std::to_string(m_data->user.getCoins()) + "$"), (Fonts::instance().Fonts::getFontMario()), SIZETEXT);
     std::string name = m_data->user.getSprite().substr(0, m_data->user.getSprite().find(".png"));
-    m_car = sf::Text(name, (Fonts::instance().Fonts::getFontMario()), 50);
-    m_name.setPosition(1000,100);
-    m_name.setOutlineThickness(5.f);
-	m_moneys.setPosition(1000,200);
-    m_moneys.setOutlineThickness(5.f);
-    m_car.setPosition(1000,300);
-    m_car.setOutlineThickness(5.f);
+    m_car = sf::Text(name, (Fonts::instance().Fonts::getFontMario()), SIZETEXT);
+    m_name.setPosition(NAMEPOS);
+    m_name.setOutlineThickness(THICK);
+	m_moneys.setPosition(MONEYSPOS);
+    m_moneys.setOutlineThickness(THICK);
+    m_car.setPosition(CARPOS);
+    m_car.setOutlineThickness(THICK);
 
     m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
-    m_driverUser.setTextureRect(sf::Rect(355, 33, 30, 30));
-    m_driverUser.scale(10, 8);
-    m_driverUser.setPosition(1000, 500);
+    m_driverUser.setTextureRect(SIZEDRAIVER);
+    m_driverUser.scale(SCALECAR);
+    m_driverUser.setPosition(DRIVERUSER);
 
-    m_rect.setFillColor(sf::Color(0, 0, 0, 100));
-    m_rect.setSize(sf::Vector2f(300, 300));
-    m_rect.setOutlineColor(sf::Color::Red);
+    m_rect.setFillColor(Color::GRAYCOLOR);
+    m_rect.setSize(SIZEREC);
+    m_rect.setOutlineColor(sf::Color::Green);
     m_rect.setOutlineThickness(5);
-    m_rect.setPosition(990, 450);
+    m_rect.setPosition(RECPOS);
 }
-
+//=============================================================================
 void CareerMenu::HandleEvent(const sf::Event& event)
 {
     if (sf::Event::MouseButtonPressed == event.type) {
+        if(m_soundOn)
         m_click.play();
         auto location = m_data->window->mapPixelToCoords(
                 { event.mouseButton.x, event.mouseButton.y });
@@ -125,20 +147,22 @@ void CareerMenu::HandleEvent(const sf::Event& event)
     }
 }
 
+//Color change when you move the mouse with the button
+//=============================================================================
 void CareerMenu::updateColors(const sf::Vector2f loc)
 {
     for (auto& button : m_buttons)
     {
         if(button.first != Options::Carer)
         {
-            button.second->setFillInColor(255, 255, 255, 250);
+            button.second->setFillInColor(Color::REGULARCOLOR);
             if(button.second->validGlobalBound(loc))
-                button.second->setFillInColor(255, 255, 255, 130);
+                button.second->setFillInColor(Color::TRANSPARENCYCOLOR);
         }
     }
 }
 
-
+//=============================================================================
 void CareerMenu::resetButtons(Options option)
 {
     for(auto it = m_buttons.begin(); it != m_buttons.end(); it++)
@@ -148,6 +172,8 @@ void CareerMenu::resetButtons(Options option)
     }
 }
 
+
+//=============================================================================
 void CareerMenu::Update(const float)
 {
     setVolume(m_data->user.getIfSound());
@@ -184,10 +210,10 @@ void CareerMenu::Update(const float)
                     it->second->initCallback();
                 break;
         }
-       // it->second->resetIfSelected();
     }
 }
-
+//If we went back to this page
+//=============================================================================
 void CareerMenu::Resume()
 {
     for(auto& button : m_buttons)
@@ -196,7 +222,7 @@ void CareerMenu::Resume()
     m_driverUser.setTexture(Pictures::instance().getTexture(m_data->user.getSprite()));
 
 }
-
+//=============================================================================
 void CareerMenu::Draw()
 {
 
@@ -214,7 +240,8 @@ void CareerMenu::Draw()
         m_data->window->draw(*it.second.get());
 
 }
-
+//If you click Save
+//=============================================================================
 void CareerMenu::saveUser()
 {
     std::fstream file;

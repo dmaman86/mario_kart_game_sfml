@@ -85,3 +85,17 @@ namespace PositionDrivers
     const sf::IntRect yoshi( 360, 260, 33, 33);
 }
 
+
+
+
+namespace Color 
+{
+    const sf::Color REGULARCOLOR(255, 255, 255, 250);
+    const sf::Color TRANSPARENCYCOLOR(255, 255, 255, 120);
+    const sf::Color GRAYCOLOR(0, 0, 0, 100);
+}
+const int SIZETEXT = 50;
+
+const float THICK = 5.f;
+
+
