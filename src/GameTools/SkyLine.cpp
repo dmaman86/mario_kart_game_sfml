@@ -2,8 +2,8 @@
 #include "Pictures.h"
 #include "Macros.h"
 
- SkyLine::SkyLine(const std::string& str) {
-
+SkyLine::SkyLine(const std::string& str)
+{
 	 std::string name = str.substr(0, str.find('.'));
 	 auto sb  = name + "_sky_back.png";
 	 auto sf = name + "_sky_front.png";
@@ -11,12 +11,12 @@
 	 m_back.setTexture(Pictures::instance().getTexture(sb));
 	 m_back.setTextureRect(sf::Rect(0, 0, 300, 32));
 	 m_back.setScale(4, 4);
-	 m_back.setPosition(0, HIGHT / 10);
+	 m_back.setPosition(0, DimensionWindow::HEIGHT / 10);
 
 	 m_front.setTexture(Pictures::instance().getTexture(sf));
 	 m_front.setTextureRect(sf::Rect(0, 0, 300, 32));
 	 m_front.setScale(4, 4);
-	 m_front.setPosition(0, HIGHT / 10);
+	 m_front.setPosition(0, DimensionWindow::HEIGHT / 10);
 }
 //=============================================================================
 

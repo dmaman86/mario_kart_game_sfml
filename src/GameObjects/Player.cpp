@@ -125,10 +125,10 @@ void Player::HandleLock(const float dt)
 	else
 	{
 		m_location.x += 
-			calcSinDegree(m_angle) * dt * -MAX_SPEED / ONE_AND_HALF;
+			calcSinDegree(m_angle) * dt * - PlayerDefinitions::MAX_SPEED / ONE_AND_HALF;
 		
 		m_location.y -= 
-			calcCosDegree(m_angle) * dt * -MAX_SPEED / ONE_AND_HALF;
+			calcCosDegree(m_angle) * dt * - PlayerDefinitions::MAX_SPEED / ONE_AND_HALF;
 	}
 }
 //=============================================================================
@@ -210,13 +210,13 @@ void Player::UpdateDirection(const float delta)
 //=============================================================================
 void Player::UpdateAcceleration()
 {
-	auto speed_per = m_force / MAX_SPEED;
+	auto speed_per = m_force / PlayerDefinitions::MAX_SPEED;
 	if (speed_per < APPROXI_HALF)
-		m_acceleration = EPSILON_SPEED / TWO_F;
+		m_acceleration = PlayerDefinitions::EPSILON_SPEED / TWO_F;
 	else if (speed_per < APPROXI_ONE)
-		m_acceleration = EPSILON_SPEED * (ONE_F - speed_per);
+		m_acceleration = PlayerDefinitions::EPSILON_SPEED * (ONE_F - speed_per);
 	else
-		m_acceleration = (APPROXI_ZERO * MAX_SPEED) / FOUR_F;
+		m_acceleration = (APPROXI_ZERO * PlayerDefinitions::MAX_SPEED) / FOUR_F;
 }
 
 //=============================================================================

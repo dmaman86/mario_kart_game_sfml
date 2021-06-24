@@ -8,13 +8,14 @@
 MarioKart::DataGame::DataGame(sf::RenderWindow& window)
 	: window(&window), services(), user()
 {
-	
 	menuMusic.openFromFile(Sounds::menu);
 	menuMusic.setLoop(true);
 }
 
 MarioKart::MarioKart()
-	: m_window(sf::VideoMode(WITDH, HIGHT), "Mario Kart", sf::Style::Close+sf::Style::Resize),
+	: m_window(sf::VideoMode(DimensionWindow::WIDTH, DimensionWindow::HEIGHT),
+               "Mario Kart",
+               sf::Style::Close+sf::Style::Resize),
 	  m_dataGame(new DataGame(m_window))
 {
     m_window.setFramerateLimit(60);

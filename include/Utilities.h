@@ -15,7 +15,7 @@ const float calcCosDegree(const float);
 
 template <class T>
 std::vector<std::vector<T>> readFromFile
-	(const std::string str,const int sizex = DEF_SIZE, const int sizey = DEF_SIZE)
+	(const std::string str,const int sizex = DimensionGame::DEF_SIZE, const int sizey = DimensionGame::DEF_SIZE)
 {
     std::vector<std::vector <T>> map_int;
     std::ifstream m_file(str);

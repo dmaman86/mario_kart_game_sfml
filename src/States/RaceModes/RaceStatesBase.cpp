@@ -8,16 +8,22 @@
 #include "StartCloud.h"
 #include "Sounds.h"
 #include "Fonts.h"
+#include "Macros.h"
 
 //========================== Constructor / Destructor =========================
-RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& map): m_data(data),
-                                                                     m_status(*data->window),
-                                                                     m_player(sf::Vector2f(WITDH_G*2 / 2,HIGHT_G*2 - 50),
-                                                                              sf::Vector2f(112, 56),
-                                                                              m_data->user.getSprite(), m_data->user.getIfSound()),
-                                                                     m_map_race( m_data->user.getMapGame()),
-	m_view(sf::FloatRect(0.f, 0.f, WITDH_G * 2, HIGHT_G * 2)),
-	m_sky(map), m_speed_scr(),m_first(true)// 1000.f, 600.f));
+RaceStatesBase::RaceStatesBase(MarioKart::GameDataRef& data,const  std::string& map):
+    m_data(data),
+    m_status(*data->window),
+    m_player(sf::Vector2f(DimensionGame::WIDTH_G, (DimensionGame::HEIGHT_G * 2) - 50),
+             sf::Vector2f(112, 56),
+             m_data->user.getSprite(), m_data->user.getIfSound()),
+    m_map_race( m_data->user.getMapGame()),
+	m_view(sf::FloatRect(0.f, 0.f,
+                         DimensionGame::WIDTH_G * 2,
+                         DimensionGame::HEIGHT_G * 2)),
+	m_sky(map),
+	m_speed_scr(),
+	m_first(true)// 1000.f, 600.f));
 {
 	m_win_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::win));
 	m_lose_s = sf::Sound(Sounds::instance().getSoundBuffer(Sounds::lose));
@@ -48,17 +54,14 @@ void RaceStatesBase::Init()
     //m_map.initThread(m_board.m_vec_obj);
     //m_build_map_thread = std::thread(&Mode7::calc, &m_map,std::ref(m_board.m_vec_obj));
     startRaceScreen();
-
 }
-
-
 
 //=============================================================================
 void RaceStatesBase::InitMap()
 {
 	m_camera.InitCamera(m_player.getIntLocation());
 	m_cameraY = -17;
-    m_map = Mode7(m_map_race, WITDH_G, HIGHT_G, m_player.getAngle(), 300.0);
+    m_map = Mode7(m_map_race, DimensionGame::WIDTH_G, DimensionGame::HEIGHT_G, m_player.getAngle(), 300.0);
     m_board.fillMap(m_map_race);
 	m_board.fillObjectMap(m_map_race);
 }
@@ -94,22 +97,20 @@ void RaceStatesBase::HandleEvent(const sf::Event&)
 }
 
 //================================= Update =====================================
-void RaceStatesBase::Update(const float deltatime) {
-
+void RaceStatesBase::Update(const float deltatime)
+{
 	try {
-
 		if (m_first)
 			m_first = false;
-		else {
+		else
+		{
 			UpdatePlayer(deltatime);
 			m_sky.Update(m_player.getIsLoc(), m_player.getSpeed());
 			UpdateMap();
 			HandleCollision();
 			this->UpdateAnimation(deltatime);
 		}
-	}
-	catch (...)
-	{
+	}catch (...){
 		finishRase(false);
 	}
 }
@@ -133,8 +134,8 @@ void RaceStatesBase::UpdatePlayer(const float deltatime)
 }
 
 //=============================================================================
-void RaceStatesBase::Draw() {
-
+void RaceStatesBase::Draw()
+{
 	m_data->window->draw(m_background);
 	m_data->window->draw(m_game_boy);
 	auto v = m_data->window->getView();
@@ -149,8 +150,8 @@ void RaceStatesBase::Draw() {
 }
 
 //=============================================================================
-void RaceStatesBase::drawStaticObjects() {
-
+void RaceStatesBase::drawStaticObjects()
+{
     for (auto& x : m_board.getObjData())
         if (x.second->getIsInAngle())
         {
@@ -171,8 +172,8 @@ void RaceStatesBase::HandleCollision()
 			processCollision(m_player, *obj.second);
 		}
 
-	processCollision(m_player, m_board(unsigned int(m_player.getIntLocation().y),
-		unsigned int(m_player.getIntLocation().x)));
+	processCollision(m_player, m_board((unsigned int)(m_player.getIntLocation().y),
+                                              (unsigned int)(m_player.getIntLocation().x)));
 }
 
 //=============================================================================
@@ -192,7 +193,8 @@ bool RaceStatesBase::correctDirection()
 	return currect;
 }
 //=============================================================================
-void RaceStatesBase::startRaceScreen() {
+void RaceStatesBase::startRaceScreen()
+{
     auto trafficlight = TraficLight();
     auto cloud = StartCloud();
     sf::Time delta{};;
@@ -247,8 +249,8 @@ void RaceStatesBase::finishRase(const bool w_or_l)
 	}
 }
 
-void RaceStatesBase::UpdateAnimation(const float time) {
+void RaceStatesBase::UpdateAnimation(const float time)
+{
     m_board.UpdateAnimation(time);
-
 }
 

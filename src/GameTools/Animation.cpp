@@ -46,12 +46,12 @@ void Animation::update()
     m_sprite.setTextureRect(m_data[m_index]);
 }
 
-void Animation::spin() {
-
+void Animation::spin()
+{
     if(m_index == m_data.size()-1)
-        m_sprite.setScale(-SCALEPLAYER,SCALEPLAYER);
+        m_sprite.setScale(-PlayerDefinitions::SCALE_PLAYER, PlayerDefinitions::SCALE_PLAYER);
     else if  (m_index == 0)
-        m_sprite.setScale(SCALEPLAYER,SCALEPLAYER);
+        m_sprite.setScale(PlayerDefinitions::SCALE_PLAYER, PlayerDefinitions::SCALE_PLAYER);
     //check in witch side the sprite is and spin the the other side
     (m_sprite.getScale().x > 0 )? m_index+=2:m_index--;
 

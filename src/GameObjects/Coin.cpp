@@ -10,9 +10,12 @@ const auto ANIMATION_TIME = 0.2f;
 
 //========================== Constructor / Destructor =========================
 Coin::Coin(const sf::Vector2f& pos) :
-	StaticObject(Pictures::instance().getTexture(Pictures::misc), pos) ,
-    m_animation(Pictures::instance().getCoinAnim(),
-			m_sprite,ANIMATION_TIME,true, unsigned int(Pictures::instance().getCoinAnim().size()))
+	StaticObject(Pictures::instance().getTexture(Pictures::misc), pos)
+	,m_animation(Pictures::instance().getCoinAnim(),
+                 m_sprite,
+                 ANIMATION_TIME,
+                 true,
+                 (unsigned int)(Pictures::instance().getCoinAnim().size()))
 {
 	m_sprite.setTextureRect(COIN_RECT);
 	m_sprite.setOrigin(float(m_sprite.getTextureRect().width / 2),

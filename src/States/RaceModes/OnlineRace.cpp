@@ -91,7 +91,8 @@ void OnlineRace::initPositionLikeHost( const std::vector<std::vector<int>>& loca
 {
     m_player.setLocation(sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(WITDH_G / 2.f + 100.f, HIGHT_G - 50.f),
+                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + 100.f,
+                                          DimensionGame::HEIGHT_G - 50.f),
 							 sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
     m_board.addObjects(float(locations[1][0]*8), float(locations[1][1]*8), &m_player2);
 }
@@ -102,7 +103,8 @@ void OnlineRace::initPositionLikeJoin( const std::vector<std::vector<int>>& loca
     m_player.setLocation(sf::Vector2f(float(locations[1][0]), float(locations[1][1])));
 
     m_player2 = PlayerOnline(m_userJoin->getSprite(),
-                             sf::Vector2f(WITDH_G / 2.f + 100.f, HIGHT_G - 50.f),
+                             sf::Vector2f(DimensionGame::WIDTH_G / 2.f + 100.f,
+                                          DimensionGame::HEIGHT_G - 50.f),
 		sf::Vector2f(float(locations[0][0]), float(locations[0][1])));
     m_board.addObjects(float(locations[0][1]*8), float(locations[0][1]*8), &m_player2);
 }

@@ -3,23 +3,26 @@
 #include <string>
 #include <vector>
 
+namespace DimensionWindow
+{
+    const int WIDTH = 1440;
+    const int HEIGHT = 810;
+}
 
-const int WITDH = 1440;
-const int HIGHT = 810;
+// dimension game
+namespace DimensionGame
+{
+    const int WIDTH_G = 400;
+    const int HEIGHT_G = 200;
+    const int DEF_SIZE = 128;
+}
 
-const int WITDH_G = 400;
-const int HIGHT_G = 200;
-
-const int ROADW = 2000;
-const int SEGMENT_LENGTH = 200; 
-const int DEF_SIZE = 128;
-const auto CAMERA_DEPTH = 0.84f;
-const auto MAX_SPEED = 15.f ;
-const auto EPSILON_SPEED = 3.f;
-
-const int MAPSIZE = 1024;
-const int PIPE = 7;
-const int SCALEPLAYER = 3;
+namespace PlayerDefinitions
+{
+    const auto MAX_SPEED = 15.f ;
+    const auto EPSILON_SPEED = 3.f;
+    const int SCALE_PLAYER = 3;
+}
 
 namespace HttpNetwork
 {

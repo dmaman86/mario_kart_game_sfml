@@ -27,7 +27,7 @@ public:
 	void DriveBack();
 	void SpinDriver();
 	void DriveSmaller();
-	void DriveFast() { m_force = MAX_SPEED; }
+	void DriveFast() { m_force = PlayerDefinitions::MAX_SPEED; }
 	void StopEngineMusic() { m_engine.stop(); }
 
 	//================ Virtual public functions ===================
