@@ -14,8 +14,8 @@ GameObj::GameObj(const sf::Texture& tex, const sf::Vector2f& loc, const sf::Vect
 
 //=============================================================================
 GameObj::GameObj():
-m_is_in_angle(false),
-m_is_active(true)
+    m_is_in_angle(false),
+    m_is_active(true)
 {
 }
 

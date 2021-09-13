@@ -7,15 +7,24 @@
 const auto ANIMATION_TIME = 0.1f;
 
 //========================== Constructor / Destructor =========================
-Player::Player
-	(const sf::Vector2f &loc, const sf::Vector2f& pos
-		,const std::string& sprite, bool sound) :
+Player::Player(const sf::Vector2f &loc, const sf::Vector2f& pos
+		        ,const std::string& sprite, bool sound) :
 	m_animation(Pictures::instance().getDriveAnimationData(sprite), m_sprite, ANIMATION_TIME,
 		false, DRIVER_SIDE_LEN),
 	PlayerBase::PlayerBase(Pictures::instance().getTexture(sprite), loc, pos),
-	m_angle(0.0),m_force(0),m_acceleration(0),m_is_lock(0),m_last_pos(0, 0),
-	m_cof(1),m_is_spin(false),m_is_smaller(false),m_smaller_time(0.f),
-	m_soundOn(sound),m_last_pos_score(0),m_is_pressed(false),m_finish_line(false)
+	m_angle(0.0),
+	m_force(0),
+	m_acceleration(0),
+	m_is_lock(0),
+	m_last_pos(0, 0),
+	m_cof(1),
+	m_is_spin(false),
+	m_is_smaller(false),
+	m_smaller_time(0.f),
+	m_soundOn(sound),
+	m_last_pos_score(0),
+	m_is_pressed(false),
+	m_finish_line(false)
 {
     m_sprite.setTexture(Pictures::instance().getTexture(Pictures::drivers));
 	m_sprite.setOrigin(float(m_sprite.getTextureRect().width / 2),
