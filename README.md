@@ -14,7 +14,7 @@ programming course (C++ and SFML) as well as technologies we
 learned independently (JavaScript and Firebase).
 
 Since this is an educational project, we are not required to submit together
-with the server then the server side is not included in the package.
+with the server then the server side, therefore is not included in the package.
 
 Link to watch a game in online version: https://youtu.be/sARGm4s1JAM .
 
